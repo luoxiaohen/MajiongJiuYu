@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "8bX+Yo2hxINa7Ap0r1Z6qF"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "game_diwen",
+      "rect": [
+        0,
+        0,
+        1712,
+        873
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        1712,
+        873
+      ],
+      "capInsets": [
+        47,
+        47,
+        41,
+        41
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

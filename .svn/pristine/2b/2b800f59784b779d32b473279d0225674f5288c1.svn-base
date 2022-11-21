@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ty_tuichuxg",
+    "texture": "ec4a038e-0f92-4d31-b29e-a46a90b69941",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      328,
+      104
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      328,
+      104
+    ],
+    "capInsets": [
+      26,
+      16,
+      36,
+      26
+    ]
+  }
+}

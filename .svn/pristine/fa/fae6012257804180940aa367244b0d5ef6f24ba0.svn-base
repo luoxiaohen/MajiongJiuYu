@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_fanyu",
+    "texture": "164102ed-fed2-4a7e-9f42-8f2aa3a66d58",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      402,
+      90
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      402,
+      90
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

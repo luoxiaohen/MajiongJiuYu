@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_queding",
+    "texture": "225a24d3-b613-4e06-bd32-66769fb59d79",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      103,
+      44
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      103,
+      44
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

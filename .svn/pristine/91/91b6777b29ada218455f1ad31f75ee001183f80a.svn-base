@@ -1,0 +1,100 @@
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+
+import { Global } from "../../Shared/GloBal";
+import RealTimePlayerInfoItem from "./RealTimePlayerInfoItem";
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class GameRealTimePannel extends cc.Component {
+
+    @property(cc.Node)
+    player_info_content: cc.Node = null;
+
+    @property(cc.Node)
+    buy_horse_info_content: cc.Node = null;
+
+    @property(cc.Node)
+    watch_player_tip: cc.Node = null;
+    @property(cc.Node)
+    watch_player_content: cc.Node = null;
+
+    private buyHorseTip:cc.Node;
+
+    private playerInfoPrefab:cc.Prefab;
+    private watchPlayerItemPrefab:cc.Prefab;
+
+
+    // LIFE-CYCLE CALLBACKS:
+
+    onLoad () {
+        this.playerInfoPrefab=Global.Utils.getPreFabBySource("gameRecord/prefab/RealTimePlayerInfoItem");
+        this.watchPlayerItemPrefab=Global.Utils.getPreFabBySource("gameRecord/prefab/WatchPlayerHeadItem");
+        this.buyHorseTip=this.node.getChildByName("buyHorseTip");
+    }
+
+    start () {
+        Global.Utils.debugOutput("startTimeHeight:  "+this.node.height);
+
+    }
+    protected onEnable(): void {
+        Global.Utils.debugOutput("EnableTimeHeight:  "+this.node.height);
+    }
+
+    initeValue():void{
+        for(let index=0;index<4;index++){
+            let obj=cc.instantiate(this.playerInfoPrefab);
+            this.player_info_content.addChild(obj);
+            let playerInfoComp=obj.getComponent(RealTimePlayerInfoItem);
+            let data:any={};
+            data.headSpritUrl="";
+            data.playerName="PlayerName"+index;
+            data.playerHandStr="2";
+            data.playerScoreNum=10;
+            data.sitIndex=index;
+            playerInfoComp.initeValue(data);
+        }
+        let horseNum=3;
+        let horseContentHight=0;
+        for(let index=0;index<horseNum;index++){
+            let obj=cc.instantiate(this.playerInfoPrefab);
+            horseContentHight+=obj.height;
+            this.buy_horse_info_content.addChild(obj);
+            let playerInfoComp=obj.getComponent(RealTimePlayerInfoItem);
+            let data:any={};
+            data.headSpritUrl="";
+            data.playerName="PlayerName"+index;
+            data.playerHandStr="2/10";
+            data.playerScoreNum=10;
+            data.sitIndex=-1;
+            playerInfoComp.initeValue(data);
+        }
+        this.buy_horse_info_content.height=horseContentHight;
+        this.buyHorseTip.active=horseNum>0;
+        if(horseNum==0){
+            this.watch_player_tip.y=-horseContentHight+this.buy_horse_info_content.y-(this.watch_player_tip.height/2)+ this.watch_player_tip.height;
+
+        }else{
+            this.watch_player_tip.y=-horseContentHight+this.buy_horse_info_content.y-(this.watch_player_tip.height/2);
+        }
+        this.watch_player_content.y= this.watch_player_tip.y-50;
+        let watchPlayerNum=5;
+        for(let index=0;index<watchPlayerNum;index++){
+            let obj=cc.instantiate(this.watchPlayerItemPrefab);
+            this.watch_player_content.addChild(obj);
+        }
+        let line=Math.ceil(watchPlayerNum/3);
+        let wathchHeight=line*150+(line-1)*30;
+        this.node.height=-this.watch_player_content.y+wathchHeight+60;
+        Global.Utils.debugOutput("tureTimeHeight:  "+this.node.height);
+        this.node.active=false;
+        this.node.active=true;
+    }
+
+    // update (dt) {}
+}

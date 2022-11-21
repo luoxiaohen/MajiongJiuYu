@@ -1,0 +1,111 @@
+"use strict";
+cc._RF.push(module, '04b75uZKiFN/aaWu4C3DJ/0', 'MajiongWallCard');
+// Script/UI/card/MajiongWallCard.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MajiongWallCard = /** @class */ (function (_super) {
+    __extends(MajiongWallCard, _super);
+    function MajiongWallCard() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.majiongImage = null;
+        /**当前牌在牌墙的位置*/
+        _this._cardId = 0;
+        /**牌墙在桌子的位置*/
+        _this._cardPoint = 0;
+        /***麻将摸牌顺序,依据庄家位置和摸牌起点得出*/
+        _this._majiongDrawOeder = 0;
+        return _this;
+    }
+    MajiongWallCard.prototype.start = function () {
+    };
+    Object.defineProperty(MajiongWallCard.prototype, "cardId", {
+        get: function () {
+            return this._cardId;
+        },
+        set: function (value) {
+            this._cardId = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongWallCard.prototype, "cardPoint", {
+        get: function () {
+            return this._cardPoint;
+        },
+        set: function (value) {
+            this._cardPoint = value;
+            this.showImage();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongWallCard.prototype, "majiongDrawOeder", {
+        get: function () {
+            return this._majiongDrawOeder;
+        },
+        set: function (value) {
+            this._majiongDrawOeder = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MajiongWallCard.prototype.onLoad = function () {
+    };
+    /**设置当前是否可见*/
+    MajiongWallCard.prototype.setVisible = function (boo) {
+        this.node.active = boo;
+    };
+    MajiongWallCard.prototype.showImage = function () {
+        if (this.cardPoint == 3) {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.majiongImage, "majiongCard/resource/1_0_1", null);
+        }
+        else {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.majiongImage, "majiongCard/resource/" + this.cardPoint + "_0_1", null);
+        }
+        if (this.cardPoint == 3) {
+            this.majiongImage.node.scaleX = -1;
+        }
+        else {
+            this.majiongImage.node.scaleX = 1;
+        }
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongWallCard.prototype, "majiongImage", void 0);
+    MajiongWallCard = __decorate([
+        ccclass
+    ], MajiongWallCard);
+    return MajiongWallCard;
+}(UIBase_1.default));
+exports.default = MajiongWallCard;
+
+cc._RF.pop();

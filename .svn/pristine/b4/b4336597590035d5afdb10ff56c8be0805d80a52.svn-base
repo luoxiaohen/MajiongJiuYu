@@ -1,0 +1,35 @@
+{
+    "paths": {},
+    "uuids": [
+        "2dL3kvpAxJu6GJ7RdqJG5J",
+        "bfs45lLDJKzIxLkVgXZaR4",
+        "ecpdLyjvZBwrvm+cedCcQy"
+    ],
+    "scenes": {
+        "db://assets/Scene/mainMajiong.fire": "bfs45lLDJKzIxLkVgXZaR4",
+        "db://assets/Scene/majiong.fire": "2dL3kvpAxJu6GJ7RdqJG5J"
+    },
+    "redirect": [
+        "ecpdLyjvZBwrvm+cedCcQy",
+        0
+    ],
+    "deps": [
+        "internal"
+    ],
+    "packs": {},
+    "name": "main",
+    "importBase": "import",
+    "nativeBase": "native",
+    "debug": true,
+    "isZip": false,
+    "encrypted": false,
+    "versions": {
+        "import": [
+            "2dL3kvpAxJu6GJ7RdqJG5J",
+            "783c6",
+            "bfs45lLDJKzIxLkVgXZaR4",
+            "e14d2"
+        ],
+        "native": []
+    }
+}

@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "ccQXsxgD1Ilre3q0tgYeE1"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "game_wenzidi",
+      "rect": [
+        0,
+        0,
+        389,
+        329
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        389,
+        329
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

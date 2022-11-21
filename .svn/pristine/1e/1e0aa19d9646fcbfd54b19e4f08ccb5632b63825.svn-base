@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "dating_beijing",
+    "texture": "fdef0498-b4ca-48bb-a3ed-9bbadb0d517f",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1080,
+      400
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1080,
+      400
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

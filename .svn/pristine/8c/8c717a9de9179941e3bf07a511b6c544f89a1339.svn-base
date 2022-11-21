@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "hupaitishi",
+    "texture": "6b7ed6d2-3505-4e6b-acce-5f273f47b956",
+    "atlas": "",
+    "rect": [
+      1,
+      1,
+      173,
+      175
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      175,
+      177
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

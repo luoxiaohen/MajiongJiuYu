@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_dikuang",
+    "texture": "5eb6061a-3cef-4056-bbb1-25fa0a5d991b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      193,
+      220
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      193,
+      220
+    ],
+    "capInsets": [
+      34,
+      28,
+      28,
+      34
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_xuanzehuase",
+    "texture": "415f377c-7f0c-4d5c-b183-4882927b3aeb",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1018,
+      185
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1018,
+      185
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

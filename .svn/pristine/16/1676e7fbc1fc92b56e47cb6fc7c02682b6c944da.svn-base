@@ -1,0 +1,247 @@
+"use strict";
+cc._RF.push(module, '2f64bpBl9hAQpaaikhCz043', 'CCHelper');
+// Script/Shared/CCHelper.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("./GloBal");
+var MessageCallback_1 = require("./MessageCallback");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CCHelper = /** @class */ (function () {
+    function CCHelper() {
+        /**
+         * @param res 资源路径(不带后缀,带resources)
+         * @param cb 异步创建，function(err, node)
+         */
+        this.createFrameAnimationNode = function (res, cb) {
+            //cc.JsonAsset
+            cc.loader.loadRes(res + "_config", cc.Asset, function (err, data) {
+                if (!!err) {
+                    cc.error("createFrameAnimation err: load file fail url=" + res + '.json');
+                    cb("load file fail");
+                }
+                else {
+                    data = data.json;
+                    var width_1 = data["width"] || 0;
+                    var height_1 = data["height"] || 0;
+                    var count = data["count"] || 0;
+                    var intervalTime_1 = (data["intervalTime"] || 0);
+                    if (width_1 <= 0 || height_1 <= 0 || count <= 0 || intervalTime_1 <= 0) {
+                        cc.error("animation data err");
+                        cb("animation data err");
+                        return;
+                    }
+                    cc.loader.loadRes(cc.url.raw(res + '.png'), function (err, texture) {
+                        if (!!err) {
+                            cc.error("createFrameAnimation err: load file fail url=" + res + '.png');
+                            cb("load file fail");
+                        }
+                        else {
+                            var wCount_1 = Math.floor(texture.width / width_1) || 1;
+                            var hCount_1 = Math.floor(texture.height / height_1) || 1;
+                            var node_1 = new cc.Node();
+                            var sprite_1 = node_1.addComponent(cc.Sprite);
+                            sprite_1.spriteFrame = new cc.SpriteFrame(texture, new cc.Rect(0, 64, width_1, height_1));
+                            /**
+                             * @param loop 是否循环，默认false
+                             * @param speed 播放速度，默认1
+                             * @param completeCallback，每完成一次的回调
+                             */
+                            node_1["startAnimation"] = function (loop, speed, completeCallback) {
+                                if (!speed || speed <= 0)
+                                    speed = 1;
+                                intervalTime_1 = intervalTime_1 / speed;
+                                node_1.stopAllActions();
+                                var index = 0;
+                                function callback() {
+                                    var curIndex = index++ % data.count;
+                                    var rect = new cc.Rect((curIndex % wCount_1) * width_1, Math.floor(curIndex / hCount_1) * height_1, width_1, height_1);
+                                    sprite_1.spriteFrame = new cc.SpriteFrame(texture, rect);
+                                    if (!!completeCallback && (curIndex === (data.count - 1))) {
+                                        completeCallback();
+                                    }
+                                }
+                                if (!!loop) {
+                                    node_1.runAction(cc.repeatForever(cc.sequence([cc.delayTime(intervalTime_1), cc.callFunc(callback)])));
+                                }
+                                else {
+                                    node_1.runAction(cc.repeat(cc.sequence([cc.delayTime(intervalTime_1), cc.callFunc(callback)]), data.count));
+                                }
+                            };
+                            node_1["stopAnimation"] = function () {
+                                node_1.stopAllActions();
+                            };
+                            cb(null, node_1);
+                        }
+                    });
+                }
+            });
+        };
+        // 获取单位向量
+        this.getUnitVector = function (startPoint, endPoint) {
+            var point = cc.v2(0, 0);
+            var distance;
+            distance = Math.pow((startPoint.x - endPoint.x), 2) + Math.pow((startPoint.y - endPoint.y), 2);
+            distance = Math.sqrt(distance);
+            if (distance === 0)
+                return point;
+            point.x = (endPoint.x - startPoint.x) / distance;
+            point.y = (endPoint.y - startPoint.y) / distance;
+            return point;
+        };
+        this.getRelativePosition = function (childNode, parentNode) {
+            return parentNode.convertToNodeSpace(childNode.parent.convertToWorldSpace(childNode.position));
+        };
+        this.setPageTitle = function (titleText) {
+            if (!cc.sys.isBrowser)
+                return;
+            document.title = titleText;
+        };
+        //跨域图片或者本地图片
+        this.updateSpriteFrame = function (imgUrl, target_, cb) {
+            if (cb === void 0) { cb = null; }
+            var target = target_;
+            if (imgUrl == "" || imgUrl == undefined || imgUrl == null) {
+                return;
+            }
+            if ((imgUrl && imgUrl.indexOf('http') > 0)) {
+                cc.loader.load({ url: imgUrl, type: "png" }, function (err, texture) {
+                    if (!!err) {
+                        cc.error(err);
+                        GloBal_1.Global.Utils.invokeCallback(cb, err);
+                    }
+                    else {
+                        if (target.isValid) {
+                            target.spriteFrame = new cc.SpriteFrame(texture);
+                            GloBal_1.Global.Utils.invokeCallback(cb);
+                        }
+                    }
+                });
+                //加载本地图片
+            }
+            else {
+                cc.loader.loadRes(imgUrl, cc.SpriteFrame, function (err, spriteFrame) {
+                    if (!!err) {
+                        cc.log(err);
+                        GloBal_1.Global.Utils.invokeCallback(cb, err);
+                    }
+                    else {
+                        if (target.isValid) {
+                            target.spriteFrame = spriteFrame;
+                            GloBal_1.Global.Utils.invokeCallback(cb);
+                        }
+                    }
+                });
+            }
+        };
+        this.loadRes = function (dirArr, cb) {
+            var loadingCount = 0;
+            for (var i = 0; i < dirArr.length; i++) {
+                cc.loader.loadResDir(dirArr[i], function (err) {
+                    loadingCount += 1;
+                    if (loadingCount >= (dirArr.length)) {
+                        GloBal_1.Global.Utils.invokeCallback(cb, err);
+                    }
+                }.bind(this));
+            }
+        };
+        this.releaseRes = function (dirArr) {
+            for (var i = 0; i < dirArr.length; i++) {
+                cc["assetManager"].releaseAsset(dirArr[i]);
+                //cc.loader.releaseResDir(dirArr[i]);
+            }
+        };
+        this.createSpriteNode = function (src) {
+            var node = new cc.Node();
+            var sprite = node.addComponent(cc.Sprite);
+            sprite.spriteFrame = new cc.SpriteFrame();
+            this.updateSpriteFrame(src, sprite);
+            return node;
+        };
+        // 刷新对齐
+        this.updateNodeAlignment = function (node) {
+            var widget = node.getComponent(cc.Widget);
+            if (!!widget) {
+                widget.updateAlignment();
+            }
+            for (var i = 0; i < node.children.length; ++i) {
+                this.updateNodeAlignment(node.children[i]);
+            }
+        };
+        // 屏幕适配
+        this.screenAdaptation = function (baseSize, canvas) {
+            var size = cc.size(baseSize.width, baseSize.height);
+            var frameSize = cc.view.getFrameSize();
+            /*if (size.height/size.width < frameSize.height/frameSize.width){
+                size.height = size.width * (frameSize.height / frameSize.width);
+            } else {
+                return;
+            }*/
+            //size.width = size.height * (frameSize.width/frameSize.height);
+            if (size.height / size.width < frameSize.height / frameSize.width) {
+                //size.height = size.width * (frameSize.height / frameSize.width);`
+                canvas.fitHeight = false;
+                canvas.fitWidth = true;
+            }
+            else {
+                size.width = size.height * (frameSize.width / frameSize.height);
+                canvas.designResolution = size;
+                canvas.node.width = size.width;
+                canvas.node.height = size.height;
+            }
+            if (cc.sys.isNative || true)
+                return;
+            cc.view.setResizeCallback(function () {
+                size = cc.size(baseSize.width, baseSize.height);
+                frameSize = cc.view.getFrameSize();
+                if (size.height / size.width < frameSize.height / frameSize.width) {
+                    size.height = size.width * (frameSize.height / frameSize.width);
+                }
+                else {
+                    size.width = size.height * (frameSize.width / frameSize.height);
+                }
+                canvas.designResolution = size;
+                canvas.node.width = size.width;
+                canvas.node.height = size.height;
+                MessageCallback_1.default.ins.emitMessage("DesignResolutionChanged", size);
+                this.updateNodeAlignment(canvas.node);
+            });
+        };
+        this.playPreSound = function () {
+            cc.loader.loadRes('Sound/button', function (err, clip) {
+                if (!!err) { }
+                else {
+                    cc.audioEngine.play(clip, false, 1);
+                }
+            });
+        };
+    }
+    CCHelper_1 = CCHelper;
+    Object.defineProperty(CCHelper, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new CCHelper_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    var CCHelper_1;
+    CCHelper = CCHelper_1 = __decorate([
+        ccclass
+    ], CCHelper);
+    return CCHelper;
+}());
+exports.default = CCHelper;
+
+cc._RF.pop();

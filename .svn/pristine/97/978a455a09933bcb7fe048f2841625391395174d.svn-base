@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_majiang3",
+    "texture": "f49396db-1d0a-430d-b547-6074446c959c",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      64,
+      88
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      64,
+      88
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

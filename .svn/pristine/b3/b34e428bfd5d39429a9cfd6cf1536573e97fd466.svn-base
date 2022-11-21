@@ -1,0 +1,218 @@
+"use strict";
+cc._RF.push(module, '8aa23vkSRZHGKMxIFhZhq2n', 'MajiongEatItem');
+// Script/UI/card/MajiongEatItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MajiongEatItem = /** @class */ (function (_super) {
+    __extends(MajiongEatItem, _super);
+    function MajiongEatItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.majiongEat0 = null;
+        _this.majiongEat1 = null;
+        _this.majiongEat2 = null;
+        _this.majiongEat3 = null;
+        _this.eatSplc = [20, 10, 20, 10];
+        _this.XXfont = null;
+        return _this;
+    }
+    Object.defineProperty(MajiongEatItem.prototype, "size", {
+        get: function () {
+            return this._size;
+        },
+        set: function (value) {
+            this._size = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongEatItem.prototype, "eatData", {
+        get: function () {
+            return this._eatData;
+        },
+        set: function (value) {
+            this._eatData = value;
+            this.creatElements();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MajiongEatItem.prototype.onLoad = function () {
+    };
+    MajiongEatItem.prototype.creatElements = function () {
+        this.changeSize();
+        this.showCardValue();
+        this.showItemNum();
+        this.showByImage();
+    };
+    MajiongEatItem.prototype.setNewData = function (eatType) {
+        this.eatData.eatType = eatType;
+        this.showItemNum();
+    };
+    MajiongEatItem.prototype.setPoint = function (addIndex) {
+        switch (this.eatData.havePointBySelf) {
+            case 0:
+                this.node.x = (addIndex - 1) * this.size.x + (addIndex - 1) * this.eatSplc[this.eatData.havePointBySelf];
+                break;
+            case 1:
+                this.node.x = this.size.x * -1 - addIndex * 6;
+                this.node.y = this.size.y * (addIndex - 1) + this.eatSplc[this.eatData.havePointBySelf] * (addIndex - 1);
+                break;
+            case 2:
+                this.node.x = 819 - addIndex * this.size.x - (addIndex - 1) * this.eatSplc[this.eatData.havePointBySelf];
+                break;
+            case 3:
+                this.node.x = addIndex * -6 - this.size.x / 2;
+                this.node.y = 560 - addIndex * this.size.y - (addIndex - 1) * this.eatSplc[this.eatData.havePointBySelf];
+                break;
+        }
+    };
+    MajiongEatItem.prototype.showByImage = function () {
+        var nowNode = this.getNowNode();
+        var changeAngel = 0;
+        switch (this.eatData.eatType) {
+            case EnumManager_1.EatCardEnum.EatOpposite, EnumManager_1.EatCardEnum.CrossOpposite, EnumManager_1.EatCardEnum.CrossAllOpp:
+                changeAngel += 2;
+                break;
+            case EnumManager_1.EatCardEnum.EatUp, EnumManager_1.EatCardEnum.CrossUp, EnumManager_1.EatCardEnum.CrossAllUp:
+                changeAngel += 3;
+                break;
+            case EnumManager_1.EatCardEnum.EatDown, EnumManager_1.EatCardEnum.CrossDown, EnumManager_1.EatCardEnum.CrossAllDown:
+                changeAngel += 1;
+                break;
+        }
+        var img = cc.find("selfImage", nowNode).getComponent(cc.Sprite);
+        var initRotation = img.node.angle;
+        img.node.angle = initRotation + changeAngel * 90;
+    };
+    MajiongEatItem.prototype.showItemNum = function () {
+        var source = "myEat3";
+        if (this.eatData.eatType < 3) {
+            var nowNode = this.getNowNode();
+            cc.find(source, nowNode).active = false;
+        }
+        else {
+            var nowNode = this.getNowNode();
+            cc.find(source, nowNode).active = true;
+        }
+    };
+    MajiongEatItem.prototype.showCardValue = function () {
+        var _this = this;
+        if (this.eatData.eatType == EnumManager_1.EatCardEnum.CrossSelf) {
+            var source = "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(this.eatData.cardValue) + "_" + this.eatData.havePointBySelf;
+            var nowNode = this.getNowNode();
+            var fontImage = void 0;
+            var bgImage = void 0;
+            fontImage = cc.find("myEat3/fontImage", nowNode).getComponent(cc.Sprite);
+            GloBal_1.Global.Utils.setNewImageToSprite(fontImage, source);
+            for (var i = 0; i < 3; i++) {
+                fontImage = cc.find("myEat" + i + "/fontImage", nowNode).getComponent(cc.Sprite);
+                fontImage.node.active = false;
+                bgImage = cc.find("myEat" + i + "/majiongBg", nowNode).getComponent(cc.Sprite);
+                bgImage.node.active = true;
+                var index = this.eatData.havePointBySelf;
+                if (index == 3) {
+                    index = 1;
+                }
+                GloBal_1.Global.Utils.setNewImageToSprite(bgImage, "majiongCard/resource/" + index + "_0_4_2", function () {
+                    _this.getNowNode().active = true;
+                });
+            }
+        }
+        else {
+            var source = "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(this.eatData.cardValue) + "_" + this.eatData.havePointBySelf;
+            var nowNode_1 = this.getNowNode();
+            var fontImage = void 0;
+            for (var i = 0; i < 4; i++) {
+                var s = "myEat" + i + "/fontImage";
+                fontImage = cc.find(s, nowNode_1).getComponent(cc.Sprite);
+                GloBal_1.Global.Utils.setNewImageToSprite(fontImage, source, function () {
+                    nowNode_1.active = true;
+                });
+            }
+        }
+    };
+    MajiongEatItem.prototype.getNowNode = function () {
+        switch (this.eatData.havePointBySelf) {
+            case 0:
+                return this.majiongEat0;
+                break;
+            case 1:
+                return this.majiongEat1;
+                break;
+            case 2:
+                return this.majiongEat2;
+                break;
+            case 3:
+                return this.majiongEat3;
+                break;
+        }
+    };
+    MajiongEatItem.prototype.changeSize = function () {
+        switch (this.eatData.havePointBySelf) {
+            case 0:
+                this.size = cc.v2(262, 116);
+                break;
+            case 1:
+                this.size = cc.v2(72, 135.5);
+                break;
+            case 2:
+                this.size = cc.v2(150, 65);
+                break;
+            case 3:
+                this.size = cc.v2(72, 135.5);
+                break;
+        }
+    };
+    __decorate([
+        property(cc.Node)
+    ], MajiongEatItem.prototype, "majiongEat0", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongEatItem.prototype, "majiongEat1", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongEatItem.prototype, "majiongEat2", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongEatItem.prototype, "majiongEat3", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongEatItem.prototype, "XXfont", void 0);
+    MajiongEatItem = __decorate([
+        ccclass
+    ], MajiongEatItem);
+    return MajiongEatItem;
+}(UIBase_1.default));
+exports.default = MajiongEatItem;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_shezhi_anniu1",
+    "texture": "53e994b5-7729-4f18-9b35-8be8c7be55fd",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      155,
+      57
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      155,
+      57
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

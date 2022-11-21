@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_2qiangganghu",
+    "texture": "e79d8df5-76e4-40ac-8035-af164a4777c3",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      280,
+      83
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      280,
+      83
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

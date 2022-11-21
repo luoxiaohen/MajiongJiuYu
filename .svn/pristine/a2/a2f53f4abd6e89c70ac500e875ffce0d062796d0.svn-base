@@ -1,0 +1,231 @@
+"use strict";
+cc._RF.push(module, '67023s9NshBj4BdGaBBNNoZ', 'TableMsgDef');
+// Script/proto/TableMsgDef.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EMGameState = exports.GangTypeEnum = exports.FanTypeEnum = exports.HuTypeEnum = exports.ScoreTypeEnum = exports.FinalPlayerCalcInfo = exports.DebugInfo = exports.ScoreEventInfo = exports.GameBackScene = exports.GameOneScene = exports.MsgMajSer = exports.SitQueInfo = exports.SitDiceInfo = exports.GameScoreInfo = exports.GameResultInfo = exports.HorseSelInfo = exports.HorserInfo = exports.SitInfo = exports.HorserTableInfo = exports.RoomTableInfo = exports.TableErrCode = exports.TableMsgDef = void 0;
+/**
+* Created by admin on 2022/5/30.
+*/
+var TableMsgDef = /** @class */ (function () {
+    function TableMsgDef() {
+    }
+    TableMsgDef.BASE_TEST_TIME = 1660000000000;
+    return TableMsgDef;
+}());
+exports.TableMsgDef = TableMsgDef;
+var TableErrCode;
+(function (TableErrCode) {
+    TableErrCode[TableErrCode["eOK"] = 0] = "eOK";
+    TableErrCode[TableErrCode["eOtherErr"] = 1] = "eOtherErr";
+    TableErrCode[TableErrCode["eNotSit"] = 2] = "eNotSit";
+    TableErrCode[TableErrCode["eSitNumErr"] = 3] = "eSitNumErr";
+    TableErrCode[TableErrCode["eNotEnter"] = 4] = "eNotEnter";
+    TableErrCode[TableErrCode["eNotRoom"] = 5] = "eNotRoom";
+    TableErrCode[TableErrCode["eErrDoing"] = 6] = "eErrDoing";
+    TableErrCode[TableErrCode["eErrDice"] = 7] = "eErrDice";
+    TableErrCode[TableErrCode["eOverSit"] = 8] = "eOverSit";
+    TableErrCode[TableErrCode["eNotMajID"] = 9] = "eNotMajID";
+    TableErrCode[TableErrCode["eIsOnSit"] = 10] = "eIsOnSit";
+    TableErrCode[TableErrCode["eIsStarted"] = 11] = "eIsStarted";
+    TableErrCode[TableErrCode["eLowGold"] = 12] = "eLowGold";
+    TableErrCode[TableErrCode["eErrChange3"] = 13] = "eErrChange3";
+    TableErrCode[TableErrCode["eHu2ScoreLimit"] = 14] = "eHu2ScoreLimit";
+    TableErrCode[TableErrCode["eMustHuLast4"] = 15] = "eMustHuLast4";
+    TableErrCode[TableErrCode["eTidHandNumErr"] = 16] = "eTidHandNumErr";
+    TableErrCode[TableErrCode["eFavHasFav"] = 17] = "eFavHasFav";
+    TableErrCode[TableErrCode["eNotOpState"] = 18] = "eNotOpState";
+    TableErrCode[TableErrCode["eNeedQueFirst"] = 19] = "eNeedQueFirst";
+    TableErrCode[TableErrCode["eErrReq"] = 20] = "eErrReq";
+    TableErrCode[TableErrCode["eOverHorseCnt"] = 21] = "eOverHorseCnt";
+    TableErrCode[TableErrCode["eOverHandNum"] = 22] = "eOverHandNum";
+    TableErrCode[TableErrCode["eNotHorseSit"] = 23] = "eNotHorseSit";
+    TableErrCode[TableErrCode["eMajNumUsed"] = 24] = "eMajNumUsed";
+    TableErrCode[TableErrCode["eLmtCancelStart"] = 25] = "eLmtCancelStart";
+    TableErrCode[TableErrCode["eLmtCancelNotIn"] = 26] = "eLmtCancelNotIn";
+    TableErrCode[TableErrCode["eLmtMajNum"] = 27] = "eLmtMajNum";
+    TableErrCode[TableErrCode["eErrReady"] = 28] = "eErrReady";
+    TableErrCode[TableErrCode["eRepeatRoom"] = 29] = "eRepeatRoom";
+    TableErrCode[TableErrCode["eMax"] = 30] = "eMax";
+})(TableErrCode = exports.TableErrCode || (exports.TableErrCode = {}));
+// 牌桌信息
+var RoomTableInfo = /** @class */ (function () {
+    function RoomTableInfo() {
+    }
+    return RoomTableInfo;
+}());
+exports.RoomTableInfo = RoomTableInfo;
+// 买马列表中的房间基础信息
+var HorserTableInfo = /** @class */ (function () {
+    function HorserTableInfo() {
+    }
+    return HorserTableInfo;
+}());
+exports.HorserTableInfo = HorserTableInfo;
+// 上桌者信息
+var SitInfo = /** @class */ (function () {
+    function SitInfo() {
+    }
+    return SitInfo;
+}());
+exports.SitInfo = SitInfo;
+// 买马者信息
+var HorserInfo = /** @class */ (function () {
+    function HorserInfo() {
+    }
+    return HorserInfo;
+}());
+exports.HorserInfo = HorserInfo;
+// 庄家买马选马信息
+var HorseSelInfo = /** @class */ (function () {
+    function HorseSelInfo() {
+    }
+    return HorseSelInfo;
+}());
+exports.HorseSelInfo = HorseSelInfo;
+var GameResultInfo = /** @class */ (function () {
+    function GameResultInfo() {
+    }
+    return GameResultInfo;
+}());
+exports.GameResultInfo = GameResultInfo;
+var GameScoreInfo = /** @class */ (function () {
+    function GameScoreInfo() {
+    }
+    return GameScoreInfo;
+}());
+exports.GameScoreInfo = GameScoreInfo;
+var SitDiceInfo = /** @class */ (function () {
+    function SitDiceInfo() {
+    }
+    return SitDiceInfo;
+}());
+exports.SitDiceInfo = SitDiceInfo;
+var SitQueInfo = /** @class */ (function () {
+    function SitQueInfo() {
+    }
+    return SitQueInfo;
+}());
+exports.SitQueInfo = SitQueInfo;
+// 成型牌信息
+var MsgMajSer = /** @class */ (function () {
+    function MsgMajSer() {
+    }
+    return MsgMajSer;
+}());
+exports.MsgMajSer = MsgMajSer;
+// 单个玩家完整牌局信息
+var GameOneScene = /** @class */ (function () {
+    function GameOneScene() {
+    }
+    return GameOneScene;
+}());
+exports.GameOneScene = GameOneScene;
+// 牌局背景信息
+var GameBackScene = /** @class */ (function () {
+    function GameBackScene() {
+    }
+    return GameBackScene;
+}());
+exports.GameBackScene = GameBackScene;
+// 产生积分事件的信息
+var ScoreEventInfo = /** @class */ (function () {
+    function ScoreEventInfo() {
+    }
+    return ScoreEventInfo;
+}());
+exports.ScoreEventInfo = ScoreEventInfo;
+var DebugInfo = /** @class */ (function () {
+    function DebugInfo() {
+    }
+    return DebugInfo;
+}());
+exports.DebugInfo = DebugInfo;
+// 总结算时玩家信息
+var FinalPlayerCalcInfo = /** @class */ (function () {
+    function FinalPlayerCalcInfo() {
+    }
+    return FinalPlayerCalcInfo;
+}());
+exports.FinalPlayerCalcInfo = FinalPlayerCalcInfo;
+// 积分类型
+var ScoreTypeEnum;
+(function (ScoreTypeEnum) {
+    ScoreTypeEnum[ScoreTypeEnum["None"] = 0] = "None";
+    ScoreTypeEnum[ScoreTypeEnum["eZiMo"] = 1] = "eZiMo";
+    ScoreTypeEnum[ScoreTypeEnum["eHuPai"] = 2] = "eHuPai";
+    ScoreTypeEnum[ScoreTypeEnum["eBeiZiMo"] = 3] = "eBeiZiMo";
+    ScoreTypeEnum[ScoreTypeEnum["eDianPao"] = 4] = "eDianPao";
+    ScoreTypeEnum[ScoreTypeEnum["eGang"] = 5] = "eGang";
+    ScoreTypeEnum[ScoreTypeEnum["eBeiGang"] = 6] = "eBeiGang";
+    ScoreTypeEnum[ScoreTypeEnum["eSunshine"] = 7] = "eSunshine";
+    ScoreTypeEnum[ScoreTypeEnum["eSunshineRain"] = 8] = "eSunshineRain";
+    ScoreTypeEnum[ScoreTypeEnum["eChaHuaZhu"] = 9] = "eChaHuaZhu";
+    ScoreTypeEnum[ScoreTypeEnum["eChaDaJiao"] = 10] = "eChaDaJiao";
+    ScoreTypeEnum[ScoreTypeEnum["eChaXiaoJiao"] = 11] = "eChaXiaoJiao";
+    ScoreTypeEnum[ScoreTypeEnum["eTuiShui"] = 12] = "eTuiShui";
+    ScoreTypeEnum[ScoreTypeEnum["eZhuanYu"] = 13] = "eZhuanYu";
+    ScoreTypeEnum[ScoreTypeEnum["eHorserWin"] = 14] = "eHorserWin";
+    ScoreTypeEnum[ScoreTypeEnum["eHorserLose"] = 15] = "eHorserLose";
+    ScoreTypeEnum[ScoreTypeEnum["eMAX"] = 16] = "eMAX";
+})(ScoreTypeEnum = exports.ScoreTypeEnum || (exports.ScoreTypeEnum = {}));
+// 牌型
+var HuTypeEnum;
+(function (HuTypeEnum) {
+    HuTypeEnum[HuTypeEnum["None"] = 0] = "None";
+    HuTypeEnum[HuTypeEnum["PingHu"] = 1] = "PingHu";
+    HuTypeEnum[HuTypeEnum["DuiDuiHu"] = 2] = "DuiDuiHu";
+    HuTypeEnum[HuTypeEnum["QingYiSe"] = 3] = "QingYiSe";
+    HuTypeEnum[HuTypeEnum["QiDui"] = 4] = "QiDui";
+    HuTypeEnum[HuTypeEnum["LongQiDui"] = 5] = "LongQiDui";
+    HuTypeEnum[HuTypeEnum["JinGouDiao"] = 6] = "JinGouDiao";
+    HuTypeEnum[HuTypeEnum["YaoJiu"] = 7] = "YaoJiu";
+    HuTypeEnum[HuTypeEnum["JiangDui"] = 8] = "JiangDui";
+    HuTypeEnum[HuTypeEnum["MAX"] = 9] = "MAX";
+})(HuTypeEnum = exports.HuTypeEnum || (exports.HuTypeEnum = {}));
+// 额外加倍类型
+var FanTypeEnum;
+(function (FanTypeEnum) {
+    FanTypeEnum[FanTypeEnum["None"] = 0] = "None";
+    FanTypeEnum[FanTypeEnum["Gen"] = 1] = "Gen";
+    FanTypeEnum[FanTypeEnum["GangShangHua"] = 2] = "GangShangHua";
+    FanTypeEnum[FanTypeEnum["GangShangPao"] = 3] = "GangShangPao";
+    FanTypeEnum[FanTypeEnum["QiangGangHu"] = 4] = "QiangGangHu";
+    FanTypeEnum[FanTypeEnum["HaiDiLaoYue"] = 5] = "HaiDiLaoYue";
+    FanTypeEnum[FanTypeEnum["MenQing"] = 6] = "MenQing";
+    FanTypeEnum[FanTypeEnum["ZhongZhang"] = 7] = "ZhongZhang";
+    FanTypeEnum[FanTypeEnum["JiaXinWu"] = 8] = "JiaXinWu";
+    FanTypeEnum[FanTypeEnum["ZiMo"] = 9] = "ZiMo";
+    FanTypeEnum[FanTypeEnum["TianHu"] = 10] = "TianHu";
+    FanTypeEnum[FanTypeEnum["DiHu"] = 11] = "DiHu";
+    FanTypeEnum[FanTypeEnum["MAX"] = 12] = "MAX";
+})(FanTypeEnum = exports.FanTypeEnum || (exports.FanTypeEnum = {}));
+var GangTypeEnum;
+(function (GangTypeEnum) {
+    GangTypeEnum[GangTypeEnum["eNone"] = 0] = "eNone";
+    GangTypeEnum[GangTypeEnum["eAnGang"] = 1] = "eAnGang";
+    GangTypeEnum[GangTypeEnum["eDianGang"] = 2] = "eDianGang";
+    GangTypeEnum[GangTypeEnum["eBuGang"] = 3] = "eBuGang";
+    GangTypeEnum[GangTypeEnum["eCaGua"] = 4] = "eCaGua";
+    GangTypeEnum[GangTypeEnum["eMax"] = 5] = "eMax";
+})(GangTypeEnum = exports.GangTypeEnum || (exports.GangTypeEnum = {}));
+var EMGameState;
+(function (EMGameState) {
+    EMGameState[EMGameState["eGS_WaitReady"] = 0] = "eGS_WaitReady";
+    EMGameState[EMGameState["eGS_DiceEast"] = 1] = "eGS_DiceEast";
+    EMGameState[EMGameState["eGS_DicePos"] = 2] = "eGS_DicePos";
+    EMGameState[EMGameState["eGS_StartDice"] = 3] = "eGS_StartDice";
+    EMGameState[EMGameState["eGS_WaitDeal"] = 4] = "eGS_WaitDeal";
+    EMGameState[EMGameState["eGS_WaitChange3"] = 5] = "eGS_WaitChange3";
+    EMGameState[EMGameState["eGS_WaitChange3Dice"] = 6] = "eGS_WaitChange3Dice";
+    EMGameState[EMGameState["eGS_WaitQue"] = 7] = "eGS_WaitQue";
+    EMGameState[EMGameState["eGS_WaitDown"] = 8] = "eGS_WaitDown";
+    EMGameState[EMGameState["eGS_WaitPeng"] = 9] = "eGS_WaitPeng";
+    EMGameState[EMGameState["eGS_WaitQiangG"] = 10] = "eGS_WaitQiangG";
+    EMGameState[EMGameState["eGS_GameEnd"] = 11] = "eGS_GameEnd";
+    EMGameState[EMGameState["eGS_GameClose"] = 12] = "eGS_GameClose";
+    EMGameState[EMGameState["eGS_GameSysClose"] = 13] = "eGS_GameSysClose"; // 游戏被系统关闭
+})(EMGameState = exports.EMGameState || (exports.EMGameState = {}));
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ty_tuichu",
+    "texture": "5057f274-5fcb-4262-aa01-0c882387690a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      328,
+      104
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      328,
+      104
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

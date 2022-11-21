@@ -1,0 +1,267 @@
+
+(function () {
+var scripts = [{"deps":{"./assets/Script/UIBase":4,"./assets/Script/Helloworld":22,"./assets/Script/Shared/DialogManager":19,"./assets/Script/Shared/GloBal":1,"./assets/Script/Shared/MD5":26,"./assets/Script/Shared/Main":25,"./assets/Script/Shared/MessageCallback":20,"./assets/Script/Shared/NetworkLogic":24,"./assets/Script/Shared/NetworkManager":23,"./assets/Script/Shared/Utils":28,"./assets/Script/Shared/CCHelper":31,"./assets/Script/UI/CreateRoomPanel":27,"./assets/Script/UI/DingQuePanel":29,"./assets/Script/UI/GameTurntablePanel":30,"./assets/Script/UI/LoginPanel":33,"./assets/Script/UI/MainGamePanel":34,"./assets/Script/UI/MainLobbyPanel":35,"./assets/Script/UI/MajiongTablePanel":39,"./assets/Script/UI/PlayerHeadItem":32,"./assets/Script/UI/ThrowPointHeadItem":37,"./assets/Script/UI/BuyHorseItem":36,"./assets/Script/UI/action/GameIActiontem":2,"./assets/Script/UI/card/DownHandCardPanel":6,"./assets/Script/UI/card/HandCardPanel":40,"./assets/Script/UI/card/MajiongEatItem":38,"./assets/Script/UI/card/MajiongHandCard":44,"./assets/Script/UI/card/MajiongOutCard":41,"./assets/Script/UI/card/MajiongWallCard":43,"./assets/Script/UI/card/MyHandCardPanel":47,"./assets/Script/UI/card/OppHandCardPanel":42,"./assets/Script/UI/card/UpHandCardPanel":45,"./assets/Script/UI/card/CardHelpManager":46,"./assets/Script/UI/changeThree/ChangeThreePanel":7,"./assets/Script/UI/changeThree/ChangeThreeTips":48,"./assets/Script/UI/changeThree/ChangeThreeItem":49,"./assets/Script/UI/createRoom/CreateCheckItem":8,"./assets/Script/UI/createRoom/CreateRommAndFriendPanel":52,"./assets/Script/UI/createRoom/CreateRoomHelper":50,"./assets/Script/UI/createRoom/CreateRoomRuleItem":58,"./assets/Script/UI/createRoom/CreateRoomRuleTemplate":51,"./assets/Script/UI/createRoom/CreateRoomRuleTemplateItem":53,"./assets/Script/UI/createRoom/CreateRoomRulerPanel":54,"./assets/Script/UI/createRoom/FanRuleItem":55,"./assets/Script/UI/createRoom/FeaturesRuleItem":56,"./assets/Script/UI/createRoom/GetAddOrRemoveItem":59,"./assets/Script/UI/createRoom/BaseRuleItem":57,"./assets/Script/UI/gameRecord/GameRecordPannel":9,"./assets/Script/UI/gameRecord/RealTimePlayerInfoItem":60,"./assets/Script/UI/gameRecord/WatchPlayerHeadItem":61,"./assets/Script/UI/gameRecord/GameRealTimePannel":62,"./assets/Script/UI/over/BigOverPanel":65,"./assets/Script/UI/over/BigOverPlayerInfoItem":10,"./assets/Script/UI/over/InviteToRoomPannel":63,"./assets/Script/UI/over/InviteToRoomPannel_Hall":64,"./assets/Script/UI/over/OverBuyHorseItem":66,"./assets/Script/UI/over/OverGameinfoItem":75,"./assets/Script/UI/over/OverHandCardItem":74,"./assets/Script/UI/over/OverHorseInfoItem":67,"./assets/Script/UI/over/OverInfoLabelItem":72,"./assets/Script/UI/over/OverPlayerInfoItem":68,"./assets/Script/UI/over/SmallOverPanel":71,"./assets/Script/UI/over/SmallOverPlayerHead":70,"./assets/Script/UI/over/BigOverHorseInfoItem":77,"./assets/Script/UI/pieChart/PieChartPanel":11,"./assets/Script/UI/pieChart/PieChartItem":78,"./assets/Script/UI/test/TestListItem":12,"./assets/Script/UI/test/ListTest":79,"./assets/Script/com/GameProtocol":69,"./assets/Script/com/ObjectPool":76,"./assets/Script/com/SocketAdapter":73,"./assets/Script/com/CallBack":82,"./assets/Script/com/http/HttpMethod":3,"./assets/Script/com/http/HttpRequest":80,"./assets/Script/com/http/WebHttpRequest":81,"./assets/Script/com/http/Http":84,"./assets/Script/com/socket/Socket":15,"./assets/Script/com/socket/SocketEvent":83,"./assets/Script/com/socket/SocketManager":85,"./assets/Script/com/socket/ISocketAgent":86,"./assets/Script/enum/EnumManager":13,"./assets/Script/event/EventType":16,"./assets/Script/event/EventCenter":87,"./assets/Script/mgr/GMManager":14,"./assets/Script/mgr/Manager":92,"./assets/Script/mgr/TimeAndMoveManager":88,"./assets/Script/mgr/CheckCardManager":94,"./assets/Script/proto/AccountMsgDef":89,"./assets/Script/proto/BaseMsg":93,"./assets/Script/proto/LobbyMsg":17,"./assets/Script/proto/LobbyMsgDef":91,"./assets/Script/proto/MahjStepMsgDef":90,"./assets/Script/proto/MsgCommDef":95,"./assets/Script/proto/MsgCountDef":96,"./assets/Script/proto/TableExMsg":97,"./assets/Script/proto/TableMsg":99,"./assets/Script/proto/TableMsgDef":98,"./assets/Script/proto/AccountMsg":100,"./assets/Script/tips/GetCardItem":101,"./assets/Script/tips/GetCardPanel":18,"./assets/Script/tips/HuPaiTiShiTips":105,"./assets/Script/tips/HupaiTishiItem":102,"./assets/Script/tips/SitDownTips":103,"./assets/Script/tips/GMTips":106,"./assets/Script/utils/InterfaceHelp":21,"./assets/Script/Game/info/GameInfo":5,"./assets/Script/Game/info/UserInfo":107,"./assets/Script/MainManager":104},"path":"preview-scripts/__qc_index__.js"},{"deps":{"../com/GameProtocol":69,"../com/socket/SocketManager":85,"../event/EventCenter":87,"./CCHelper":31,"./DialogManager":19,"./MessageCallback":20,"./Utils":28},"path":"preview-scripts/assets/Script/Shared/GloBal.js"},{"deps":{"../../enum/EnumManager":13,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../proto/TableMsg":99,"../../Shared/GloBal":1,"../../UIBase":4,"../card/MajiongHandCard":44},"path":"preview-scripts/assets/Script/UI/action/GameIActiontem.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/http/HttpMethod.js"},{"deps":{"./Shared/GloBal":1},"path":"preview-scripts/assets/Script/UIBase.js"},{"deps":{"../../enum/EnumManager":13,"../../Shared/GloBal":1,"./UserInfo":107},"path":"preview-scripts/assets/Script/Game/info/GameInfo.js"},{"deps":{"../../enum/EnumManager":13,"./CardHelpManager":46,"./HandCardPanel":40,"./MajiongHandCard":44,"./MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/card/DownHandCardPanel.js"},{"deps":{"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/changeThree/ChangeThreePanel.js"},{"deps":{"../../event/EventType":16,"../../Shared/GloBal":1,"../../UIBase":4,"./CreateRoomHelper":50},"path":"preview-scripts/assets/Script/UI/createRoom/CreateCheckItem.js"},{"deps":{"../../Shared/GloBal":1,"./GameRealTimePannel":62},"path":"preview-scripts/assets/Script/UI/gameRecord/GameRecordPannel.js"},{"deps":{"../../Game/info/UserInfo":107,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/over/BigOverPlayerInfoItem.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4,"./PieChartItem":78},"path":"preview-scripts/assets/Script/UI/pieChart/PieChartPanel.js"},{"deps":{"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/test/TestListItem.js"},{"deps":{},"path":"preview-scripts/assets/Script/enum/EnumManager.js"},{"deps":{},"path":"preview-scripts/assets/Script/mgr/GMManager.js"},{"deps":{"../../Shared/GloBal":1,"../CallBack":82,"./SocketEvent":83},"path":"preview-scripts/assets/Script/com/socket/Socket.js"},{"deps":{},"path":"preview-scripts/assets/Script/event/EventType.js"},{"deps":{"./BaseMsg":93},"path":"preview-scripts/assets/Script/proto/LobbyMsg.js"},{"deps":{"../event/EventType":16,"../proto/TableExMsg":97,"../Shared/GloBal":1,"../UIBase":4,"./GetCardItem":101},"path":"preview-scripts/assets/Script/tips/GetCardPanel.js"},{"deps":{"./GloBal":1,"./MessageCallback":20},"path":"preview-scripts/assets/Script/Shared/DialogManager.js"},{"deps":{},"path":"preview-scripts/assets/Script/Shared/MessageCallback.js"},{"deps":{},"path":"preview-scripts/assets/Script/utils/InterfaceHelp.js"},{"deps":{},"path":"preview-scripts/assets/Script/Helloworld.js"},{"deps":{"./GloBal":1,"./MessageCallback":20},"path":"preview-scripts/assets/Script/Shared/NetworkManager.js"},{"deps":{"./GloBal":1,"./MessageCallback":20,"./NetworkManager":23},"path":"preview-scripts/assets/Script/Shared/NetworkLogic.js"},{"deps":{"../com/SocketAdapter":73,"../event/EventType":16,"../tips/GMTips":106,"./GloBal":1},"path":"preview-scripts/assets/Script/Shared/Main.js"},{"deps":{},"path":"preview-scripts/assets/Script/Shared/MD5.js"},{"deps":{"../proto/LobbyMsg":17,"../proto/LobbyMsgDef":91,"../proto/TableMsg":99,"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/UI/CreateRoomPanel.js"},{"deps":{"../enum/EnumManager":13,"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../mgr/TimeAndMoveManager":88,"../proto/LobbyMsgDef":91,"../UI/createRoom/CreateRoomHelper":50,"./GloBal":1},"path":"preview-scripts/assets/Script/Shared/Utils.js"},{"deps":{"../enum/EnumManager":13,"../Game/info/UserInfo":107,"../proto/TableMsg":99,"../Shared/GloBal":1,"../UIBase":4,"../utils/InterfaceHelp":21},"path":"preview-scripts/assets/Script/UI/DingQuePanel.js"},{"deps":{"../enum/EnumManager":13,"../Game/info/GameInfo":5,"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/UI/GameTurntablePanel.js"},{"deps":{"./GloBal":1,"./MessageCallback":20},"path":"preview-scripts/assets/Script/Shared/CCHelper.js"},{"deps":{"../enum/EnumManager":13,"../event/EventType":16,"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../mgr/TimeAndMoveManager":88,"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/UI/PlayerHeadItem.js"},{"deps":{"../proto/AccountMsg":100,"../Shared/GloBal":1,"../Shared/MD5":26,"../UIBase":4},"path":"preview-scripts/assets/Script/UI/LoginPanel.js"},{"deps":{"../UIBase":4,"./MajiongTablePanel":39,"../event/EventType":16,"../Shared/GloBal":1,"../tips/GMTips":106},"path":"preview-scripts/assets/Script/UI/MainGamePanel.js"},{"deps":{"../event/EventType":16,"../proto/LobbyMsg":17,"../Shared/GloBal":1,"../UIBase":4,"./createRoom/CreateRommAndFriendPanel":52,"./createRoom/CreateRoomHelper":50,"./createRoom/CreateRoomRulerPanel":54,"./createRoom/CreateRoomRuleTemplate":51},"path":"preview-scripts/assets/Script/UI/MainLobbyPanel.js"},{"deps":{"../UIBase":4},"path":"preview-scripts/assets/Script/UI/BuyHorseItem.js"},{"deps":{"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/UI/ThrowPointHeadItem.js"},{"deps":{"../../enum/EnumManager":13,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/card/MajiongEatItem.js"},{"deps":{"../enum/EnumManager":13,"../event/EventType":16,"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../mgr/TimeAndMoveManager":88,"../proto/LobbyMsgDef":91,"../proto/TableMsg":99,"../Shared/GloBal":1,"../tips/SitDownTips":103,"../UIBase":4,"../utils/InterfaceHelp":21,"./BuyHorseItem":36,"./card/CardHelpManager":46,"./card/DownHandCardPanel":6,"./card/MajiongWallCard":43,"./card/MyHandCardPanel":47,"./card/OppHandCardPanel":42,"./card/UpHandCardPanel":45,"./changeThree/ChangeThreeItem":49,"./changeThree/ChangeThreePanel":7,"./DingQuePanel":29,"./GameTurntablePanel":30,"./PlayerHeadItem":32,"./ThrowPointHeadItem":37},"path":"preview-scripts/assets/Script/UI/MajiongTablePanel.js"},{"deps":{"../../enum/EnumManager":13,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../Shared/GloBal":1,"../../UIBase":4,"../../utils/InterfaceHelp":21,"./MajiongEatItem":38,"./MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/card/HandCardPanel.js"},{"deps":{"../../enum/EnumManager":13,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/card/MajiongOutCard.js"},{"deps":{"../../enum/EnumManager":13,"./CardHelpManager":46,"./HandCardPanel":40,"./MajiongHandCard":44,"./MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/card/OppHandCardPanel.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/card/MajiongWallCard.js"},{"deps":{"../../enum/EnumManager":13,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/card/MajiongHandCard.js"},{"deps":{"../../enum/EnumManager":13,"./CardHelpManager":46,"./HandCardPanel":40,"./MajiongHandCard":44,"./MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/card/UpHandCardPanel.js"},{"deps":{"../../Shared/GloBal":1,"../../utils/InterfaceHelp":21},"path":"preview-scripts/assets/Script/UI/card/CardHelpManager.js"},{"deps":{"../../enum/EnumManager":13,"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../proto/TableMsg":99,"../../Shared/GloBal":1,"../../tips/HuPaiTiShiTips":105,"../../utils/InterfaceHelp":21,"../changeThree/ChangeThreeTips":48,"./CardHelpManager":46,"./HandCardPanel":40,"./MajiongEatItem":38,"./MajiongHandCard":44,"./MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/card/MyHandCardPanel.js"},{"deps":{"../../event/EventType":16,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/changeThree/ChangeThreeTips.js"},{"deps":{"../../Game/info/GameInfo":5,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/changeThree/ChangeThreeItem.js"},{"deps":{},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRoomHelper.js"},{"deps":{"../../event/EventType":16,"../../proto/LobbyMsg":17,"../../Shared/GloBal":1,"../../UIBase":4,"./CreateRoomHelper":50,"./CreateRoomRuleTemplateItem":53},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRoomRuleTemplate.js"},{"deps":{"../../proto/TableMsg":99,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRommAndFriendPanel.js"},{"deps":{"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"../../UIBase":4,"./CreateRoomHelper":50},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRoomRuleTemplateItem.js"},{"deps":{"../../event/EventType":16,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../proto/LobbyMsg":17,"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"../../UIBase":4,"./BaseRuleItem":57,"./CreateRoomHelper":50,"./FanRuleItem":55,"./FeaturesRuleItem":56},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRoomRulerPanel.js"},{"deps":{"../../event/EventType":16,"../../mgr/TimeAndMoveManager":88,"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"./CreateCheckItem":8,"./CreateRoomHelper":50,"./CreateRoomRuleItem":58},"path":"preview-scripts/assets/Script/UI/createRoom/FanRuleItem.js"},{"deps":{"../../enum/EnumManager":13,"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../mgr/TimeAndMoveManager":88,"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"./CreateCheckItem":8,"./CreateRoomHelper":50,"./CreateRoomRuleItem":58},"path":"preview-scripts/assets/Script/UI/createRoom/FeaturesRuleItem.js"},{"deps":{"../../enum/EnumManager":13,"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../mgr/TimeAndMoveManager":88,"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"./CreateCheckItem":8,"./CreateRoomHelper":50,"./CreateRoomRuleItem":58,"./GetAddOrRemoveItem":59},"path":"preview-scripts/assets/Script/UI/createRoom/BaseRuleItem.js"},{"deps":{"../../event/EventType":16,"../../proto/LobbyMsgDef":91,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/createRoom/CreateRoomRuleItem.js"},{"deps":{"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/createRoom/GetAddOrRemoveItem.js"},{"deps":{"../../Shared/GloBal":1},"path":"preview-scripts/assets/Script/UI/gameRecord/RealTimePlayerInfoItem.js"},{"deps":{"../../Shared/GloBal":1},"path":"preview-scripts/assets/Script/UI/gameRecord/WatchPlayerHeadItem.js"},{"deps":{"../../Shared/GloBal":1},"path":"preview-scripts/assets/Script/UI/gameRecord/GameRealTimePannel.js"},{"deps":{"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../proto/TableMsg":99,"../../Shared/GloBal":1,"../../UIBase":4,"../card/CardHelpManager":46},"path":"preview-scripts/assets/Script/UI/over/InviteToRoomPannel.js"},{"deps":{"./InviteToRoomPannel":63},"path":"preview-scripts/assets/Script/UI/over/InviteToRoomPannel_Hall.js"},{"deps":{"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../proto/LobbyMsg":17,"../../Shared/GloBal":1,"../../UIBase":4,"./BigOverHorseInfoItem":77,"./BigOverPlayerInfoItem":10},"path":"preview-scripts/assets/Script/UI/over/BigOverPanel.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/over/OverBuyHorseItem.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4,"./OverBuyHorseItem":66},"path":"preview-scripts/assets/Script/UI/over/OverHorseInfoItem.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/over/OverPlayerInfoItem.js"},{"deps":{"../MainManager":104,"../proto/AccountMsg":100,"../proto/BaseMsg":93,"../proto/LobbyMsg":17,"../proto/TableMsg":99,"../Shared/GloBal":1},"path":"preview-scripts/assets/Script/com/GameProtocol.js"},{"deps":{"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/over/SmallOverPlayerHead.js"},{"deps":{"../../event/EventType":16,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../proto/TableMsg":99,"../../Shared/GloBal":1,"../../UIBase":4,"../../utils/InterfaceHelp":21,"../card/CardHelpManager":46,"./OverGameinfoItem":75,"./OverHandCardItem":74,"./OverHorseInfoItem":67,"./OverPlayerInfoItem":68,"./SmallOverPlayerHead":70},"path":"preview-scripts/assets/Script/UI/over/SmallOverPanel.js"},{"deps":{"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../proto/TableMsgDef":98,"../../Shared/GloBal":1,"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/over/OverInfoLabelItem.js"},{"deps":{"../Shared/GloBal":1},"path":"preview-scripts/assets/Script/com/SocketAdapter.js"},{"deps":{"../../enum/EnumManager":13,"../../Game/info/GameInfo":5,"../../Game/info/UserInfo":107,"../../Shared/GloBal":1,"../../UIBase":4,"../../utils/InterfaceHelp":21,"../card/MajiongEatItem":38,"../card/MajiongHandCard":44,"../card/MajiongOutCard":41},"path":"preview-scripts/assets/Script/UI/over/OverHandCardItem.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4,"./OverInfoLabelItem":72},"path":"preview-scripts/assets/Script/UI/over/OverGameinfoItem.js"},{"deps":{"../Shared/GloBal":1},"path":"preview-scripts/assets/Script/com/ObjectPool.js"},{"deps":{"../../enum/EnumManager":13,"../../Shared/GloBal":1},"path":"preview-scripts/assets/Script/UI/over/BigOverHorseInfoItem.js"},{"deps":{"../../UIBase":4},"path":"preview-scripts/assets/Script/UI/pieChart/PieChartItem.js"},{"deps":{"../../Shared/GloBal":1,"../../UIBase":4,"./TestListItem":12},"path":"preview-scripts/assets/Script/UI/test/ListTest.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/http/HttpRequest.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/http/WebHttpRequest.js"},{"deps":{"../Shared/GloBal":1,"./ObjectPool":76},"path":"preview-scripts/assets/Script/com/CallBack.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/socket/SocketEvent.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/http/Http.js"},{"deps":{"../../Shared/GloBal":1,"./Socket":15},"path":"preview-scripts/assets/Script/com/socket/SocketManager.js"},{"deps":{},"path":"preview-scripts/assets/Script/com/socket/ISocketAgent.js"},{"deps":{},"path":"preview-scripts/assets/Script/event/EventCenter.js"},{"deps":{},"path":"preview-scripts/assets/Script/mgr/TimeAndMoveManager.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/AccountMsgDef.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/MahjStepMsgDef.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/LobbyMsgDef.js"},{"deps":{},"path":"preview-scripts/assets/Script/mgr/Manager.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/BaseMsg.js"},{"deps":{"../Game/info/UserInfo":107,"../proto/TableMsgDef":98,"../Shared/GloBal":1,"../utils/InterfaceHelp":21},"path":"preview-scripts/assets/Script/mgr/CheckCardManager.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/MsgCommDef.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/MsgCountDef.js"},{"deps":{"./BaseMsg":93},"path":"preview-scripts/assets/Script/proto/TableExMsg.js"},{"deps":{},"path":"preview-scripts/assets/Script/proto/TableMsgDef.js"},{"deps":{"./BaseMsg":93},"path":"preview-scripts/assets/Script/proto/TableMsg.js"},{"deps":{"./BaseMsg":93},"path":"preview-scripts/assets/Script/proto/AccountMsg.js"},{"deps":{"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/tips/GetCardItem.js"},{"deps":{"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../Shared/GloBal":1,"../UIBase":4},"path":"preview-scripts/assets/Script/tips/HupaiTishiItem.js"},{"deps":{"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../proto/TableMsg":99,"../Shared/GloBal":1,"../UI/createRoom/CreateRoomHelper":50,"../UIBase":4},"path":"preview-scripts/assets/Script/tips/SitDownTips.js"},{"deps":{"./enum/EnumManager":13,"./event/EventType":16,"./Game/info/GameInfo":5,"./Game/info/UserInfo":107,"./Shared/GloBal":1,"./UI/createRoom/CreateRoomHelper":50},"path":"preview-scripts/assets/Script/MainManager.js"},{"deps":{"../Game/info/GameInfo":5,"../Game/info/UserInfo":107,"../Shared/GloBal":1,"../UIBase":4,"./HupaiTishiItem":102},"path":"preview-scripts/assets/Script/tips/HuPaiTiShiTips.js"},{"deps":{"../proto/LobbyMsg":17,"../proto/TableExMsg":97,"../Shared/GloBal":1,"../UIBase":4,"./GetCardPanel":18},"path":"preview-scripts/assets/Script/tips/GMTips.js"},{"deps":{"../../enum/EnumManager":13,"../../mgr/CheckCardManager":94,"../../Shared/GloBal":1,"./GameInfo":5},"path":"preview-scripts/assets/Script/Game/info/UserInfo.js"}];
+var entries = ["preview-scripts/__qc_index__.js"];
+var bundleScript = 'preview-scripts/__qc_bundle__.js';
+
+/**
+ * Notice: This file can not use ES6 (for IE 11)
+ */
+var modules = {};
+var name2path = {};
+
+// Will generated by module.js plugin
+// var scripts = ${scripts};
+// var entries = ${entries};
+// var bundleScript = ${bundleScript};
+
+if (typeof global === 'undefined') {
+    window.global = window;
+}
+
+var isJSB = typeof jsb !== 'undefined';
+
+function getXMLHttpRequest () {
+    return window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject('MSXML2.XMLHTTP');
+}
+
+function downloadText(url, callback) {
+    if (isJSB) {
+        var result = jsb.fileUtils.getStringFromFile(url);
+        callback(null, result);
+        return;
+    }
+
+    var xhr = getXMLHttpRequest(),
+        errInfo = 'Load text file failed: ' + url;
+    xhr.open('GET', url, true);
+    if (xhr.overrideMimeType) xhr.overrideMimeType('text\/plain; charset=utf-8');
+    xhr.onload = function () {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200 || xhr.status === 0) {
+                callback(null, xhr.responseText);
+            }
+            else {
+                callback({status:xhr.status, errorMessage:errInfo + ', status: ' + xhr.status});
+            }
+        }
+        else {
+            callback({status:xhr.status, errorMessage:errInfo + '(wrong readyState)'});
+        }
+    };
+    xhr.onerror = function(){
+        callback({status:xhr.status, errorMessage:errInfo + '(error)'});
+    };
+    xhr.ontimeout = function(){
+        callback({status:xhr.status, errorMessage:errInfo + '(time out)'});
+    };
+    xhr.send(null);
+};
+
+function loadScript (src, cb) {
+    if (typeof require !== 'undefined') {
+        require(src);
+        return cb();
+    }
+
+    // var timer = 'load ' + src;
+    // console.time(timer);
+
+    var scriptElement = document.createElement('script');
+
+    function done() {
+        // console.timeEnd(timer);
+        // deallocation immediate whatever
+        scriptElement.remove();
+    }
+
+    scriptElement.onload = function () {
+        done();
+        cb();
+    };
+    scriptElement.onerror = function () {
+        done();
+        var error = 'Failed to load ' + src;
+        console.error(error);
+        cb(new Error(error));
+    };
+    scriptElement.setAttribute('type','text/javascript');
+    scriptElement.setAttribute('charset', 'utf-8');
+    scriptElement.setAttribute('src', src);
+
+    document.head.appendChild(scriptElement);
+}
+
+function loadScripts (srcs, cb) {
+    var n = srcs.length;
+
+    srcs.forEach(function (src) {
+        loadScript(src, function () {
+            n--;
+            if (n === 0) {
+                cb();
+            }
+        });
+    })
+}
+
+function formatPath (path) {
+    let destPath = window.__quick_compile_project__.destPath;
+    if (destPath) {
+        let prefix = 'preview-scripts';
+        if (destPath[destPath.length - 1] === '/') {
+            prefix += '/';
+        }
+        path = path.replace(prefix, destPath);
+    }
+    return path;
+}
+
+window.__quick_compile_project__ = {
+    destPath: '',
+
+    registerModule: function (path, module) {
+        path = formatPath(path);
+        modules[path].module = module;
+    },
+
+    registerModuleFunc: function (path, func) {
+        path = formatPath(path);
+        modules[path].func = func;
+
+        var sections = path.split('/');
+        var name = sections[sections.length - 1];
+        name = name.replace(/\.(?:js|ts|json)$/i, '');
+        name2path[name] = path;
+    },
+
+    require: function (request, path) {
+        var m, requestScript;
+
+        path = formatPath(path);
+        if (path) {
+            m = modules[path];
+            if (!m) {
+                console.warn('Can not find module for path : ' + path);
+                return null;
+            }
+        }
+
+        if (m) {
+            let depIndex = m.deps[request];
+            // dependence script was excluded
+            if (depIndex === -1) {
+                return null;
+            }
+            else {
+                requestScript = scripts[ m.deps[request] ];
+            }
+        }
+        
+        let requestPath = '';
+        if (!requestScript) {
+            // search from name2path when request is a dynamic module name
+            if (/^[\w- .]*$/.test(request)) {
+                requestPath = name2path[request];
+            }
+
+            if (!requestPath) {
+                if (CC_JSB) {
+                    return require(request);
+                }
+                else {
+                    console.warn('Can not find deps [' + request + '] for path : ' + path);
+                    return null;
+                }
+            }
+        }
+        else {
+            requestPath = formatPath(requestScript.path);
+        }
+
+        let requestModule = modules[requestPath];
+        if (!requestModule) {
+            console.warn('Can not find request module for path : ' + requestPath);
+            return null;
+        }
+
+        if (!requestModule.module && requestModule.func) {
+            requestModule.func();
+        }
+
+        if (!requestModule.module) {
+            console.warn('Can not find requestModule.module for path : ' + path);
+            return null;
+        }
+
+        return requestModule.module.exports;
+    },
+
+    run: function () {
+        entries.forEach(function (entry) {
+            entry = formatPath(entry);
+            var module = modules[entry];
+            if (!module.module) {
+                module.func();
+            }
+        });
+    },
+
+    load: function (cb) {
+        var self = this;
+
+        var srcs = scripts.map(function (script) {
+            var path = formatPath(script.path);
+            modules[path] = script;
+
+            if (script.mtime) {
+                path += ("?mtime=" + script.mtime);
+            }
+            return path;
+        });
+
+        console.time && console.time('load __quick_compile_project__');
+        // jsb can not analysis sourcemap, so keep separate files.
+        if (bundleScript && !isJSB) {
+            downloadText(formatPath(bundleScript), function (err, bundleSource) {
+                console.timeEnd && console.timeEnd('load __quick_compile_project__');
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
+                let evalTime = 'eval __quick_compile_project__ : ' + srcs.length + ' files';
+                console.time && console.time(evalTime);
+                var sources = bundleSource.split('\n//------QC-SOURCE-SPLIT------\n');
+                for (var i = 0; i < sources.length; i++) {
+                    if (sources[i]) {
+                        window.eval(sources[i]);
+                        // not sure why new Function cannot set breakpoints precisely
+                        // new Function(sources[i])()
+                    }
+                }
+                self.run();
+                console.timeEnd && console.timeEnd(evalTime);
+                cb();
+            })
+        }
+        else {
+            loadScripts(srcs, function () {
+                self.run();
+                console.timeEnd && console.timeEnd('load __quick_compile_project__');
+                cb();
+            });
+        }
+    }
+};
+
+// Polyfill for IE 11
+if (!('remove' in Element.prototype)) {
+    Element.prototype.remove = function () {
+        if (this.parentNode) {
+            this.parentNode.removeChild(this);
+        }
+    };
+}
+})();
+    

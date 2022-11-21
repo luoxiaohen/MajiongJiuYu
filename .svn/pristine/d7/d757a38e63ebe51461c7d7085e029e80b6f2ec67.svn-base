@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_diwen",
+    "texture": "8b5fe628-da1c-4835-aec0-a74af567aa85",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1712,
+      873
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1712,
+      873
+    ],
+    "capInsets": [
+      47,
+      47,
+      41,
+      41
+    ]
+  }
+}

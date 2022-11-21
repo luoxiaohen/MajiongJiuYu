@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_guo",
+    "texture": "27e01670-bca3-44b8-8802-b4bc1fdc416c",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      164,
+      164
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      164,
+      164
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

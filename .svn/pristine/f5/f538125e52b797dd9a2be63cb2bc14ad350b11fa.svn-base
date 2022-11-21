@@ -1,0 +1,477 @@
+"use strict";
+cc._RF.push(module, '8c137y7UyVNTa0+IUReTyCD', 'PlayerHeadItem');
+// Script/UI/PlayerHeadItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../enum/EnumManager");
+var EventType_1 = require("../event/EventType");
+var GameInfo_1 = require("../Game/info/GameInfo");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../mgr/TimeAndMoveManager");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var PlayerHeadItem = /** @class */ (function (_super) {
+    __extends(PlayerHeadItem, _super);
+    function PlayerHeadItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.headGroup = null;
+        _this.noneGroup = null;
+        _this.changeLabel = null;
+        _this.playerHeadImage = null;
+        _this.zhuangImage = null;
+        _this.queImage = null;
+        _this.piaoImage = null;
+        _this.nameLabel = null;
+        _this.countLabel = null;
+        _this.sitDownBtn = null;
+        _this.isReadyImage = null;
+        _this.playerDiceOneImage = null;
+        _this.playerDiceTwoImage = null;
+        _this.dingqueImage = null;
+        _this.queActionImage = null;
+        _this.actionImage = null;
+        /**是否漂*/
+        _this._isPiao = false;
+        /**是否是庄*/
+        _this._isZhuang = false;
+        /**玩家个人信息*/
+        _this._playerInfo = null;
+        /**是否是我自己的动作回合*/
+        _this._isMyAction = false;
+        _this.myGameFen = 0;
+        return _this;
+    }
+    Object.defineProperty(PlayerHeadItem.prototype, "isPiao", {
+        get: function () {
+            return this._isPiao;
+        },
+        set: function (value) {
+            this.showPiao(value);
+            this._isPiao = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerHeadItem.prototype, "isZhuang", {
+        get: function () {
+            return this._isZhuang;
+        },
+        set: function (value) {
+            this.showZhuang(value);
+            this._isZhuang = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerHeadItem.prototype, "playerInfo", {
+        get: function () {
+            return this._playerInfo;
+        },
+        set: function (value) {
+            this._playerInfo = value;
+            this.showName();
+            this.showFen(this.myGameFen);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerHeadItem.prototype, "sitInfo", {
+        get: function () {
+            return this._sitInfo;
+        },
+        set: function (value) {
+            this.playerInfo = value.player;
+            this._sitInfo = value;
+            this.showSit();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerHeadItem.prototype, "directionSitNum", {
+        get: function () {
+            return this._directionSitNum;
+        },
+        set: function (value) {
+            this._directionSitNum = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerHeadItem.prototype, "isMyAction", {
+        get: function () {
+            return this._isMyAction;
+        },
+        set: function (value) {
+            this._isMyAction = value;
+            this.actionImage.node.active = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    PlayerHeadItem.prototype.start = function () {
+    };
+    PlayerHeadItem.prototype.onLoad = function () {
+        this.directionSitNum = this.dialogParameters;
+        this.showUiPoint();
+        this.headGroup.active = false;
+        this.noneGroup.active = true;
+        this.isPiao = false;
+        this.isZhuang = false;
+        this.showDingQue(EnumManager_1.CardTypeEnum.EndValue);
+        this.showNone();
+        this.showPlayerDice(false);
+        this.showIsReady(false);
+        this.showIsDingQueIng(false);
+        this.showQueAction(false);
+        this.isMyAction = false;
+        this.changeLabel.node.active = false;
+    };
+    PlayerHeadItem.prototype.showQueAction = function (boo, type) {
+        var _this = this;
+        if (type === void 0) { type = EnumManager_1.CardTypeEnum.EndValue; }
+        if (boo) {
+            this.showQueActionPoint();
+        }
+        this.queActionImage.node.active = boo;
+        cc.tween(this.queActionImage.node).to(0.3, { x: this.queImage.node.x, y: this.queImage.node.y, scaleX: 0, scaleY: 0 }).call(function () {
+            _this.showDingQue(type);
+        }).start();
+    };
+    PlayerHeadItem.prototype.showQueActionPoint = function () {
+        var num = (this.sitInfo.sitNum + 16 - UserInfo_1.default.ins.mySitIndex) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        switch (num) {
+            case 0:
+                this.queActionImage.node.x = 890;
+                this.queActionImage.node.y = 250;
+                break;
+            case 1:
+                this.queActionImage.node.x = -522;
+                this.queActionImage.node.y = 65;
+                break;
+            case 2:
+                this.queActionImage.node.x = -525;
+                this.queActionImage.node.y = -66;
+                break;
+            case 3:
+                this.queActionImage.node.x = 660;
+                this.queActionImage.node.y = 65;
+                break;
+        }
+    };
+    /**初始化时候某些部件因为方位原因需要移动位置*/
+    PlayerHeadItem.prototype.showUiPoint = function () {
+        this.showReadyPoint();
+        this.initDicePoint();
+    };
+    PlayerHeadItem.prototype.showIsDingQueIng = function (boo) {
+        if (boo) {
+            if (UserInfo_1.default.ins.isSelf(this.playerInfo.gpid)) {
+                return;
+            }
+            this.showDingQuePoint();
+        }
+        this.dingqueImage.node.active = boo;
+    };
+    PlayerHeadItem.prototype.showDingQuePoint = function () {
+        // if(this.node.x > 1500){
+        //     this.isReadyImage.node.x = -73;
+        // }
+    };
+    PlayerHeadItem.prototype.showReadyPoint = function () {
+        if (this.node.x > 1500) {
+            this.isReadyImage.node.x = -170;
+        }
+    };
+    PlayerHeadItem.prototype.initDicePoint = function () {
+        if (this.node.x == 36 || this.node.x == 26) {
+            if (this.node.y == -669 || this.node.y == -679) {
+                this.playerDiceOneImage.node.x = 890;
+                this.playerDiceOneImage.node.y = 264;
+                this.playerDiceTwoImage.node.x = 976;
+                this.playerDiceTwoImage.node.y = 264;
+            }
+            else {
+                this.playerDiceOneImage.node.x = 775;
+                this.playerDiceOneImage.node.y = 99;
+                this.playerDiceTwoImage.node.x = 775;
+                this.playerDiceTwoImage.node.y = 13;
+            }
+        }
+        else if (this.node.x == 1748 || this.node.x == 1738) {
+            this.playerDiceOneImage.node.x = -615;
+            this.playerDiceOneImage.node.y = 15;
+            this.playerDiceTwoImage.node.x = -615;
+            this.playerDiceTwoImage.node.y = 103;
+        }
+        else {
+            this.playerDiceOneImage.node.x = -431;
+            this.playerDiceOneImage.node.y = -122;
+            this.playerDiceTwoImage.node.x = -517;
+            this.playerDiceTwoImage.node.y = -122;
+        }
+    };
+    PlayerHeadItem.prototype.showShishiJifenChange = function (fen) {
+        var _this = this;
+        var chaneg = fen.toString();
+        if (fen > 0) {
+            chaneg = "+" + fen.toString();
+        }
+        this.changeLabel.string = fen.toString();
+        this.changeLabel.node.active = true;
+        this.changeLabel.node.y = 28;
+        cc.tween(this.changeLabel.node).to(0.3, { y: 242 }).call(function () {
+            _this.showFen(fen);
+            _this.changeLabel.node.active = false;
+        }).start();
+    };
+    /**展示是否准备好了*/
+    PlayerHeadItem.prototype.showIsReady = function (boo) {
+        if (boo) {
+            this.showReadyPoint();
+        }
+        this.isReadyImage.node.active = boo;
+    };
+    /***展示空座*/
+    PlayerHeadItem.prototype.showNone = function () {
+        this.noneGroup.active = true;
+        this.headGroup.active = false;
+    };
+    /**展示有人*/
+    PlayerHeadItem.prototype.showSit = function () {
+        this.noneGroup.active = false;
+        this.headGroup.active = true;
+        if (GameInfo_1.default.ins.nowGameStatus < EnumManager_1.PlayStauteEnum.CheckBookMaker) {
+            if (this.sitInfo && this.sitInfo.onReady) {
+                this.showIsReady(true);
+            }
+            else {
+                this.showIsReady(false);
+            }
+        }
+    };
+    /**展示名字*/
+    PlayerHeadItem.prototype.showName = function () {
+        this.nameLabel.string = this.playerInfo.gpid + "";
+    };
+    /**展示分*/
+    PlayerHeadItem.prototype.showFen = function (changeFen) {
+        if (changeFen === void 0) { changeFen = 0; }
+        this.myGameFen += changeFen;
+        this.countLabel.string = this.myGameFen.toString();
+    };
+    /**展示漂*/
+    PlayerHeadItem.prototype.showPiao = function (isPiao) {
+        this.piaoImage.node.active = isPiao;
+    };
+    /**展示庄*/
+    PlayerHeadItem.prototype.showZhuang = function (isZhuang) {
+        this.zhuangImage.node.active = isZhuang;
+    };
+    /***展示矫座动作*/
+    PlayerHeadItem.prototype.showRollDiceAction = function (bigNum, smallNum) {
+        var _this = this;
+        this.initDicePoint();
+        this.showPlayerDice(true);
+        cc.tween(this.playerDiceOneImage.node).to(TimeAndMoveManager_1.default.ins.zhuangRollTime, { angle: 36000 }, { easing: cc.easing.quadInOut }).start();
+        cc.tween(this.playerDiceTwoImage.node).to(TimeAndMoveManager_1.default.ins.zhuangRollTime, { angle: 36000 }, { easing: cc.easing.quadInOut }).start();
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.zhuangRollTime * 0.7).call(function () {
+            _this.changeCharDiceOver(bigNum, smallNum);
+        }).start();
+    };
+    PlayerHeadItem.prototype.changeCharDiceOver = function (bigNum, smallNum) {
+        GloBal_1.Global.Utils.setNewImageToSprite(this.playerDiceOneImage, "comResource/dice/game_shaizi" + bigNum);
+        GloBal_1.Global.Utils.setNewImageToSprite(this.playerDiceTwoImage, "comResource/dice/game_shaizi" + smallNum);
+    };
+    /**展示定缺*/
+    PlayerHeadItem.prototype.showDingQue = function (type) {
+        if (type == EnumManager_1.CardTypeEnum.EndValue) {
+            this.queImage.node.active = false;
+        }
+        else {
+            this.queImage.node.active = true;
+            var url = "comResource/font/game_biaoshi2";
+            switch (type) {
+                case EnumManager_1.CardTypeEnum.Wan:
+                    url = 'comResource/font/game_biaoshi2';
+                    break;
+                case EnumManager_1.CardTypeEnum.Tiao:
+                    url = 'comResource/font/game_biaoshi3';
+                    break;
+                case EnumManager_1.CardTypeEnum.Tong:
+                    url = 'comResource/font/game_biaoshi4';
+                    break;
+            }
+            GloBal_1.Global.Utils.setNewImageToSprite(this.queImage, url);
+        }
+    };
+    /**展示定庄骰子*/
+    PlayerHeadItem.prototype.showDiceBookMaker = function (msg) {
+        var _this = this;
+        var toX = [];
+        var toY;
+        console.log(":this.node.x==" + this.node.x + ">>>>" + this.node.y);
+        if (this.node.x == 36 || this.node.x == 26) {
+            if (this.node.y == -669 || this.node.y == -679) {
+                toX[0] = 864;
+                toX[1] = 1007;
+                toY = 407;
+                this.playerDiceOneImage.node.x = 190;
+                this.playerDiceOneImage.node.y = 49;
+                this.playerDiceTwoImage.node.x = 297;
+                this.playerDiceTwoImage.node.y = 49;
+            }
+            else {
+                toX[0] = 861;
+                toX[1] = 1009;
+                toY = 55;
+                this.playerDiceOneImage.node.x = 190;
+                this.playerDiceOneImage.node.y = 49;
+                this.playerDiceTwoImage.node.x = 297;
+                this.playerDiceTwoImage.node.y = 49;
+            }
+        }
+        else if (this.node.x == 1748 || this.node.x == 1738) {
+            toX[0] = -852;
+            toX[1] = -706;
+            toY = 53;
+            this.playerDiceOneImage.node.x = -146;
+            this.playerDiceOneImage.node.y = 36;
+            this.playerDiceTwoImage.node.x = -39;
+            this.playerDiceTwoImage.node.y = -36;
+        }
+        else {
+            toX[0] = -546;
+            toX[1] = -398;
+            toY = -264;
+            this.playerDiceOneImage.node.x = 26;
+            this.playerDiceOneImage.node.y = 38;
+            this.playerDiceTwoImage.node.x = 132;
+            this.playerDiceTwoImage.node.y = 38;
+        }
+        this.showPlayerDice(true);
+        cc.tween(this.playerDiceOneImage.node).to(0.5, { x: toX[0], y: toY }).start();
+        cc.tween(this.playerDiceTwoImage.node).to(0.5, { x: toX[1], y: toY }).start();
+        cc.tween(this.playerDiceOneImage.node).to(TimeAndMoveManager_1.default.ins.zhuangRollTime, { angle: 36000 }, { easing: cc.easing.quadInOut }).start();
+        cc.tween(this.playerDiceTwoImage.node).to(TimeAndMoveManager_1.default.ins.zhuangRollTime, { angle: 36000 }, { easing: cc.easing.quadInOut }).call(function () {
+            _this.diceRotationOver(msg);
+        }).start();
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.zhuangRollTime * 0.7).call(function () {
+            _this.changeCharDiceOver(msg.bigNum, msg.smlNum);
+        }).start();
+    };
+    /**定庄骰子结束*/
+    PlayerHeadItem.prototype.diceRotationOver = function (msg) {
+        var _this = this;
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.diceRotation).call(function () {
+            if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.CheckBookMaker) {
+                var num = (msg.bigNum + msg.smlNum - 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+                GameInfo_1.default.ins.nowBookMakerSit = num;
+            }
+            _this.showPlayerDice(false);
+        }).start();
+    };
+    /**是否展示骰子*/
+    PlayerHeadItem.prototype.showPlayerDice = function (boo) {
+        this.playerDiceOneImage.node.active = boo;
+        this.playerDiceTwoImage.node.active = boo;
+    };
+    /**空座入座点击**/
+    PlayerHeadItem.prototype.onSitDownClick = function (event, param) {
+        GloBal_1.Global.Utils.debugOutput("PlayerHeadItem ==> 入座点击");
+        if (UserInfo_1.default.ins.mySitIndex >= 0) {
+            return;
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.PlayerHeadSitClick, this.directionSitNum);
+    };
+    /**定缺展示**/
+    PlayerHeadItem.prototype.showQue = function (queType) {
+        var _this = this;
+        var num = 4 + queType;
+        var source = "comResource/font/game_dingque" + num;
+        GloBal_1.Global.Utils.setNewImageToSprite(this.queActionImage, source, function () {
+            _this.showQueAction(true, queType);
+        });
+    };
+    __decorate([
+        property(cc.Node)
+    ], PlayerHeadItem.prototype, "headGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PlayerHeadItem.prototype, "noneGroup", void 0);
+    __decorate([
+        property(cc.Label)
+    ], PlayerHeadItem.prototype, "changeLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "playerHeadImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "zhuangImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "queImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "piaoImage", void 0);
+    __decorate([
+        property(cc.Label)
+    ], PlayerHeadItem.prototype, "nameLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], PlayerHeadItem.prototype, "countLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], PlayerHeadItem.prototype, "sitDownBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "isReadyImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "playerDiceOneImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "playerDiceTwoImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "dingqueImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "queActionImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], PlayerHeadItem.prototype, "actionImage", void 0);
+    PlayerHeadItem = __decorate([
+        ccclass
+    ], PlayerHeadItem);
+    return PlayerHeadItem;
+}(UIBase_1.default));
+exports.default = PlayerHeadItem;
+
+cc._RF.pop();

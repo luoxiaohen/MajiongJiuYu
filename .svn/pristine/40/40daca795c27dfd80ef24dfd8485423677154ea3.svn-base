@@ -1,0 +1,148 @@
+"use strict";
+cc._RF.push(module, 'b778ffPkVFP95xjBogjHQcL', 'SitDownTips');
+// Script/tips/SitDownTips.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../Game/info/GameInfo");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var TableMsg_1 = require("../proto/TableMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var CreateRoomHelper_1 = require("../UI/createRoom/CreateRoomHelper");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var SitDownTips = /** @class */ (function (_super) {
+    __extends(SitDownTips, _super);
+    function SitDownTips() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.buyCoinsBtn = null;
+        _this.isReady = null;
+        _this.tipsLabel = null;
+        _this.needLabel = null;
+        _this.haveLabel = null;
+        _this.mustLabel = null;
+        _this.isHave = false;
+        _this.wantSit = -1;
+        return _this;
+    }
+    SitDownTips.prototype.onLoad = function () {
+        this.createElement();
+    };
+    SitDownTips.prototype.createElement = function () {
+        var isOpenBookmakerMustBuyHorse = false;
+        var allMut = 0;
+        allMut += CreateRoomHelper_1.default.ins.initialMultiple;
+        if (GameInfo_1.default.ins.roomTableInfo.rule.haveHorse) {
+            allMut += CreateRoomHelper_1.default.ins.openBuyHorseMultiple;
+        }
+        if (GameInfo_1.default.ins.roomTableInfo.rule.baozi) {
+            allMut += CreateRoomHelper_1.default.ins.openDoubleMultiple;
+        }
+        if (GameInfo_1.default.ins.roomTableInfo.rule.handsCnt == 16) {
+            allMut += CreateRoomHelper_1.default.ins.moreHandMultiple;
+        }
+        if (GameInfo_1.default.ins.roomTableInfo.rule.gamePlayType == 2) {
+            allMut += CreateRoomHelper_1.default.ins.changeThreeMultiple;
+        }
+        if (GameInfo_1.default.ins.roomTableInfo.rule.isSelectBankerBuyHorse) {
+            isOpenBookmakerMustBuyHorse = true;
+        }
+        var need = GameInfo_1.default.ins.roomTableInfo.rule.baseScore * allMut;
+        if (isOpenBookmakerMustBuyHorse) {
+            need *= CreateRoomHelper_1.default.ins.openBookmakerMustBuyHorseMultiple;
+        }
+        var have = UserInfo_1.default.ins.myInfo.gold;
+        var must = GloBal_1.Global.Utils.getNeedByRule(GameInfo_1.default.ins.roomTableInfo.rule);
+        this.needLabel.string = need.toString();
+        this.haveLabel.string = "个人财富:" + have;
+        this.mustLabel.string = "服务费用:" + must;
+        this.isHave = (have >= (need + must));
+        this.tipsLabel.node.active = !this.isHave;
+        this.storReady = GloBal_1.Global.Utils.getlocalStorageItem('init_ready_x');
+        if (this.storReady == "1") {
+            this.isReady.check();
+        }
+        else {
+            this.isReady.uncheck();
+        }
+    };
+    SitDownTips.prototype.setData = function (sitNum) {
+        this.sitNum = sitNum;
+    };
+    SitDownTips.prototype.onCheckClick = function () {
+        if (this.storReady == "1") {
+            GloBal_1.Global.Utils.addlocalStorageItem("init_ready_x", "-1");
+            this.storReady = "-1";
+        }
+        else {
+            GloBal_1.Global.Utils.addlocalStorageItem("init_ready_x", "1");
+            this.storReady = "1";
+        }
+    };
+    SitDownTips.prototype.onBuyCoinsClick = function () {
+        GloBal_1.Global.Utils.debugOutput("我点击了购买金币");
+        this.disTory();
+    };
+    SitDownTips.prototype.onCloseClick = function () {
+        var msg = new TableMsg_1.Msg_CS_SitDown();
+        msg.sit = this.sitNum;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        this.disTory();
+    };
+    SitDownTips.prototype.disTory = function () {
+        if (this.node.parent) {
+            this.node.parent.removeChild(this.node);
+            this.destroy();
+        }
+    };
+    __decorate([
+        property(cc.Button)
+    ], SitDownTips.prototype, "buyCoinsBtn", void 0);
+    __decorate([
+        property(cc.Toggle)
+    ], SitDownTips.prototype, "isReady", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SitDownTips.prototype, "tipsLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SitDownTips.prototype, "needLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SitDownTips.prototype, "haveLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SitDownTips.prototype, "mustLabel", void 0);
+    SitDownTips = __decorate([
+        ccclass
+    ], SitDownTips);
+    return SitDownTips;
+}(UIBase_1.default));
+exports.default = SitDownTips;
+
+cc._RF.pop();

@@ -1,0 +1,107 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/proto/BaseMsg.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, 'f410fzCSZdHGqYsmdXUADjl', 'BaseMsg');
+// Script/proto/BaseMsg.ts
+
+"use strict";
+/**
+* @Author: ZZ
+* @Date: Created in 14:55 2017/10/16
+* @Description: 所有消息的基本定义
+* @Modified By:
+*/
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseTabExMsg = exports.BaseBSMsg = exports.BaseIDMsg = exports.MSG_MID = exports.BaseMsg = void 0;
+var BaseMsg = /** @class */ (function () {
+    function BaseMsg() {
+    }
+    return BaseMsg;
+}());
+exports.BaseMsg = BaseMsg;
+var MSG_MID;
+(function (MSG_MID) {
+    MSG_MID[MSG_MID["MID_DSS"] = 0] = "MID_DSS";
+    MSG_MID[MSG_MID["MID_BS"] = 1] = "MID_BS";
+    MSG_MID[MSG_MID["MID_SrvsMsg"] = 2] = "MID_SrvsMsg";
+    MSG_MID[MSG_MID["MID_Account"] = 3] = "MID_Account";
+    MSG_MID[MSG_MID["MID_LobbyMsg"] = 4] = "MID_LobbyMsg";
+    MSG_MID[MSG_MID["MID_TableMsg"] = 5] = "MID_TableMsg";
+    MSG_MID[MSG_MID["MID_TableExMsg"] = 6] = "MID_TableExMsg";
+    MSG_MID[MSG_MID["MID_GateTable"] = 7] = "MID_GateTable";
+    MSG_MID[MSG_MID["MID_OtherMsg"] = 8] = "MID_OtherMsg";
+    MSG_MID[MSG_MID["MID_MAX"] = 9] = "MID_MAX";
+})(MSG_MID = exports.MSG_MID || (exports.MSG_MID = {}));
+//    public static class BaseIDMsg implements Serializable {
+//        public int mid;
+//        public int sid;
+//    }
+// 所有消息的基类
+var BaseIDMsg = /** @class */ (function () {
+    function BaseIDMsg(mid, sid) {
+        this.mid = mid;
+        this.sid = sid;
+    }
+    return BaseIDMsg;
+}());
+exports.BaseIDMsg = BaseIDMsg;
+// 服务器用协议基类
+var BaseBSMsg = /** @class */ (function (_super) {
+    __extends(BaseBSMsg, _super);
+    function BaseBSMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BaseBSMsg;
+}(BaseIDMsg));
+exports.BaseBSMsg = BaseBSMsg;
+// 牌桌服扩展消息的基类
+var BaseTabExMsg = /** @class */ (function (_super) {
+    __extends(BaseTabExMsg, _super);
+    function BaseTabExMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BaseTabExMsg;
+}(BaseIDMsg));
+exports.BaseTabExMsg = BaseTabExMsg;
+//////////////////////////////
+//    public static class BaseMsgData {
+//        //        public MSG_MID id;
+//        public int      mid;
+//        public int      sid;
+//        public String   Json;
+//    }
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxwcm90b1xcQmFzZU1zZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7O0FBSUE7Ozs7O0VBS0U7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFRjtJQUFBO0lBQ0EsQ0FBQztJQUFELGNBQUM7QUFBRCxDQURBLEFBQ0MsSUFBQTtBQURZLDBCQUFPO0FBR3BCLElBQVksT0FhWDtBQWJELFdBQVksT0FBTztJQUNsQiwyQ0FBTyxDQUFBO0lBQ1AseUNBQU0sQ0FBQTtJQUNOLG1EQUFXLENBQUE7SUFFWCxtREFBVyxDQUFBO0lBQ1gscURBQVksQ0FBQTtJQUNaLHFEQUFZLENBQUE7SUFDWix5REFBYyxDQUFBO0lBRWQsdURBQWEsQ0FBQTtJQUNiLHFEQUFZLENBQUE7SUFDWiwyQ0FBTyxDQUFBO0FBQ1IsQ0FBQyxFQWJXLE9BQU8sR0FBUCxlQUFPLEtBQVAsZUFBTyxRQWFsQjtBQUVELDZEQUE2RDtBQUM3RCx5QkFBeUI7QUFDekIseUJBQXlCO0FBQ3pCLE9BQU87QUFFUCxVQUFVO0FBQ1Y7SUFHQyxtQkFBbUIsR0FBVSxFQUFDLEdBQVU7UUFBSSxJQUFJLENBQUMsR0FBRyxHQUFHLEdBQUcsQ0FBQztRQUFBLElBQUksQ0FBQyxHQUFHLEdBQUcsR0FBRyxDQUFDO0lBQUMsQ0FBQztJQUM3RSxnQkFBQztBQUFELENBSkEsQUFJQyxJQUFBO0FBSlksOEJBQVM7QUFNdEIsV0FBVztBQUNYO0lBQStCLDZCQUFTO0lBQXhDOztJQUdBLENBQUM7SUFBRCxnQkFBQztBQUFELENBSEEsQUFHQyxDQUg4QixTQUFTLEdBR3ZDO0FBSFksOEJBQVM7QUFLdEIsYUFBYTtBQUNiO0lBQWtDLGdDQUFTO0lBQTNDOztJQUVBLENBQUM7SUFBRCxtQkFBQztBQUFELENBRkEsQUFFQyxDQUZpQyxTQUFTLEdBRTFDO0FBRlksb0NBQVk7QUFJekIsOEJBQThCO0FBRTlCLHVDQUF1QztBQUN2QyxzQ0FBc0M7QUFDdEMsOEJBQThCO0FBQzlCLDhCQUE4QjtBQUM5QiwrQkFBK0I7QUFDL0IsT0FBTyIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbIlxyXG5cclxuXHJcblxyXG4vKipcclxuKiBAQXV0aG9yOiBaWlxyXG4qIEBEYXRlOiBDcmVhdGVkIGluIDE0OjU1IDIwMTcvMTAvMTZcclxuKiBARGVzY3JpcHRpb246IOaJgOaciea2iOaBr+eahOWfuuacrOWumuS5iVxyXG4qIEBNb2RpZmllZCBCeTpcclxuKi9cclxuXHJcbmV4cG9ydCBjbGFzcyBCYXNlTXNnIHtcclxufVxyXG5cclxuZXhwb3J0IGVudW0gTVNHX01JRCB7ICAgLy8g5Li75Y2P6K6u5Y+3XHJcblx0TUlEX0RTUyxcclxuXHRNSURfQlMsXHJcblx0TUlEX1NydnNNc2csICAgICAgICAvLyDmnI3liqHlmajlhoXpg6jmtojmga9cclxuXHRcclxuXHRNSURfQWNjb3VudCwgICAgICAgIC8vIOi0puWPt+ebuOWFs+WNj+iurlxyXG5cdE1JRF9Mb2JieU1zZywgICAgICAgLy8g5aSn5Y6F55u45YWz5Y2P6K6uXHJcblx0TUlEX1RhYmxlTXNnLCAgICAgICAvLyDniYzmoYznm7jlhbPljY/orq7vvIjlhaXluqfogIXnmoTnm7jlhbPljY/orq7vvIzku6XlhaXluqflkI7nmoTmtojmga/kuLrlh4bvvIlcclxuXHRNSURfVGFibGVFeE1zZywgICAgIC8vIOeJjOahjOWkluWbtOWKn+iDveebuOWFs+WNj+iuru+8iOaXgeinguiAheeahOWNj+iuru+8jOa2iOaBr+S9k+WGheW4pueJjOahjOaIlueJjOahjOacjee8luWPt++8iVxyXG5cdFxyXG5cdE1JRF9HYXRlVGFibGUsICAgICAgLy8g5rWL6K+V572R5YWz54mM5qGM5raI5oGvXHJcblx0TUlEX090aGVyTXNnLFxyXG5cdE1JRF9NQVhcclxufVxyXG5cclxuLy8gICAgcHVibGljIHN0YXRpYyBjbGFzcyBCYXNlSURNc2cgaW1wbGVtZW50cyBTZXJpYWxpemFibGUge1xyXG4vLyAgICAgICAgcHVibGljIGludCBtaWQ7XHJcbi8vICAgICAgICBwdWJsaWMgaW50IHNpZDtcclxuLy8gICAgfVxyXG5cclxuLy8g5omA5pyJ5raI5oGv55qE5Z+657G7XHJcbmV4cG9ydCBjbGFzcyBCYXNlSURNc2cge1xyXG5cdHB1YmxpYyBtaWQ6IG51bWJlcjsgICAgIC8vIOS4u+WNj+iuruWPt1xyXG5cdHB1YmxpYyBzaWQ6IG51bWJlcjsgICAgIC8vIOasoeWNj+iuruWPt1xyXG5cdHB1YmxpYyBjb25zdHJ1Y3RvcihtaWQ6bnVtYmVyLHNpZDpudW1iZXIpIHsgdGhpcy5taWQgPSBtaWQ7dGhpcy5zaWQgPSBzaWQ7IH1cclxufVxyXG5cclxuLy8g5pyN5Yqh5Zmo55So5Y2P6K6u5Z+657G7XHJcbmV4cG9ydCBjbGFzcyBCYXNlQlNNc2cgZXh0ZW5kcyBCYXNlSURNc2d7XHJcblx0cHVibGljIHNydlR5cGU6IG51bWJlcjtcclxuXHRwdWJsaWMgc3J2SUQ6IG51bWJlcjtcclxufVxyXG5cclxuLy8g54mM5qGM5pyN5omp5bGV5raI5oGv55qE5Z+657G7XHJcbmV4cG9ydCBjbGFzcyBCYXNlVGFiRXhNc2cgZXh0ZW5kcyBCYXNlSURNc2d7XHJcblx0cHVibGljICAgdGlkOiBzdHJpbmc7ICAgICAgICAgICAgIC8vIOeJjOahjElEXHJcbn1cclxuXHJcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vL1xyXG5cclxuLy8gICAgcHVibGljIHN0YXRpYyBjbGFzcyBCYXNlTXNnRGF0YSB7XHJcbi8vICAgICAgICAvLyAgICAgICAgcHVibGljIE1TR19NSUQgaWQ7XHJcbi8vICAgICAgICBwdWJsaWMgaW50ICAgICAgbWlkO1xyXG4vLyAgICAgICAgcHVibGljIGludCAgICAgIHNpZDtcclxuLy8gICAgICAgIHB1YmxpYyBTdHJpbmcgICBKc29uO1xyXG4vLyAgICB9XHJcblxyXG5cclxuIl19

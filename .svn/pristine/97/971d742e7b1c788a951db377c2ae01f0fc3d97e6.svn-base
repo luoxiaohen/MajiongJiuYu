@@ -1,0 +1,218 @@
+"use strict";
+cc._RF.push(module, 'b9a4cEzehBNc5Q9o5p6j9zw', 'MahjStepMsgDef');
+// Script/proto/MahjStepMsgDef.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RcdHandsInfo = exports.RcdHandsPlayer = exports.BackTempStepRcd = exports.ScoreTypeStepRcd = exports.ScoreListStepRcd = exports.GameResultStepRcd = exports.HuMajStepRcd = exports.GangSelfStepRcd = exports.PengMajStepRcd = exports.DownMajStepRcd = exports.PassStepRcd = exports.GetMajStepRcd = exports.SomeTurnStepRcd = exports.QueRsltStepRcd = exports.StartDingQueStepRcd = exports.You3StepRcd = exports.StartChange3StepRcd = exports.YouMajStepRcd = exports.StartGameStepRcd = exports.SitsStepRcd = exports.RcdSummScoreInfo = exports.RcdSummUnit = exports.RcdSummInfo = exports.BaseStepRcd = exports.MahjStepMsgDef = void 0;
+/**
+* Created by admin on 2022/8/3.
+*/
+var MahjStepMsgDef = /** @class */ (function () {
+    function MahjStepMsgDef() {
+    }
+    return MahjStepMsgDef;
+}());
+exports.MahjStepMsgDef = MahjStepMsgDef;
+var BaseStepRcd = /** @class */ (function () {
+    function BaseStepRcd() {
+    }
+    return BaseStepRcd;
+}());
+exports.BaseStepRcd = BaseStepRcd;
+// 牌谱记录的简要信息，大厅打开牌谱列表中的内容
+var RcdSummInfo = /** @class */ (function () {
+    function RcdSummInfo() {
+    }
+    return RcdSummInfo;
+}());
+exports.RcdSummInfo = RcdSummInfo;
+// 牌谱记录列表单元信息
+var RcdSummUnit = /** @class */ (function () {
+    function RcdSummUnit() {
+    }
+    return RcdSummUnit;
+}());
+exports.RcdSummUnit = RcdSummUnit;
+// 公共存储的参与者信息和积分
+var RcdSummScoreInfo = /** @class */ (function () {
+    function RcdSummScoreInfo() {
+    }
+    return RcdSummScoreInfo;
+}());
+exports.RcdSummScoreInfo = RcdSummScoreInfo;
+var SitsStepRcd = /** @class */ (function (_super) {
+    __extends(SitsStepRcd, _super);
+    function SitsStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return SitsStepRcd;
+}(BaseStepRcd));
+exports.SitsStepRcd = SitsStepRcd;
+var StartGameStepRcd = /** @class */ (function (_super) {
+    __extends(StartGameStepRcd, _super);
+    function StartGameStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return StartGameStepRcd;
+}(BaseStepRcd));
+exports.StartGameStepRcd = StartGameStepRcd;
+var YouMajStepRcd = /** @class */ (function (_super) {
+    __extends(YouMajStepRcd, _super);
+    function YouMajStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return YouMajStepRcd;
+}(BaseStepRcd));
+exports.YouMajStepRcd = YouMajStepRcd;
+var StartChange3StepRcd = /** @class */ (function (_super) {
+    __extends(StartChange3StepRcd, _super);
+    function StartChange3StepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return StartChange3StepRcd;
+}(BaseStepRcd));
+exports.StartChange3StepRcd = StartChange3StepRcd;
+var You3StepRcd = /** @class */ (function (_super) {
+    __extends(You3StepRcd, _super);
+    function You3StepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return You3StepRcd;
+}(BaseStepRcd));
+exports.You3StepRcd = You3StepRcd;
+var StartDingQueStepRcd = /** @class */ (function (_super) {
+    __extends(StartDingQueStepRcd, _super);
+    function StartDingQueStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return StartDingQueStepRcd;
+}(BaseStepRcd));
+exports.StartDingQueStepRcd = StartDingQueStepRcd;
+var QueRsltStepRcd = /** @class */ (function (_super) {
+    __extends(QueRsltStepRcd, _super);
+    function QueRsltStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return QueRsltStepRcd;
+}(BaseStepRcd));
+exports.QueRsltStepRcd = QueRsltStepRcd;
+var SomeTurnStepRcd = /** @class */ (function (_super) {
+    __extends(SomeTurnStepRcd, _super);
+    function SomeTurnStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return SomeTurnStepRcd;
+}(BaseStepRcd));
+exports.SomeTurnStepRcd = SomeTurnStepRcd;
+var GetMajStepRcd = /** @class */ (function (_super) {
+    __extends(GetMajStepRcd, _super);
+    function GetMajStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return GetMajStepRcd;
+}(BaseStepRcd));
+exports.GetMajStepRcd = GetMajStepRcd;
+var PassStepRcd = /** @class */ (function (_super) {
+    __extends(PassStepRcd, _super);
+    function PassStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return PassStepRcd;
+}(BaseStepRcd));
+exports.PassStepRcd = PassStepRcd;
+var DownMajStepRcd = /** @class */ (function (_super) {
+    __extends(DownMajStepRcd, _super);
+    function DownMajStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return DownMajStepRcd;
+}(BaseStepRcd));
+exports.DownMajStepRcd = DownMajStepRcd;
+var PengMajStepRcd = /** @class */ (function (_super) {
+    __extends(PengMajStepRcd, _super);
+    function PengMajStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return PengMajStepRcd;
+}(BaseStepRcd));
+exports.PengMajStepRcd = PengMajStepRcd;
+var GangSelfStepRcd = /** @class */ (function (_super) {
+    __extends(GangSelfStepRcd, _super);
+    function GangSelfStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return GangSelfStepRcd;
+}(BaseStepRcd));
+exports.GangSelfStepRcd = GangSelfStepRcd;
+var HuMajStepRcd = /** @class */ (function (_super) {
+    __extends(HuMajStepRcd, _super);
+    function HuMajStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return HuMajStepRcd;
+}(BaseStepRcd));
+exports.HuMajStepRcd = HuMajStepRcd;
+var GameResultStepRcd = /** @class */ (function (_super) {
+    __extends(GameResultStepRcd, _super);
+    function GameResultStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return GameResultStepRcd;
+}(BaseStepRcd));
+exports.GameResultStepRcd = GameResultStepRcd;
+var ScoreListStepRcd = /** @class */ (function (_super) {
+    __extends(ScoreListStepRcd, _super);
+    function ScoreListStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ScoreListStepRcd;
+}(BaseStepRcd));
+exports.ScoreListStepRcd = ScoreListStepRcd;
+var ScoreTypeStepRcd = /** @class */ (function (_super) {
+    __extends(ScoreTypeStepRcd, _super);
+    function ScoreTypeStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ScoreTypeStepRcd;
+}(BaseStepRcd));
+exports.ScoreTypeStepRcd = ScoreTypeStepRcd;
+// 备选记录，用于调试或者可能发生的异常情况的信息记录，只有一个字符串用于记录信息
+var BackTempStepRcd = /** @class */ (function (_super) {
+    __extends(BackTempStepRcd, _super);
+    function BackTempStepRcd() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BackTempStepRcd;
+}(BaseStepRcd));
+exports.BackTempStepRcd = BackTempStepRcd;
+///////////////////////////////////////////////////////////
+// 历史牌局中的个人信息
+var RcdHandsPlayer = /** @class */ (function () {
+    function RcdHandsPlayer() {
+    }
+    return RcdHandsPlayer;
+}());
+exports.RcdHandsPlayer = RcdHandsPlayer;
+// 历史牌局的简要信息，房间内牌谱的信息
+var RcdHandsInfo = /** @class */ (function () {
+    function RcdHandsInfo() {
+    }
+    return RcdHandsInfo;
+}());
+exports.RcdHandsInfo = RcdHandsInfo;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_biaoqian2",
+    "texture": "a86e038b-32d5-4a5e-808e-7808bde84b54",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      63,
+      65
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      63,
+      65
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

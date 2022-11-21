@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_fengexian",
+    "texture": "a597c117-8d8b-4f00-9793-a150cdd54edf",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      933,
+      2
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      933,
+      2
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+"use strict";
+cc._RF.push(module, '1de4b4pDs9ANraVmm/LC6B5', 'SocketEvent');
+// Script/com/socket/SocketEvent.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SocketEvent = void 0;
+var SocketEvent = /** @class */ (function () {
+    function SocketEvent() {
+    }
+    /**[public | static]
+     * socket连接成功
+     */
+    SocketEvent.CONNECTED = "connected";
+    /**[public | static]
+     * socket出错
+     */
+    SocketEvent.ERROR = "error";
+    /**[public | static]
+     * socket关闭
+     */
+    SocketEvent.CLOSE = "close";
+    /**[public | static]
+     * 重连
+     */
+    SocketEvent.RECONNECTED = "reconnected";
+    SocketEvent.MESSAGE = "message";
+    return SocketEvent;
+}());
+exports.SocketEvent = SocketEvent;
+
+cc._RF.pop();

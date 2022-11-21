@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_jindutian_zhezhao",
+    "texture": "595d7147-92ef-4925-a516-86a6b40302f2",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      917,
+      27
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      917,
+      27
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

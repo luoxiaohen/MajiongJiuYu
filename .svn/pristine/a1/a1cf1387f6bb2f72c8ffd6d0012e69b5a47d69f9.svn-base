@@ -1,0 +1,89 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/UI/test/ListTest.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '86770a3AbBILYVcQvHi138u', 'ListTest');
+// Script/UI/test/ListTest.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var TestListItem_1 = require("./TestListItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var ListTest = /** @class */ (function (_super) {
+    __extends(ListTest, _super);
+    function ListTest() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.itemGroup = null;
+        return _this;
+    }
+    ListTest.prototype.start = function () {
+    };
+    ListTest.prototype.onLoad = function () {
+        this.testItem = GloBal_1.Global.Utils.getPreFabBySource("createRoom/prefab/TestListItem");
+        this.addItem();
+    };
+    ListTest.prototype.addItem = function () {
+        var item;
+        for (var i = 0; i < 100; i++) {
+            item = cc.instantiate(this.testItem);
+            item.getComponent(TestListItem_1.default).setData(i);
+            this.itemGroup.addChild(item);
+        }
+    };
+    __decorate([
+        property(cc.Node)
+    ], ListTest.prototype, "itemGroup", void 0);
+    ListTest = __decorate([
+        ccclass
+    ], ListTest);
+    return ListTest;
+}(UIBase_1.default));
+exports.default = ListTest;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxVSVxcdGVzdFxcTGlzdFRlc3QudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLG9CQUFvQjtBQUNwQix3RUFBd0U7QUFDeEUsbUJBQW1CO0FBQ25CLGtGQUFrRjtBQUNsRiw4QkFBOEI7QUFDOUIsa0ZBQWtGOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFbEYsOENBQTZDO0FBQzdDLHVDQUFrQztBQUNsQywrQ0FBMEM7QUFFcEMsSUFBQSxLQUFzQixFQUFFLENBQUMsVUFBVSxFQUFsQyxPQUFPLGFBQUEsRUFBRSxRQUFRLGNBQWlCLENBQUM7QUFHMUM7SUFBc0MsNEJBQU07SUFBNUM7UUFBQSxxRUFxQkM7UUFuQkcsZUFBUyxHQUFhLElBQUksQ0FBQzs7SUFtQi9CLENBQUM7SUFqQmEsd0JBQUssR0FBZjtJQUNBLENBQUM7SUFHUyx5QkFBTSxHQUFoQjtRQUNJLElBQUksQ0FBQyxRQUFRLEdBQUcsZUFBTSxDQUFDLEtBQUssQ0FBQyxpQkFBaUIsQ0FBQyxnQ0FBZ0MsQ0FBQyxDQUFDO1FBQ2pGLElBQUksQ0FBQyxPQUFPLEVBQUUsQ0FBQztJQUNuQixDQUFDO0lBRU8sMEJBQU8sR0FBZjtRQUNJLElBQUksSUFBSSxDQUFDO1FBQ1QsS0FBSSxJQUFJLENBQUMsR0FBRyxDQUFDLEVBQUcsQ0FBQyxHQUFHLEdBQUcsRUFBRyxDQUFDLEVBQUUsRUFBQztZQUMxQixJQUFJLEdBQUcsRUFBRSxDQUFDLFdBQVcsQ0FBQyxJQUFJLENBQUMsUUFBUSxDQUFDLENBQUM7WUFDcEMsSUFBSSxDQUFDLFlBQVksQ0FBQyxzQkFBWSxDQUFrQixDQUFDLE9BQU8sQ0FBQyxDQUFDLENBQUMsQ0FBQztZQUM3RCxJQUFJLENBQUMsU0FBUyxDQUFDLFFBQVEsQ0FBQyxJQUFJLENBQUMsQ0FBQztTQUNqQztJQUNMLENBQUM7SUFsQkQ7UUFEQyxRQUFRLENBQUUsRUFBRSxDQUFDLElBQUksQ0FBQzsrQ0FDUTtJQUZWLFFBQVE7UUFENUIsT0FBTztPQUNhLFFBQVEsQ0FxQjVCO0lBQUQsZUFBQztDQXJCRCxBQXFCQyxDQXJCcUMsZ0JBQU0sR0FxQjNDO2tCQXJCb0IsUUFBUSIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbIi8vIExlYXJuIFR5cGVTY3JpcHQ6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3R5cGVzY3JpcHQuaHRtbFxyXG4vLyBMZWFybiBBdHRyaWJ1dGU6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3JlZmVyZW5jZS9hdHRyaWJ1dGVzLmh0bWxcclxuLy8gTGVhcm4gbGlmZS1jeWNsZSBjYWxsYmFja3M6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL2xpZmUtY3ljbGUtY2FsbGJhY2tzLmh0bWxcclxuXHJcbmltcG9ydCB7IEdsb2JhbCB9IGZyb20gXCIuLi8uLi9TaGFyZWQvR2xvQmFsXCI7XHJcbmltcG9ydCBVSUJhc2UgZnJvbSBcIi4uLy4uL1VJQmFzZVwiO1xyXG5pbXBvcnQgVGVzdExpc3RJdGVtIGZyb20gXCIuL1Rlc3RMaXN0SXRlbVwiO1xyXG5cclxuY29uc3Qge2NjY2xhc3MsIHByb3BlcnR5fSA9IGNjLl9kZWNvcmF0b3I7XHJcblxyXG5AY2NjbGFzc1xyXG5leHBvcnQgZGVmYXVsdCBjbGFzcyBMaXN0VGVzdCBleHRlbmRzIFVJQmFzZSB7XHJcbiAgICBAcHJvcGVydHkgKGNjLk5vZGUpXHJcbiAgICBpdGVtR3JvdXAgOiBjYy5Ob2RlID0gbnVsbDtcclxuXHJcbiAgICBwcm90ZWN0ZWQgc3RhcnQoKTogdm9pZCB7XHJcbiAgICB9XHJcblxyXG4gICAgcHJpdmF0ZSB0ZXN0SXRlbSA6IGNjLlByZWZhYjtcclxuICAgIHByb3RlY3RlZCBvbkxvYWQoKTogdm9pZCB7XHJcbiAgICAgICAgdGhpcy50ZXN0SXRlbSA9IEdsb2JhbC5VdGlscy5nZXRQcmVGYWJCeVNvdXJjZShcImNyZWF0ZVJvb20vcHJlZmFiL1Rlc3RMaXN0SXRlbVwiKTtcclxuICAgICAgICB0aGlzLmFkZEl0ZW0oKTtcclxuICAgIH1cclxuXHJcbiAgICBwcml2YXRlIGFkZEl0ZW0oKXtcclxuICAgICAgICBsZXQgaXRlbTtcclxuICAgICAgICBmb3IobGV0IGkgPSAwIDsgaSA8IDEwMCA7IGkrKyl7XHJcbiAgICAgICAgICAgIGl0ZW0gPSBjYy5pbnN0YW50aWF0ZSh0aGlzLnRlc3RJdGVtKTtcclxuICAgICAgICAgICAgKGl0ZW0uZ2V0Q29tcG9uZW50KFRlc3RMaXN0SXRlbSkgYXMgVGVzdExpc3RJdGVtKS5zZXREYXRhKGkpO1xyXG4gICAgICAgICAgICB0aGlzLml0ZW1Hcm91cC5hZGRDaGlsZChpdGVtKTtcclxuICAgICAgICB9XHJcbiAgICB9XHJcbn1cclxuIl19

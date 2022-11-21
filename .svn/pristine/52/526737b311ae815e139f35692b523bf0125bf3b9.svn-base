@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_baozi",
+    "texture": "9f7b41e8-f52e-422b-b4d1-bcd988f298cf",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      77,
+      55
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      77,
+      55
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

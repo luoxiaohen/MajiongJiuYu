@@ -1,0 +1,495 @@
+"use strict";
+cc._RF.push(module, '0a483EMnqVC0KjEKT6MENmu', 'BaseRuleItem');
+// Script/UI/createRoom/BaseRuleItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var EventType_1 = require("../../event/EventType");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var LobbyMsgDef_1 = require("../../proto/LobbyMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var CreateCheckItem_1 = require("./CreateCheckItem");
+var CreateRoomHelper_1 = require("./CreateRoomHelper");
+var CreateRoomRuleItem_1 = require("./CreateRoomRuleItem");
+var GetAddOrRemoveItem_1 = require("./GetAddOrRemoveItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var BaseRuleItem = /** @class */ (function (_super) {
+    __extends(BaseRuleItem, _super);
+    function BaseRuleItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.xuezhanBtn = null;
+        _this.huansanBtn = null;
+        _this.roomBtn_0 = null;
+        _this.roomBtn_1 = null;
+        _this.roomBtn_2 = null;
+        _this.roomBtn_3 = null;
+        _this.roomNameInputLabel = null;
+        _this.shousuQustionBtn = null;
+        _this.dairuQustionBtn = null;
+        _this.dizhuLabel = null;
+        _this.dairuLabel = null;
+        _this.myHaveCoinsLabel = null;
+        _this.proImage = null;
+        _this.proSlitImage = null;
+        _this.handsCntItem = null;
+        _this.ceilingItem = null;
+        _this.tiFanBox = null;
+        _this.tifanBox2 = null;
+        _this.tifanBox4 = null;
+        _this.tifanBox8 = null;
+        _this.tiFanGroup = null;
+        _this.nowGamePlayType = LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi;
+        _this.nowRoomType = LobbyMsgDef_1.GameRoomTypeEnum.SiRenSanFang;
+        _this.nowAntesIndex = 0;
+        _this.nowSelectHand = 0;
+        _this.nowSelectMut = 1;
+        _this.nowSelectTiFan = 0;
+        _this._distance = cc.v2(0, 0);
+        _this._touchStatus = false;
+        _this.moveNum = 0;
+        return _this;
+    }
+    BaseRuleItem.prototype.onLoad = function () {
+    };
+    BaseRuleItem.prototype.setData = function (temp) {
+        _super.prototype.setData.call(this, temp);
+        this.initElements();
+    };
+    BaseRuleItem.prototype.getHeight = function () {
+        return this.nowSelectTiFan ? 1331 : 1106;
+    };
+    BaseRuleItem.prototype.initElements = function () {
+        GameInfo_1.default.ins.addItemToMultipleArray(EnumManager_1.AntesMultipleEnum.initial);
+        this.itemWeights = 999;
+        this.changeHeight = 225;
+        this._height = 1106;
+        if (this.ruleInfo) {
+            this.showLast();
+        }
+        else {
+            var fontImage = void 0;
+            this.nowSelectGroup = this.xuezhanBtn;
+            fontImage = cc.find("/oneImage", this.nowSelectGroup).getComponent(cc.Sprite);
+            fontImage.node.opacity = 255;
+            this.nowSelectRoomBtn = this.roomBtn_0;
+            fontImage = cc.find("/btnImage", this.nowSelectRoomBtn).getComponent(cc.Sprite);
+            fontImage.node.opacity = 255;
+        }
+        this._height = this.getHeight();
+        this.initItem();
+        this.addEvent();
+    };
+    BaseRuleItem.prototype.addEvent = function () {
+        this.xuezhanBtn.on(cc.Node.EventType.TOUCH_START, this.onXueZhanClick, this);
+        this.huansanBtn.on(cc.Node.EventType.TOUCH_START, this.onXueZhanClick, this);
+        this.roomBtn_0.on(cc.Node.EventType.TOUCH_START, this.onRoomBtnClick, this);
+        this.roomBtn_1.on(cc.Node.EventType.TOUCH_START, this.onRoomBtnClick, this);
+        this.roomBtn_2.on(cc.Node.EventType.TOUCH_START, this.onRoomBtnClick, this);
+        this.roomBtn_3.on(cc.Node.EventType.TOUCH_START, this.onRoomBtnClick, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.CreateRoom_Check_Click, this.onCheckClick, this);
+        this.proSlitImage.node.on(cc.Node.EventType.TOUCH_START, this.onProBegin, this);
+        this.proSlitImage.node.on(cc.Node.EventType.TOUCH_CANCEL, this.onProCancelEnd, this);
+        this.proSlitImage.node.on(cc.Node.EventType.TOUCH_END, this.onProEnd, this);
+        this.dairuQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onDaiRuClick, this);
+        this.shousuQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onShousuQustionBtnClick, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.OpenRoomUseChange, this.onRoomOpenUseChange, this);
+    };
+    BaseRuleItem.prototype.onRoomOpenUseChange = function () {
+        this.setAntesLabel(CreateRoomHelper_1.default.ins.antesArr[this.nowAntesIndex]);
+    };
+    BaseRuleItem.prototype.onDaiRuClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 1);
+    };
+    BaseRuleItem.prototype.onShousuQustionBtnClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 2);
+    };
+    BaseRuleItem.prototype.onProBegin = function (e) {
+        this.moveNum = 0;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.RuleMoveAndScrollerMove);
+        this._distance.x = e.getLocation().x - this.proSlitImage.node.x;
+        this._touchStatus = true;
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.onProMove, this);
+    };
+    BaseRuleItem.prototype.onProCancelEnd = function (e) {
+        this.moveNum++;
+        if (this.moveNum == 2) {
+            this.callEnd();
+        }
+    };
+    BaseRuleItem.prototype.callEnd = function () {
+        if (this._touchStatus) {
+            GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.RuleMoveAndScrollerMoveOver);
+            this._touchStatus = false;
+            this.node.off(cc.Node.EventType.TOUCH_MOVE, this.onProMove, this);
+            this.showPro(this.proSlitImage.node.x);
+            this.moveNum = 0;
+        }
+    };
+    BaseRuleItem.prototype.onProMove = function (e) {
+        if (this._touchStatus) {
+            if (e.getLocation().x - this._distance.x <= 0) {
+                this.proSlitImage.node.x = 0;
+            }
+            else if (e.getLocation().x - this._distance.x >= this.proImage.node.width - this.proSlitImage.node.width) {
+                this.proSlitImage.node.x = this.proImage.node.width - this.proSlitImage.node.width - 35;
+            }
+            else {
+                this.proSlitImage.node.x = e.getLocation().x - this._distance.x - 35;
+            }
+            if (this.proSlitImage.node.x < 0) {
+                this.proSlitImage.node.x = 0;
+            }
+            this.showPro(this.proSlitImage.node.x);
+        }
+    };
+    BaseRuleItem.prototype.onProEnd = function (e) {
+        this.callEnd();
+    };
+    BaseRuleItem.prototype.showPro = function (nowX) {
+        var allLv = CreateRoomHelper_1.default.ins.antesArr.length;
+        var allWidth = this.proImage.node.width - this.proSlitImage.node.width;
+        var one = allWidth / allLv;
+        var now = this.proSlitImage.node.x / one;
+        now = Number(now.toFixed(0));
+        this.proImage.node.x = -917 + this.proSlitImage.node.x + this.proSlitImage.node.width;
+        this.nowAntesIndex = now - 1 >= 0 ? now - 1 : 0;
+        this.setAntesLabel(CreateRoomHelper_1.default.ins.antesArr[this.nowAntesIndex]);
+    };
+    BaseRuleItem.prototype.onCheckClick = function (e, data) {
+        var item = data;
+        switch (item.boxValue) {
+            case 1:
+                //梯番点击
+                this.onTifanBoxClick();
+                break;
+            case 2:
+            case 3:
+            case 4:
+                //梯番子项点击
+                this.tifanBox2.showSelect(false);
+                this.tifanBox4.showSelect(false);
+                this.tifanBox8.showSelect(false);
+                if (item.isCheck() == false) {
+                    this.nowSelectTiFan = item.boxValue - 1;
+                    if (this.nowSelectTiFan > 0) {
+                        this["tifanBox" + CreateRoomHelper_1.default.ins.allGameTiFanArr[this.nowSelectTiFan]].showSelect(true);
+                    }
+                }
+                else {
+                    item.showSelect(true);
+                }
+                break;
+        }
+    };
+    BaseRuleItem.prototype.onTifanBoxClick = function () {
+        var _this = this;
+        if (CreateRoomHelper_1.default.ins.gameRuleItemIsMove) {
+            return;
+        }
+        var box = this.tiFanBox;
+        if (box.isCheck()) {
+            this.nowSelectTiFan = 1;
+            this.isMoveUp = false;
+            CreateRoomHelper_1.default.ins.gameRuleItemIsMove = true;
+            this.tiFanGroup.active = true;
+            cc.tween(this.tiFanGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { scaleY: 1, opacity: 255 }).call(function () {
+                CreateRoomHelper_1.default.ins.gameRuleItemIsMove = false;
+            }).start();
+            this.disPatchMove(this);
+        }
+        else {
+            this.nowSelectTiFan = 0;
+            this.isMoveUp = true;
+            CreateRoomHelper_1.default.ins.gameRuleItemIsMove = true;
+            cc.tween(this.tiFanGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime / 2, { opacity: 0 }).start();
+            cc.tween(this.tiFanGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { scaleY: 0 }).call(function () {
+                CreateRoomHelper_1.default.ins.gameRuleItemIsMove = false;
+                _this.tiFanGroup.active = false;
+            }).start();
+            this.disPatchMove(this);
+        }
+        this.initTiFanGroup();
+    };
+    BaseRuleItem.prototype.onRoomBtnClick = function (e) {
+        var clickGrou = e.currentTarget;
+        this.showSelectRoomBtn(clickGrou);
+    };
+    BaseRuleItem.prototype.onXueZhanClick = function (e) {
+        var clickGrou = e.currentTarget;
+        var type = clickGrou.name == "gamePlay1" ? LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi : LobbyMsgDef_1.GamePlayTypeEnum.HuanSanZhang;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GameRuleChangePlayType, type);
+        this.showSelectGroup(clickGrou);
+        if (type == LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi) {
+            GameInfo_1.default.ins.removeItemByMultipleArray(EnumManager_1.AntesMultipleEnum.changeThree);
+        }
+        else {
+            GameInfo_1.default.ins.addItemToMultipleArray(EnumManager_1.AntesMultipleEnum.changeThree);
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.OpenRoomUseChange);
+    };
+    BaseRuleItem.prototype.initItem = function () {
+        this.myHaveCoinsLabel.string = UserInfo_1.default.ins.myInfo.gold.toString();
+        this.showSelectHands();
+        this.showSelectMut();
+        this.initAntes();
+        this.showTiFan();
+    };
+    BaseRuleItem.prototype.showTiFan = function () {
+        if (this.nowSelectTiFan == 0) {
+            this.tiFanBox.setData(1, false, 1, true);
+        }
+        else {
+            this.tiFanBox.setData(1, true, 1, true);
+        }
+        this.initTiFanGroup();
+    };
+    BaseRuleItem.prototype.initTiFanGroup = function () {
+        this.tifanBox2.setData(2, false, 2, true);
+        this.tifanBox4.setData(3, false, 2, true);
+        this.tifanBox8.setData(4, false, 2, true);
+        if (this.nowSelectTiFan > 0) {
+            this["tifanBox" + CreateRoomHelper_1.default.ins.allGameTiFanArr[this.nowSelectTiFan]].showSelect(true);
+        }
+    };
+    BaseRuleItem.prototype.initAntes = function () {
+        var arr = CreateRoomHelper_1.default.ins.antesArr;
+        this.setAntesLabel(arr[this.nowAntesIndex]);
+        this.initPro(arr);
+    };
+    BaseRuleItem.prototype.initPro = function (allArr) {
+        var oneWidth = 917 / allArr.length;
+        var move = this.nowAntesIndex * oneWidth - 56 / 2;
+        this.proSlitImage.node.x = move < 0 ? 0 : move;
+    };
+    BaseRuleItem.prototype.showSelectMut = function () {
+        this.ceilingItem.setData(CreateRoomHelper_1.default.ins.allGameMultipleStringArr, this.nowSelectMut, "封顶", this.onMutChange, this);
+    };
+    BaseRuleItem.prototype.onMutChange = function () {
+        this.nowSelectMut = this.ceilingItem.currLv;
+    };
+    BaseRuleItem.prototype.showSelectHands = function () {
+        this.handsCntItem.setData(CreateRoomHelper_1.default.ins.allGameHnadsArr, this.nowSelectHand, "手数", this.onHandChange, this);
+        if (this.nowSelectHand == CreateRoomHelper_1.default.ins.allGameHnadsArr.length - 1) {
+            GameInfo_1.default.ins.addItemToMultipleArray(EnumManager_1.AntesMultipleEnum.moreHand);
+        }
+        this.setAntesLabel(CreateRoomHelper_1.default.ins.antesArr[this.nowAntesIndex]);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.OpenRoomUseChange);
+    };
+    BaseRuleItem.prototype.onHandChange = function () {
+        this.nowSelectHand = this.handsCntItem.currLv;
+        if (this.nowSelectHand == CreateRoomHelper_1.default.ins.allGameHnadsArr.length - 1) {
+            GameInfo_1.default.ins.addItemToMultipleArray(EnumManager_1.AntesMultipleEnum.moreHand);
+        }
+        else {
+            GameInfo_1.default.ins.removeItemByMultipleArray(EnumManager_1.AntesMultipleEnum.moreHand);
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.OpenRoomUseChange);
+    };
+    BaseRuleItem.prototype.setAntesLabel = function (nowAntes) {
+        this.dizhuLabel.string = nowAntes.toString();
+        var allMut = 0;
+        var isOpenBookmakerMustBuyHorse = false;
+        for (var i = 0; i < GameInfo_1.default.ins.getnowMultipleArray().length; i++) {
+            switch (GameInfo_1.default.ins.getnowMultipleArray()[i]) {
+                case EnumManager_1.AntesMultipleEnum.initial:
+                    allMut += CreateRoomHelper_1.default.ins.initialMultiple;
+                    break;
+                case EnumManager_1.AntesMultipleEnum.openBuyHorse:
+                    allMut += CreateRoomHelper_1.default.ins.openBuyHorseMultiple;
+                    break;
+                case EnumManager_1.AntesMultipleEnum.openDouble:
+                    allMut += CreateRoomHelper_1.default.ins.openDoubleMultiple;
+                    break;
+                case EnumManager_1.AntesMultipleEnum.moreHand:
+                    allMut += CreateRoomHelper_1.default.ins.moreHandMultiple;
+                    break;
+                case EnumManager_1.AntesMultipleEnum.changeThree:
+                    allMut += CreateRoomHelper_1.default.ins.changeThreeMultiple;
+                    break;
+                case EnumManager_1.AntesMultipleEnum.openBookmakerMustBuyHorse:
+                    isOpenBookmakerMustBuyHorse = true;
+                    break;
+            }
+        }
+        var allFen = nowAntes * allMut;
+        if (isOpenBookmakerMustBuyHorse) {
+            allFen *= CreateRoomHelper_1.default.ins.openBookmakerMustBuyHorseMultiple;
+        }
+        this.dairuLabel.string = allFen.toString();
+        var have = UserInfo_1.default.ins.myInfo.gold;
+        this.myHaveCoinsLabel.node.color = have >= allFen ? new cc.Color(172, 182, 187, 255) : new cc.Color(206, 61, 61, 255);
+    };
+    BaseRuleItem.prototype.showLast = function () {
+        var info = this.ruleInfo;
+        this.nowGamePlayType = info.gamePlayType;
+        if (info.gamePlayType == LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi) {
+            this.nowSelectGroup = this.xuezhanBtn;
+        }
+        else {
+            this.nowSelectGroup = this.huansanBtn;
+        }
+        this.showSelectGroup(this.nowSelectGroup);
+        this.nowRoomType = info.roomType;
+        var arr = [this.roomBtn_0, this.roomBtn_1, this.roomBtn_2, this.roomBtn_3];
+        for (var i = 0; i < arr.length; i++) {
+            if (Number(arr[i].name.split("_")[1]) == this.nowRoomType) {
+                this.nowSelectRoomBtn = arr[i];
+            }
+        }
+        this.showSelectRoomBtn(this.nowSelectRoomBtn);
+        this.roomNameInputLabel.string = this.ruleTemplate ? this.ruleTemplate.name : "";
+        this.nowAntesIndex = CreateRoomHelper_1.default.ins.antesArr.indexOf(info.baseScore);
+        this.nowSelectHand = CreateRoomHelper_1.default.ins.allGameHnadsArr.indexOf(info.handsCnt);
+        this.nowSelectMut = CreateRoomHelper_1.default.ins.allGameMultipleArr.indexOf(info.ceiling);
+        this.nowSelectTiFan = CreateRoomHelper_1.default.ins.allGameTiFanArr.indexOf(info.tiFan);
+        if (this.nowSelectTiFan) {
+            this._height = 1331;
+            this.tiFanGroup.scaleY = 1;
+            this.tiFanGroup.active = true;
+        }
+        else {
+            this._height = 1106;
+            this.tiFanGroup.scaleY = 0;
+            this.tiFanGroup.active = false;
+        }
+    };
+    BaseRuleItem.prototype.showSelectRoomBtn = function (clickGrou) {
+        var fontImage;
+        if (this.nowSelectRoomBtn) {
+            fontImage = cc.find("/btnImage", this.nowSelectRoomBtn).getComponent(cc.Sprite);
+            fontImage.node.opacity = 0;
+        }
+        this.nowSelectRoomBtn = clickGrou;
+        fontImage = cc.find("/btnImage", this.nowSelectRoomBtn).getComponent(cc.Sprite);
+        fontImage.node.opacity = 255;
+        var names = clickGrou.name;
+        this.nowRoomType = Number(names.split("_")[1]) + 1;
+    };
+    BaseRuleItem.prototype.showSelectGroup = function (clickGrou) {
+        var fontImage;
+        if (this.nowSelectGroup) {
+            fontImage = cc.find("/oneImage", this.nowSelectGroup).getComponent(cc.Sprite);
+            fontImage.node.opacity = 0;
+        }
+        this.nowSelectGroup = clickGrou;
+        fontImage = cc.find("/oneImage", this.nowSelectGroup).getComponent(cc.Sprite);
+        fontImage.node.opacity = 255;
+        this.nowGamePlayType = clickGrou.name == "xuezhanBtn" ? LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi : LobbyMsgDef_1.GamePlayTypeEnum.HuanSanZhang;
+    };
+    BaseRuleItem.prototype.getRuleName = function () {
+        return this.roomNameInputLabel.string;
+    };
+    BaseRuleItem.prototype.getSelectData = function () {
+        for (var key in this.tableInfo) {
+            this.tableInfo[key] = null;
+        }
+        this.tableInfo.gamePlayType = this.nowGamePlayType;
+        this.tableInfo.roomType = this.nowRoomType;
+        this.tableInfo.baseScore = CreateRoomHelper_1.default.ins.antesArr[this.nowAntesIndex];
+        this.tableInfo.handsCnt = CreateRoomHelper_1.default.ins.allGameHnadsArr[this.nowSelectHand];
+        this.tableInfo.ceiling = CreateRoomHelper_1.default.ins.allGameMultipleArr[this.nowSelectMut];
+        this.tableInfo.tiFan = CreateRoomHelper_1.default.ins.allGameTiFanArr[this.nowSelectTiFan];
+        return this.tableInfo;
+    };
+    BaseRuleItem.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "xuezhanBtn", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "huansanBtn", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "roomBtn_0", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "roomBtn_1", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "roomBtn_2", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "roomBtn_3", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], BaseRuleItem.prototype, "roomNameInputLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], BaseRuleItem.prototype, "shousuQustionBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], BaseRuleItem.prototype, "dairuQustionBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], BaseRuleItem.prototype, "dizhuLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], BaseRuleItem.prototype, "dairuLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], BaseRuleItem.prototype, "myHaveCoinsLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], BaseRuleItem.prototype, "proImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], BaseRuleItem.prototype, "proSlitImage", void 0);
+    __decorate([
+        property(GetAddOrRemoveItem_1.default)
+    ], BaseRuleItem.prototype, "handsCntItem", void 0);
+    __decorate([
+        property(GetAddOrRemoveItem_1.default)
+    ], BaseRuleItem.prototype, "ceilingItem", void 0);
+    __decorate([
+        property(CreateCheckItem_1.default)
+    ], BaseRuleItem.prototype, "tiFanBox", void 0);
+    __decorate([
+        property(CreateCheckItem_1.default)
+    ], BaseRuleItem.prototype, "tifanBox2", void 0);
+    __decorate([
+        property(CreateCheckItem_1.default)
+    ], BaseRuleItem.prototype, "tifanBox4", void 0);
+    __decorate([
+        property(CreateCheckItem_1.default)
+    ], BaseRuleItem.prototype, "tifanBox8", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BaseRuleItem.prototype, "tiFanGroup", void 0);
+    BaseRuleItem = __decorate([
+        ccclass
+    ], BaseRuleItem);
+    return BaseRuleItem;
+}(CreateRoomRuleItem_1.default));
+exports.default = BaseRuleItem;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_xian",
+    "texture": "8915be6d-c472-4291-8b48-95bfe371912a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      933,
+      2
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      933,
+      2
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,377 @@
+"use strict";
+cc._RF.push(module, 'fe2abIXHIJMCb0lwxx3b0OP', 'MainManager');
+// Script/MainManager.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MainManager = void 0;
+var EnumManager_1 = require("./enum/EnumManager");
+var EventType_1 = require("./event/EventType");
+var GameInfo_1 = require("./Game/info/GameInfo");
+var UserInfo_1 = require("./Game/info/UserInfo");
+var GloBal_1 = require("./Shared/GloBal");
+var CreateRoomHelper_1 = require("./UI/createRoom/CreateRoomHelper");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MainManager = /** @class */ (function () {
+    function MainManager() {
+    }
+    MainManager_1 = MainManager;
+    Object.defineProperty(MainManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new MainManager_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**账号错误信息返回*/
+    MainManager.prototype.onRspAccError = function (data) {
+        var msg = JSON.parse(data);
+        GloBal_1.Global.Utils.debugOutput("收到账号错误信息:", msg);
+    };
+    /**大厅错误信息返回*/
+    MainManager.prototype.onRspLobbyError = function (data) {
+        var msg = JSON.parse(data);
+        GloBal_1.Global.Utils.debugOutput("收到大厅错误信息,msg.errCode:" + msg.errCode, "msg.strMsg:" + msg.strMsg);
+    };
+    /**牌桌错误信息返回*/
+    MainManager.prototype.onRspTabError = function (data) {
+        var msg = JSON.parse(data);
+        GloBal_1.Global.Utils.debugOutput("收到牌桌错误信息", msg);
+    };
+    /**玩家登录成功*/
+    MainManager.prototype.onTokenInfo = function (data) {
+        var msg = JSON.parse(data);
+        GloBal_1.Global.Utils.debugOutput("我收到了登录成功", data);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.LOGIN_OK);
+    };
+    /**登录时候返回玩家信息*/
+    MainManager.prototype.onRspPlayerInfo = function (data) {
+        var msg = JSON.parse(data);
+        UserInfo_1.default.ins.myInfo = msg.info;
+        GloBal_1.Global.Utils.debugOutput("我收到了玩家信息", data);
+    };
+    /**登录时候返回的大厅信息*/
+    MainManager.prototype.onRspLobbyInfo = function (data) {
+        var msg = JSON.parse(data);
+        GameInfo_1.default.ins.lobbyInfo = msg.info;
+        GloBal_1.Global.Utils.debugOutput("我收到了大厅信息", data);
+    };
+    /**创建或者进入房间时候返回的房间信息*/
+    MainManager.prototype.onRspRoomInfo = function (data) {
+        var msg = JSON.parse(data);
+        GameInfo_1.default.ins.roomTableInfo = msg.info;
+        GameInfo_1.default.ins.gamePlayers = msg.players;
+        UserInfo_1.default.ins.selfIsLookPlayer = true;
+        GloBal_1.Global.Utils.debugOutput("我收到了房间信息data:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GET_NEW_ROOM_INFO, msg);
+        GloBal_1.Global.Utils.webCopyString(msg.info.code.toString());
+    };
+    /**成功坐下*/
+    MainManager.prototype.onSitOK = function (data) {
+        var msg = JSON.parse(data);
+        UserInfo_1.default.ins.mySitIndex = msg.sit;
+        console.log("我坐下了data:", data, "---msg：", msg);
+        UserInfo_1.default.ins.selfIsLookPlayer = false;
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.Stand;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GET_NEW_SIT_OK, msg);
+    };
+    /**有人入座*/
+    MainManager.prototype.onOneSit = function (data) {
+        var msg = JSON.parse(data);
+        if (GameInfo_1.default.ins.gamePlayers.length == 0) {
+            GameInfo_1.default.ins.fristSitPlayer = msg;
+        }
+        GameInfo_1.default.ins.addNewSit(msg.newSit);
+        console.log("收到了有玩家进入房间:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.NEW_ONE_SIT, msg);
+    };
+    /**有人准备好了*/
+    MainManager.prototype.onReady = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了有人准备好了:", data, "---msg：", msg);
+        if (msg.okSit == UserInfo_1.default.ins.mySitIndex) {
+            GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.Ready;
+        }
+        else {
+            GameInfo_1.default.ins.setNewReady(msg.okSit);
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.playerReady, msg);
+    };
+    /**全部准备完成后开始定庄*/
+    MainManager.prototype.onStartDiceEast = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了开始定庄", data, "---msg：", msg);
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.ThrowBookMaker;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.ThrowBookMaker, msg);
+    };
+    /**投掷骰子结果返回*/
+    MainManager.prototype.onDiceRslt = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了投掷骰子结果:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.DiceRslt, msg);
+    };
+    /**开始定位*/
+    MainManager.prototype.onStartDicePos = function (data) {
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.ChangeChar;
+        var msg = JSON.parse(data);
+        console.log("收到了开始定位");
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.StartDicePos, msg);
+    };
+    /**个人定位骰子返回*/
+    MainManager.prototype.onPrDiceRslt = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了投掷个人骰子结果:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.PrDiceRslt, msg);
+    };
+    /**刷新位置*/
+    MainManager.prototype.onStartDiceGame = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了矫座结果:", data, "---msg：", msg);
+        GameInfo_1.default.ins.setNewPlayers(msg.players);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.StartDiceGame, msg);
+    };
+    /**开始牌局  等待投掷摸牌先后顺序骰子*/
+    MainManager.prototype.onBeginDiceMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了开始牌局 投掷骰子:", data, "---msg：", msg);
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.ThrowFrist;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.BeginDiceMsg, msg);
+    };
+    /**开始发牌*/
+    MainManager.prototype.onStartGame = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了开始发牌", data, "---msg:", msg);
+        GameInfo_1.default.ins.nowGameCount = msg.startHands + 1;
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.DrawHandCard;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.DrawHandCard, msg);
+    };
+    /**手牌到位*/
+    MainManager.prototype.onYouMajMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了自己的手牌", data, "---msg:", msg);
+        UserInfo_1.default.ins.myHandCardArr = msg.lstMajID;
+        GameInfo_1.default.ins.remPoolsNum = GameInfo_1.default.ins.AllCardMax - 4 * 13 - 1;
+        //TODO  买马结束后需要刷新一次买马数据还需要减一
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.YouMajMsg, msg);
+    };
+    /**服务器通知定缺*/
+    MainManager.prototype.onStartDingQue = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了开始定缺", data, "---msg:", msg);
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.CheckDice;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.StartDingQue, msg);
+    };
+    /**定缺结果*/
+    MainManager.prototype.onQueRslt = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了定缺结果", data, "---msg:", msg);
+        for (var i = 0; i < msg.infos.length; i++) {
+            var info = msg.infos[i];
+            if (info.sitNum == UserInfo_1.default.ins.mySitIndex) {
+                UserInfo_1.default.ins.myDiceType = info.wtt;
+            }
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.QueRslt, msg);
+    };
+    /**轮到某个人出牌*/
+    MainManager.prototype.onWaitDownMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了某人轮次", data, "---msg:", msg);
+        GameInfo_1.default.ins.nowActionSit = msg.siteNum;
+        if (msg.siteNum == UserInfo_1.default.ins.mySitIndex) {
+            GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.PlayCard;
+        }
+        else {
+            GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.WaitOperate;
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.WaitDownMsg, msg);
+    };
+    /**服务器广播某人出牌*/
+    MainManager.prototype.onDownMajMsg = function (data) {
+        var msg = JSON.parse(data);
+        GameInfo_1.default.ins.LastIsGang = false;
+        console.log("服务器广播某人出牌", data, "---msg:", msg);
+        UserInfo_1.default.ins.otherLastOutCard = msg.majID;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.DownMajMsg, msg);
+        GloBal_1.Global.Utils.playSound("sound/2");
+        var source = "sound/0_" + GameInfo_1.default.ins.lauType + "_" + GameInfo_1.default.ins.sexType + "_" + Math.floor(msg.majID / 10) + "_" + msg.majID % 10 + "_1";
+        console.log("出牌音效=" + source);
+        GloBal_1.Global.Utils.playSound(source);
+    };
+    /**广播某人摸牌*/
+    MainManager.prototype.onSomeTurnMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了某人摸牌", data, "---msg:", msg);
+        GameInfo_1.default.ins.remPoolsNum = msg.remPoolsNum;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.OtherDrawCard, msg);
+    };
+    /**我自己的摸牌*/
+    MainManager.prototype.onGetMajMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了自己的摸牌", data, "---msg:", msg);
+        UserInfo_1.default.ins.myLastFeelCard = msg.majID;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GetMajMsg, msg);
+    };
+    /**别人出牌触发胡碰杠*/
+    MainManager.prototype.onWaitYou = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了别人出牌我可以胡碰杠,需要等待我做出处理", data, "---msg:", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.WaitYou, msg);
+    };
+    /**服务器广播某人碰杠*/
+    MainManager.prototype.onPengMajMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("服务器广播某人碰杠", data, "---msg:", msg);
+        if (msg.isGang) {
+            GameInfo_1.default.ins.LastIsGang = true;
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.PengMajMsg, msg);
+        var source = "sound/0_" + GameInfo_1.default.ins.lauType + "_" + GameInfo_1.default.ins.sexType + "_" + (msg.isGang ? 5 : 4) + "_1";
+        console.log("碰杠音效=" + source);
+        GloBal_1.Global.Utils.playSound(source);
+    };
+    /**服务器广播自己杠*/
+    MainManager.prototype.onGangSelfMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("服务器广播自己杠", data, "---msg:", msg);
+        GameInfo_1.default.ins.LastIsGang = true;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GangSelfMsg, msg);
+        var source = "sound/0_" + GameInfo_1.default.ins.lauType + "_" + GameInfo_1.default.ins.sexType + "_5" + "_1";
+        console.log("杠音效=" + source);
+        GloBal_1.Global.Utils.playSound(source);
+    };
+    /**服务器告知抢杠*/
+    MainManager.prototype.onHasHuGangMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("服务器通知有人抢杠", data, "---msg:", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.HasHuGangMsg, msg);
+    };
+    /**有人要补杠*/
+    MainManager.prototype.onBuGanging = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了补杠:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.BuGanging, msg);
+    };
+    /**服务器通知胡牌*/
+    MainManager.prototype.onHuMajMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("服务器通知有人胡牌", data, "---msg:", msg);
+        GameInfo_1.default.ins.hupaiArr[msg.huSit] = msg.majID;
+        if (msg.huSit == UserInfo_1.default.ins.mySitIndex) {
+            GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.HuCard;
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.HuMajMsg, msg);
+        GloBal_1.Global.Utils.playSound("sound/3");
+    };
+    /**一轮游戏结束*/
+    MainManager.prototype.onGameResultMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了一轮游戏结束:", data, "---msg：", msg);
+        GameInfo_1.default.ins.gameResultMsg = msg;
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.SmallGameSettlement;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GameResultMsg, msg);
+    };
+    /**一轮游戏结束积分*/
+    MainManager.prototype.onScoreListMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了一轮游戏结束积分:", data, "---msg：", msg);
+        GameInfo_1.default.ins.scoreListMsg = msg;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.ScoreListMsg, msg);
+    };
+    /**实时积分消息*/
+    MainManager.prototype.onRealScore = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了实时积分消息:", data, "---msg：", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.RealScore, msg);
+    };
+    MainManager.prototype.onIniveTableMsg = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了玩家邀请信息：  ", data, "---msg:  ", msg);
+        GameInfo_1.default.ins.gameInviteData = msg;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GameInviteMsg, msg);
+    };
+    /**房间模板信息返回*/
+    MainManager.prototype.onGetRoomRuleTemplate = function (data) {
+        var msg = JSON.parse(data);
+        if (!msg.ruleInfoArr) {
+            msg.ruleInfoArr = [];
+        }
+        CreateRoomHelper_1.default.ins.setCreateRoomRuleArr(msg.ruleInfoArr);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.RspGetRoomRuleTemplate, msg);
+    };
+    /**保存房间模板返回*/
+    MainManager.prototype.onSaveRoomRuleTemplate = function (data) {
+        var msg = JSON.parse(data);
+        var temp = CreateRoomHelper_1.default.ins.lastSaveTemplate;
+        temp.templId = msg.tempId;
+        CreateRoomHelper_1.default.ins.addTemplToRuleArr(temp);
+        GloBal_1.Global.Utils.dialogOutput("保存成功");
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.SaveRoomRuleTemplate, msg);
+    };
+    /**删除房间模板*/
+    MainManager.prototype.onRspDeletRoomRuleTemplate = function (data) {
+        var msg = JSON.parse(data);
+        CreateRoomHelper_1.default.ins.removeTempByRuleArr(msg.tempId);
+        GloBal_1.Global.Utils.dialogOutput("删除成功");
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.RspDeletRoomRuleTemplate, msg);
+    };
+    /**剩余牌墙信息*/
+    MainManager.prototype.onPoolsList = function (data) {
+        var msg = JSON.parse(data);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.PoolsList, msg);
+    };
+    /**游戏结束大结算数据 */
+    MainManager.prototype.onGameOver = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到大结算数据: ", data, "---msg", msg);
+        GameInfo_1.default.ins.gameOverData = msg;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GameOverMsg, msg);
+    };
+    /**服务器通知换三张*/
+    MainManager.prototype.onStartChange3 = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了开始换三张", data, "---msg:", msg);
+        GameInfo_1.default.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.ChangeThree;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.ChangeThree, msg);
+    };
+    /**换三张状态改变*/
+    MainManager.prototype.onChange3Maj = function (data) {
+        var msg = JSON.parse(data);
+        console.log("收到了换三张状态改变", data, "---msg:", msg);
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.Change3Maj, msg);
+    };
+    /**换三张结果出现*/
+    MainManager.prototype.onYou3Maj = function (data) {
+        var msg = JSON.parse(data);
+        if (msg.baozi == 2) {
+            GameInfo_1.default.ins.isShuangbao = true;
+        }
+        else if (msg.baozi == 1) {
+            GameInfo_1.default.ins.isBaozi = true;
+        }
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.ShowBaoziFight);
+        console.log("收到换三张结果", data, "---msg:", msg);
+        GameInfo_1.default.ins.myYou3MajData = msg;
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.You3Maj, msg);
+    };
+    var MainManager_1;
+    MainManager = MainManager_1 = __decorate([
+        ccclass
+    ], MainManager);
+    return MainManager;
+}());
+exports.MainManager = MainManager;
+
+cc._RF.pop();

@@ -1,0 +1,296 @@
+"use strict";
+cc._RF.push(module, '4ad187H3g1CV6QfgpEpYq5x', 'MainLobbyPanel');
+// Script/UI/MainLobbyPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../event/EventType");
+var LobbyMsg_1 = require("../proto/LobbyMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var CreateRommAndFriendPanel_1 = require("./createRoom/CreateRommAndFriendPanel");
+var CreateRoomHelper_1 = require("./createRoom/CreateRoomHelper");
+var CreateRoomRulerPanel_1 = require("./createRoom/CreateRoomRulerPanel");
+var CreateRoomRuleTemplate_1 = require("./createRoom/CreateRoomRuleTemplate");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MainLobbyPanel = /** @class */ (function (_super) {
+    __extends(MainLobbyPanel, _super);
+    function MainLobbyPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.panelGroup = null;
+        _this.menuGroup = null;
+        _this.mainBtn = null;
+        _this.recordBtn = null;
+        _this.teamBtn = null;
+        _this.clubBtn = null;
+        _this.infoBtn = null;
+        _this.tipsGroup = null;
+        _this.nowType = 3;
+        return _this;
+    }
+    MainLobbyPanel.prototype.onLoad = function () {
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> onLoad");
+        this.addEvent();
+    };
+    MainLobbyPanel.prototype.addEvent = function () {
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GET_NEW_ROOM_INFO, this.onRspRoomInfo, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.CreateRoomRuleTipsClick, this.onShowRuleTips, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.RspGetRoomRuleTemplate, this.onGetTemplateBack, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GameInviteMsg, this.onGameInvite, this);
+    };
+    MainLobbyPanel.prototype.onShowRuleTips = function () {
+        // if(this.createRuleTips){
+        // 	this.clearCreateRuleTips();
+        // }
+        // this.createRuleTips = new CreateRoomRuleTips(e.data);
+        // this.topGroup.addChild(this.createRuleTips);
+    };
+    /**创建游戏房间返回*/
+    MainLobbyPanel.prototype.onRspRoomInfo = function (type, data) {
+        cc.director.loadScene("mainMajiong");
+        this.destroy();
+    };
+    /**主页按钮点击*/
+    MainLobbyPanel.prototype.onMainBtnClick = function (event, param) {
+        if (this.nowType == 3) {
+            return;
+        }
+        this.removeAll();
+        this.nowType = 3;
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> 主页点击");
+    };
+    /**战绩按钮点击*/
+    MainLobbyPanel.prototype.onRecordBtnClick = function (event, param) {
+        if (this.nowType == 1) {
+            return;
+        }
+        this.removeAll();
+        this.nowType = 1;
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> 战绩点击");
+    };
+    /**约局按钮点击*/
+    MainLobbyPanel.prototype.onTeamBtnClick = function (event, param) {
+        var _this = this;
+        if (this.nowType == 2) {
+            return;
+        }
+        this.removeAll();
+        this.nowType = 2;
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> 约局按钮点击");
+        GloBal_1.Global.DialogManager.createDialog('createRoom/prefab/CreateRommAndFriendPanel', null, function (any, createDialog) {
+            _this.createRoomPanel = createDialog.getComponent(CreateRommAndFriendPanel_1.default);
+            _this.createRoomPanel.setCallBack(_this.onCreateOrSave, _this);
+            createDialog.y = -1920;
+        }, this.panelGroup);
+    };
+    MainLobbyPanel.prototype.onCreateOrSave = function (type) {
+        if (type == 1) {
+            this.showSavePanel();
+        }
+        else {
+            this.showCreatePanel();
+        }
+    };
+    MainLobbyPanel.prototype.showCreatePanel = function (ruleInfo) {
+        var _this = this;
+        if (ruleInfo === void 0) { ruleInfo = null; }
+        GloBal_1.Global.DialogManager.createDialog('createRoom/prefab/CreateRoomRulerPanel', null, function (any, createDialog) {
+            _this.createRoomRuler = createDialog.getComponent(CreateRoomRulerPanel_1.default);
+            createDialog.y = -1920;
+            createDialog.x = 1080;
+            _this.createRoomRuler.setData(_this.onRuleBack, _this, ruleInfo);
+            GloBal_1.Global.Utils.showPanelAction(_this.createRoomRuler.node, new cc.Vec2(0, -1920));
+        }, this.tipsGroup);
+    };
+    /**规则界面回调*/
+    MainLobbyPanel.prototype.onRuleBack = function (type) {
+        var _this = this;
+        if (type == 1) {
+            this.onRuleToBack();
+        }
+        else {
+            if (this.createRoomRuler) {
+                GloBal_1.Global.Utils.hidePanelAction(this.createRoomRuler.node, new cc.Vec2(-1080, -1920), function () {
+                    _this.clearRoomRule();
+                }, this);
+                this.showSavePanel();
+            }
+        }
+    };
+    /**打开模板*/
+    MainLobbyPanel.prototype.showSavePanel = function () {
+        this.clearRoomTemplate();
+        var arr = CreateRoomHelper_1.default.ins.getCreateRoomRuleArr();
+        if (arr && arr.length > 0) {
+            this.onGetTemplateBack();
+        }
+        else {
+            GloBal_1.Global.Utils.showWait();
+            var msg = new LobbyMsg_1.Msg_CS_ReqGetRoomRuleTemplate();
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        }
+    };
+    MainLobbyPanel.prototype.onGetTemplateBack = function () {
+        var _this = this;
+        GloBal_1.Global.Utils.hideWait();
+        GloBal_1.Global.DialogManager.createDialog('createRoom/prefab/CreateRoomRuleTemplate', null, function (any, createDialog) {
+            _this.createRoomTemplate = createDialog.getComponent(CreateRoomRuleTemplate_1.default);
+            createDialog.y = -1920;
+            createDialog.x = 1080;
+            _this.createRoomTemplate.setData(CreateRoomHelper_1.default.ins.getCreateRoomRuleArr(), _this.onTempLateBack, _this);
+            GloBal_1.Global.Utils.showPanelAction(_this.createRoomTemplate.node, new cc.Vec2(0, -1920));
+        }, this.tipsGroup);
+        this.onRuleToBack();
+    };
+    /**
+     * @param type  1 back 2 template 3 room 4 open or change
+    */
+    MainLobbyPanel.prototype.onTempLateBack = function (type, ruleInfo) {
+        var _this = this;
+        if (ruleInfo === void 0) { ruleInfo = null; }
+        if (type == 1) {
+            GloBal_1.Global.Utils.hidePanelAction(this.createRoomTemplate.node, new cc.Vec2(-1080, -1920), function () {
+                _this.clearRoomTemplate();
+            }, this);
+        }
+        else if (type == 2) {
+            GloBal_1.Global.Utils.hidePanelAction(this.createRoomTemplate.node, new cc.Vec2(-1080, -1920), function () {
+                _this.clearRoomTemplate();
+            }, this);
+            this.showCreatePanel();
+        }
+        else if (type == 3) {
+            GloBal_1.Global.Utils.hidePanelAction(this.createRoomTemplate.node, new cc.Vec2(-1080, -1920), function () {
+                _this.clearRoomTemplate();
+            }, this);
+        }
+        else if (type == 4) {
+            GloBal_1.Global.Utils.hidePanelAction(this.createRoomTemplate.node, new cc.Vec2(-1080, -1920), function () {
+                _this.clearRoomTemplate();
+            }, this);
+            this.showCreatePanel(ruleInfo);
+        }
+    };
+    MainLobbyPanel.prototype.clearRoomTemplate = function () {
+        if (this.createRoomTemplate) {
+            this.createRoomTemplate.disTory();
+            this.createRoomTemplate = null;
+        }
+    };
+    /**规则界面返回*/
+    MainLobbyPanel.prototype.onRuleToBack = function () {
+        var _this = this;
+        if (this.createRoomRuler) {
+            GloBal_1.Global.Utils.hidePanelAction(this.createRoomRuler.node, new cc.Vec2(-1080, -1920), function () {
+                _this.clearRoomRule();
+            }, this);
+        }
+    };
+    MainLobbyPanel.prototype.clearRoomRule = function () {
+        if (this.createRoomRuler) {
+            this.createRoomRuler.disTory();
+            this.createRoomRuler = null;
+        }
+    };
+    /**俱乐部按钮点击*/
+    MainLobbyPanel.prototype.onClubBtnClick = function (event, param) {
+        if (this.nowType == 4) {
+            return;
+        }
+        this.removeAll();
+        this.nowType = 4;
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> 俱乐部点击");
+    };
+    /**玩家信息按钮点击*/
+    MainLobbyPanel.prototype.onInfoBtnClick = function (event, param) {
+        if (this.nowType == 5) {
+            return;
+        }
+        this.removeAll();
+        this.nowType = 5;
+        GloBal_1.Global.Utils.debugOutput("MainLobbyPanel ==> 个人信息点击");
+    };
+    MainLobbyPanel.prototype.removeAll = function () {
+        if (this.createRoomPanel) {
+            this.createRoomPanel.disTory();
+            this.createRoomPanel = null;
+        }
+        if (this.createRoomRuler) {
+            this.createRoomRuler.disTory();
+            this.createRoomRuler = null;
+        }
+    };
+    MainLobbyPanel.prototype.removeEvent = function () {
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.GET_NEW_ROOM_INFO, this.onRspRoomInfo, this);
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.CreateRoomRuleTipsClick, this.onShowRuleTips, this);
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.RspGetRoomRuleTemplate, this.onGetTemplateBack, this);
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.GameInviteMsg, this.onGameInvite, this);
+    };
+    MainLobbyPanel.prototype.onGameInvite = function () {
+        GloBal_1.Global.DialogManager.createDialog("smallOver/prefab/InviteToRoomPannel_Hall", null, function (any, dialog) {
+            dialog.x = 540;
+            dialog.y = -960;
+        });
+    };
+    MainLobbyPanel.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        this.removeEvent();
+        return true;
+    };
+    __decorate([
+        property(cc.Node)
+    ], MainLobbyPanel.prototype, "panelGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MainLobbyPanel.prototype, "menuGroup", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MainLobbyPanel.prototype, "mainBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MainLobbyPanel.prototype, "recordBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MainLobbyPanel.prototype, "teamBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MainLobbyPanel.prototype, "clubBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MainLobbyPanel.prototype, "infoBtn", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MainLobbyPanel.prototype, "tipsGroup", void 0);
+    MainLobbyPanel = __decorate([
+        ccclass
+    ], MainLobbyPanel);
+    return MainLobbyPanel;
+}(UIBase_1.default));
+exports.default = MainLobbyPanel;
+
+cc._RF.pop();

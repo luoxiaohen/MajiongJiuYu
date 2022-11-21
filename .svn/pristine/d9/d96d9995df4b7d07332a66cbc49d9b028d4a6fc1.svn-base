@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_huanpaid",
+    "texture": "370e879b-258c-4b9c-85a0-b3175de29837",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      161,
+      74
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      161,
+      74
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

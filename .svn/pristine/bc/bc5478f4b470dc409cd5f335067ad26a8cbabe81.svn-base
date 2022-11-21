@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_yipaosanx",
+    "texture": "d3dc748d-dac4-402c-b445-de7326932557",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      340,
+      83
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      340,
+      83
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

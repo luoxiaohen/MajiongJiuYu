@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_fenge",
+    "texture": "2134c8a5-aa7d-434e-b6db-c29cac9830a5",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1189,
+      2
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1189,
+      2
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

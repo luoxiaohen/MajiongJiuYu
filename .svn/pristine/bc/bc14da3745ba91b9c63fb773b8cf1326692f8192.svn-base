@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_wuting",
+    "texture": "b1230d73-f3c5-4e46-be45-99e55491f7a9",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      154,
+      92
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      154,
+      92
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

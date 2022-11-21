@@ -1,0 +1,50 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/proto/AccountMsgDef.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, 'f0516OMfYNJWLG+Jmrx1wr+', 'AccountMsgDef');
+// Script/proto/AccountMsgDef.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccountErrCode = exports.AccountMsgDef = void 0;
+/**
+* Created by admin on 2022/5/23.
+*/
+var AccountMsgDef = /** @class */ (function () {
+    function AccountMsgDef() {
+    }
+    return AccountMsgDef;
+}());
+exports.AccountMsgDef = AccountMsgDef;
+var AccountErrCode;
+(function (AccountErrCode) {
+    AccountErrCode[AccountErrCode["eOK"] = 0] = "eOK";
+    AccountErrCode[AccountErrCode["eNameError"] = 1] = "eNameError";
+    AccountErrCode[AccountErrCode["eNameRepeat"] = 2] = "eNameRepeat";
+    AccountErrCode[AccountErrCode["eAccountNot"] = 3] = "eAccountNot";
+    AccountErrCode[AccountErrCode["ePassError"] = 4] = "ePassError";
+    AccountErrCode[AccountErrCode["eNotSrvID"] = 5] = "eNotSrvID";
+    AccountErrCode[AccountErrCode["eMax"] = 6] = "eMax";
+})(AccountErrCode = exports.AccountErrCode || (exports.AccountErrCode = {}));
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxwcm90b1xcQWNjb3VudE1zZ0RlZi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTs7RUFFRTtBQUNGO0lBQUE7SUFDQSxDQUFDO0lBQUQsb0JBQUM7QUFBRCxDQURBLEFBQ0MsSUFBQTtBQURZLHNDQUFhO0FBRzFCLElBQVksY0FRWDtBQVJELFdBQVksY0FBYztJQUN6QixpREFBRyxDQUFBO0lBQ0gsK0RBQVUsQ0FBQTtJQUNWLGlFQUFXLENBQUE7SUFDWCxpRUFBVyxDQUFBO0lBQ1gsK0RBQVUsQ0FBQTtJQUNWLDZEQUFTLENBQUE7SUFDVCxtREFBSSxDQUFBO0FBQ0wsQ0FBQyxFQVJXLGNBQWMsR0FBZCxzQkFBYyxLQUFkLHNCQUFjLFFBUXpCIiwiZmlsZSI6IiIsInNvdXJjZVJvb3QiOiIvIiwic291cmNlc0NvbnRlbnQiOlsiXHJcblxyXG4vKipcclxuKiBDcmVhdGVkIGJ5IGFkbWluIG9uIDIwMjIvNS8yMy5cclxuKi9cclxuZXhwb3J0IGNsYXNzIEFjY291bnRNc2dEZWYge1xyXG59XHJcblxyXG5leHBvcnQgZW51bSBBY2NvdW50RXJyQ29kZXtcclxuXHRlT0ssXHJcblx0ZU5hbWVFcnJvciwgICAgICAgICAvLyDms6jlhozlkI3kuI3lkIjms5VcclxuXHRlTmFtZVJlcGVhdCwgICAgICAgIC8vIOmHjeWkjeazqOWGjFxyXG5cdGVBY2NvdW50Tm90LCAgICAgICAgLy8g6LSm5Y+35LiN5a2Y5ZyoXHJcblx0ZVBhc3NFcnJvciwgICAgICAgICAvLyDlr4bnoIHplJnor69cclxuXHRlTm90U3J2SUQsICAgICAgICAgIC8vIOacjeWKoeWZqOacquWQr+WKqFxyXG5cdGVNYXhcclxufVxyXG5cclxuXHJcbiJdfQ==

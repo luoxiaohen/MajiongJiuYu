@@ -1,0 +1,515 @@
+"use strict";
+cc._RF.push(module, '14ae4m387dPAqtrQETpb9jg', 'GameInfo');
+// Script/Game/info/GameInfo.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var UserInfo_1 = require("./UserInfo");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GameInfo = /** @class */ (function () {
+    function GameInfo() {
+        this.AllCardMax = 108;
+        /**游戏中的玩家信息*/
+        this._gamePlayers = [];
+        /***上一手动作是杠*/
+        this._LastIsGang = false;
+        /***是否是自己的庄*/
+        this._isSelfZhuang = false;
+        /**所有牌墙集合*/
+        this._allWallCardArray = [];
+        /**当前是第几手*/
+        this._nowGameCount = 0;
+        /***本局骰子是否豹子*/
+        this._isBaozi = false;
+        /***本局骰子是否双豹*/
+        this._isShuangbao = false;
+        /**所有玩家一共拿了几张牌*/
+        this._allPlayerGetCard = 0;
+        /**所有出牌集合*/
+        this._allOutCardArr = [];
+        /***当前谁的动作回合*/
+        this._nowActionSit = -1;
+        /***牌局中所有人打出的最后一张牌*/
+        this._otherLastCard = -1;
+        /**牌墙剩余数量*/
+        this._remPoolsNum = 0;
+        /**是否已经过手碰了*/
+        this._isTheirHandsPeng = false;
+        /**胡牌数量*/
+        this._huCounts = 0;
+        /**胡牌数组*/
+        this._hupaiArr = [];
+        /**当前在规则界面采集的所有倍数*/
+        this.nowMultipleArray = [];
+        /**0：四川话 1:普通话*/
+        this._lauType = 0;
+        /**0：男 1:女*/
+        this._sexType = 0;
+        this.lauType = Math.random() * 20 < 10 ? 0 : 1;
+        this.sexType = Math.random() * 20 < 10 ? 0 : 1;
+    }
+    GameInfo_1 = GameInfo;
+    Object.defineProperty(GameInfo, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new GameInfo_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "lobbyInfo", {
+        get: function () {
+            return this._lobbyInfo;
+        },
+        set: function (value) {
+            this._lobbyInfo = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "roomTableInfo", {
+        get: function () {
+            return this._roomTableInfo;
+        },
+        set: function (value) {
+            this._roomTableInfo = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "nowGameStatus", {
+        get: function () {
+            return this._nowGameStatus;
+        },
+        set: function (value) {
+            this._nowGameStatus = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "nowBookMakerSit", {
+        get: function () {
+            return this._nowBookMakerSit;
+        },
+        set: function (value) {
+            this._nowBookMakerSit = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "fristSitPlayer", {
+        get: function () {
+            return this._fristSitPlayer;
+        },
+        set: function (value) {
+            this._fristSitPlayer = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "gamePlayers", {
+        get: function () {
+            return this._gamePlayers;
+        },
+        set: function (value) {
+            this._gamePlayers = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    GameInfo.prototype.getSitInfoById = function (gpId) {
+        for (var i = 0; i < this.gamePlayers.length; i++) {
+            if (this.gamePlayers[i].player.gpid == gpId) {
+                return this.gamePlayers[i];
+            }
+        }
+    };
+    /**添加一个新的玩家坐下信息*/
+    GameInfo.prototype.addNewSit = function (sit) {
+        var add = false;
+        for (var i = 0; i < this.gamePlayers.length; i++) {
+            if (this.gamePlayers[i].sitNum == sit.sitNum) {
+                this.gamePlayers[i] = sit;
+                add = true;
+            }
+        }
+        if (!add) {
+            this.gamePlayers.push(sit);
+        }
+    };
+    /**移除一个玩家信息*/
+    GameInfo.prototype.removeSit = function (sit) {
+        for (var i = 0; i < this.gamePlayers.length; i++) {
+            if (this.gamePlayers[i].sitNum == sit) {
+                this.gamePlayers.splice(i, 1);
+                return;
+            }
+        }
+    };
+    /***更新当前所有桌子上的玩家信息
+     * 当矫座消息回来时候会统一更新一次
+    */
+    GameInfo.prototype.setNewPlayers = function (players) {
+        this.gamePlayers = players;
+        for (var i = 0; i < players.length; i++) {
+            if (UserInfo_1.default.ins.isSelf(players[i].player.gpid)) {
+                UserInfo_1.default.ins.mySitIndex = players[i].sitNum;
+            }
+        }
+    };
+    /***修改玩家准备状态*/
+    GameInfo.prototype.setNewReady = function (sitIndex, isReady) {
+        if (isReady === void 0) { isReady = 1; }
+        for (var i = 0; i < this.gamePlayers.length; i++) {
+            if (this.gamePlayers[i].sitNum == sitIndex) {
+                this.gamePlayers[i].onReady = isReady;
+            }
+        }
+    };
+    /**通过座位获取某一个玩家*/
+    GameInfo.prototype.getPlayerBySit = function (sit) {
+        for (var i = 0; i < this.gamePlayers.length; i++) {
+            if (this.gamePlayers[i] && this.gamePlayers[i].sitNum == sit) {
+                return this.gamePlayers[i];
+            }
+            if (!this.gamePlayers[i]) {
+                GloBal_1.Global.Utils.debugObj(sit + "==>查询不到当前座位玩家？", this.gamePlayers);
+            }
+        }
+        return null;
+    };
+    Object.defineProperty(GameInfo.prototype, "LastIsGang", {
+        get: function () {
+            return this._LastIsGang;
+        },
+        set: function (value) {
+            this._LastIsGang = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "isSelfZhuang", {
+        get: function () {
+            return this._isSelfZhuang;
+        },
+        set: function (value) {
+            this._isSelfZhuang = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "allWallCardArray", {
+        get: function () {
+            return this._allWallCardArray;
+        },
+        set: function (value) {
+            this._allWallCardArray = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "nowGameCount", {
+        get: function () {
+            return this._nowGameCount;
+        },
+        set: function (value) {
+            this._nowGameCount = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "isBaozi", {
+        get: function () {
+            return this._isBaozi;
+        },
+        set: function (value) {
+            this._isBaozi = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "isShuangbao", {
+        get: function () {
+            return this._isShuangbao;
+        },
+        set: function (value) {
+            this._isShuangbao = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "allPlayerGetCard", {
+        get: function () {
+            return this._allPlayerGetCard;
+        },
+        set: function (value) {
+            this._allPlayerGetCard = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "allOutCardArr", {
+        get: function () {
+            return this._allOutCardArr;
+        },
+        set: function (value) {
+            this._allOutCardArr = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    GameInfo.prototype.addCardToAllOut = function (cardValue, num) {
+        if (num === void 0) { num = 1; }
+        if (this.allOutCardArr[cardValue]) {
+            this.allOutCardArr[cardValue] = this.allOutCardArr[cardValue] + num;
+        }
+        else {
+            this.allOutCardArr[cardValue] = num;
+        }
+    };
+    Object.defineProperty(GameInfo.prototype, "nowActionSit", {
+        get: function () {
+            return this._nowActionSit;
+        },
+        set: function (value) {
+            this._nowActionSit = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "otherLastCard", {
+        get: function () {
+            return this._otherLastCard;
+        },
+        set: function (value) {
+            this._otherLastCard = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "remPoolsNum", {
+        get: function () {
+            return this._remPoolsNum;
+        },
+        set: function (value) {
+            this._remPoolsNum = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "myYou3MajData", {
+        get: function () {
+            return this._myYou3MajData;
+        },
+        set: function (value) {
+            this._myYou3MajData = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "isTheirHandsPeng", {
+        get: function () {
+            return this._isTheirHandsPeng;
+        },
+        set: function (value) {
+            this._isTheirHandsPeng = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /***查询过手碰*/
+    GameInfo.prototype.checkTheirHandsPeng = function () {
+        // if(this.roomTableInfo.rule.guoshou){
+        // }
+        this.isTheirHandsPeng = true;
+    };
+    Object.defineProperty(GameInfo.prototype, "huCounts", {
+        get: function () {
+            return this._huCounts;
+        },
+        set: function (value) {
+            this._huCounts = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "hupaiArr", {
+        get: function () {
+            return this._hupaiArr;
+        },
+        set: function (value) {
+            this._hupaiArr = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    GameInfo.prototype.getPosHu = function () {
+        var arr = [];
+        for (var i = 0; i < 4; i++) {
+            if (this.hupaiArr[i]) {
+                arr[i] = null;
+            }
+            else {
+                arr[i] = i;
+            }
+        }
+        return arr;
+    };
+    Object.defineProperty(GameInfo.prototype, "gameResultMsg", {
+        get: function () {
+            return this._gameResultMsg;
+        },
+        set: function (value) {
+            this._gameResultMsg = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "scoreListMsg", {
+        get: function () {
+            return this._scoreListMsg;
+        },
+        set: function (value) {
+            this._scoreListMsg = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "gameOverData", {
+        get: function () {
+            return this._gameOverData;
+        },
+        set: function (value) {
+            this._gameOverData = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "creatGameInviteTempData_CS", {
+        get: function () {
+            return this._createInviteTempData_cs;
+        },
+        set: function (value) {
+            this._createInviteTempData_cs = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "gameInviteData", {
+        get: function () {
+            return this._gameInviteData;
+        },
+        set: function (value) {
+            this._gameInviteData = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    GameInfo.prototype.getnowMultipleArray = function () {
+        return this.nowMultipleArray;
+    };
+    GameInfo.prototype.addItemToMultipleArray = function (antes) {
+        if (this.nowMultipleArray.indexOf(antes) < 0) {
+            this.nowMultipleArray.push(antes);
+        }
+    };
+    GameInfo.prototype.removeItemByMultipleArray = function (antes) {
+        var index = this.nowMultipleArray.indexOf(antes);
+        if (index >= 0) {
+            this.nowMultipleArray.splice(index, 1);
+        }
+    };
+    Object.defineProperty(GameInfo.prototype, "lauType", {
+        get: function () {
+            return this._lauType;
+        },
+        set: function (value) {
+            this._lauType = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(GameInfo.prototype, "sexType", {
+        get: function () {
+            return this._sexType;
+        },
+        set: function (value) {
+            this._sexType = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**牌墙建立后需要排序一次*/
+    GameInfo.prototype.sortWall = function () {
+        this.allWallCardArray.sort(function (a, b) {
+            if (a.cardId < b.cardId) {
+                return -1;
+            }
+            else if (a.cardId > b.cardId) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+    };
+    /**拿牌位置确认后需要再排序一次*/
+    GameInfo.prototype.sortWallByGetHand = function () {
+        this.allWallCardArray.sort(function (a, b) {
+            if (a.majiongDrawOeder < b.majiongDrawOeder) {
+                return -1;
+            }
+            else if (a.majiongDrawOeder > b.majiongDrawOeder) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        });
+    };
+    GameInfo.prototype.initOver = function () {
+        GameInfo_1.ins.nowGameStatus = EnumManager_1.PlayStauteEnum.Stand;
+        for (var i = 0; i < 4; i++) {
+            this.setNewReady(i, 0);
+        }
+        if (this.roomTableInfo.rule.lunZhuang == 1) {
+            this.isSelfZhuang = false;
+            this.nowBookMakerSit = -1;
+        }
+        for (var i = 0; i < this.allWallCardArray.length; i++) {
+            this.allWallCardArray[i].disTory();
+        }
+        this.allWallCardArray = [];
+        this.allPlayerGetCard = 0;
+        this.allOutCardArr = [];
+        this.nowActionSit = -1;
+        this.otherLastCard = -1;
+        this.myYou3MajData = null;
+        this.isTheirHandsPeng = false;
+        this.huCounts = 0;
+        this.hupaiArr = [];
+        this.isBaozi = false;
+        this.isShuangbao = false;
+    };
+    var GameInfo_1;
+    GameInfo = GameInfo_1 = __decorate([
+        ccclass
+    ], GameInfo);
+    return GameInfo;
+}());
+exports.default = GameInfo;
+
+cc._RF.pop();

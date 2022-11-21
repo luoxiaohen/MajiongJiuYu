@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_hai",
+    "texture": "df9b98f6-37fc-478e-9e02-ba726fac9cde",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      29,
+      31
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      29,
+      31
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

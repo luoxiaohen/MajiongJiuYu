@@ -1,0 +1,234 @@
+[
+  1,
+  [
+    "70/Z+ojRtKAbogja5i9uAc",
+    "80S/tAdoZOV52bguBAFkeT"
+  ],
+  [
+    "spriteFrame",
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.BitmapFont",
+      [
+        "_name",
+        "fontSize",
+        "_fntConfig"
+      ],
+      0
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2,
+      4
+    ]
+  ],
+  [
+    [
+      [
+        [
+          0,
+          "jiesuanJianfen",
+          72,
+          {
+            "commonHeight": 72,
+            "fontSize": 72,
+            "atlasName": "jiesuanJianfen.png",
+            "fontDefDictionary": {
+              "32": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 22,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              "45": {
+                "xOffset": -1,
+                "yOffset": 0,
+                "xAdvance": 22,
+                "rect": {
+                  "x": 125,
+                  "y": 53,
+                  "width": 24,
+                  "height": 12
+                }
+              },
+              "48": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 34,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 35,
+                  "height": 52
+                }
+              },
+              "49": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 22,
+                "rect": {
+                  "x": 35,
+                  "y": 53,
+                  "width": 22,
+                  "height": 51
+                }
+              },
+              "50": {
+                "xOffset": -1,
+                "yOffset": 0,
+                "xAdvance": 33,
+                "rect": {
+                  "x": 58,
+                  "y": 53,
+                  "width": 34,
+                  "height": 51
+                }
+              },
+              "51": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 32,
+                "rect": {
+                  "x": 36,
+                  "y": 0,
+                  "width": 32,
+                  "height": 52
+                }
+              },
+              "52": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 38,
+                "rect": {
+                  "x": 0,
+                  "y": 106,
+                  "width": 38,
+                  "height": 50
+                }
+              },
+              "53": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 31,
+                "rect": {
+                  "x": 93,
+                  "y": 53,
+                  "width": 31,
+                  "height": 51
+                }
+              },
+              "54": {
+                "xOffset": -1,
+                "yOffset": 0,
+                "xAdvance": 33,
+                "rect": {
+                  "x": 69,
+                  "y": 0,
+                  "width": 35,
+                  "height": 52
+                }
+              },
+              "55": {
+                "xOffset": -1,
+                "yOffset": 0,
+                "xAdvance": 33,
+                "rect": {
+                  "x": 39,
+                  "y": 106,
+                  "width": 34,
+                  "height": 50
+                }
+              },
+              "56": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 34,
+                "rect": {
+                  "x": 105,
+                  "y": 0,
+                  "width": 34,
+                  "height": 52
+                }
+              },
+              "57": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 34,
+                "rect": {
+                  "x": 0,
+                  "y": 53,
+                  "width": 34,
+                  "height": 52
+                }
+              }
+            },
+            "kerningDict": {}
+          }
+        ]
+      ],
+      0,
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "jiesuanJianfen",
+          "rect": [
+            1,
+            1,
+            147,
+            154
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            149,
+            156
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
+  ]
+]

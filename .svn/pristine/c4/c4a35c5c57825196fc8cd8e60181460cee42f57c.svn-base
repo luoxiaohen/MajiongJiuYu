@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_zhuangma",
+    "texture": "56a44af5-2988-4502-9294-127b392e6c8f",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      133,
+      67
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      133,
+      67
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

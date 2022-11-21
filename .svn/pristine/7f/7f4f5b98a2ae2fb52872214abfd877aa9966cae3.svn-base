@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_2zimo",
+    "texture": "dc970b9e-e550-4b61-9d41-3f175d4c1b89",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      193,
+      86
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      193,
+      86
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

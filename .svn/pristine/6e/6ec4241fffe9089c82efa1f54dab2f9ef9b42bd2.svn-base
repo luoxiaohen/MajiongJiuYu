@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_shaizi6",
+    "texture": "c4d9d76e-c5fb-4840-b61d-1a499da2aa4d",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      86,
+      86
+    ],
+    "offset": [
+      -0.5,
+      0
+    ],
+    "originalSize": [
+      87,
+      86
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

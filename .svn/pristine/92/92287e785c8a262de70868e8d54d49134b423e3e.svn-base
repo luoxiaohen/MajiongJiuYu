@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_mobank2",
+    "texture": "e4d66336-2bc6-43e5-a44e-9e5161c2e861",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      290,
+      84
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      290,
+      84
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

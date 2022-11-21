@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_fangxiang_3_3",
+    "texture": "faf600f8-2d34-44b3-927d-f0993527721f",
+    "atlas": "",
+    "rect": [
+      14,
+      91,
+      160,
+      50
+    ],
+    "offset": [
+      0.5,
+      -45.5
+    ],
+    "originalSize": [
+      187,
+      141
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

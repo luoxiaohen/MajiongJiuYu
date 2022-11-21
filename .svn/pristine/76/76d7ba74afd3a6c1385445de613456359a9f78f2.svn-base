@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_tishik2",
+    "texture": "bf73989c-1651-4652-9d91-de2caa94d0b1",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      206,
+      232
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      206,
+      232
+    ],
+    "capInsets": [
+      31,
+      29,
+      42,
+      38
+    ]
+  }
+}

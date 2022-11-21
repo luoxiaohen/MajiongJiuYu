@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_biaoshi1",
+    "texture": "d35f370b-fdcb-413b-b15b-cf5c45b514ca",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      50,
+      51
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      50,
+      51
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

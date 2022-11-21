@@ -1,0 +1,19 @@
+{
+	"game": {
+		"name": "MajiongJiuYu",
+		"appid": "671969379",
+		"cid": 0
+	},
+	"needExecNative": true,
+	"configs": [
+		{
+			"appid": "671969379",
+			"services": [
+				{
+					"service_id": "235",
+					"enable": false
+				}
+			]
+		}
+	]
+}

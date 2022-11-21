@@ -1,0 +1,50 @@
+"use strict";
+cc._RF.push(module, '2dc5d0NuBtB+prJcqryEPgq', 'EventCenter');
+// Script/event/EventCenter.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventCenter = /** @class */ (function () {
+    function EventCenter() {
+        this.eventTarget = new cc.EventTarget();
+    }
+    Object.defineProperty(EventCenter, "ins", {
+        get: function () {
+            if (!this._ins) {
+                this._ins = new EventCenter();
+            }
+            return this._ins;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**
+     * Listen to a notification
+     * @param name
+     * @param callback
+     */
+    EventCenter.prototype.addEventListener = function (type, callback, target) {
+        this.eventTarget.on(type, callback, target);
+    };
+    /**
+     * Dispatch a notification
+     * @param name
+     */
+    EventCenter.prototype.dispatchEvent = function (type, data) {
+        this.eventTarget.emit(type, type, data);
+    };
+    EventCenter.prototype.hasEventListener = function ($type) {
+        return this.eventTarget != null && this.eventTarget.hasEventListener($type);
+    };
+    /**
+     * Cancel listen
+     * @param name
+     */
+    EventCenter.prototype.removeEventListener = function (type, callback, target) {
+        this.eventTarget.off(type, callback, target);
+    };
+    return EventCenter;
+}());
+exports.default = EventCenter;
+
+cc._RF.pop();

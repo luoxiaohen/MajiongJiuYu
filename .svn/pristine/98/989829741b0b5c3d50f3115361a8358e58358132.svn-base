@@ -1,0 +1,81 @@
+"use strict";
+cc._RF.push(module, '1e3e1f7oR5Fr4ifJOKCEhKN', 'BigOverHorseInfoItem');
+// Script/UI/over/BigOverHorseInfoItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var BigOverHorseInfoItem = /** @class */ (function (_super) {
+    __extends(BigOverHorseInfoItem, _super);
+    function BigOverHorseInfoItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // LIFE-CYCLE CALLBACKS:
+    BigOverHorseInfoItem.prototype.onLoad = function () {
+        this.ma_node = this.node.getChildByName("ma_node");
+        this.zhuangma_node = this.node.getChildByName("zhuangma_node");
+        this.game_ma_sprite_1 = this.zhuangma_node.getChildByName("game_ma_sprite_1").getComponent(cc.Sprite);
+        this.game_ma_sprite_2 = this.ma_node.getChildByName("game_ma_sprite_2").getComponent(cc.Sprite);
+        this.game_card_num_label = this.ma_node.getChildByName("game_card_num_label").getComponent(cc.Label);
+        this.player_head_sprite = this.ma_node.getChildByName("player_head_sprite").getComponent(cc.Sprite);
+        this.player_name_label = this.ma_node.getChildByName("player_name_label").getComponent(cc.Label);
+        this.player_ID_label = this.ma_node.getChildByName("player_ID_label").getComponent(cc.Label);
+        this.player_horse_num_label = this.ma_node.getChildByName("player_horse_num_label").getComponent(cc.Label);
+    };
+    BigOverHorseInfoItem.prototype.start = function () {
+    };
+    BigOverHorseInfoItem.prototype.initValue = function (data) {
+        var type = data.length == 2 ? EnumManager_1.BigOverTypeEnum.ZhuangMa : EnumManager_1.BigOverTypeEnum.BuyMa;
+        this.zhuangma_node.active = type == EnumManager_1.BigOverTypeEnum.ZhuangMa;
+        if (type == EnumManager_1.BigOverTypeEnum.BuyMa) {
+            this.ma_node.x = -872;
+        }
+        else {
+            this.ma_node.x = 0;
+        }
+        var value = data.length == 2 ? data[1] : data[0];
+        if (data.length == 2) {
+            GloBal_1.Global.CCHelper.updateSpriteFrame(data[0].game_horse_url, this.game_ma_sprite_1);
+        }
+        GloBal_1.Global.CCHelper.updateSpriteFrame(value.game_horse_url, this.game_ma_sprite_2);
+        GloBal_1.Global.CCHelper.updateSpriteFrame(value.player_head_url, this.player_head_sprite);
+        this.game_card_num_label.string = value.card_num.toString();
+        this.player_name_label.string = value.player_name;
+        this.player_ID_label.string = value.player_ID;
+        this.player_horse_num_label.string = value.score_horse_num.toString();
+    };
+    BigOverHorseInfoItem = __decorate([
+        ccclass
+    ], BigOverHorseInfoItem);
+    return BigOverHorseInfoItem;
+}(cc.Component));
+exports.default = BigOverHorseInfoItem;
+
+cc._RF.pop();

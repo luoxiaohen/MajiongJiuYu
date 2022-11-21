@@ -1,0 +1,130 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/__qc_index__.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}
+require('./assets/Script/Game/info/GameInfo');
+require('./assets/Script/Game/info/UserInfo');
+require('./assets/Script/Helloworld');
+require('./assets/Script/MainManager');
+require('./assets/Script/Shared/CCHelper');
+require('./assets/Script/Shared/DialogManager');
+require('./assets/Script/Shared/GloBal');
+require('./assets/Script/Shared/MD5');
+require('./assets/Script/Shared/Main');
+require('./assets/Script/Shared/MessageCallback');
+require('./assets/Script/Shared/NetworkLogic');
+require('./assets/Script/Shared/NetworkManager');
+require('./assets/Script/Shared/Utils');
+require('./assets/Script/UIBase');
+require('./assets/Script/UI/BuyHorseItem');
+require('./assets/Script/UI/CreateRoomPanel');
+require('./assets/Script/UI/DingQuePanel');
+require('./assets/Script/UI/GameTurntablePanel');
+require('./assets/Script/UI/LoginPanel');
+require('./assets/Script/UI/MainGamePanel');
+require('./assets/Script/UI/MainLobbyPanel');
+require('./assets/Script/UI/MajiongTablePanel');
+require('./assets/Script/UI/PlayerHeadItem');
+require('./assets/Script/UI/ThrowPointHeadItem');
+require('./assets/Script/UI/action/GameIActiontem');
+require('./assets/Script/UI/card/CardHelpManager');
+require('./assets/Script/UI/card/DownHandCardPanel');
+require('./assets/Script/UI/card/HandCardPanel');
+require('./assets/Script/UI/card/MajiongEatItem');
+require('./assets/Script/UI/card/MajiongHandCard');
+require('./assets/Script/UI/card/MajiongOutCard');
+require('./assets/Script/UI/card/MajiongWallCard');
+require('./assets/Script/UI/card/MyHandCardPanel');
+require('./assets/Script/UI/card/OppHandCardPanel');
+require('./assets/Script/UI/card/UpHandCardPanel');
+require('./assets/Script/UI/changeThree/ChangeThreeItem');
+require('./assets/Script/UI/changeThree/ChangeThreePanel');
+require('./assets/Script/UI/changeThree/ChangeThreeTips');
+require('./assets/Script/UI/createRoom/BaseRuleItem');
+require('./assets/Script/UI/createRoom/CreateCheckItem');
+require('./assets/Script/UI/createRoom/CreateRommAndFriendPanel');
+require('./assets/Script/UI/createRoom/CreateRoomHelper');
+require('./assets/Script/UI/createRoom/CreateRoomRuleItem');
+require('./assets/Script/UI/createRoom/CreateRoomRuleTemplate');
+require('./assets/Script/UI/createRoom/CreateRoomRuleTemplateItem');
+require('./assets/Script/UI/createRoom/CreateRoomRulerPanel');
+require('./assets/Script/UI/createRoom/FanRuleItem');
+require('./assets/Script/UI/createRoom/FeaturesRuleItem');
+require('./assets/Script/UI/createRoom/GetAddOrRemoveItem');
+require('./assets/Script/UI/gameRecord/GameRealTimePannel');
+require('./assets/Script/UI/gameRecord/GameRecordPannel');
+require('./assets/Script/UI/gameRecord/RealTimePlayerInfoItem');
+require('./assets/Script/UI/gameRecord/WatchPlayerHeadItem');
+require('./assets/Script/UI/over/BigOverHorseInfoItem');
+require('./assets/Script/UI/over/BigOverPanel');
+require('./assets/Script/UI/over/BigOverPlayerInfoItem');
+require('./assets/Script/UI/over/InviteToRoomPannel');
+require('./assets/Script/UI/over/InviteToRoomPannel_Hall');
+require('./assets/Script/UI/over/OverBuyHorseItem');
+require('./assets/Script/UI/over/OverGameinfoItem');
+require('./assets/Script/UI/over/OverHandCardItem');
+require('./assets/Script/UI/over/OverHorseInfoItem');
+require('./assets/Script/UI/over/OverInfoLabelItem');
+require('./assets/Script/UI/over/OverPlayerInfoItem');
+require('./assets/Script/UI/over/SmallOverPanel');
+require('./assets/Script/UI/over/SmallOverPlayerHead');
+require('./assets/Script/UI/pieChart/PieChartItem');
+require('./assets/Script/UI/pieChart/PieChartPanel');
+require('./assets/Script/UI/test/ListTest');
+require('./assets/Script/UI/test/TestListItem');
+require('./assets/Script/com/CallBack');
+require('./assets/Script/com/GameProtocol');
+require('./assets/Script/com/ObjectPool');
+require('./assets/Script/com/SocketAdapter');
+require('./assets/Script/com/http/Http');
+require('./assets/Script/com/http/HttpMethod');
+require('./assets/Script/com/http/HttpRequest');
+require('./assets/Script/com/http/WebHttpRequest');
+require('./assets/Script/com/socket/ISocketAgent');
+require('./assets/Script/com/socket/Socket');
+require('./assets/Script/com/socket/SocketEvent');
+require('./assets/Script/com/socket/SocketManager');
+require('./assets/Script/enum/EnumManager');
+require('./assets/Script/event/EventCenter');
+require('./assets/Script/event/EventType');
+require('./assets/Script/mgr/CheckCardManager');
+require('./assets/Script/mgr/GMManager');
+require('./assets/Script/mgr/Manager');
+require('./assets/Script/mgr/TimeAndMoveManager');
+require('./assets/Script/proto/AccountMsg');
+require('./assets/Script/proto/AccountMsgDef');
+require('./assets/Script/proto/BaseMsg');
+require('./assets/Script/proto/LobbyMsg');
+require('./assets/Script/proto/LobbyMsgDef');
+require('./assets/Script/proto/MahjStepMsgDef');
+require('./assets/Script/proto/MsgCommDef');
+require('./assets/Script/proto/MsgCountDef');
+require('./assets/Script/proto/TableExMsg');
+require('./assets/Script/proto/TableMsg');
+require('./assets/Script/proto/TableMsgDef');
+require('./assets/Script/tips/GMTips');
+require('./assets/Script/tips/GetCardItem');
+require('./assets/Script/tips/GetCardPanel');
+require('./assets/Script/tips/HuPaiTiShiTips');
+require('./assets/Script/tips/HupaiTishiItem');
+require('./assets/Script/tips/SitDownTips');
+require('./assets/Script/utils/InterfaceHelp');
+
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();

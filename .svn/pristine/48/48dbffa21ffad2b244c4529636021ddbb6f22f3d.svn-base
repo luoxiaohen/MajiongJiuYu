@@ -1,0 +1,431 @@
+"use strict";
+cc._RF.push(module, '2990aPiqqJHZqN/WlXLTYbL', 'MajiongHandCard');
+// Script/UI/card/MajiongHandCard.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MajiongHandCard = /** @class */ (function (_super) {
+    __extends(MajiongHandCard, _super);
+    function MajiongHandCard() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.majiongBg = null;
+        _this.majiongFont = null;
+        _this.majiongDice = null;
+        _this.majiongCanOut = null;
+        _this._isLoadShow = false;
+        /**牌值*/
+        _this._cardValue = 0;
+        /**牌类型*/
+        _this._cardType = EnumManager_1.CardTypeEnum.EndValue;
+        /**是否是定缺牌*/
+        _this._isDice = false;
+        /**是否被选中*/
+        _this._isSelect = false;
+        /***是否是出牌可听*/
+        _this._isOutTing = false;
+        /***是否在展示中*/
+        _this._isShow = false;
+        /***当前牌相对于第一视角属于那个位置*/
+        _this._bySelfPoint = EnumManager_1.CardGroupPointBySelfEnum.Self;
+        /***当前牌的大小*/
+        _this._cardSize = { _w: 131, _h: 182 };
+        /***摸牌时候得入牌动作是否已经结束*/
+        _this._isActionOver = true;
+        /***我的出牌可听权重*/
+        _this._tingLv = 0;
+        /***我的出牌可听数据*/
+        _this._tingData = null;
+        /***是否是摸起来得最后一张*/
+        _this._isFeel = false;
+        _this._changeCount = 1;
+        return _this;
+    }
+    Object.defineProperty(MajiongHandCard.prototype, "isLoadShow", {
+        get: function () {
+            return this._isLoadShow;
+        },
+        set: function (value) {
+            this._isLoadShow = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "cardValue", {
+        get: function () {
+            return this._cardValue;
+        },
+        set: function (value) {
+            this._cardValue = value;
+            this.showCardValue();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "cardType", {
+        get: function () {
+            return this._cardType;
+        },
+        set: function (value) {
+            this._cardType = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "listenData", {
+        get: function () {
+            return this._listenData;
+        },
+        set: function (value) {
+            this._listenData = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "isDice", {
+        get: function () {
+            return this._isDice;
+        },
+        set: function (value) {
+            this._isDice = value;
+            this.majiongDice.node.active = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "isSelect", {
+        get: function () {
+            return this._isSelect;
+        },
+        set: function (value) {
+            this._isSelect = value;
+            this.showSelect();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "isOutTing", {
+        get: function () {
+            return this._isOutTing;
+        },
+        set: function (value) {
+            this._isOutTing = value;
+            this.majiongCanOut.node.active = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "isShow", {
+        get: function () {
+            return this._isShow;
+        },
+        set: function (value) {
+            this._isShow = value;
+            this.node.active = value;
+            if (!value) {
+                this.tingData = null;
+                this.tingLv = -1;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "bySelfPoint", {
+        get: function () {
+            return this._bySelfPoint;
+        },
+        set: function (value) {
+            this._bySelfPoint = value;
+            this.initCardSize();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "cardSize", {
+        get: function () {
+            return this._cardSize;
+        },
+        set: function (value) {
+            this._cardSize = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MajiongHandCard.prototype.onLoad = function () {
+        this.initMajiong();
+        this.showMajiongCard();
+    };
+    MajiongHandCard.prototype.start = function () {
+    };
+    Object.defineProperty(MajiongHandCard.prototype, "isActionOver", {
+        get: function () {
+            return this._isActionOver;
+        },
+        set: function (value) {
+            this._isActionOver = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "tingLv", {
+        get: function () {
+            return this._tingLv;
+        },
+        set: function (value) {
+            this._tingLv = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "tingData", {
+        get: function () {
+            return this._tingData;
+        },
+        set: function (value) {
+            this._tingData = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(MajiongHandCard.prototype, "isFeel", {
+        get: function () {
+            return this._isFeel;
+        },
+        set: function (value) {
+            this._isFeel = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**初始化手牌*/
+    MajiongHandCard.prototype.initMajiong = function () {
+        this.isDice = false;
+        this.isSelect = false;
+        this.isOutTing = false;
+        this.isShow = this.isLoadShow;
+        this.showCardValue();
+    };
+    MajiongHandCard.prototype.showSelect = function () {
+        if (this.bySelfPoint == EnumManager_1.CardGroupPointBySelfEnum.Self) {
+            if (this.isSelect) {
+                this.node.y = 50;
+            }
+            else {
+                this.node.y = 0;
+            }
+        }
+    };
+    MajiongHandCard.prototype.showCardValue = function () {
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+        }
+        else {
+            if (this.cardValue) {
+                this.cardType = Math.floor(this.cardValue / 10);
+                this.showMajiongFont();
+                this.isDice = GloBal_1.Global.Utils.getIsDice(this.cardValue, UserInfo_1.default.ins.myDiceType);
+            }
+        }
+    };
+    MajiongHandCard.prototype.showMajiongFont = function () {
+        if (this.bySelfPoint == EnumManager_1.CardGroupPointBySelfEnum.Self) {
+            var newSource = "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(this.cardValue);
+            GloBal_1.Global.Utils.setNewImageToSprite(this.majiongFont, newSource, null);
+            this.majiongFont.node.active = true;
+        }
+    };
+    MajiongHandCard.prototype.showMajiongPut = function () {
+        if (this.bySelfPoint == EnumManager_1.CardGroupPointBySelfEnum.Self) {
+            var newSource = "comResource/com/ty_majiang0";
+            GloBal_1.Global.Utils.setNewImageToSprite(this.majiongBg, newSource, null);
+            this.majiongFont.node.active = false;
+        }
+    };
+    MajiongHandCard.prototype.showMajiongUp = function () {
+        if (this.bySelfPoint == EnumManager_1.CardGroupPointBySelfEnum.Self) {
+            if (UserInfo_1.default.ins.selfIsLookPlayer) {
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongBg, "majiongCard/resource/0_0_2_2", null);
+            }
+            else {
+                var newSource = "majiongCard/resource/0_0_2";
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongBg, newSource, null);
+            }
+        }
+    };
+    MajiongHandCard.prototype.showMajiongCard = function () {
+        this.majiongCanOut.node.active = false;
+        this.majiongDice.node.active = false;
+        var bgSource = "";
+        switch (this.bySelfPoint) {
+            case EnumManager_1.CardGroupPointBySelfEnum.Self:
+                if (UserInfo_1.default.ins.selfIsLookPlayer) {
+                    this.majiongBg.node.scaleX = 1;
+                    bgSource = "majiongCard/resource/0_0_2_2";
+                    this.cardSize = { _w: 131, _h: 182 };
+                }
+                else {
+                    bgSource = "majiongCard/resource/0_0_2";
+                    this.majiongBg.node.scaleX = 1;
+                    this.cardSize = { _w: 131, _h: 182 };
+                }
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Down:
+                bgSource = "majiongCard/resource/1_0_2";
+                this.majiongBg.node.scaleX = 1;
+                this.cardSize = { _w: 57, _h: 77 };
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Opp:
+                bgSource = "majiongCard/resource/2_0_2";
+                this.majiongBg.node.scaleX = 1;
+                this.cardSize = { _w: 58, _h: 84 };
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Up:
+                bgSource = "majiongCard/resource/1_0_2";
+                this.majiongBg.node.scaleX = -1;
+                this.cardSize = { _w: 57, _h: 77 };
+                break;
+        }
+        GloBal_1.Global.Utils.setNewImageToSprite(this.majiongBg, bgSource);
+    };
+    MajiongHandCard.prototype.showGetAction = function (delyCount) {
+        var nowX;
+        switch (this.bySelfPoint) {
+            case EnumManager_1.CardGroupPointBySelfEnum.Self:
+                cc.tween(this.node).to(delyCount * TimeAndMoveManager_1.default.ins.getWallActionTime / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: 0 }).call(function () {
+                }).start();
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Down:
+                nowX = this.node.x;
+                cc.tween(this.node).to(delyCount * TimeAndMoveManager_1.default.ins.getWallActionTime / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: nowX - 20 }).call(function () {
+                }).start();
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Opp:
+                cc.tween(this.node).to(delyCount * TimeAndMoveManager_1.default.ins.getWallActionTime / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: 0 }).call(function () {
+                }).start();
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Up:
+                nowX = this.node.x;
+                cc.tween(this.node).to(delyCount * TimeAndMoveManager_1.default.ins.getWallActionTime / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: nowX + 20 }).call(function () {
+                }).start();
+                break;
+        }
+    };
+    MajiongHandCard.prototype.initCardSize = function () {
+        switch (this.bySelfPoint) {
+            case EnumManager_1.CardGroupPointBySelfEnum.Self:
+                this.cardSize = { _w: 131, _h: 182 };
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Down:
+                this.cardSize = { _w: 57, _h: 77 };
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Opp:
+                this.cardSize = { _w: 58, _h: 84 };
+                break;
+            case EnumManager_1.CardGroupPointBySelfEnum.Up:
+                this.cardSize = { _w: 57, _h: 77 };
+                break;
+        }
+    };
+    /**展示听牌*/
+    MajiongHandCard.prototype.showListion = function () {
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            return;
+        }
+        this.tingData = UserInfo_1.default.ins.getTingByCardValue(this.cardValue);
+        if (this.tingData) {
+            this.tingLv = UserInfo_1.default.ins.getOutType(this.tingData, UserInfo_1.default.ins.outTing);
+        }
+        if (this.tingLv >= 0) {
+            this.showOutLvImage();
+            this.isOutTing = true;
+        }
+    };
+    /**展示可出图片*/
+    MajiongHandCard.prototype.showOutLvImage = function () {
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            return;
+        }
+        switch (this.tingLv) {
+            case 0:
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongCanOut, "comResource/font/game_jiantou2");
+                break;
+            case 1:
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongCanOut, "comResource/font/game_jiantou3");
+                break;
+            case 2:
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongCanOut, "comResource/font/game_jiantou4");
+                break;
+            case 3:
+                GloBal_1.Global.Utils.setNewImageToSprite(this.majiongCanOut, "comResource/font/game_jiantou1");
+                break;
+        }
+    };
+    Object.defineProperty(MajiongHandCard.prototype, "changeCount", {
+        get: function () {
+            return this._changeCount;
+        },
+        set: function (value) {
+            this._changeCount = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MajiongHandCard.prototype.setNewPoint = function (x, y) {
+        this.changethreePoint = new cc.Vec2(x, y);
+    };
+    MajiongHandCard.prototype.getNewPoint = function () {
+        return this.changethreePoint;
+    };
+    MajiongHandCard.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongHandCard.prototype, "majiongBg", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongHandCard.prototype, "majiongFont", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongHandCard.prototype, "majiongDice", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongHandCard.prototype, "majiongCanOut", void 0);
+    MajiongHandCard = __decorate([
+        ccclass
+    ], MajiongHandCard);
+    return MajiongHandCard;
+}(UIBase_1.default));
+exports.default = MajiongHandCard;
+
+cc._RF.pop();

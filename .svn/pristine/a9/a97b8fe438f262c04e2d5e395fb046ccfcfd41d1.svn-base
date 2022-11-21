@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_kuang5",
+    "texture": "19c5f402-c5e8-4d15-9bf3-eba24475b76f",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1742,
+      150
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1742,
+      150
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

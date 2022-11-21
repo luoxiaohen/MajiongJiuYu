@@ -1,0 +1,142 @@
+"use strict";
+cc._RF.push(module, '00ef0GjYzJEqKeEi71Y3CF8', 'BigOverPlayerInfoItem');
+// Script/UI/over/BigOverPlayerInfoItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var BigOverPlayerInfoItem = /** @class */ (function (_super) {
+    __extends(BigOverPlayerInfoItem, _super);
+    function BigOverPlayerInfoItem() {
+        // LIFE-CYCLE CALLBACKS:
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.redFont = null;
+        _this.greenFont = null;
+        _this.color_red = cc.color(181, 13, 13); //red
+        _this.color_green = cc.color(16, 136, 50);
+        return _this;
+        // update (dt) {}
+    }
+    BigOverPlayerInfoItem.prototype.onLoad = function () {
+        this.initeUI();
+    };
+    BigOverPlayerInfoItem.prototype.start = function () {
+    };
+    BigOverPlayerInfoItem.prototype.initeUI = function () {
+        this.game_kuang_2 = this.node.getChildByName("game_kuang_2");
+        this.player_head_sprite = this.node.getChildByName("player_head_sprite").getComponent(cc.Sprite);
+        this.player_rank_sprite = this.node.getChildByName("player_rank_sprite").getComponent(cc.Sprite);
+        this.player_name_label = this.node.getChildByName("player_name_label").getComponent(cc.Label);
+        this.player_ID_label = this.node.getChildByName("player_ID_label").getComponent(cc.Label);
+        var tipsNode = this.node.getChildByName("opera_tips_node");
+        var labelNode = this.node.getChildByName("opera_num_label_node");
+        this.tip_duiju = tipsNode.getChildByName("tip_duiju");
+        this.tip_zhuangma = tipsNode.getChildByName("tip_zhuangma");
+        this.zimo_num_label = labelNode.getChildByName("zimo_num_label").getComponent(cc.Label);
+        this.jiepao_num_label = labelNode.getChildByName("jiepao_num_label").getComponent(cc.Label);
+        this.gangpai_num_label = labelNode.getChildByName("gangpai_num_label").getComponent(cc.Label);
+        this.dianpao_num_label = labelNode.getChildByName("dianpao_num_label").getComponent(cc.Label);
+        this.player_score_label = labelNode.getChildByName("player_score_label").getComponent(cc.Label);
+        this.zhuangma_num_label = labelNode.getChildByName("zhuangma_num_label").getComponent(cc.Label);
+        this.duiju_num_label = labelNode.getChildByName("duiju_num_label").getComponent(cc.Label);
+    };
+    BigOverPlayerInfoItem.prototype.initValue = function (data) {
+        GloBal_1.Global.CCHelper.updateSpriteFrame(data.player_head_url, this.player_head_sprite);
+        this.player_rank_sprite.enabled = data.player_rank_url != "";
+        this.game_kuang_2.active = data.player_ID != UserInfo_1.default.ins.myInfo.aid.toString();
+        if (data.player_rank_url != "") {
+            GloBal_1.Global.CCHelper.updateSpriteFrame(data.player_rank_url, this.player_rank_sprite);
+        }
+        this.player_name_label.string = data.player_name;
+        this.player_ID_label.string = data.player_ID;
+        this.zimo_num_label.string = data.zimo_num.toString();
+        this.jiepao_num_label.string = data.jiepao_num.toString();
+        this.gangpai_num_label.string = data.gangpai_num.toString();
+        this.dianpao_num_label.string = data.dianpao_num.toString();
+        this.setOverTypeShowState(data.type);
+        this.setLabelColor(this.duiju_num_label, data.duiju_num);
+        this.setLabelColor(this.zhuangma_num_label, data.zhuangma_num);
+        this.setPlayerScoreLabel(this.player_score_label, data.player_score);
+    };
+    BigOverPlayerInfoItem.prototype.setPlayerScoreLabel = function (_label, _value) {
+        if (_value >= 0) {
+            _label.font = this.redFont;
+        }
+        else {
+            _label.font = this.greenFont;
+        }
+        _label.string = this.getNumFormStr(_value);
+    };
+    BigOverPlayerInfoItem.prototype.setOverTypeShowState = function (_type) {
+        this.tip_duiju.active = _type > 0;
+        this.tip_zhuangma.active = _type > 0;
+        this.duiju_num_label.node.active = _type > 0;
+        this.zhuangma_num_label.node.active = _type > 0;
+        if (_type > 0) {
+            this.player_score_label.node.y = 23.5;
+        }
+        else {
+            this.player_score_label.node.y = 0;
+        }
+    };
+    BigOverPlayerInfoItem.prototype.setLabelColor = function (_label, _value) {
+        if (_value > 0) {
+            _label.node.color = this.color_red;
+        }
+        else {
+            _label.node.color = this.color_green;
+        }
+        _label.string = this.getNumFormStr(_value);
+    };
+    BigOverPlayerInfoItem.prototype.getNumFormStr = function (_value) {
+        var str = "";
+        if (_value > 0) {
+            str = "+" + _value;
+        }
+        else {
+            str = _value + "";
+        }
+        return str;
+    };
+    __decorate([
+        property(cc.BitmapFont)
+    ], BigOverPlayerInfoItem.prototype, "redFont", void 0);
+    __decorate([
+        property(cc.BitmapFont)
+    ], BigOverPlayerInfoItem.prototype, "greenFont", void 0);
+    BigOverPlayerInfoItem = __decorate([
+        ccclass
+    ], BigOverPlayerInfoItem);
+    return BigOverPlayerInfoItem;
+}(UIBase_1.default));
+exports.default = BigOverPlayerInfoItem;
+
+cc._RF.pop();

@@ -1,0 +1,1 @@
+{"version":3,"sources":["assets\\Script\\com\\http\\HttpMethod.ts"],"names":[],"mappings":";;;;AAAA,0BAA0B;AAC1B,mBAAmB;AACnB,kBAAkB;AAClB,IAAI","file":"","sourceRoot":"/","sourcesContent":["// export enum HttpMethod{\r\n//     GET = \"GET\",\r\n//     POST=\"POST\"\r\n// }"]}

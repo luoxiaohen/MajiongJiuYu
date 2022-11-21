@@ -1,0 +1,112 @@
+"use strict";
+cc._RF.push(module, '304a2OevPtPvK3d+cKKNtAD', 'InviteToRoomPannel');
+// Script/UI/over/InviteToRoomPannel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TableMsg_1 = require("../../proto/TableMsg");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var CardHelpManager_1 = require("../card/CardHelpManager");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var InviteToRoomPannel = /** @class */ (function (_super) {
+    __extends(InviteToRoomPannel, _super);
+    function InviteToRoomPannel() {
+        // LIFE-CYCLE CALLBACKS:
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.cutDownTime = 30;
+        return _this;
+        // update (dt) {}
+    }
+    InviteToRoomPannel.prototype.onLoad = function () {
+        var labelNode = this.node.getChildByName("label_node");
+        this.invite_player_label = labelNode.getChildByName("invite_player_label").getComponent(cc.Label);
+        this.game_type_label = labelNode.getChildByName("game_type_label").getComponent(cc.Label);
+        this.room_name_label = labelNode.getChildByName("room_name_label").getComponent(cc.Label);
+        this.room_id_label = labelNode.getChildByName("room_id_label").getComponent(cc.Label);
+        this.down_score_label = labelNode.getChildByName("down_score_label").getComponent(cc.Label);
+        this.game_hand_label = labelNode.getChildByName("game_hand_label").getComponent(cc.Label);
+        this.game_rule_label = labelNode.getChildByName("game_rule_label").getComponent(cc.Label);
+        var refuse_btn = this.node.getChildByName("refuse_btn");
+        this.time_label = refuse_btn.getChildByName("time_label").getComponent(cc.Label);
+        ;
+    };
+    InviteToRoomPannel.prototype.start = function () {
+        var inviteInfo = GameInfo_1.default.ins.gameInviteData;
+        if (!inviteInfo) {
+            return;
+        }
+        var ruleInfo = inviteInfo.info;
+        var gameName = GloBal_1.Global.Utils.getGameNameByGameType(ruleInfo.gamePlayType);
+        var gameType = GloBal_1.Global.Utils.getGameTypeNameByGameType(ruleInfo.roomType);
+        var roomName = gameName + "-" + gameType;
+        this.game_type_label.string = roomName;
+        this.game_rule_label.string = GloBal_1.Global.Utils.getRoomTableInfoStr(ruleInfo);
+        this.invite_player_label.string = inviteInfo.inviter;
+        this.room_id_label.string = inviteInfo.roomCode.toString();
+        this.down_score_label.string = ruleInfo.baseScore.toString();
+        this.game_hand_label.string = ruleInfo.handsCnt.toString();
+        var refuse_btn = this.node.getChildByName("refuse_btn");
+        this.time_label = refuse_btn.getChildByName("time_label").getComponent(cc.Label);
+        this.showCutDownTime();
+        this.schedule(this.showCutDownTime, 1, this.cutDownTime);
+    };
+    InviteToRoomPannel.prototype.showCutDownTime = function () {
+        this.time_label.string = this.cutDownTime.toString();
+        this.cutDownTime--;
+        GloBal_1.Global.Utils.debugOutput("倒计时：   " + this.cutDownTime);
+        if (this.cutDownTime <= 0) {
+            this.disTory();
+        }
+    };
+    InviteToRoomPannel.prototype.onAgreeBtn = function () {
+        GameInfo_1.default.ins.initOver();
+        UserInfo_1.default.ins.initOver();
+        CardHelpManager_1.default.ins.initOver();
+        UserInfo_1.default.ins.mySitIndex = -1;
+        var msg = new TableMsg_1.Msg_CS_FindEnterRoom();
+        msg.code = GameInfo_1.default.ins.gameInviteData.roomCode;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    InviteToRoomPannel.prototype.onRefuseBtn = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.BackToLobby);
+    };
+    InviteToRoomPannel.prototype.onDestroy = function () {
+        this.unscheduleAllCallbacks();
+    };
+    InviteToRoomPannel = __decorate([
+        ccclass
+    ], InviteToRoomPannel);
+    return InviteToRoomPannel;
+}(UIBase_1.default));
+exports.default = InviteToRoomPannel;
+
+cc._RF.pop();

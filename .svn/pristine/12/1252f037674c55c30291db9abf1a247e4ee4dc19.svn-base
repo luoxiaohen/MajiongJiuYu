@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_zhizhen0",
+    "texture": "db1bd865-375b-491c-bd61-04f573749008",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      86,
+      84
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      86,
+      84
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

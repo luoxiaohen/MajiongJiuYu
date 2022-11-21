@@ -1,0 +1,91 @@
+"use strict";
+cc._RF.push(module, '44c0atgZuBDU7l7UAtuSBJp', 'AccountMsg');
+// Script/proto/AccountMsg.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Msg_CS_SelSrvID = exports.Msg_SC_TokenInfo = exports.Msg_CS_LoginAcc = exports.Msg_CS_RegistAcc = exports.Msg_SC_AccErrRlst = exports.ACCMSG_SID = exports.AccountMsg = void 0;
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-08 09:24:45
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-14 16:43:11
+ * @FilePath: \MajiongJiuYu\assets\Script\proto\AccountMsg.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+var BaseMsg_1 = require("./BaseMsg");
+/**
+* Created by admin on 2022/5/23.
+*/
+var AccountMsg = /** @class */ (function (_super) {
+    __extends(AccountMsg, _super);
+    function AccountMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return AccountMsg;
+}(BaseMsg_1.BaseMsg));
+exports.AccountMsg = AccountMsg;
+var ACCMSG_SID;
+(function (ACCMSG_SID) {
+    ACCMSG_SID[ACCMSG_SID["SC_AccErrRlst"] = 0] = "SC_AccErrRlst";
+    ACCMSG_SID[ACCMSG_SID["CS_RegistAcc"] = 1] = "CS_RegistAcc";
+    ACCMSG_SID[ACCMSG_SID["CS_LoginAcc"] = 2] = "CS_LoginAcc";
+    ACCMSG_SID[ACCMSG_SID["SC_TokenInfo"] = 3] = "SC_TokenInfo";
+    ACCMSG_SID[ACCMSG_SID["CS_SelSrvID"] = 4] = "CS_SelSrvID";
+    ACCMSG_SID[ACCMSG_SID["MSG_MAX"] = 5] = "MSG_MAX";
+})(ACCMSG_SID = exports.ACCMSG_SID || (exports.ACCMSG_SID = {}));
+var Msg_SC_AccErrRlst = /** @class */ (function (_super) {
+    __extends(Msg_SC_AccErrRlst, _super);
+    function Msg_SC_AccErrRlst() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_Account, ACCMSG_SID.SC_AccErrRlst) || this;
+    }
+    return Msg_SC_AccErrRlst;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_AccErrRlst = Msg_SC_AccErrRlst;
+var Msg_CS_RegistAcc = /** @class */ (function (_super) {
+    __extends(Msg_CS_RegistAcc, _super);
+    function Msg_CS_RegistAcc() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_Account, ACCMSG_SID.CS_RegistAcc) || this;
+    }
+    return Msg_CS_RegistAcc;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_RegistAcc = Msg_CS_RegistAcc;
+var Msg_CS_LoginAcc = /** @class */ (function (_super) {
+    __extends(Msg_CS_LoginAcc, _super);
+    function Msg_CS_LoginAcc() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_Account, ACCMSG_SID.CS_LoginAcc) || this;
+    }
+    return Msg_CS_LoginAcc;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_LoginAcc = Msg_CS_LoginAcc;
+var Msg_SC_TokenInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_TokenInfo, _super);
+    function Msg_SC_TokenInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_Account, ACCMSG_SID.SC_TokenInfo) || this;
+    }
+    return Msg_SC_TokenInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_TokenInfo = Msg_SC_TokenInfo;
+var Msg_CS_SelSrvID = /** @class */ (function (_super) {
+    __extends(Msg_CS_SelSrvID, _super);
+    function Msg_CS_SelSrvID() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_Account, ACCMSG_SID.CS_SelSrvID) || this;
+    }
+    return Msg_CS_SelSrvID;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_SelSrvID = Msg_CS_SelSrvID;
+
+cc._RF.pop();

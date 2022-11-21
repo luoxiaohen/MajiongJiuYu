@@ -1,0 +1,247 @@
+"use strict";
+cc._RF.push(module, 'ba51b3XDkNIULmNkZ4EqB+4', 'CreateRoomRuleTemplateItem');
+// Script/UI/createRoom/CreateRoomRuleTemplateItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var LobbyMsgDef_1 = require("../../proto/LobbyMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var CreateRoomHelper_1 = require("./CreateRoomHelper");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateRoomRuleTemplateItem = /** @class */ (function (_super) {
+    __extends(CreateRoomRuleTemplateItem, _super);
+    function CreateRoomRuleTemplateItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.changGroup = null;
+        _this.deletGroup = null;
+        _this.roomTypeGroup = null;
+        _this.selectBox = null;
+        _this.gameTypeImage = null;
+        _this.coinImage = null;
+        _this.handsImage = null;
+        _this.piaoImage = null;
+        _this.horseImage = null;
+        _this.roomNameLabel = null;
+        _this.needCoinsLabel = null;
+        _this.gameHandsLabel = null;
+        _this.piaoLabel = null;
+        _this.horseNumLabel = null;
+        return _this;
+    }
+    CreateRoomRuleTemplateItem.prototype.onLoad = function () {
+    };
+    CreateRoomRuleTemplateItem.prototype.setData = function (ruleInfo, callBack, thisOnj) {
+        this.ruleInfo = ruleInfo.rule;
+        this.ruleTemplate = ruleInfo;
+        this.callBack = callBack;
+        this.thisObj = thisOnj;
+        this.createElements();
+    };
+    CreateRoomRuleTemplateItem.prototype.createElements = function () {
+        this.showGameType();
+        this.showRoomType();
+        this.roomNameLabel.string = this.ruleTemplate ? this.ruleTemplate.name : "";
+        this.needCoinsLabel.string = this.getAll(this.ruleInfo.baseScore).toString();
+        this.gameHandsLabel.string = this.ruleInfo.handsCnt + "手";
+        this.showPiao();
+        this.showMa();
+        this.setSelect(false);
+    };
+    CreateRoomRuleTemplateItem.prototype.getAll = function (nowAntes) {
+        var isOpenBookmakerMustBuyHorse = false;
+        var allMut = 0;
+        allMut += CreateRoomHelper_1.default.ins.initialMultiple;
+        if (this.ruleInfo.haveHorse) {
+            allMut += CreateRoomHelper_1.default.ins.openBuyHorseMultiple;
+        }
+        if (this.ruleInfo.baozi) {
+            allMut += CreateRoomHelper_1.default.ins.openDoubleMultiple;
+        }
+        if (this.ruleInfo.handsCnt == 16) {
+            allMut += CreateRoomHelper_1.default.ins.moreHandMultiple;
+        }
+        if (this.ruleInfo.gamePlayType == 2) {
+            allMut += CreateRoomHelper_1.default.ins.changeThreeMultiple;
+        }
+        if (this.ruleInfo.isSelectBankerBuyHorse) {
+            isOpenBookmakerMustBuyHorse = true;
+        }
+        var allFen = nowAntes * allMut;
+        if (isOpenBookmakerMustBuyHorse) {
+            allFen *= CreateRoomHelper_1.default.ins.openBookmakerMustBuyHorseMultiple;
+        }
+        return allFen;
+    };
+    CreateRoomRuleTemplateItem.prototype.onBoxClick = function () {
+        this.callBack.bind(this.thisObj)(this, 1);
+    };
+    CreateRoomRuleTemplateItem.prototype.onChangeClick = function () {
+        this.callBack.bind(this.thisObj)(this, 2);
+    };
+    CreateRoomRuleTemplateItem.prototype.onDeletClick = function () {
+        this.callBack.bind(this.thisObj)(this, 3);
+    };
+    CreateRoomRuleTemplateItem.prototype.showMa = function () {
+        if (this.ruleInfo.haveHorse) {
+            this.horseImage.node.active = true;
+            this.horseNumLabel.node.active = true;
+            this.horseNumLabel.string = this.ruleInfo.buyHorseNum == 1 ? "1马" : "2马";
+        }
+        else {
+            this.horseImage.node.active = false;
+            this.horseNumLabel.node.active = false;
+        }
+    };
+    CreateRoomRuleTemplateItem.prototype.showPiao = function () {
+        if (this.ruleInfo.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.None) {
+            this.piaoImage.node.active = false;
+            this.piaoLabel.node.active = false;
+        }
+        else {
+            this.piaoImage.node.active = true;
+            this.piaoLabel.node.active = true;
+            if (this.ruleInfo.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.ZhuangJiaBiPiao) {
+                this.piaoLabel.string = "庄家必飘";
+            }
+            else {
+                var str = "";
+                if (this.ruleInfo.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.ShuaiPiao) {
+                    str = "甩飘";
+                }
+                else {
+                    str = "豹子";
+                }
+                if (this.ruleInfo.baoziDouble) {
+                    str += "(双豹)";
+                }
+                this.piaoLabel.string = str;
+            }
+        }
+    };
+    CreateRoomRuleTemplateItem.prototype.showGameType = function () {
+        var type = this.ruleInfo.gamePlayType;
+        var source = "createRoom/resource/createRoom_xuezhan";
+        if (type == LobbyMsgDef_1.GamePlayTypeEnum.HuanSanZhang) {
+            source = "createRoom/resource/createRoom_huansan";
+        }
+        GloBal_1.Global.Utils.setNewImageToSprite(this.gameTypeImage, source);
+    };
+    CreateRoomRuleTemplateItem.prototype.showRoomType = function () {
+        var type = this.ruleInfo.roomType;
+        var roomStr = "";
+        switch (type) {
+            case LobbyMsgDef_1.GameRoomTypeEnum.SiRenSanFang:
+                roomStr = "四人三房";
+                break;
+            case LobbyMsgDef_1.GameRoomTypeEnum.SiRenLiangFang:
+                roomStr = "四人两房";
+                break;
+            case LobbyMsgDef_1.GameRoomTypeEnum.SanRenLiangFang:
+                roomStr = "三人两房";
+                break;
+            case LobbyMsgDef_1.GameRoomTypeEnum.LiangRenMaJiang:
+                roomStr = "两人两房";
+                break;
+        }
+        cc.find("/label", this.roomTypeGroup).getComponent(cc.Label).string = roomStr;
+    };
+    CreateRoomRuleTemplateItem.prototype.getRuleInfo = function () {
+        var temp = new LobbyMsgDef_1.TableRuleTempl();
+        temp.rule = this.ruleInfo;
+        temp.name = this.roomNameLabel.string;
+        temp.templId = this.ruleTemplate ? this.ruleTemplate.templId : null;
+        return temp;
+    };
+    CreateRoomRuleTemplateItem.prototype.getRuleName = function () {
+        return this.roomNameLabel.string;
+    };
+    CreateRoomRuleTemplateItem.prototype.setSelect = function (boo) {
+        if (boo) {
+            this.selectBox.check();
+        }
+        else {
+            this.selectBox.uncheck();
+        }
+    };
+    CreateRoomRuleTemplateItem.prototype.getSelect = function () {
+        return this.selectBox.isChecked;
+    };
+    CreateRoomRuleTemplateItem.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Node)
+    ], CreateRoomRuleTemplateItem.prototype, "changGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], CreateRoomRuleTemplateItem.prototype, "deletGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], CreateRoomRuleTemplateItem.prototype, "roomTypeGroup", void 0);
+    __decorate([
+        property(cc.Toggle)
+    ], CreateRoomRuleTemplateItem.prototype, "selectBox", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRuleTemplateItem.prototype, "gameTypeImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRuleTemplateItem.prototype, "coinImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRuleTemplateItem.prototype, "handsImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRuleTemplateItem.prototype, "piaoImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRuleTemplateItem.prototype, "horseImage", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRuleTemplateItem.prototype, "roomNameLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRuleTemplateItem.prototype, "needCoinsLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRuleTemplateItem.prototype, "gameHandsLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRuleTemplateItem.prototype, "piaoLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRuleTemplateItem.prototype, "horseNumLabel", void 0);
+    CreateRoomRuleTemplateItem = __decorate([
+        ccclass
+    ], CreateRoomRuleTemplateItem);
+    return CreateRoomRuleTemplateItem;
+}(UIBase_1.default));
+exports.default = CreateRoomRuleTemplateItem;
+
+cc._RF.pop();

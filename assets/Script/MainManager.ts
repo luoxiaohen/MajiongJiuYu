@@ -1,0 +1,386 @@
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+
+import { PlayStauteEnum } from "./enum/EnumManager";
+import EventCenter from "./event/EventCenter";
+import EventType from "./event/EventType";
+import GameInfo from "./Game/info/GameInfo";
+import UserInfo from "./Game/info/UserInfo";
+import { Msg_SC_AccErrRlst, Msg_SC_TokenInfo } from "./proto/AccountMsg";
+import { Msg_SC_InviteTable, Msg_SC_LobbyInfo, Msg_SC_LobErrRlst, Msg_SC_PlayerInfo, Msg_SC_RspDeletRoomRuleTemplate, Msg_SC_RspGetRoomRuleTemplate, Msg_SC_RspSaveRoomRuleTemplate } from "./proto/LobbyMsg";
+import { TableRuleTempl } from "./proto/LobbyMsgDef";
+import { Msg_SC_BeginDiceMsg, Msg_SC_BuGanging, Msg_SC_Change3Maj, Msg_SC_DiceRslt, Msg_SC_DownMajMsg, Msg_SC_GameOverMsg, Msg_SC_GameResultMsg, Msg_SC_GangSelfMsg, Msg_SC_GetMajMsg, Msg_SC_HasHuGangMsg, Msg_SC_HuMajMsg, Msg_SC_OneSit, Msg_SC_PengMajMsg, Msg_SC_PoolsList, Msg_SC_PrDiceRslt, Msg_SC_QueRslt, Msg_SC_Ready, Msg_SC_RealScore, Msg_SC_RoomInfo, Msg_SC_ScoreListMsg, Msg_SC_SitOK, Msg_SC_SomeTurnMsg, Msg_SC_StartChange3, Msg_SC_StartDiceEast, Msg_SC_StartDiceGame, Msg_SC_StartDicePos, Msg_SC_StartDingQue, Msg_SC_StartGame, Msg_SC_TabErrRlst, Msg_SC_WaitDownMsg, Msg_SC_WaitYou, Msg_SC_You3Maj, Msg_SC_YouMajMsg } from "./proto/TableMsg"
+import { SitQueInfo } from "./proto/TableMsgDef";
+import { Global } from "./Shared/GloBal";
+import CreateRoomHelper from "./UI/createRoom/CreateRoomHelper";
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export class MainManager{
+    private static _ins: MainManager;
+    public static get ins() {
+        return this._ins || (this._ins = new MainManager());
+    }
+
+    /**账号错误信息返回*/
+    public onRspAccError(data:string){
+        let msg: Msg_SC_AccErrRlst = JSON.parse(data);
+		Global.Utils.debugOutput("收到账号错误信息:",msg);
+    }
+    /**大厅错误信息返回*/
+	public onRspLobbyError(data:string){
+		let msg: Msg_SC_LobErrRlst = JSON.parse(data);
+		Global.Utils.debugOutput("收到大厅错误信息,msg.errCode:" + msg.errCode , "msg.strMsg:" + msg.strMsg);
+	}
+	/**牌桌错误信息返回*/
+	public onRspTabError(data:string){
+		let msg: Msg_SC_TabErrRlst = JSON.parse(data);
+		Global.Utils.debugOutput("收到牌桌错误信息",msg);
+	}
+	/**玩家登录成功*/
+	public onTokenInfo(data : string){
+		let msg: Msg_SC_TokenInfo = JSON.parse(data);
+		Global.Utils.debugOutput("我收到了登录成功",data);
+		Global.EventCenter.dispatchEvent(EventType.LOGIN_OK);
+	}
+
+    /**登录时候返回玩家信息*/
+	public onRspPlayerInfo(data:string){
+		let msg: Msg_SC_PlayerInfo = JSON.parse(data);
+		UserInfo.ins.myInfo = msg.info;
+		Global.Utils.debugOutput("我收到了玩家信息",data);
+	}
+	/**登录时候返回的大厅信息*/
+	public onRspLobbyInfo(data:string){
+		let msg : Msg_SC_LobbyInfo = JSON.parse(data);
+		GameInfo.ins.lobbyInfo = msg.info;
+		Global.Utils.debugOutput("我收到了大厅信息",data);
+	}
+
+	/**创建或者进入房间时候返回的房间信息*/
+	public onRspRoomInfo(data:string){
+		let msg : Msg_SC_RoomInfo = JSON.parse(data);
+		GameInfo.ins.roomTableInfo = msg.info;
+		GameInfo.ins.gamePlayers = msg.players;
+		UserInfo.ins.selfIsLookPlayer = true;
+		Global.Utils.debugOutput("我收到了房间信息data:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.GET_NEW_ROOM_INFO , msg);
+		Global.Utils.webCopyString(msg.info.code.toString())
+
+	}
+	/**成功坐下*/
+	public onSitOK(data:string){
+		let msg : Msg_SC_SitOK = JSON.parse(data);
+		UserInfo.ins.mySitIndex = msg.sit;
+		console.log("我坐下了data:",data , "---msg：",msg);
+		UserInfo.ins.selfIsLookPlayer = false;
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.Stand;
+		Global.EventCenter.dispatchEvent(EventType.GET_NEW_SIT_OK , msg);
+	}
+	/**有人入座*/
+	public onOneSit(data:string){
+		let msg : Msg_SC_OneSit = JSON.parse(data);
+		if(GameInfo.ins.gamePlayers.length == 0){
+			GameInfo.ins.fristSitPlayer = msg;
+		}
+		GameInfo.ins.addNewSit(msg.newSit);
+		console.log("收到了有玩家进入房间:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.NEW_ONE_SIT , msg);
+	}
+	/**有人准备好了*/
+	public onReady(data:string){
+		let msg : Msg_SC_Ready = JSON.parse(data);
+		console.log("收到了有人准备好了:",data , "---msg：",msg);
+		if(msg.okSit == UserInfo.ins.mySitIndex){
+			GameInfo.ins.nowGameStatus = PlayStauteEnum.Ready;
+		}else{
+			GameInfo.ins.setNewReady(msg.okSit);
+		}
+		Global.EventCenter.dispatchEvent(EventType.playerReady , msg);
+	}
+	/**全部准备完成后开始定庄*/
+	public onStartDiceEast(data:string){
+		let msg : Msg_SC_StartDiceEast = JSON.parse(data);
+		console.log("收到了开始定庄",data , "---msg：",msg);
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.ThrowBookMaker;
+		Global.EventCenter.dispatchEvent(EventType.ThrowBookMaker , msg);
+	}
+	/**投掷骰子结果返回*/
+	public onDiceRslt(data:string){
+		let msg : Msg_SC_DiceRslt = JSON.parse(data);
+		console.log("收到了投掷骰子结果:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.DiceRslt , msg);
+	}
+	/**开始定位*/
+	public onStartDicePos(data:string){
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.ChangeChar;
+		let msg : Msg_SC_StartDicePos = JSON.parse(data);
+		console.log("收到了开始定位");
+		Global.EventCenter.dispatchEvent(EventType.StartDicePos , msg);
+	}
+	/**个人定位骰子返回*/
+	public onPrDiceRslt(data:string){
+		let msg:Msg_SC_PrDiceRslt = JSON.parse(data);
+		console.log("收到了投掷个人骰子结果:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.PrDiceRslt , msg);
+
+	}
+	/**刷新位置*/
+	public onStartDiceGame(data:string){
+		let msg:Msg_SC_StartDiceGame  = JSON.parse(data);
+		console.log("收到了矫座结果:",data , "---msg：",msg);
+		GameInfo.ins.setNewPlayers(msg.players);
+		Global.EventCenter.dispatchEvent(EventType.StartDiceGame , msg);
+	}
+	/**开始牌局  等待投掷摸牌先后顺序骰子*/
+	public onBeginDiceMsg(data:string){
+		let msg:Msg_SC_BeginDiceMsg  = JSON.parse(data);
+		console.log("收到了开始牌局 投掷骰子:",data , "---msg：",msg);
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.ThrowFrist;
+		Global.EventCenter.dispatchEvent(EventType.BeginDiceMsg , msg);
+
+	}
+	/**开始发牌*/
+	public onStartGame(data:string){
+		let msg:Msg_SC_StartGame = JSON.parse(data);
+		console.log("收到了开始发牌",data,"---msg:",msg)
+		GameInfo.ins.nowGameCount = msg.startHands+1;
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.DrawHandCard;
+		Global.EventCenter.dispatchEvent(EventType.DrawHandCard , msg);
+	}
+	/**手牌到位*/
+	public onYouMajMsg(data:string){
+		let msg:Msg_SC_YouMajMsg = JSON.parse(data);
+		console.log("收到了自己的手牌",data,"---msg:",msg)
+		UserInfo.ins.myHandCardArr = msg.lstMajID;
+		GameInfo.ins.remPoolsNum = GameInfo.ins.AllCardMax - 4*13 - 1 ;
+		//TODO  买马结束后需要刷新一次买马数据还需要减一
+		Global.EventCenter.dispatchEvent(EventType.YouMajMsg , msg);
+	}
+	/**服务器通知定缺*/
+	public onStartDingQue(data:string){
+		let msg:Msg_SC_StartDingQue = JSON.parse(data);
+		console.log("收到了开始定缺",data,"---msg:",msg)
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.CheckDice;
+		Global.EventCenter.dispatchEvent(EventType.StartDingQue , msg);
+	}
+	/**定缺结果*/
+	public onQueRslt(data:string){
+		let msg:Msg_SC_QueRslt = JSON.parse(data);
+		console.log("收到了定缺结果",data,"---msg:",msg)
+		for(let i = 0 ; i < msg.infos.length ; i++){
+			let info : SitQueInfo = msg.infos[i];
+			if(info.sitNum == UserInfo.ins.mySitIndex){
+				UserInfo.ins.myDiceType = info.wtt;
+			}
+		}
+		Global.EventCenter.dispatchEvent(EventType.QueRslt , msg);
+	}
+	/**轮到某个人出牌*/
+	public onWaitDownMsg(data:string){
+		let msg:Msg_SC_WaitDownMsg = JSON.parse(data);
+		console.log("收到了某人轮次",data,"---msg:",msg);
+		GameInfo.ins.nowActionSit = msg.siteNum;
+		if(msg.siteNum == UserInfo.ins.mySitIndex){
+			GameInfo.ins.nowGameStatus = PlayStauteEnum.PlayCard;
+		}else{
+			GameInfo.ins.nowGameStatus = PlayStauteEnum.WaitOperate;
+		}
+		Global.EventCenter.dispatchEvent(EventType.WaitDownMsg , msg);
+	}
+	/**服务器广播某人出牌*/
+	public onDownMajMsg(data:string){
+		let msg:Msg_SC_DownMajMsg = JSON.parse(data);
+		GameInfo.ins.LastIsGang = false;
+		console.log("服务器广播某人出牌",data,"---msg:",msg);
+		UserInfo.ins.otherLastOutCard = msg.majID;
+		Global.EventCenter.dispatchEvent(EventType.DownMajMsg , msg);
+		Global.Utils.playSound("sound/2");
+		let source:string = "sound/0_" + GameInfo.ins.lauType + "_"+GameInfo.ins.sexType+"_"+Math.floor(msg.majID/10)+"_" + msg.majID%10 + "_1";
+		console.log("出牌音效="+source)
+		Global.Utils.playSound(source);
+	}
+	/**广播某人摸牌*/
+	public onSomeTurnMsg(data:string){
+		let msg:Msg_SC_SomeTurnMsg = JSON.parse(data);
+		console.log("收到了某人摸牌",data,"---msg:",msg);
+		GameInfo.ins.remPoolsNum = msg.remPoolsNum;
+		Global.EventCenter.dispatchEvent(EventType.OtherDrawCard , msg);
+	}
+	/**我自己的摸牌*/
+	public onGetMajMsg(data:string){
+		let msg:Msg_SC_GetMajMsg = JSON.parse(data);
+		console.log("收到了自己的摸牌",data,"---msg:",msg)
+		UserInfo.ins.myLastFeelCard = msg.majID;
+		Global.EventCenter.dispatchEvent(EventType.GetMajMsg , msg);
+	}
+	/**别人出牌触发胡碰杠*/
+	public onWaitYou(data:string){
+		let msg:Msg_SC_WaitYou = JSON.parse(data);
+		console.log("收到了别人出牌我可以胡碰杠,需要等待我做出处理",data,"---msg:",msg)
+		Global.EventCenter.dispatchEvent(EventType.WaitYou , msg);
+	}
+	/**服务器广播某人碰杠*/
+	public onPengMajMsg(data:string){
+		let msg:Msg_SC_PengMajMsg = JSON.parse(data);
+		console.log("服务器广播某人碰杠",data,"---msg:",msg)
+		if(msg.isGang){
+			GameInfo.ins.LastIsGang = true;
+		}
+		Global.EventCenter.dispatchEvent(EventType.PengMajMsg , msg);
+		let source:string = "sound/0_" + GameInfo.ins.lauType + "_"+GameInfo.ins.sexType+"_"+(msg.isGang ? 5 : 4 ) + "_1";
+		console.log("碰杠音效="+source)
+		Global.Utils.playSound(source);
+	}
+	/**服务器广播自己杠*/
+	public onGangSelfMsg(data:string){
+		let msg:Msg_SC_GangSelfMsg = JSON.parse(data);
+		console.log("服务器广播自己杠",data,"---msg:",msg)
+		GameInfo.ins.LastIsGang = true;
+		Global.EventCenter.dispatchEvent(EventType.GangSelfMsg , msg);
+		let source:string = "sound/0_" + GameInfo.ins.lauType + "_"+GameInfo.ins.sexType+"_5" + "_1";
+		console.log("杠音效="+source)
+		Global.Utils.playSound(source);
+	}
+	/**服务器告知抢杠*/
+	public onHasHuGangMsg(data:string){
+		let msg:Msg_SC_HasHuGangMsg = JSON.parse(data);
+		console.log("服务器通知有人抢杠",data,"---msg:",msg)
+		Global.EventCenter.dispatchEvent(EventType.HasHuGangMsg , msg);
+	}
+	/**有人要补杠*/
+	public onBuGanging(data:string){
+		let msg:Msg_SC_BuGanging = JSON.parse(data);
+		console.log("收到了补杠:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.BuGanging , msg);
+	}
+
+	/**服务器通知胡牌*/
+	public onHuMajMsg(data:string){
+		let msg:Msg_SC_HuMajMsg = JSON.parse(data);
+		console.log("服务器通知有人胡牌",data,"---msg:",msg)
+		GameInfo.ins.hupaiArr[msg.huSit] = msg.majID;
+		if(msg.huSit == UserInfo.ins.mySitIndex){
+			GameInfo.ins.nowGameStatus = PlayStauteEnum.HuCard;
+		}
+		Global.EventCenter.dispatchEvent(EventType.HuMajMsg , msg);
+		Global.Utils.playSound("sound/3");
+	}
+	/**一轮游戏结束*/
+	public onGameResultMsg(data:string){
+		let msg:Msg_SC_GameResultMsg = JSON.parse(data);
+		console.log("收到了一轮游戏结束:",data , "---msg：",msg);
+		GameInfo.ins.gameResultMsg = msg;
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.SmallGameSettlement;
+		Global.EventCenter.dispatchEvent(EventType.GameResultMsg , msg);
+		GameInfo.ins.setRealTimePreformanceData_Result(msg);
+	}
+	/**一轮游戏结束积分*/
+	public onScoreListMsg(data:string){
+		let msg:Msg_SC_ScoreListMsg = JSON.parse(data);
+		console.log("收到了一轮游戏结束积分:",data , "---msg：",msg);
+		GameInfo.ins.scoreListMsg = msg;
+		Global.EventCenter.dispatchEvent(EventType.ScoreListMsg , msg);
+		GameInfo.ins.setRealTimePreformanceData_ScoreList(msg);
+	}
+	/**实时积分消息*/
+	public onRealScore(data:string){
+		let msg:Msg_SC_RealScore = JSON.parse(data);
+		console.log("收到了实时积分消息:",data , "---msg：",msg);
+		Global.EventCenter.dispatchEvent(EventType.RealScore , msg);
+	}
+
+	public onIniveTableMsg(data:string){
+		let msg:Msg_SC_InviteTable=JSON.parse(data);
+		console.log("收到了玩家邀请信息：  ",data,"---msg:  ",msg);
+		GameInfo.ins.gameInviteData=msg;
+		Global.EventCenter.dispatchEvent(EventType.GameInviteMsg, msg);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	/**房间模板信息返回*/
+	public onGetRoomRuleTemplate(data:string){
+		let msg : Msg_SC_RspGetRoomRuleTemplate = JSON.parse(data);
+		if(!msg.ruleInfoArr){
+			msg.ruleInfoArr = [];
+		}
+		CreateRoomHelper.ins.setCreateRoomRuleArr(msg.ruleInfoArr);
+		Global.EventCenter.dispatchEvent(EventType.RspGetRoomRuleTemplate , msg);
+	}
+	/**保存房间模板返回*/
+	public onSaveRoomRuleTemplate(data:string){
+		let msg : Msg_SC_RspSaveRoomRuleTemplate = JSON.parse(data);
+		let temp : TableRuleTempl = CreateRoomHelper.ins.lastSaveTemplate;
+		temp.templId = msg.tempId;
+		CreateRoomHelper.ins.addTemplToRuleArr(temp);
+		Global.Utils.dialogOutput("保存成功");
+		Global.EventCenter.dispatchEvent(EventType.SaveRoomRuleTemplate , msg);
+	}
+	/**删除房间模板*/
+	public onRspDeletRoomRuleTemplate(data:string){
+		let msg : Msg_SC_RspDeletRoomRuleTemplate = JSON.parse(data);
+		CreateRoomHelper.ins.removeTempByRuleArr(msg.tempId);
+		Global.Utils.dialogOutput("删除成功");
+		Global.EventCenter.dispatchEvent(EventType.RspDeletRoomRuleTemplate , msg);
+	}
+
+	/**剩余牌墙信息*/
+	public onPoolsList(data:string){
+		let msg:Msg_SC_PoolsList = JSON.parse(data);
+		Global.EventCenter.dispatchEvent(EventType.PoolsList , msg);
+	}
+
+	/**游戏结束大结算数据 */
+	public onGameOver(data:string){
+		let msg:Msg_SC_GameOverMsg=JSON.parse(data);
+		console.log("收到大结算数据: ",data,"---msg",msg);
+		GameInfo.ins.gameOverData=msg;
+		Global.EventCenter.dispatchEvent(EventType.GameOverMsg , msg);
+
+	}
+
+
+
+
+	/**服务器通知换三张*/
+	public onStartChange3(data:string){
+		let msg:Msg_SC_StartChange3 = JSON.parse(data);
+		console.log("收到了开始换三张",data,"---msg:",msg)
+		GameInfo.ins.nowGameStatus = PlayStauteEnum.ChangeThree;
+		Global.EventCenter.dispatchEvent(EventType.ChangeThree , msg);
+	}
+	/**换三张状态改变*/
+	public onChange3Maj(data:string){
+		let msg:Msg_SC_Change3Maj = JSON.parse(data);
+		console.log("收到了换三张状态改变",data,"---msg:",msg)
+		Global.EventCenter.dispatchEvent(EventType.Change3Maj , msg);
+	}
+	/**换三张结果出现*/
+	public onYou3Maj(data:string){
+		let msg:Msg_SC_You3Maj = JSON.parse(data);
+		if(msg.baozi == 2){
+			GameInfo.ins.isShuangbao = true;
+		}else if(msg.baozi == 1){
+			GameInfo.ins.isBaozi = true;
+		}
+		Global.EventCenter.dispatchEvent(EventType.ShowBaoziFight);
+		console.log("收到换三张结果",data,"---msg:",msg)
+		GameInfo.ins.myYou3MajData = msg;
+		Global.EventCenter.dispatchEvent(EventType.You3Maj , msg);
+	}
+}

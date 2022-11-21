@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "bc08f4f7-84df-4836-a68a-98af38efe4b6",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 76,
+  "height": 76,
+  "platformSettings": {},
+  "subMetas": {
+    "game_tubiaonishi": {
+      "ver": "1.0.6",
+      "uuid": "f193ad56-469a-4c2d-b7cf-5f8ac0a1c504",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "bc08f4f7-84df-4836-a68a-98af38efe4b6",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 76,
+      "height": 76,
+      "rawWidth": 76,
+      "rawHeight": 76,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

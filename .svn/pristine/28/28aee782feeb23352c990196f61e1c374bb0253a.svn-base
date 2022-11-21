@@ -1,0 +1,105 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/mgr/TimeAndMoveManager.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, 'e13ba1XgfRL27/8ZneMcKwx', 'TimeAndMoveManager');
+// Script/mgr/TimeAndMoveManager.ts
+
+"use strict";
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-08 09:24:45
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-18 10:44:12
+ * @FilePath: \MajiongJiuYu\assets\Script\mgr\TimeAndMoveManager.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var TimeAndMoveManager = /** @class */ (function () {
+    function TimeAndMoveManager() {
+        /**新人坐下位置动画展示时间*/
+        this.newPlayerSitMcTime = 0.5;
+        /**定庄骰子旋转时间*/
+        this.zhuangRollTime = 2;
+        /**定庄骰子展示时常*/
+        this.diceRotation = 0.8;
+        /**矫座头像显示时间*/
+        this.changeCharTime = 1;
+        /**矫座头像动画时间*/
+        this.changeCharAcyionTime = 0.3;
+        /**发牌时间*/
+        this.getWallTime = 0.2;
+        /**发牌动作时间*/
+        this.getWallActionTime = 0.01;
+        /**整理手牌时间*/
+        this.finishHandTime = 0.5;
+        /**出牌后手牌移动时间*/
+        this.outCardHandMoveTime = 0.07;
+        /**其他玩家出牌飞入牌池时间*/
+        this.otherOutCardToGroupTime = 0.05;
+        /**入牌时候手牌提起 落下时间*/
+        this.addCardMoveYTime = 0.1;
+        /**入牌时候手牌旋转时间*/
+        this.addCardRotationTime = 0.05;
+        /**入牌时候手牌提起 落下时间*/
+        this.ChangeThreeMoveYTime = 0.3;
+        /**其他玩家出牌动作显示时间*/
+        this.otherOutCardActionTime = 0.03;
+        /**游戏规则界面移动时间系数*/
+        this.gameRuleItemMoveTime = 0.001;
+        /**展示界面飞人主屏时间*/
+        this.showPanelTime = 0.25;
+        /**换三张箭头移动时间*/
+        this.changeThreeLightMoveTime = 0.8;
+        /**换三张牌移动时间*/
+        this.changeThreeCardMoveTime = 0.75;
+    }
+    TimeAndMoveManager_1 = TimeAndMoveManager;
+    Object.defineProperty(TimeAndMoveManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new TimeAndMoveManager_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    var TimeAndMoveManager_1;
+    TimeAndMoveManager = TimeAndMoveManager_1 = __decorate([
+        ccclass
+    ], TimeAndMoveManager);
+    return TimeAndMoveManager;
+}());
+exports.default = TimeAndMoveManager;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxtZ3JcXFRpbWVBbmRNb3ZlTWFuYWdlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7O0FBQUE7Ozs7Ozs7R0FPRztBQUNILG9CQUFvQjtBQUNwQix3RUFBd0U7QUFDeEUsbUJBQW1CO0FBQ25CLGtGQUFrRjtBQUNsRiw4QkFBOEI7QUFDOUIsa0ZBQWtGOzs7Ozs7OztBQUU1RSxJQUFBLEtBQXNCLEVBQUUsQ0FBQyxVQUFVLEVBQWxDLE9BQU8sYUFBQSxFQUFFLFFBQVEsY0FBaUIsQ0FBQztBQUcxQztJQUFBO1FBTUksaUJBQWlCO1FBQ3BCLHVCQUFrQixHQUFZLEdBQUcsQ0FBQztRQUMvQixhQUFhO1FBQ04sbUJBQWMsR0FBWSxDQUFDLENBQUM7UUFDdEMsYUFBYTtRQUNOLGlCQUFZLEdBQVksR0FBRyxDQUFDO1FBQ2hDLGFBQWE7UUFDVCxtQkFBYyxHQUFXLENBQUMsQ0FBQztRQUNsQyxhQUFhO1FBQ04seUJBQW9CLEdBQVcsR0FBRyxDQUFDO1FBQzFDLFNBQVM7UUFDRixnQkFBVyxHQUFXLEdBQUcsQ0FBQztRQUNqQyxXQUFXO1FBQ0osc0JBQWlCLEdBQVksSUFBSSxDQUFDO1FBQ3pDLFdBQVc7UUFDSixtQkFBYyxHQUFZLEdBQUcsQ0FBQztRQUNyQyxjQUFjO1FBQ1Asd0JBQW1CLEdBQVMsSUFBSSxDQUFDO1FBQ3hDLGlCQUFpQjtRQUNWLDRCQUF1QixHQUFVLElBQUksQ0FBQztRQUM3QyxrQkFBa0I7UUFDWCxxQkFBZ0IsR0FBUyxHQUFHLENBQUM7UUFDcEMsZUFBZTtRQUNSLHdCQUFtQixHQUFTLElBQUksQ0FBQztRQUV4QyxrQkFBa0I7UUFDWCx5QkFBb0IsR0FBUyxHQUFHLENBQUM7UUFFeEMsaUJBQWlCO1FBQ1YsMkJBQXNCLEdBQVUsSUFBSSxDQUFDO1FBQzVDLGlCQUFpQjtRQUNWLHlCQUFvQixHQUFVLEtBQUssQ0FBQztRQUMzQyxlQUFlO1FBQ1Isa0JBQWEsR0FBWSxJQUFJLENBQUM7UUFHckMsY0FBYztRQUNQLDZCQUF3QixHQUFVLEdBQUcsQ0FBQztRQUM3QyxhQUFhO1FBQ04sNEJBQXVCLEdBQVUsSUFBSSxDQUFDO0lBRTlDLENBQUM7MkJBL0NvQixrQkFBa0I7SUFFbkMsc0JBQWtCLHlCQUFHO2FBQXJCO1lBQ0ksT0FBTyxJQUFJLENBQUMsSUFBSSxJQUFJLENBQUMsSUFBSSxDQUFDLElBQUksR0FBRyxJQUFJLG9CQUFrQixFQUFFLENBQUMsQ0FBQztRQUMvRCxDQUFDOzs7T0FBQTs7SUFKZ0Isa0JBQWtCO1FBRHRDLE9BQU87T0FDYSxrQkFBa0IsQ0ErQ3RDO0lBQUQseUJBQUM7Q0EvQ0QsQUErQ0MsSUFBQTtrQkEvQ29CLGtCQUFrQiIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbIi8qXHJcbiAqIEBBdXRob3I6IGVycm9yOiBnaXQgY29uZmlnIHVzZXIubmFtZSAmJiBnaXQgY29uZmlnIHVzZXIuZW1haWwgJiBwbGVhc2Ugc2V0IGRlYWQgdmFsdWUgb3IgaW5zdGFsbCBnaXRcclxuICogQERhdGU6IDIwMjItMTAtMDggMDk6MjQ6NDVcclxuICogQExhc3RFZGl0b3JzOiBlcnJvcjogZ2l0IGNvbmZpZyB1c2VyLm5hbWUgJiYgZ2l0IGNvbmZpZyB1c2VyLmVtYWlsICYgcGxlYXNlIHNldCBkZWFkIHZhbHVlIG9yIGluc3RhbGwgZ2l0XHJcbiAqIEBMYXN0RWRpdFRpbWU6IDIwMjItMTEtMTggMTA6NDQ6MTJcclxuICogQEZpbGVQYXRoOiBcXE1hamlvbmdKaXVZdVxcYXNzZXRzXFxTY3JpcHRcXG1nclxcVGltZUFuZE1vdmVNYW5hZ2VyLnRzXHJcbiAqIEBEZXNjcmlwdGlvbjog6L+Z5piv6buY6K6k6K6+572uLOivt+iuvue9rmBjdXN0b21NYWRlYCwg5omT5byAa29yb0ZpbGVIZWFkZXLmn6XnnIvphY3nva4g6L+b6KGM6K6+572uOiBodHRwczovL2dpdGh1Yi5jb20vT0JLb3JvMS9rb3JvMUZpbGVIZWFkZXIvd2lraS8lRTklODUlOEQlRTclQkQlQUVcclxuICovXHJcbi8vIExlYXJuIFR5cGVTY3JpcHQ6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3R5cGVzY3JpcHQuaHRtbFxyXG4vLyBMZWFybiBBdHRyaWJ1dGU6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3JlZmVyZW5jZS9hdHRyaWJ1dGVzLmh0bWxcclxuLy8gTGVhcm4gbGlmZS1jeWNsZSBjYWxsYmFja3M6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL2xpZmUtY3ljbGUtY2FsbGJhY2tzLmh0bWxcclxuXHJcbmNvbnN0IHtjY2NsYXNzLCBwcm9wZXJ0eX0gPSBjYy5fZGVjb3JhdG9yO1xyXG5cclxuQGNjY2xhc3NcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgVGltZUFuZE1vdmVNYW5hZ2Vye1xyXG4gICAgcHJpdmF0ZSBzdGF0aWMgX2luczogVGltZUFuZE1vdmVNYW5hZ2VyO1xyXG4gICAgcHVibGljIHN0YXRpYyBnZXQgaW5zKCkge1xyXG4gICAgICAgIHJldHVybiB0aGlzLl9pbnMgfHwgKHRoaXMuX2lucyA9IG5ldyBUaW1lQW5kTW92ZU1hbmFnZXIoKSk7XHJcbiAgICB9XHJcblxyXG4gICAgLyoq5paw5Lq65Z2Q5LiL5L2N572u5Yqo55S75bGV56S65pe26Ze0Ki9cclxuXHRuZXdQbGF5ZXJTaXRNY1RpbWUgOiBudW1iZXIgPSAwLjU7XHJcbiAgICAvKirlrprluoTpqrDlrZDml4vovazml7bpl7QqL1xyXG4gICAgcHVibGljIHpodWFuZ1JvbGxUaW1lIDogbnVtYmVyID0gMjtcclxuXHQvKirlrprluoTpqrDlrZDlsZXnpLrml7bluLgqL1xyXG5cdHB1YmxpYyBkaWNlUm90YXRpb24gOiBudW1iZXIgPSAwLjg7XHJcbiAgICAvKirnn6vluqflpLTlg4/mmL7npLrml7bpl7QqL1xyXG5cdHB1YmxpYyBjaGFuZ2VDaGFyVGltZSA6bnVtYmVyID0gMTtcclxuXHQvKirnn6vluqflpLTlg4/liqjnlLvml7bpl7QqL1xyXG5cdHB1YmxpYyBjaGFuZ2VDaGFyQWN5aW9uVGltZSA6bnVtYmVyID0gMC4zO1xyXG5cdC8qKuWPkeeJjOaXtumXtCovXHJcblx0cHVibGljIGdldFdhbGxUaW1lIDpudW1iZXIgPSAwLjI7XHJcblx0Lyoq5Y+R54mM5Yqo5L2c5pe26Ze0Ki9cclxuXHRwdWJsaWMgZ2V0V2FsbEFjdGlvblRpbWUgOiBudW1iZXIgPSAwLjAxO1xyXG5cdC8qKuaVtOeQhuaJi+eJjOaXtumXtCovXHJcblx0cHVibGljIGZpbmlzaEhhbmRUaW1lIDogbnVtYmVyID0gMC41O1xyXG5cdC8qKuWHuueJjOWQjuaJi+eJjOenu+WKqOaXtumXtCovXHJcblx0cHVibGljIG91dENhcmRIYW5kTW92ZVRpbWU6bnVtYmVyID0wLjA3O1xyXG5cdC8qKuWFtuS7lueOqeWutuWHuueJjOmjnuWFpeeJjOaxoOaXtumXtCovXHJcblx0cHVibGljIG90aGVyT3V0Q2FyZFRvR3JvdXBUaW1lOm51bWJlciA9IDAuMDU7XHJcblx0Lyoq5YWl54mM5pe25YCZ5omL54mM5o+Q6LW3IOiQveS4i+aXtumXtCovXHJcblx0cHVibGljIGFkZENhcmRNb3ZlWVRpbWU6bnVtYmVyID0wLjE7XHJcblx0Lyoq5YWl54mM5pe25YCZ5omL54mM5peL6L2s5pe26Ze0Ki9cclxuXHRwdWJsaWMgYWRkQ2FyZFJvdGF0aW9uVGltZTpudW1iZXIgPTAuMDU7XHJcblx0XHJcblx0Lyoq5YWl54mM5pe25YCZ5omL54mM5o+Q6LW3IOiQveS4i+aXtumXtCovXHJcblx0cHVibGljIENoYW5nZVRocmVlTW92ZVlUaW1lOm51bWJlciA9MC4zO1xyXG4gICAgXHJcblx0Lyoq5YW25LuW546p5a625Ye654mM5Yqo5L2c5pi+56S65pe26Ze0Ki9cclxuXHRwdWJsaWMgb3RoZXJPdXRDYXJkQWN0aW9uVGltZTpudW1iZXIgPSAwLjAzO1xyXG5cdC8qKua4uOaIj+inhOWImeeVjOmdouenu+WKqOaXtumXtOezu+aVsCovXHJcblx0cHVibGljIGdhbWVSdWxlSXRlbU1vdmVUaW1lOm51bWJlciA9IDAuMDAxO1xyXG5cdC8qKuWxleekuueVjOmdoumjnuS6uuS4u+Wxj+aXtumXtCovXHJcblx0cHVibGljIHNob3dQYW5lbFRpbWUgOiBudW1iZXIgPSAwLjI1O1xyXG5cclxuXHJcblx0Lyoq5o2i5LiJ5byg566t5aS056e75Yqo5pe26Ze0Ki9cclxuXHRwdWJsaWMgY2hhbmdlVGhyZWVMaWdodE1vdmVUaW1lOm51bWJlciA9IDAuODtcclxuXHQvKirmjaLkuInlvKDniYznp7vliqjml7bpl7QqL1xyXG5cdHB1YmxpYyBjaGFuZ2VUaHJlZUNhcmRNb3ZlVGltZTpudW1iZXIgPSAwLjc1O1xyXG5cclxufVxyXG4iXX0=

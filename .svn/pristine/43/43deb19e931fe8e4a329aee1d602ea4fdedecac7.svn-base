@@ -1,0 +1,1 @@
+{"version":3,"sources":["assets\\Script\\proto\\MsgCommDef.ts"],"names":[],"mappings":";;;;;AAEA;;;;;EAKE;;;AAEF;IAAA;IAEA,CAAC;IAAD,iBAAC;AAAD,CAFA,AAEC,IAAA;AAFa,gCAAU","file":"","sourceRoot":"/","sourcesContent":["\r\n\r\n/**\r\n* @Author: ZZ\r\n* @Date: Created in 11:07 2017/10/19\r\n* @Description:\r\n* @Modified By:\r\n*/\r\n\r\nexport  class MsgCommDef {\r\n\t\r\n}\r\n"]}

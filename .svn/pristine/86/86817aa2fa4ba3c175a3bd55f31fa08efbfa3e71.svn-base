@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "turntable_little_0",
+    "texture": "cbe8262a-d8dc-4e0e-a126-2755069d3899",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      252,
+      31
+    ],
+    "offset": [
+      -2,
+      112.5
+    ],
+    "originalSize": [
+      256,
+      256
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

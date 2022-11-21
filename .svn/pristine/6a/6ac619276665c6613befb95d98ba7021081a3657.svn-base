@@ -1,0 +1,227 @@
+"use strict";
+cc._RF.push(module, '8eb60phndRDJaGxwiBDBXeJ', 'EnumManager');
+// Script/enum/EnumManager.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameRuleTypeEnum = exports.BigOverTypeEnum = exports.TurnTableItemStateEnum = exports.AntesMultipleEnum = exports.FeelTypeEnum = exports.EatCardEnum = exports.PlayEatTypeEnum = exports.PlayStauteEnum = exports.CardGroupPointBySelfEnum = exports.DirectionEnum = exports.CardTypeEnum = void 0;
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var EnumManager = /** @class */ (function (_super) {
+    __extends(EnumManager, _super);
+    function EnumManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    EnumManager = __decorate([
+        ccclass
+    ], EnumManager);
+    return EnumManager;
+}(cc.Component));
+exports.default = EnumManager;
+/**牌类枚举**/
+var CardTypeEnum;
+(function (CardTypeEnum) {
+    CardTypeEnum[CardTypeEnum["Wan"] = 0] = "Wan";
+    CardTypeEnum[CardTypeEnum["Tiao"] = 1] = "Tiao";
+    CardTypeEnum[CardTypeEnum["Tong"] = 2] = "Tong";
+    CardTypeEnum[CardTypeEnum["EndValue"] = 3] = "EndValue";
+})(CardTypeEnum = exports.CardTypeEnum || (exports.CardTypeEnum = {}));
+/***位置枚举*/
+var DirectionEnum;
+(function (DirectionEnum) {
+    /**东*/
+    DirectionEnum[DirectionEnum["Dong"] = 0] = "Dong";
+    /**北*/
+    DirectionEnum[DirectionEnum["Bei"] = 1] = "Bei";
+    /**西*/
+    DirectionEnum[DirectionEnum["Xi"] = 2] = "Xi";
+    /**南*/
+    DirectionEnum[DirectionEnum["Nan"] = 3] = "Nan";
+})(DirectionEnum = exports.DirectionEnum || (exports.DirectionEnum = {}));
+/***牌组相对于第一视角的位置定义*/
+var CardGroupPointBySelfEnum;
+(function (CardGroupPointBySelfEnum) {
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Self"] = 0] = "Self";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Down"] = 1] = "Down";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Opp"] = 2] = "Opp";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Up"] = 3] = "Up";
+})(CardGroupPointBySelfEnum = exports.CardGroupPointBySelfEnum || (exports.CardGroupPointBySelfEnum = {}));
+/**开牌状态机*/
+var PlayStauteEnum;
+(function (PlayStauteEnum) {
+    /**观战**/
+    PlayStauteEnum[PlayStauteEnum["LookGame"] = 0] = "LookGame";
+    /**坐下*/
+    PlayStauteEnum[PlayStauteEnum["Stand"] = 1] = "Stand";
+    /**准备*/
+    PlayStauteEnum[PlayStauteEnum["Ready"] = 2] = "Ready";
+    /**掷庄*/
+    PlayStauteEnum[PlayStauteEnum["ThrowBookMaker"] = 3] = "ThrowBookMaker";
+    /**矫座*/
+    PlayStauteEnum[PlayStauteEnum["ChangeChar"] = 4] = "ChangeChar";
+    /**定庄*/
+    PlayStauteEnum[PlayStauteEnum["CheckBookMaker"] = 5] = "CheckBookMaker";
+    /**砌牌*/
+    PlayStauteEnum[PlayStauteEnum["PileCard"] = 6] = "PileCard";
+    /**掷先*/
+    PlayStauteEnum[PlayStauteEnum["ThrowFrist"] = 7] = "ThrowFrist";
+    /**摸手牌*/
+    PlayStauteEnum[PlayStauteEnum["DrawHandCard"] = 8] = "DrawHandCard";
+    /**换三张*/
+    PlayStauteEnum[PlayStauteEnum["ChangeThree"] = 9] = "ChangeThree";
+    /**定缺*/
+    PlayStauteEnum[PlayStauteEnum["CheckDice"] = 10] = "CheckDice";
+    /**摸新牌*/
+    PlayStauteEnum[PlayStauteEnum["DrawNewCard"] = 11] = "DrawNewCard";
+    /**等待操作*/
+    PlayStauteEnum[PlayStauteEnum["WaitOperate"] = 12] = "WaitOperate";
+    /**出牌*/
+    PlayStauteEnum[PlayStauteEnum["PlayCard"] = 13] = "PlayCard";
+    /**停牌**/
+    PlayStauteEnum[PlayStauteEnum["StopCard"] = 14] = "StopCard";
+    /**胡牌*/
+    PlayStauteEnum[PlayStauteEnum["HuCard"] = 15] = "HuCard";
+    /**小局结束*/
+    PlayStauteEnum[PlayStauteEnum["EndInnings"] = 16] = "EndInnings";
+    /**小结算*/
+    PlayStauteEnum[PlayStauteEnum["SmallGameSettlement"] = 17] = "SmallGameSettlement";
+    /**大结算*/
+    PlayStauteEnum[PlayStauteEnum["BigGameSettlement"] = 18] = "BigGameSettlement";
+    PlayStauteEnum[PlayStauteEnum["EndValue"] = 19] = "EndValue";
+})(PlayStauteEnum = exports.PlayStauteEnum || (exports.PlayStauteEnum = {}));
+/**吃碰杠胡过*/
+var PlayEatTypeEnum;
+(function (PlayEatTypeEnum) {
+    PlayEatTypeEnum[PlayEatTypeEnum["Peng"] = 0] = "Peng";
+    PlayEatTypeEnum[PlayEatTypeEnum["Gang"] = 1] = "Gang";
+    PlayEatTypeEnum[PlayEatTypeEnum["Hu"] = 2] = "Hu";
+    PlayEatTypeEnum[PlayEatTypeEnum["Guo"] = 3] = "Guo";
+})(PlayEatTypeEnum = exports.PlayEatTypeEnum || (exports.PlayEatTypeEnum = {}));
+/**碰杠枚举*/
+var EatCardEnum;
+(function (EatCardEnum) {
+    /**碰对家*/
+    EatCardEnum[EatCardEnum["EatOpposite"] = 0] = "EatOpposite";
+    /**碰上家*/
+    EatCardEnum[EatCardEnum["EatUp"] = 1] = "EatUp";
+    /**碰下家*/
+    EatCardEnum[EatCardEnum["EatDown"] = 2] = "EatDown";
+    /**杠对家*/
+    EatCardEnum[EatCardEnum["CrossOpposite"] = 3] = "CrossOpposite";
+    /**杠上家*/
+    EatCardEnum[EatCardEnum["CrossUp"] = 4] = "CrossUp";
+    /**杠下家*/
+    EatCardEnum[EatCardEnum["CrossDown"] = 5] = "CrossDown";
+    /**暗杠*/
+    EatCardEnum[EatCardEnum["CrossSelf"] = 6] = "CrossSelf";
+    /**巴杠上家*/
+    EatCardEnum[EatCardEnum["CrossAllUp"] = 7] = "CrossAllUp";
+    /**巴杠下家*/
+    EatCardEnum[EatCardEnum["CrossAllDown"] = 8] = "CrossAllDown";
+    /**巴杠对家*/
+    EatCardEnum[EatCardEnum["CrossAllOpp"] = 9] = "CrossAllOpp";
+    EatCardEnum[EatCardEnum["EndValue"] = 10] = "EndValue";
+})(EatCardEnum = exports.EatCardEnum || (exports.EatCardEnum = {}));
+/**摸牌来源*/
+var FeelTypeEnum;
+(function (FeelTypeEnum) {
+    /**常规摸牌*/
+    FeelTypeEnum[FeelTypeEnum["CommonFeel"] = 0] = "CommonFeel";
+    /**杠后摸牌*/
+    FeelTypeEnum[FeelTypeEnum["GangFeel"] = 1] = "GangFeel";
+})(FeelTypeEnum = exports.FeelTypeEnum || (exports.FeelTypeEnum = {}));
+/**底注翻倍枚举**/
+var AntesMultipleEnum;
+(function (AntesMultipleEnum) {
+    AntesMultipleEnum[AntesMultipleEnum["None"] = 0] = "None";
+    /**基础倍率*/
+    AntesMultipleEnum[AntesMultipleEnum["initial"] = 1] = "initial";
+    /**买马加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openBuyHorse"] = 2] = "openBuyHorse";
+    /**飘加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openDouble"] = 3] = "openDouble";
+    /**16手加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["moreHand"] = 4] = "moreHand";
+    /**换三加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["changeThree"] = 5] = "changeThree";
+    /**庄家必买马加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openBookmakerMustBuyHorse"] = 6] = "openBookmakerMustBuyHorse";
+    AntesMultipleEnum[AntesMultipleEnum["EndValue"] = 7] = "EndValue";
+})(AntesMultipleEnum = exports.AntesMultipleEnum || (exports.AntesMultipleEnum = {}));
+/**转盘元素状态 */
+var TurnTableItemStateEnum;
+(function (TurnTableItemStateEnum) {
+    TurnTableItemStateEnum[TurnTableItemStateEnum["None"] = 0] = "None";
+    /**当前玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["CurrentRound"] = 1] = "CurrentRound";
+    /**非当前玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["NotInRound"] = 2] = "NotInRound";
+    /**海底状态下 玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["CurRoundInSeabed"] = 3] = "CurRoundInSeabed";
+    /**海底状态  非玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["NotCurRoundInSeabed"] = 4] = "NotCurRoundInSeabed";
+    /**玩家结束状态 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["Finish"] = 5] = "Finish";
+})(TurnTableItemStateEnum = exports.TurnTableItemStateEnum || (exports.TurnTableItemStateEnum = {}));
+var BigOverTypeEnum;
+(function (BigOverTypeEnum) {
+    /**无马 */
+    BigOverTypeEnum[BigOverTypeEnum["None"] = 0] = "None";
+    /**有马 */
+    BigOverTypeEnum[BigOverTypeEnum["BuyMa"] = 1] = "BuyMa";
+    /**庄马 */
+    BigOverTypeEnum[BigOverTypeEnum["ZhuangMa"] = 2] = "ZhuangMa";
+})(BigOverTypeEnum = exports.BigOverTypeEnum || (exports.BigOverTypeEnum = {}));
+var GameRuleTypeEnum;
+(function (GameRuleTypeEnum) {
+    GameRuleTypeEnum[GameRuleTypeEnum["FengDing"] = 0] = "FengDing";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZiMo"] = 1] = "ZiMo";
+    GameRuleTypeEnum[GameRuleTypeEnum["GameType"] = 2] = "GameType";
+    GameRuleTypeEnum[GameRuleTypeEnum["Baozi"] = 3] = "Baozi";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShuangBao"] = 4] = "ShuangBao";
+    GameRuleTypeEnum[GameRuleTypeEnum["BaoYu"] = 5] = "BaoYu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiShiYu"] = 6] = "JiShiYu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LiangGangTongChuan"] = 7] = "LiangGangTongChuan";
+    GameRuleTypeEnum[GameRuleTypeEnum["MenQing"] = 8] = "MenQing";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZhongZhang"] = 9] = "ZhongZhang";
+    GameRuleTypeEnum[GameRuleTypeEnum["YaoJiu"] = 10] = "YaoJiu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiangDui"] = 11] = "JiangDui";
+    GameRuleTypeEnum[GameRuleTypeEnum["TianDiHu"] = 12] = "TianDiHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiaXinWu"] = 13] = "JiaXinWu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LunZhuang"] = 14] = "LunZhuang";
+    GameRuleTypeEnum[GameRuleTypeEnum["TiFan"] = 15] = "TiFan";
+    GameRuleTypeEnum[GameRuleTypeEnum["GuoShouHu"] = 16] = "GuoShouHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LiangFenQiHu"] = 17] = "LiangFenQiHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZuiHouSiZhang"] = 18] = "ZuiHouSiZhang";
+    GameRuleTypeEnum[GameRuleTypeEnum["ChaDaHu"] = 19] = "ChaDaHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["DianGangHua"] = 20] = "DianGangHua";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShaiTaiYang"] = 21] = "ShaiTaiYang";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZiMoLiangPai"] = 22] = "ZiMoLiangPai";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShiShiJieSuan"] = 23] = "ShiShiJieSuan";
+})(GameRuleTypeEnum = exports.GameRuleTypeEnum || (exports.GameRuleTypeEnum = {}));
+
+cc._RF.pop();

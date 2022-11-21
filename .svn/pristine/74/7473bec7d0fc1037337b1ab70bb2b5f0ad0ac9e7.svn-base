@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "2873b9b3-8b87-4977-89ff-314512c85324",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 60,
+  "height": 65,
+  "platformSettings": {},
+  "subMetas": {
+    "game_biaoqian1": {
+      "ver": "1.0.6",
+      "uuid": "20986971-bfd5-45b4-89e4-b649dc12ea0a",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "2873b9b3-8b87-4977-89ff-314512c85324",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 60,
+      "height": 65,
+      "rawWidth": 60,
+      "rawHeight": 65,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

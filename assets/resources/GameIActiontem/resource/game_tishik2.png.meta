@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "bf73989c-1651-4652-9d91-de2caa94d0b1",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 206,
+  "height": 232,
+  "platformSettings": {},
+  "subMetas": {
+    "game_tishik2": {
+      "ver": "1.0.6",
+      "uuid": "9f75d6a1-47ad-41bb-8dac-3637b8fa7621",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "bf73989c-1651-4652-9d91-de2caa94d0b1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 206,
+      "height": 232,
+      "rawWidth": 206,
+      "rawHeight": 232,
+      "borderTop": 29,
+      "borderBottom": 38,
+      "borderLeft": 31,
+      "borderRight": 42,
+      "subMetas": {}
+    }
+  }
+}

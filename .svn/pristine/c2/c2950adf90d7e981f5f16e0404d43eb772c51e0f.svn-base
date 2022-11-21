@@ -1,0 +1,59 @@
+"use strict";
+cc._RF.push(module, '7ee34keC6ZLPZTEVq6chPAR', 'HttpRequest');
+// Script/com/http/HttpRequest.ts
+
+// export interface HttpRequest {
+//     /**
+//      * 本次请求返回的数据，数据类型根据 responseType 设置的值确定。
+//      */
+//     response: any;
+//     /**
+//      * 设置返回的数据格式为文本（HttpResponseType.TEXT）还是二进制数据（HttpResponseType.ArrayBuffer）<br/>
+//      * 注意：若尝试设置此属性为一个非法的值，运行时将使用HttpResponseType.TEXT。
+//      * @default egret.HttpResponseType.TEXT
+//      */
+//     responseType: string;
+//     /**
+//      * 代表着一个请求在被自动终止前所消耗的毫秒数。默认值为 0，意味着没有超时。
+//      * @default egret.HttpResponseType.TEXT
+//      */
+//     timeout: number;
+//     /**
+//      * 表明在进行跨站(cross-site)的访问控制(Access-Control)请求时，是否使用认证信息(例如cookie或授权的header)。(这个标志不会影响同站的请求)
+//      * @default false
+//      */
+//     withCredentials: boolean;
+//     /**
+//      * 初始化一个请求.<br/>
+//      * 注意: 若在已经发出请求的对象上调用此方法，相当于立即调用abort().
+//      * @param url 该请求所要访问的URL该请求所要访问的URL
+//      * @param method 请求所使用的HTTP方法， 请使用 HttpMethod 定义的枚举值.
+//      */
+//     open(url: string, method?: string): void;
+//     /**
+//      * 发送请求.
+//      * @param data 需要发送的数据
+//      */
+//     send(data?: any): void;
+//     /**
+//      * 如果请求已经被发送,则立刻中止请求.
+//      */
+//     abort(): void;
+//     /**
+//      * 返回所有响应头信息(响应头名和值), 如果响应头还没接受,则返回"".
+//      */
+//     getAllResponseHeaders(): string;
+//     /**
+//      * 给指定的HTTP请求头赋值.在这之前,您必须确认已经调用 open() 方法打开了一个url.
+//      * @param header 将要被赋值的请求头名称.
+//      * @param value 给指定的请求头赋的值.
+//      */
+//     setRequestHeader(header: string, value: string): void;
+//     /**
+//      * 返回指定的响应头的值, 如果响应头还没被接受,或该响应头不存在,则返回"".
+//      * @param header 要返回的响应头名称
+//      */
+//     getResponseHeader(header: string): string
+// }
+
+cc._RF.pop();

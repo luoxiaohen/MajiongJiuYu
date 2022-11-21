@@ -1,0 +1,94 @@
+"use strict";
+cc._RF.push(module, '5b38boLCQtF3p7IK7+9lbNG', 'OverBuyHorseItem');
+// Script/UI/over/OverBuyHorseItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var OverBuyHorseItem = /** @class */ (function (_super) {
+    __extends(OverBuyHorseItem, _super);
+    function OverBuyHorseItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.buyCountLabel = null;
+        _this.fenLabel = null;
+        _this.playerHeadImage = null;
+        _this.cardValueImage = null;
+        _this.horseImage = null;
+        return _this;
+    }
+    Object.defineProperty(OverBuyHorseItem.prototype, "buyHorseInfoData", {
+        get: function () {
+            return this._buyHorseInfoData;
+        },
+        set: function (value) {
+            this._buyHorseInfoData = value;
+            this.showElements();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    OverBuyHorseItem.prototype.showElements = function () {
+        var _this = this;
+        var source = "smallOver/resource/game_ma" + (this.buyHorseInfoData.horesNum + 2);
+        GloBal_1.Global.Utils.setNewImageToSprite(this.horseImage, source);
+        this.buyCountLabel.string = this.buyHorseInfoData.buyCoun + "张";
+        GloBal_1.Global.Utils.setNewImageToSprite(this.cardValueImage, "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(this.buyHorseInfoData.cardValue));
+        var fontSource = this.buyHorseInfoData.fen >= 0 ? "comResource/mapFont/jiesuanJiafen" : "comResource/mapFont/jiesuanJianfen";
+        cc.loader.loadRes(fontSource, cc.Font, function (error, assest) {
+            if (error) {
+                return;
+            }
+            _this.fenLabel.font = assest;
+            _this.fenLabel.string = _this.buyHorseInfoData.fen >= 0 ? ("+" + _this.buyHorseInfoData.fen) : _this.buyHorseInfoData.fen.toString();
+        });
+    };
+    __decorate([
+        property(cc.Label)
+    ], OverBuyHorseItem.prototype, "buyCountLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], OverBuyHorseItem.prototype, "fenLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], OverBuyHorseItem.prototype, "playerHeadImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], OverBuyHorseItem.prototype, "cardValueImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], OverBuyHorseItem.prototype, "horseImage", void 0);
+    OverBuyHorseItem = __decorate([
+        ccclass
+    ], OverBuyHorseItem);
+    return OverBuyHorseItem;
+}(UIBase_1.default));
+exports.default = OverBuyHorseItem;
+
+cc._RF.pop();

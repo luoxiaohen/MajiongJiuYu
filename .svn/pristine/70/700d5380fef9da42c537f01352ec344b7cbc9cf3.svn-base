@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_shuru",
+    "texture": "aeec1577-9e45-4da5-8284-2e135adb61c4",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      932,
+      94
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      932,
+      94
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

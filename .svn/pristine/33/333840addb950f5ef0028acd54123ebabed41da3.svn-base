@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "ecSgOOD5JNMbKepGqQtplB"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "ty_tuichuxg",
+      "rect": [
+        0,
+        0,
+        328,
+        104
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        328,
+        104
+      ],
+      "capInsets": [
+        26,
+        16,
+        36,
+        26
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

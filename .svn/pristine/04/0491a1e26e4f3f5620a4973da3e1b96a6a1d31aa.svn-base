@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "1cKrLx4ehJG59R6rZWnzq2"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "game_duijujieshu",
+      "rect": [
+        0,
+        0,
+        1109,
+        316
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        1109,
+        316
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

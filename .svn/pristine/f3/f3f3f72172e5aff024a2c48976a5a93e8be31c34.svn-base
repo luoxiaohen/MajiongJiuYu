@@ -1,0 +1,85 @@
+"use strict";
+cc._RF.push(module, 'b4f7btKSaZJnJDwM4bS4YXZ', 'GameRecordPannel');
+// Script/UI/gameRecord/GameRecordPannel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var GameRealTimePannel_1 = require("./GameRealTimePannel");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GameRecordPannel = /** @class */ (function (_super) {
+    __extends(GameRecordPannel, _super);
+    function GameRecordPannel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.contentRoot = null;
+        _this.scrollView = null;
+        _this.viewType = "0";
+        return _this;
+        // update (dt) {}
+    }
+    // LIFE-CYCLE CALLBACKS:
+    GameRecordPannel.prototype.onLoad = function () {
+        this.realTimePrefab = GloBal_1.Global.Utils.getPreFabBySource("gameRecord/prefab/GameRealTimePannel");
+    };
+    GameRecordPannel.prototype.start = function () {
+        this.OnToggleClick(null, "0");
+    };
+    GameRecordPannel.prototype.OnToggleClick = function (toggle, parm) {
+        this.viewType = parm;
+        if (this.viewType == "0") {
+            if (!this.realTimePannel) {
+                var obj = cc.instantiate(this.realTimePrefab);
+                if (obj) {
+                    this.contentRoot.addChild(obj);
+                    obj.y = 0;
+                    this.realTimePannel = obj.getComponent(GameRealTimePannel_1.default);
+                    this.realTimePannel.initeValue();
+                }
+            }
+            else {
+                this.realTimePannel.node.active = true;
+            }
+        }
+        else {
+            this.realTimePannel.node.active = false;
+        }
+    };
+    __decorate([
+        property(cc.Node)
+    ], GameRecordPannel.prototype, "contentRoot", void 0);
+    __decorate([
+        property(cc.ScrollView)
+    ], GameRecordPannel.prototype, "scrollView", void 0);
+    GameRecordPannel = __decorate([
+        ccclass
+    ], GameRecordPannel);
+    return GameRecordPannel;
+}(cc.Component));
+exports.default = GameRecordPannel;
+
+cc._RF.pop();

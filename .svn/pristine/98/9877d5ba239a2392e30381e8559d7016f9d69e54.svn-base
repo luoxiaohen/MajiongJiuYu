@@ -1,0 +1,81 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/com/http/HttpRequest.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '7ee34keC6ZLPZTEVq6chPAR', 'HttpRequest');
+// Script/com/http/HttpRequest.ts
+
+// export interface HttpRequest {
+//     /**
+//      * 本次请求返回的数据，数据类型根据 responseType 设置的值确定。
+//      */
+//     response: any;
+//     /**
+//      * 设置返回的数据格式为文本（HttpResponseType.TEXT）还是二进制数据（HttpResponseType.ArrayBuffer）<br/>
+//      * 注意：若尝试设置此属性为一个非法的值，运行时将使用HttpResponseType.TEXT。
+//      * @default egret.HttpResponseType.TEXT
+//      */
+//     responseType: string;
+//     /**
+//      * 代表着一个请求在被自动终止前所消耗的毫秒数。默认值为 0，意味着没有超时。
+//      * @default egret.HttpResponseType.TEXT
+//      */
+//     timeout: number;
+//     /**
+//      * 表明在进行跨站(cross-site)的访问控制(Access-Control)请求时，是否使用认证信息(例如cookie或授权的header)。(这个标志不会影响同站的请求)
+//      * @default false
+//      */
+//     withCredentials: boolean;
+//     /**
+//      * 初始化一个请求.<br/>
+//      * 注意: 若在已经发出请求的对象上调用此方法，相当于立即调用abort().
+//      * @param url 该请求所要访问的URL该请求所要访问的URL
+//      * @param method 请求所使用的HTTP方法， 请使用 HttpMethod 定义的枚举值.
+//      */
+//     open(url: string, method?: string): void;
+//     /**
+//      * 发送请求.
+//      * @param data 需要发送的数据
+//      */
+//     send(data?: any): void;
+//     /**
+//      * 如果请求已经被发送,则立刻中止请求.
+//      */
+//     abort(): void;
+//     /**
+//      * 返回所有响应头信息(响应头名和值), 如果响应头还没接受,则返回"".
+//      */
+//     getAllResponseHeaders(): string;
+//     /**
+//      * 给指定的HTTP请求头赋值.在这之前,您必须确认已经调用 open() 方法打开了一个url.
+//      * @param header 将要被赋值的请求头名称.
+//      * @param value 给指定的请求头赋的值.
+//      */
+//     setRequestHeader(header: string, value: string): void;
+//     /**
+//      * 返回指定的响应头的值, 如果响应头还没被接受,或该响应头不存在,则返回"".
+//      * @param header 要返回的响应头名称
+//      */
+//     getResponseHeader(header: string): string
+// }
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxjb21cXGh0dHBcXEh0dHBSZXF1ZXN0LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGlDQUFpQztBQUNqQyxVQUFVO0FBQ1YsK0NBQStDO0FBQy9DLFVBQVU7QUFDVixxQkFBcUI7QUFDckIsVUFBVTtBQUNWLHVGQUF1RjtBQUN2Rix5REFBeUQ7QUFDekQsOENBQThDO0FBQzlDLFVBQVU7QUFDViw0QkFBNEI7QUFDNUIsVUFBVTtBQUNWLCtDQUErQztBQUMvQyw4Q0FBOEM7QUFDOUMsVUFBVTtBQUNWLHVCQUF1QjtBQUN2QixVQUFVO0FBQ1Ysa0dBQWtHO0FBQ2xHLHdCQUF3QjtBQUN4QixVQUFVO0FBQ1YsZ0NBQWdDO0FBQ2hDLFVBQVU7QUFDVix1QkFBdUI7QUFDdkIsK0NBQStDO0FBQy9DLDJDQUEyQztBQUMzQyw0REFBNEQ7QUFDNUQsVUFBVTtBQUNWLGdEQUFnRDtBQUNoRCxVQUFVO0FBQ1YsZUFBZTtBQUNmLDZCQUE2QjtBQUM3QixVQUFVO0FBQ1YsOEJBQThCO0FBQzlCLFVBQVU7QUFDViw0QkFBNEI7QUFDNUIsVUFBVTtBQUNWLHFCQUFxQjtBQUNyQixVQUFVO0FBQ1YsNkNBQTZDO0FBQzdDLFVBQVU7QUFDVix1Q0FBdUM7QUFDdkMsVUFBVTtBQUNWLHlEQUF5RDtBQUN6RCxvQ0FBb0M7QUFDcEMsa0NBQWtDO0FBQ2xDLFVBQVU7QUFDViw2REFBNkQ7QUFDN0QsVUFBVTtBQUNWLGdEQUFnRDtBQUNoRCxpQ0FBaUM7QUFDakMsVUFBVTtBQUNWLGdEQUFnRDtBQUNoRCxJQUFJIiwiZmlsZSI6IiIsInNvdXJjZVJvb3QiOiIvIiwic291cmNlc0NvbnRlbnQiOlsiLy8gZXhwb3J0IGludGVyZmFjZSBIdHRwUmVxdWVzdCB7XHJcbi8vICAgICAvKipcclxuLy8gICAgICAqIOacrOasoeivt+axgui/lOWbnueahOaVsOaNru+8jOaVsOaNruexu+Wei+agueaNriByZXNwb25zZVR5cGUg6K6+572u55qE5YC856Gu5a6a44CCXHJcbi8vICAgICAgKi9cclxuLy8gICAgIHJlc3BvbnNlOiBhbnk7XHJcbi8vICAgICAvKipcclxuLy8gICAgICAqIOiuvue9rui/lOWbnueahOaVsOaNruagvOW8j+S4uuaWh+acrO+8iEh0dHBSZXNwb25zZVR5cGUuVEVYVO+8iei/mOaYr+S6jOi/m+WItuaVsOaNru+8iEh0dHBSZXNwb25zZVR5cGUuQXJyYXlCdWZmZXLvvIk8YnIvPlxyXG4vLyAgICAgICog5rOo5oSP77ya6Iul5bCd6K+V6K6+572u5q2k5bGe5oCn5Li65LiA5Liq6Z2e5rOV55qE5YC877yM6L+Q6KGM5pe25bCG5L2/55SoSHR0cFJlc3BvbnNlVHlwZS5URVhU44CCXHJcbi8vICAgICAgKiBAZGVmYXVsdCBlZ3JldC5IdHRwUmVzcG9uc2VUeXBlLlRFWFRcclxuLy8gICAgICAqL1xyXG4vLyAgICAgcmVzcG9uc2VUeXBlOiBzdHJpbmc7XHJcbi8vICAgICAvKipcclxuLy8gICAgICAqIOS7o+ihqOedgOS4gOS4quivt+axguWcqOiiq+iHquWKqOe7iOatouWJjeaJgOa2iOiAl+eahOavq+enkuaVsOOAgum7mOiupOWAvOS4uiAw77yM5oSP5ZGz552A5rKh5pyJ6LaF5pe244CCXHJcbi8vICAgICAgKiBAZGVmYXVsdCBlZ3JldC5IdHRwUmVzcG9uc2VUeXBlLlRFWFRcclxuLy8gICAgICAqL1xyXG4vLyAgICAgdGltZW91dDogbnVtYmVyO1xyXG4vLyAgICAgLyoqXHJcbi8vICAgICAgKiDooajmmI7lnKjov5vooYzot6jnq5koY3Jvc3Mtc2l0ZSnnmoTorr/pl67mjqfliLYoQWNjZXNzLUNvbnRyb2wp6K+35rGC5pe277yM5piv5ZCm5L2/55So6K6k6K+B5L+h5oGvKOS+i+WmgmNvb2tpZeaIluaOiOadg+eahGhlYWRlcinjgIIo6L+Z5Liq5qCH5b+X5LiN5Lya5b2x5ZON5ZCM56uZ55qE6K+35rGCKVxyXG4vLyAgICAgICogQGRlZmF1bHQgZmFsc2VcclxuLy8gICAgICAqL1xyXG4vLyAgICAgd2l0aENyZWRlbnRpYWxzOiBib29sZWFuO1xyXG4vLyAgICAgLyoqXHJcbi8vICAgICAgKiDliJ3lp4vljJbkuIDkuKror7fmsYIuPGJyLz5cclxuLy8gICAgICAqIOazqOaEjzog6Iul5Zyo5bey57uP5Y+R5Ye66K+35rGC55qE5a+56LGh5LiK6LCD55So5q2k5pa55rOV77yM55u45b2T5LqO56uL5Y2z6LCD55SoYWJvcnQoKS5cclxuLy8gICAgICAqIEBwYXJhbSB1cmwg6K+l6K+35rGC5omA6KaB6K6/6Zeu55qEVVJM6K+l6K+35rGC5omA6KaB6K6/6Zeu55qEVVJMXHJcbi8vICAgICAgKiBAcGFyYW0gbWV0aG9kIOivt+axguaJgOS9v+eUqOeahEhUVFDmlrnms5XvvIwg6K+35L2/55SoIEh0dHBNZXRob2Qg5a6a5LmJ55qE5p6a5Li+5YC8LlxyXG4vLyAgICAgICovXHJcbi8vICAgICBvcGVuKHVybDogc3RyaW5nLCBtZXRob2Q/OiBzdHJpbmcpOiB2b2lkO1xyXG4vLyAgICAgLyoqXHJcbi8vICAgICAgKiDlj5HpgIHor7fmsYIuXHJcbi8vICAgICAgKiBAcGFyYW0gZGF0YSDpnIDopoHlj5HpgIHnmoTmlbDmja5cclxuLy8gICAgICAqL1xyXG4vLyAgICAgc2VuZChkYXRhPzogYW55KTogdm9pZDtcclxuLy8gICAgIC8qKlxyXG4vLyAgICAgICog5aaC5p6c6K+35rGC5bey57uP6KKr5Y+R6YCBLOWImeeri+WIu+S4reatouivt+axgi5cclxuLy8gICAgICAqL1xyXG4vLyAgICAgYWJvcnQoKTogdm9pZDtcclxuLy8gICAgIC8qKlxyXG4vLyAgICAgICog6L+U5Zue5omA5pyJ5ZON5bqU5aS05L+h5oGvKOWTjeW6lOWktOWQjeWSjOWAvCksIOWmguaenOWTjeW6lOWktOi/mOayoeaOpeWPlyzliJnov5Tlm55cIlwiLlxyXG4vLyAgICAgICovXHJcbi8vICAgICBnZXRBbGxSZXNwb25zZUhlYWRlcnMoKTogc3RyaW5nO1xyXG4vLyAgICAgLyoqXHJcbi8vICAgICAgKiDnu5nmjIflrprnmoRIVFRQ6K+35rGC5aS06LWL5YC8LuWcqOi/meS5i+WJjSzmgqjlv4Xpobvnoa7orqTlt7Lnu4/osIPnlKggb3BlbigpIOaWueazleaJk+W8gOS6huS4gOS4qnVybC5cclxuLy8gICAgICAqIEBwYXJhbSBoZWFkZXIg5bCG6KaB6KKr6LWL5YC855qE6K+35rGC5aS05ZCN56ewLlxyXG4vLyAgICAgICogQHBhcmFtIHZhbHVlIOe7meaMh+WumueahOivt+axguWktOi1i+eahOWAvC5cclxuLy8gICAgICAqL1xyXG4vLyAgICAgc2V0UmVxdWVzdEhlYWRlcihoZWFkZXI6IHN0cmluZywgdmFsdWU6IHN0cmluZyk6IHZvaWQ7XHJcbi8vICAgICAvKipcclxuLy8gICAgICAqIOi/lOWbnuaMh+WumueahOWTjeW6lOWktOeahOWAvCwg5aaC5p6c5ZON5bqU5aS06L+Y5rKh6KKr5o6l5Y+XLOaIluivpeWTjeW6lOWktOS4jeWtmOWcqCzliJnov5Tlm55cIlwiLlxyXG4vLyAgICAgICogQHBhcmFtIGhlYWRlciDopoHov5Tlm57nmoTlk43lupTlpLTlkI3np7BcclxuLy8gICAgICAqL1xyXG4vLyAgICAgZ2V0UmVzcG9uc2VIZWFkZXIoaGVhZGVyOiBzdHJpbmcpOiBzdHJpbmdcclxuLy8gfSJdfQ==

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_liangrenmajiang",
+    "texture": "0f8114ee-5d15-4edf-a714-e58677f77b17",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      138,
+      31
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      138,
+      31
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

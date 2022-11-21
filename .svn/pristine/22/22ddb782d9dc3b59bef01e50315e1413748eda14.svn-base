@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_wenzidi",
+    "texture": "cc417b31-803d-4896-b7b7-ab4b6061e135",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      389,
+      329
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      389,
+      329
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

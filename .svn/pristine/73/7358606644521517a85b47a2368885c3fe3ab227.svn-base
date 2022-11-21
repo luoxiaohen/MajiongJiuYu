@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "turntable_big_0",
+    "texture": "fefb1d0f-bedb-43f0-9d8d-e9e36d8c1cbe",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      246,
+      85
+    ],
+    "offset": [
+      -5,
+      85.5
+    ],
+    "originalSize": [
+      256,
+      256
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

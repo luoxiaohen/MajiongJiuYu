@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_gangt",
+    "texture": "dc6bb473-4245-4b56-92fa-7026647d519c",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      198,
+      199
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      198,
+      199
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

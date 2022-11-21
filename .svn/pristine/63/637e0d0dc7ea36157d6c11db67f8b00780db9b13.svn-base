@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_fanhui",
+    "texture": "09c6901f-42dd-4c18-a50f-b75e1256c458",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      24,
+      43
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      24,
+      43
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

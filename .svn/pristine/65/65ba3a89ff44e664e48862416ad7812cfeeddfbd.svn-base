@@ -1,0 +1,120 @@
+"use strict";
+cc._RF.push(module, '9d70c0quiRLc5DSSp/d43nI', 'CreateRoomPanel');
+// Script/UI/CreateRoomPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var LobbyMsg_1 = require("../proto/LobbyMsg");
+var LobbyMsgDef_1 = require("../proto/LobbyMsgDef");
+var TableMsg_1 = require("../proto/TableMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateRoomPanel = /** @class */ (function (_super) {
+    __extends(CreateRoomPanel, _super);
+    function CreateRoomPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.createBtn = null;
+        _this.jionRoomBtn = null;
+        _this.roomIdLabel = null;
+        return _this;
+    }
+    CreateRoomPanel.prototype.onload = function () {
+    };
+    CreateRoomPanel.prototype.onCreateClick = function () {
+        GloBal_1.Global.Utils.debugOutput("CreateRoomPanel ==> 创建房间按钮点击");
+        var ruleInfo = new LobbyMsgDef_1.TableRuleInfo();
+        ruleInfo.gamePlayType = LobbyMsgDef_1.GamePlayTypeEnum.XueZhanDaoDi;
+        ruleInfo.roomType = LobbyMsgDef_1.GameRoomTypeEnum.SiRenSanFang;
+        ruleInfo.baseScore = 1;
+        ruleInfo.handsCnt = 16;
+        ruleInfo.ceiling = 32;
+        ruleInfo.tiFan = 0;
+        ruleInfo.baozi = LobbyMsgDef_1.GamePiaoTypeEnum.None;
+        ruleInfo.baoziDouble = 0;
+        ruleInfo.haveHorse = 0;
+        ruleInfo.buyHorseNum = 0;
+        ruleInfo.buyHorseType = 0;
+        ruleInfo.isSelectBankerBuyHorse = 0;
+        ruleInfo.isSelectEatHorse = 0;
+        ruleInfo.zmType = 1;
+        ruleInfo.menqing = 1;
+        ruleInfo.zhongzhang = 1;
+        ruleInfo.yao9 = 1;
+        ruleInfo.jiangdui = 1;
+        ruleInfo.jiaxin5 = 1;
+        ruleInfo.tdHu = 1;
+        ruleInfo.findMaxHu = 1;
+        ruleInfo.dianGangHua = 1;
+        ruleInfo.caGua = 1;
+        ruleInfo.jiShiYu = 1;
+        ruleInfo.allGangShift = 1;
+        ruleInfo.sunshine = 1;
+        ruleInfo.passHu = 1;
+        ruleInfo.lunZhuang = 1;
+        ruleInfo.hu2Score = 1;
+        ruleInfo.last4Hu = 1;
+        ruleInfo.zmOpen = 1;
+        ruleInfo.realTimeCalc = 1;
+        ruleInfo.limitIP = 1;
+        ruleInfo.limitGPS = 1;
+        var msg = new LobbyMsg_1.Msg_CS_CreateTable();
+        msg.info = ruleInfo;
+        msg.name = "";
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    CreateRoomPanel.prototype.onJoinClick = function () {
+        if (!this.roomIdLabel.string) {
+            return;
+        }
+        GloBal_1.Global.Utils.dialogOutput("CreateRoomPanel ==> 请输入正确的房间号");
+        var msg = new TableMsg_1.Msg_CS_FindEnterRoom();
+        msg.code = Number(this.roomIdLabel.string);
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        // Global.DialogManager.createDialog("createRoom/prefab/ListTest" , null , (any,createDialog)=>{
+        //     createDialog.x = 0;
+        //     createDialog.y = -1920;
+        // } , this.node)
+    };
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomPanel.prototype, "createBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomPanel.prototype, "jionRoomBtn", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], CreateRoomPanel.prototype, "roomIdLabel", void 0);
+    CreateRoomPanel = __decorate([
+        ccclass
+    ], CreateRoomPanel);
+    return CreateRoomPanel;
+}(UIBase_1.default));
+exports.default = CreateRoomPanel;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_zhankai",
+    "texture": "0952382e-71b1-4b84-bd77-5ea1d3e72efe",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      48,
+      34
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      48,
+      34
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

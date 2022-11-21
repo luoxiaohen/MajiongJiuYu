@@ -1,0 +1,185 @@
+"use strict";
+cc._RF.push(module, '9f658wQYbdL3Iany6F1OSyW', 'GetCardPanel');
+// Script/tips/GetCardPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../event/EventType");
+var TableExMsg_1 = require("../proto/TableExMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var GetCardItem_1 = require("./GetCardItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GetCardPanel = /** @class */ (function (_super) {
+    __extends(GetCardPanel, _super);
+    function GetCardPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.cardGroup = null;
+        _this.haveGroup = null;
+        _this.getHandBtn = null;
+        _this.closeBtn = null;
+        _this.getFeelBtn = null;
+        _this.allClickCard = [];
+        return _this;
+    }
+    GetCardPanel.prototype.onLoad = function () {
+        var msg = new TableExMsg_1.Msg_CS_TGMMsg();
+        msg.cmd = "getpools";
+        msg.gmMsg = "1";
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        this.addEvent();
+    };
+    GetCardPanel.prototype.addEvent = function () {
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.PoolsList, this.onPoolsList, this);
+    };
+    GetCardPanel.prototype.onPoolsList = function (e, msg) {
+        this.msg = msg;
+        this.createElements();
+    };
+    GetCardPanel.prototype.createElements = function () {
+        if (this.msg.pools) {
+            this.showPools();
+        }
+        else {
+            this.showAll();
+        }
+    };
+    GetCardPanel.prototype.showAll = function () {
+        var card;
+        var index = 0;
+        for (var i = 1; i < 30; i++) {
+            if (i % 10 != 0) {
+                card = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/GetCardPanel/prefab/GetCardItem")).getComponent(GetCardItem_1.default);
+                this.cardGroup.addChild(card.node);
+                card.setData(i, 4, this.onCardClick, this);
+                card.node.x = (i % 10 - 1) * 130;
+                card.node.y = 460 - (index * 140);
+            }
+            else {
+                index++;
+            }
+        }
+    };
+    GetCardPanel.prototype.showPools = function () {
+        var arr = this.msg.pools;
+        var remainArr = [];
+        for (var i = 1; i < 30; i++) {
+            if (i % 0 != 0) {
+                remainArr[i] = 0;
+            }
+        }
+        for (var i = 0; i < arr.length; i++) {
+            remainArr[arr[i]] += 1;
+        }
+        var card;
+        var index = 0;
+        for (var i = 1; i < 30; i++) {
+            if (i % 10 != 0) {
+                card = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/GetCardPanel/prefab/GetCardItem")).getComponent(GetCardItem_1.default);
+                this.cardGroup.addChild(card.node);
+                card.setData(i, remainArr[i], this.onCardClick, this);
+                card.node.x = (i % 10 - 1) * 130;
+                card.node.y = 460 - (index * 140);
+            }
+            else {
+                index++;
+            }
+        }
+    };
+    GetCardPanel.prototype.onCardClick = function (clickCard) {
+        if (clickCard.getCardNum() <= 0) {
+            return;
+        }
+        this.lastClick = clickCard;
+        this.allClickCard.push(clickCard.getCardValue());
+        this.showMyHand(clickCard.getCardValue());
+    };
+    GetCardPanel.prototype.showMyHand = function (cardValue) {
+        var card = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/GetCardPanel/prefab/GetCardItem")).getComponent(GetCardItem_1.default);
+        this.haveGroup.addChild(card.node);
+        card.node.x = (this.allClickCard.length - 1) * 130;
+        card.node.y = 0;
+        card.setData(cardValue, -1, this.onHandCardClick, this);
+    };
+    GetCardPanel.prototype.onHandCardClick = function (clickCard) {
+        clickCard.disTory();
+        this.allClickCard.splice(this.allClickCard.indexOf(clickCard.getCardValue()), 1);
+        this.haveGroup.removeAllChildren();
+        for (var i = 0; i < this.allClickCard.length; i++) {
+            var card = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/GetCardPanel/prefab/GetCardItem")).getComponent(GetCardItem_1.default);
+            this.haveGroup.addChild(card.node);
+            card.setData(this.allClickCard[i], -1, this.onHandCardClick, this);
+            card.node.x = i * 130;
+            card.node.y = 0;
+        }
+    };
+    GetCardPanel.prototype.onCloseClick = function () {
+        this.disTory();
+    };
+    GetCardPanel.prototype.onGetFeelClick = function () {
+        var msg = new TableExMsg_1.Msg_CS_TGMMsg();
+        msg.cmd = "want";
+        msg.gmMsg = this.allClickCard[this.allClickCard.length - 1].toString();
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        this.disTory();
+    };
+    GetCardPanel.prototype.onGetHandClick = function () {
+        var msg = new TableExMsg_1.Msg_CS_TGMMsg();
+        msg.cmd = "wanth";
+        msg.gmMsg = this.allClickCard.toString();
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        this.disTory();
+    };
+    GetCardPanel.prototype.disTory = function () {
+        this.haveGroup.removeAllChildren();
+        this.cardGroup.removeAllChildren();
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Node)
+    ], GetCardPanel.prototype, "cardGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], GetCardPanel.prototype, "haveGroup", void 0);
+    __decorate([
+        property(cc.Button)
+    ], GetCardPanel.prototype, "getHandBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], GetCardPanel.prototype, "closeBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], GetCardPanel.prototype, "getFeelBtn", void 0);
+    GetCardPanel = __decorate([
+        ccclass
+    ], GetCardPanel);
+    return GetCardPanel;
+}(UIBase_1.default));
+exports.default = GetCardPanel;
+
+cc._RF.pop();

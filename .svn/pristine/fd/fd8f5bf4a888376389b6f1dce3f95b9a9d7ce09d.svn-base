@@ -1,0 +1,167 @@
+"use strict";
+cc._RF.push(module, '427f1XlAbdKB7IbzHHHFLwy', 'OverHandCardItem');
+// Script/UI/over/OverHandCardItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var InterfaceHelp_1 = require("../../utils/InterfaceHelp");
+var MajiongEatItem_1 = require("../card/MajiongEatItem");
+var MajiongHandCard_1 = require("../card/MajiongHandCard");
+var MajiongOutCard_1 = require("../card/MajiongOutCard");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var OverHandCardItem = /** @class */ (function (_super) {
+    __extends(OverHandCardItem, _super);
+    function OverHandCardItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.cardGroup = null;
+        _this.handArr = [];
+        _this.eatArr = [];
+        _this._w = 0;
+        return _this;
+    }
+    OverHandCardItem.prototype.setNewData = function (eatArr, handCard, huCard) {
+        this.handArr = handCard;
+        this.eatArr = eatArr;
+        this.huCard = huCard;
+        this._w = 0;
+        this.createElements();
+    };
+    OverHandCardItem.prototype.createElements = function () {
+        this.cardGroup.removeAllChildren();
+        this.showEat();
+        this.showHand();
+        this.showFeel();
+    };
+    OverHandCardItem.prototype.showFeel = function () {
+        if (this.huCard > 0) {
+            var playe = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("majiongCard/prefab/MajiongOutCard")).getComponent(MajiongOutCard_1.default);
+            playe.cardValue = this.huCard;
+            playe.bySelfPoint = 0;
+            this.cardGroup.addChild(playe.node);
+            this._w += playe.node.width + 20;
+            playe.node.x = this._w;
+        }
+    };
+    OverHandCardItem.prototype.showHand = function () {
+        var card;
+        var isRemoveHu = false;
+        for (var i = 0; i < this.handArr.length; i++) {
+            if (this.handArr[i] == this.huCard && !isRemoveHu) {
+                isRemoveHu = true;
+                continue;
+            }
+            card = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("majiongCard/prefab/MajiongHandCard")).getComponent(MajiongHandCard_1.default);
+            card.cardValue = this.handArr[i];
+            card.isLoadShow = true;
+            card.bySelfPoint = 0;
+            card.node.scaleX = 0.6;
+            card.node.scaleY = 0.6;
+            card.node.x = this._w;
+            this.cardGroup.addChild(card.node);
+            this._w += card.cardSize._w * 0.6;
+        }
+    };
+    OverHandCardItem.prototype.showEat = function () {
+        var eat;
+        var data;
+        var item;
+        for (var i = 0; i < this.eatArr.length; i++) {
+            eat = this.eatArr[i];
+            data = new InterfaceHelp_1.PengGangData();
+            data.cardValue = eat.majID;
+            data.eatType = this.getEatType(eat.type, eat.targetNum, eat.getType);
+            data.havePointBySelf = 0;
+            item = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("majiongCard/prefab/MajiongEatItem")).getComponent(MajiongEatItem_1.default);
+            item.eatData = data;
+            item.node.scaleX = 0.6;
+            item.node.scaleY = 0.6;
+            item.node.x = this._w;
+            this.cardGroup.addChild(item.node);
+            this._w += item.size.x * 0.6 + 10;
+        }
+    };
+    OverHandCardItem.prototype.getEatType = function (type, sit, getType) {
+        var point = (UserInfo_1.default.ins.mySitIndex - sit) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        if (point < 0) {
+            point = point * -1;
+        }
+        if (type == 3) {
+            if (point == 1) {
+                return EnumManager_1.EatCardEnum.EatDown;
+            }
+            else if (point == 2) {
+                return EnumManager_1.EatCardEnum.EatOpposite;
+            }
+            else if (point == 3) {
+                return EnumManager_1.EatCardEnum.EatUp;
+            }
+        }
+        else if (type == 4) {
+            if (getType == 2) {
+                if (point == 1) {
+                    return EnumManager_1.EatCardEnum.CrossAllDown;
+                }
+                else if (point == 2) {
+                    return EnumManager_1.EatCardEnum.CrossAllOpp;
+                }
+                else if (point == 3) {
+                    return EnumManager_1.EatCardEnum.CrossAllUp;
+                }
+            }
+            else {
+                if (point == 0) {
+                    return EnumManager_1.EatCardEnum.CrossSelf;
+                }
+                else if (point == 1) {
+                    return EnumManager_1.EatCardEnum.CrossDown;
+                }
+                else if (point == 2) {
+                    return EnumManager_1.EatCardEnum.CrossOpposite;
+                }
+                else if (point == 3) {
+                    return EnumManager_1.EatCardEnum.CrossUp;
+                }
+            }
+        }
+    };
+    __decorate([
+        property(cc.Node)
+    ], OverHandCardItem.prototype, "cardGroup", void 0);
+    OverHandCardItem = __decorate([
+        ccclass
+    ], OverHandCardItem);
+    return OverHandCardItem;
+}(UIBase_1.default));
+exports.default = OverHandCardItem;
+
+cc._RF.pop();

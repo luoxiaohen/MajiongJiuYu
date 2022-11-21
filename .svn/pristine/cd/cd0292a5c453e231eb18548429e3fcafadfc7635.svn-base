@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_sirensanfang",
+    "texture": "73387b30-db17-4e5e-ae20-914cd9772798",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      138,
+      31
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      138,
+      31
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

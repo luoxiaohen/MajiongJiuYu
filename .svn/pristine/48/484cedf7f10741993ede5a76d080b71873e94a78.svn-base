@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "zhanji_wenzi1",
+    "texture": "1a4e337b-4cb3-41fe-af07-64ff9e6bf1cd",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      160,
+      40
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      160,
+      40
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

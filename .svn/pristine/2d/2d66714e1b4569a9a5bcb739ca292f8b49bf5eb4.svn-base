@@ -1,0 +1,133 @@
+"use strict";
+cc._RF.push(module, '4d86cDI9eRPOKVVf9uk/ljW', 'CreateRommAndFriendPanel');
+// Script/UI/createRoom/CreateRommAndFriendPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var TableMsg_1 = require("../../proto/TableMsg");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateRommAndFriendPanel = /** @class */ (function (_super) {
+    __extends(CreateRommAndFriendPanel, _super);
+    function CreateRommAndFriendPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.joiRoomnBtn = null;
+        _this.createRoomBtn = null;
+        _this.roomStyleBtn = null;
+        _this.idInputText = null;
+        _this.IdLabel_0 = null;
+        _this.IdLabel_1 = null;
+        _this.IdLabel_2 = null;
+        _this.IdLabel_3 = null;
+        _this.IdLabel_4 = null;
+        _this.IdLabel_5 = null;
+        _this.nowRoomId = "";
+        return _this;
+    }
+    CreateRommAndFriendPanel.prototype.onLoad = function () {
+        this.changeLabel(this.nowRoomId);
+        this.idInputText.node.on("text-changed", this.onBoxChange, this);
+    };
+    CreateRommAndFriendPanel.prototype.setCallBack = function (callBack, thisObj) {
+        this.callBack = callBack;
+        this.thisObj = thisObj;
+    };
+    CreateRommAndFriendPanel.prototype.onBoxChange = function (editbox, customEventData) {
+        var str = this.idInputText.string;
+        this.changeLabel(str);
+        this.nowRoomId = str;
+    };
+    CreateRommAndFriendPanel.prototype.changeLabel = function (str) {
+        for (var i = 0; i < 6; i++) {
+            if (i < str.length) {
+                this["IdLabel_" + i].string = str.charAt(i);
+            }
+            else {
+                this["IdLabel_" + i].string = "";
+            }
+        }
+    };
+    CreateRommAndFriendPanel.prototype.onStyleBtnClick = function () {
+        this.callBack.bind(this.thisObj)(1);
+    };
+    CreateRommAndFriendPanel.prototype.onCreateRoomClick = function () {
+        this.callBack.bind(this.thisObj)(2);
+    };
+    CreateRommAndFriendPanel.prototype.onJoinRoomClick = function () {
+        if (this.nowRoomId.length == 6) {
+            var msg = new TableMsg_1.Msg_CS_FindEnterRoom();
+            msg.code = Number(this.nowRoomId);
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        }
+    };
+    CreateRommAndFriendPanel.prototype.disTory = function () {
+        if (this.node.parent) {
+            this.idInputText.node.off("text-changed", this.onBoxChange, this);
+            this.node.parent.removeChild(this.node);
+            this.destroy();
+        }
+    };
+    __decorate([
+        property(cc.Button)
+    ], CreateRommAndFriendPanel.prototype, "joiRoomnBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRommAndFriendPanel.prototype, "createRoomBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRommAndFriendPanel.prototype, "roomStyleBtn", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], CreateRommAndFriendPanel.prototype, "idInputText", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_0", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_1", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_2", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_3", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_4", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRommAndFriendPanel.prototype, "IdLabel_5", void 0);
+    CreateRommAndFriendPanel = __decorate([
+        ccclass
+    ], CreateRommAndFriendPanel);
+    return CreateRommAndFriendPanel;
+}(UIBase_1.default));
+exports.default = CreateRommAndFriendPanel;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_tuiyu",
+    "texture": "98fbf075-fa26-4403-b2a7-94d7747600bd",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      157,
+      77
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      157,
+      77
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

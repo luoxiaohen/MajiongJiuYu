@@ -1,0 +1,289 @@
+"use strict";
+cc._RF.push(module, '60f4eAquABN0L6KGhTQpLgb', 'OverInfoLabelItem');
+// Script/UI/over/OverInfoLabelItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TableMsgDef_1 = require("../../proto/TableMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var OverInfoLabelItem = /** @class */ (function (_super) {
+    __extends(OverInfoLabelItem, _super);
+    function OverInfoLabelItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.typeLabel = null;
+        _this.hitLabel = null;
+        _this.fenLabel = null;
+        _this.huLabel = null;
+        return _this;
+    }
+    Object.defineProperty(OverInfoLabelItem.prototype, "info", {
+        get: function () {
+            return this._info;
+        },
+        set: function (value) {
+            this._info = value;
+            this.createElements();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    OverInfoLabelItem.prototype.onLoad = function () {
+    };
+    OverInfoLabelItem.prototype.createElements = function () {
+        var typeStr = this.getTypeStr(this.info.scoreType);
+        var gangStr = this.getGangStr();
+        var fanStr = this.getFanStr();
+        var objStr = this.getObjStr();
+        var chaguaStr = this.getChagua();
+        var gangfan = gangStr + fanStr;
+        if (gangfan.length > 0) {
+            gangfan = "(" + gangStr + fanStr + ")";
+        }
+        this.typeLabel.string = typeStr;
+        this.huLabel.string = gangfan;
+        if (chaguaStr.length > 0) {
+            chaguaStr = "擦挂:" + chaguaStr;
+        }
+        this.hitLabel.string = objStr + chaguaStr;
+        this.fenLabel.string = this.info.win > 0 ? "+" + this.info.win : this.info.win.toString();
+    };
+    OverInfoLabelItem.prototype.getMaxHeight = function () {
+        if (this.hitLabel.node.height > this.typeLabel.node.height) {
+            return this.hitLabel.node.height;
+        }
+        else {
+            return this.typeLabel.node.height;
+        }
+    };
+    OverInfoLabelItem.prototype.getChagua = function () {
+        var str = "";
+        if (this.info.tarSitsEx) {
+            for (var i = 0; i < this.info.tarSitsEx.length; i++) {
+                str += this.getObj(this.info.tarSitsEx[i]);
+            }
+        }
+        return str;
+    };
+    OverInfoLabelItem.prototype.getObjStr = function () {
+        var str = "";
+        for (var i = 0; i < this.info.tarSits.length; i++) {
+            str += this.getObj(this.info.tarSits[i]);
+        }
+        return str;
+    };
+    OverInfoLabelItem.prototype.getObj = function (sit) {
+        var str = "";
+        if (sit == UserInfo_1.default.ins.mySitIndex) {
+            str = "本家";
+        }
+        if (sit % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType) == UserInfo_1.default.ins.mySitIndex + 1) {
+            str = "下家";
+        }
+        if (sit % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType) == (UserInfo_1.default.ins.mySitIndex + 3) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+            str = "上家";
+        }
+        if (sit % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType) == (UserInfo_1.default.ins.mySitIndex + 2) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+            str = "对家";
+        }
+        if (sit == 4) {
+            str = "1马";
+        }
+        if (sit == 5) {
+            str = "2马";
+        }
+        return str + ",";
+    };
+    OverInfoLabelItem.prototype.getFanStr = function () {
+        var str = "";
+        if (this.info.fanTypes) {
+            for (var i = 0; i < this.info.fanTypes.length; i++) {
+                str += this.getAllFanStr(this.info.fanTypes[i]);
+            }
+        }
+        return str;
+    };
+    OverInfoLabelItem.prototype.getAllFanStr = function (code) {
+        var str = "";
+        switch (code) {
+            case TableMsgDef_1.FanTypeEnum.Gen:
+                str = this.info.param + "根";
+                break;
+            case TableMsgDef_1.FanTypeEnum.GangShangHua:
+                str = "杠上花";
+                break;
+            case TableMsgDef_1.FanTypeEnum.GangShangPao:
+                str = "杠上炮";
+                break;
+            case TableMsgDef_1.FanTypeEnum.QiangGangHu:
+                str = "抢杠胡";
+                break;
+            case TableMsgDef_1.FanTypeEnum.HaiDiLaoYue:
+                str = "海底捞月";
+                break;
+            case TableMsgDef_1.FanTypeEnum.MenQing:
+                str = "门清";
+                break;
+            case TableMsgDef_1.FanTypeEnum.ZhongZhang:
+                str = "中张";
+                break;
+            case TableMsgDef_1.FanTypeEnum.JiaXinWu:
+                str = "夹心五";
+                break;
+            case TableMsgDef_1.FanTypeEnum.ZiMo:
+                str = "自摸加番";
+                break;
+            case TableMsgDef_1.FanTypeEnum.TianHu:
+                str = "天胡";
+                break;
+            case TableMsgDef_1.FanTypeEnum.DiHu:
+                str = "地胡";
+                break;
+        }
+        return str + ",";
+    };
+    OverInfoLabelItem.prototype.getGangStr = function () {
+        var str = "";
+        if (this.info.huGangTypes) {
+            if (this.info.scoreType == TableMsgDef_1.ScoreTypeEnum.eGang || this.info.scoreType == TableMsgDef_1.ScoreTypeEnum.eBeiGang) {
+                for (var i = 0; i < this.info.huGangTypes.length; i++) {
+                    str += this.getAllHuStr(this.info.huGangTypes[i]);
+                }
+            }
+            else {
+                for (var i = 0; i < this.info.huGangTypes.length; i++) {
+                    str += this.getAllGangStr(this.info.huGangTypes[i]);
+                }
+            }
+        }
+        return str;
+    };
+    OverInfoLabelItem.prototype.getAllGangStr = function (code) {
+        var str = "";
+        switch (code) {
+            case TableMsgDef_1.GangTypeEnum.eAnGang:
+                str = "暗杠";
+                break;
+            case TableMsgDef_1.GangTypeEnum.eDianGang:
+                str = "点杠";
+                break;
+            case TableMsgDef_1.GangTypeEnum.eBuGang:
+                str = "补杠";
+                break;
+            case TableMsgDef_1.GangTypeEnum.eCaGua:
+                str = "擦挂";
+                break;
+        }
+        return str + ",";
+    };
+    OverInfoLabelItem.prototype.getAllHuStr = function (code) {
+        var str = "";
+        switch (code) {
+            case TableMsgDef_1.HuTypeEnum.PingHu:
+                str = "平胡";
+                break;
+            case TableMsgDef_1.HuTypeEnum.DuiDuiHu:
+                str = "对对胡";
+                break;
+            case TableMsgDef_1.HuTypeEnum.QingYiSe:
+                str = "清一色";
+                break;
+            case TableMsgDef_1.HuTypeEnum.QiDui:
+                str = "七对";
+                break;
+            case TableMsgDef_1.HuTypeEnum.LongQiDui:
+                str = "龙七对";
+                break;
+            case TableMsgDef_1.HuTypeEnum.JinGouDiao:
+                str = "金钩钓";
+                break;
+            case TableMsgDef_1.HuTypeEnum.YaoJiu:
+                str = "幺九";
+                break;
+            case TableMsgDef_1.HuTypeEnum.JiangDui:
+                str = "将对";
+                break;
+        }
+        return str + ",";
+    };
+    OverInfoLabelItem.prototype.getTypeStr = function (type) {
+        var typeStr = "";
+        var value = GloBal_1.Global.Utils.getMaJiangValue(this.info.majid);
+        if (type == TableMsgDef_1.ScoreTypeEnum.None) {
+            typeStr = "";
+        }
+        else if (type < TableMsgDef_1.ScoreTypeEnum.eSunshine) {
+            switch (type) {
+                case TableMsgDef_1.ScoreTypeEnum.eZiMo:
+                    typeStr = "自摸";
+                    break;
+                case TableMsgDef_1.ScoreTypeEnum.eHuPai:
+                    typeStr = "胡牌";
+                    break;
+                case TableMsgDef_1.ScoreTypeEnum.eBeiZiMo:
+                    typeStr = "被自摸";
+                    break;
+                case TableMsgDef_1.ScoreTypeEnum.eDianPao:
+                    typeStr = "点炮";
+                    break;
+                case TableMsgDef_1.ScoreTypeEnum.eGang:
+                    typeStr = "杠";
+                    break;
+                case TableMsgDef_1.ScoreTypeEnum.eBeiGang:
+                    typeStr = "被杠";
+                    break;
+            }
+        }
+        else {
+            typeStr = "";
+        }
+        return typeStr + value;
+    };
+    __decorate([
+        property(cc.Label)
+    ], OverInfoLabelItem.prototype, "typeLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], OverInfoLabelItem.prototype, "hitLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], OverInfoLabelItem.prototype, "fenLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], OverInfoLabelItem.prototype, "huLabel", void 0);
+    OverInfoLabelItem = __decorate([
+        ccclass
+    ], OverInfoLabelItem);
+    return OverInfoLabelItem;
+}(UIBase_1.default));
+exports.default = OverInfoLabelItem;
+
+cc._RF.pop();

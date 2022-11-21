@@ -1,0 +1,108 @@
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-08 09:24:45
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-18 18:15:30
+ * @FilePath: \MajiongJiuYu\assets\Script\UI\MainGamePanel.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+
+import EventType from "../event/EventType";
+import GameInfo from "../Game/info/GameInfo";
+import { GameRoomTypeEnum } from "../proto/LobbyMsgDef";
+import { Global } from "../Shared/GloBal";
+import GMTips from "../tips/GMTips";
+import UIBase from "../UIBase";
+import MajiongTablePanel from "./MajiongTablePanel";
+import PlayerHeadItem from "./PlayerHeadItem";
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class MainGamePanel extends UIBase {
+    @property (cc.Node)
+    tipsLayer : cc.Node = null;
+    private gm:GMTips;
+    private majiongTablePanel:MajiongTablePanel;
+    protected onLoad(): void {
+        Global.DialogManager.init(this.node);
+        this.onCreateOneRoom();
+      
+        cc.tween(this.node).delay(3 ).call(()=>{
+            // this.showTest();
+        }).start();
+        this.addEvent();
+
+
+        cc.systemEvent.on("keydown", this.onKeyDown, this);
+    }
+
+    private onKeyDown(e : cc.Event.EventKeyboard){
+        if(e.keyCode == 192){
+            if(this.gm){
+                this.gm.disTory();
+                this.gm = null;
+            }else{
+                Global.DialogManager.createDialog('tips/GM/prefab/GMTips', null , (any,createDialog)=>{
+                    createDialog.x = -450;
+                    createDialog.y = -320;
+                    this.gm = createDialog.getComponent(GMTips);
+                    this.gm.onRemove(()=>{
+                        this.gm = null;
+                    })
+                } , this.tipsLayer)
+            }
+        }
+    }
+    private showTest(){
+        Global.DialogManager.createDialog('smallOver/prefab/SmallOverPanel', null , (any,createDialog)=>{
+            createDialog.x = -960;
+            createDialog.y = -540;
+        })
+    }
+    private addEvent(){
+        Global.EventCenter.addEventListener(EventType.BackToLobby , this.onBackToLobby , this);
+        Global.EventCenter.addEventListener(EventType.GET_NEW_ROOM_INFO , this.onCreateOneRoom , this);
+		Global.EventCenter.addEventListener(EventType.GameInviteMsg , this.onGameInvite , this);
+    }
+
+
+    private removeEevnt(){
+        Global.EventCenter.removeEventListener(EventType.BackToLobby , this.onBackToLobby , this);
+        Global.EventCenter.removeEventListener(EventType.GET_NEW_ROOM_INFO , this.onCreateOneRoom , this);
+		Global.EventCenter.removeEventListener(EventType.GameInviteMsg , this.onGameInvite , this);
+
+    }
+    private onBackToLobby():void{
+        cc.director.loadScene("majiong");
+        this.desTory();
+    }
+    private onCreateOneRoom():void{
+        GameInfo.ins.resetRealTimeRreformanceData();
+        if(this.majiongTablePanel){
+            this.majiongTablePanel.disTory();
+            this.majiongTablePanel=null;
+        }
+        Global.DialogManager.createDialog('mainGame/prefab/MajiongTablePanel', null , (any,createDialog)=>{
+            createDialog.x = 0;
+            createDialog.y = 0;
+            this.majiongTablePanel=createDialog.getComponent(MajiongTablePanel);
+        })
+    }
+    private onGameInvite():void{
+        Global.DialogManager.createDialog("smallOver/prefab/InviteToRoomPannel",null,(any,dialog)=>{
+            dialog.x=0;
+            dialog.y=0;
+        })
+    }
+    public desTory(){
+        super.destroy();
+        this.removeEevnt();
+    }
+}

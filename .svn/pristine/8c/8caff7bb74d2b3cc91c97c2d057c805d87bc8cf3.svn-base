@@ -1,0 +1,275 @@
+"use strict";
+cc._RF.push(module, '6ec23eQqARBcL/X4dwRm2+n', 'CreateRoomRulerPanel');
+// Script/UI/createRoom/CreateRoomRulerPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var LobbyMsg_1 = require("../../proto/LobbyMsg");
+var LobbyMsgDef_1 = require("../../proto/LobbyMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var BaseRuleItem_1 = require("./BaseRuleItem");
+var CreateRoomHelper_1 = require("./CreateRoomHelper");
+var FanRuleItem_1 = require("./FanRuleItem");
+var FeaturesRuleItem_1 = require("./FeaturesRuleItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateRoomRulerPanel = /** @class */ (function (_super) {
+    __extends(CreateRoomRulerPanel, _super);
+    function CreateRoomRulerPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.toSaveBtn = null;
+        _this.ruleScroller = null;
+        _this.saveBtn = null;
+        _this.baginBtn = null;
+        _this.changeBtn = null;
+        _this.moreLabel = null;
+        _this.backImage = null;
+        _this.ruleItemGrtoup = null;
+        _this.itemArray = [];
+        return _this;
+    }
+    CreateRoomRulerPanel.prototype.onLoad = function () {
+    };
+    CreateRoomRulerPanel.prototype.setData = function (callBack, thisObj, ruleTemp) {
+        this.callBack = callBack;
+        this.thisObj = thisObj;
+        this.ruleTemp = ruleTemp;
+        this.ruleInfo = ruleTemp ? ruleTemp.rule : null;
+        this.createElements();
+    };
+    CreateRoomRulerPanel.prototype.createElements = function () {
+        this.createRuleItem();
+        this.addEvent();
+        if (this.ruleInfo) {
+            this.changeBtn.node.active = true;
+        }
+        else {
+            this.changeBtn.node.active = false;
+        }
+    };
+    CreateRoomRulerPanel.prototype.addEvent = function () {
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.OpenRoomUseChange, this.onRoomOpenUseChange, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GameRuleItemMove, this.onMoveItem, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.RuleMoveAndScrollerMove, this.onProMove, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.RuleMoveAndScrollerMoveOver, this.onProMoveOver, this);
+    };
+    CreateRoomRulerPanel.prototype.onProMove = function () {
+        this.ruleScroller.vertical = false;
+    };
+    CreateRoomRulerPanel.prototype.onProMoveOver = function () {
+        this.ruleScroller.vertical = true;
+    };
+    CreateRoomRulerPanel.prototype.onMoveItem = function (e, data) {
+        var item = data;
+        var itemWeights;
+        var nowY;
+        for (var i = 0; i < this.itemArray.length; i++) {
+            itemWeights = this.itemArray[i].itemWeights;
+            nowY = this.itemArray[i].node.y;
+            if (itemWeights < item.itemWeights) {
+                if (item.isMoveUp) {
+                    cc.tween(this.itemArray[i].node).to(item.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { y: nowY + item.changeHeight }).start();
+                }
+                else {
+                    cc.tween(this.itemArray[i].node).to(item.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { y: nowY - item.changeHeight }).start();
+                }
+            }
+        }
+    };
+    CreateRoomRulerPanel.prototype.onRoomOpenUseChange = function () {
+        var use = this.getCreateUse();
+        this.moreLabel.string = " " + use + "   现在开局";
+        if (UserInfo_1.default.ins.myInfo.gold >= use) {
+            this.baginBtn.enabled = true;
+            this.moreLabel.node.color = CreateRoomHelper_1.default.ins.colorData[1];
+        }
+        else {
+            this.baginBtn.enabled = false;
+            this.moreLabel.node.color = CreateRoomHelper_1.default.ins.colorData[4];
+        }
+    };
+    CreateRoomRulerPanel.prototype.getCreateUse = function () {
+        var ruleInfo = this.getCreateInfo();
+        return GloBal_1.Global.Utils.getNeedByRule(ruleInfo);
+    };
+    CreateRoomRulerPanel.prototype.getCreateInfo = function () {
+        var ruleInfo = new LobbyMsgDef_1.TableRuleInfo();
+        var tempInfo;
+        for (var i = 0; i < this.itemArray.length; i++) {
+            tempInfo = this.itemArray[i].getSelectData();
+            for (var key in tempInfo) {
+                if (tempInfo[key]) {
+                    ruleInfo[key] = tempInfo[key];
+                }
+            }
+        }
+        return ruleInfo;
+    };
+    CreateRoomRulerPanel.prototype.createRuleItem = function () {
+        this.clearElements();
+        var ruleInfo = new LobbyMsgDef_1.TableRuleInfo();
+        ruleInfo.gamePlayType = LobbyMsgDef_1.GamePlayTypeEnum.HuanSanZhang;
+        ruleInfo.roomType = LobbyMsgDef_1.GameRoomTypeEnum.SanRenLiangFang;
+        ruleInfo.baseScore = 100;
+        ruleInfo.handsCnt = 16;
+        ruleInfo.ceiling = 32;
+        ruleInfo.tiFan = 4;
+        ruleInfo.baozi = LobbyMsgDef_1.GamePiaoTypeEnum.ShuaiPiao;
+        ruleInfo.baoziDouble = 1;
+        ruleInfo.haveHorse = 1;
+        ruleInfo.buyHorseNum = 2;
+        ruleInfo.buyHorseType = 1;
+        ruleInfo.isSelectBankerBuyHorse = 1;
+        ruleInfo.isSelectEatHorse = 0;
+        ruleInfo.zmType = 1;
+        ruleInfo.menqing = 1;
+        ruleInfo.zhongzhang = 1;
+        ruleInfo.yao9 = 1;
+        ruleInfo.jiangdui = 1;
+        ruleInfo.jiaxin5 = 1;
+        ruleInfo.tdHu = 1;
+        ruleInfo.findMaxHu = 1;
+        ruleInfo.dianGangHua = 1;
+        ruleInfo.caGua = 1;
+        ruleInfo.jiShiYu = 1;
+        ruleInfo.allGangShift = 1;
+        ruleInfo.sunshine = 1;
+        ruleInfo.passHu = 1;
+        ruleInfo.lunZhuang = 1;
+        ruleInfo.hu2Score = 1;
+        ruleInfo.last4Hu = 1;
+        ruleInfo.zmOpen = 1;
+        ruleInfo.realTimeCalc = 1;
+        ruleInfo.limitIP = 1;
+        ruleInfo.limitGPS = 1;
+        if (this.ruleInfo) {
+            ruleInfo = this.ruleInfo;
+        }
+        else {
+            ruleInfo = CreateRoomHelper_1.default.ins.myLastRuleInfo ? CreateRoomHelper_1.default.ins.myLastRuleInfo : null;
+        }
+        var temp = new LobbyMsgDef_1.TableRuleTempl();
+        temp.name = "我的测试";
+        temp.rule = ruleInfo;
+        var item = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("createRoom/prefab/BaseRuleItem")).getComponent(BaseRuleItem_1.default);
+        item.setData(this.ruleTemp);
+        this.itemArray.push(item);
+        item = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("createRoom/prefab/FeaturesRuleItem")).getComponent(FeaturesRuleItem_1.default);
+        item.setData(this.ruleTemp);
+        this.itemArray.push(item);
+        item = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("createRoom/prefab/FanRuleItem")).getComponent(FanRuleItem_1.default);
+        item.setData(this.ruleTemp);
+        this.itemArray.push(item);
+        var _y = 0;
+        for (var i = 0; i < this.itemArray.length; i++) {
+            this.ruleItemGrtoup.addChild(this.itemArray[i].node);
+            this.itemArray[i].node.y = _y * -1;
+            _y += this.itemArray[i].getHeight();
+        }
+    };
+    CreateRoomRulerPanel.prototype.clearElements = function () {
+        for (var i = 0; i < this.itemArray.length; i++) {
+            this.itemArray[i].disTory();
+        }
+        this.itemArray = [];
+    };
+    /**返回*/
+    CreateRoomRulerPanel.prototype.onBackClick = function () {
+        this.callBack.bind(this.thisObj)(1);
+    };
+    /**去保存*/
+    CreateRoomRulerPanel.prototype.onToSaveClick = function () {
+        this.callBack.bind(this.thisObj)(2);
+    };
+    /**修改保存*/
+    CreateRoomRulerPanel.prototype.onChangeClick = function () {
+        var temp = new LobbyMsgDef_1.TableRuleTempl();
+        temp.rule = this.getCreateInfo();
+        temp.name = this.itemArray[0].getRuleName();
+        temp.templId = this.ruleTemp.templId;
+        var msg = new LobbyMsg_1.Msg_CS_ReqSaveRoomRuleTemplate();
+        msg.ruleInfo = temp;
+        CreateRoomHelper_1.default.ins.lastSaveTemplate = msg.ruleInfo;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    /**保存*/
+    CreateRoomRulerPanel.prototype.onSaveClick = function () {
+        var temp = new LobbyMsgDef_1.TableRuleTempl();
+        temp.rule = this.getCreateInfo();
+        temp.name = this.itemArray[0].getRuleName();
+        var msg = new LobbyMsg_1.Msg_CS_ReqSaveRoomRuleTemplate();
+        msg.ruleInfo = temp;
+        CreateRoomHelper_1.default.ins.lastSaveTemplate = msg.ruleInfo;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    /**开局*/
+    CreateRoomRulerPanel.prototype.onBeginClick = function () {
+        var ruleInfo = this.getCreateInfo();
+        var msg = new LobbyMsg_1.Msg_CS_CreateTable();
+        msg.info = ruleInfo;
+        msg.name = this.itemArray[0].getRuleName();
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    CreateRoomRulerPanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomRulerPanel.prototype, "toSaveBtn", void 0);
+    __decorate([
+        property(cc.ScrollView)
+    ], CreateRoomRulerPanel.prototype, "ruleScroller", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomRulerPanel.prototype, "saveBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomRulerPanel.prototype, "baginBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], CreateRoomRulerPanel.prototype, "changeBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], CreateRoomRulerPanel.prototype, "moreLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateRoomRulerPanel.prototype, "backImage", void 0);
+    __decorate([
+        property(cc.Node)
+    ], CreateRoomRulerPanel.prototype, "ruleItemGrtoup", void 0);
+    CreateRoomRulerPanel = __decorate([
+        ccclass
+    ], CreateRoomRulerPanel);
+    return CreateRoomRulerPanel;
+}(UIBase_1.default));
+exports.default = CreateRoomRulerPanel;
+
+cc._RF.pop();

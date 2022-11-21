@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "a5Ud5HUBpHMZY1sJvtrv+d"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "createRoom_tanchuang",
+      "rect": [
+        0,
+        0,
+        332,
+        320
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        332,
+        320
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

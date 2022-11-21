@@ -1,0 +1,83 @@
+"use strict";
+cc._RF.push(module, 'e13ba1XgfRL27/8ZneMcKwx', 'TimeAndMoveManager');
+// Script/mgr/TimeAndMoveManager.ts
+
+"use strict";
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-08 09:24:45
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-18 10:44:12
+ * @FilePath: \MajiongJiuYu\assets\Script\mgr\TimeAndMoveManager.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var TimeAndMoveManager = /** @class */ (function () {
+    function TimeAndMoveManager() {
+        /**新人坐下位置动画展示时间*/
+        this.newPlayerSitMcTime = 0.5;
+        /**定庄骰子旋转时间*/
+        this.zhuangRollTime = 2;
+        /**定庄骰子展示时常*/
+        this.diceRotation = 0.8;
+        /**矫座头像显示时间*/
+        this.changeCharTime = 1;
+        /**矫座头像动画时间*/
+        this.changeCharAcyionTime = 0.3;
+        /**发牌时间*/
+        this.getWallTime = 0.2;
+        /**发牌动作时间*/
+        this.getWallActionTime = 0.01;
+        /**整理手牌时间*/
+        this.finishHandTime = 0.5;
+        /**出牌后手牌移动时间*/
+        this.outCardHandMoveTime = 0.07;
+        /**其他玩家出牌飞入牌池时间*/
+        this.otherOutCardToGroupTime = 0.05;
+        /**入牌时候手牌提起 落下时间*/
+        this.addCardMoveYTime = 0.1;
+        /**入牌时候手牌旋转时间*/
+        this.addCardRotationTime = 0.05;
+        /**入牌时候手牌提起 落下时间*/
+        this.ChangeThreeMoveYTime = 0.3;
+        /**其他玩家出牌动作显示时间*/
+        this.otherOutCardActionTime = 0.03;
+        /**游戏规则界面移动时间系数*/
+        this.gameRuleItemMoveTime = 0.001;
+        /**展示界面飞人主屏时间*/
+        this.showPanelTime = 0.25;
+        /**换三张箭头移动时间*/
+        this.changeThreeLightMoveTime = 0.8;
+        /**换三张牌移动时间*/
+        this.changeThreeCardMoveTime = 0.75;
+    }
+    TimeAndMoveManager_1 = TimeAndMoveManager;
+    Object.defineProperty(TimeAndMoveManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new TimeAndMoveManager_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    var TimeAndMoveManager_1;
+    TimeAndMoveManager = TimeAndMoveManager_1 = __decorate([
+        ccclass
+    ], TimeAndMoveManager);
+    return TimeAndMoveManager;
+}());
+exports.default = TimeAndMoveManager;
+
+cc._RF.pop();

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "42f93ed6-d7ca-44b2-98e8-40281e9eba00",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 282,
+  "height": 95,
+  "platformSettings": {},
+  "subMetas": {
+    "game_1gangshanghua": {
+      "ver": "1.0.6",
+      "uuid": "2d24cdce-ea18-4b2e-af4a-c42638a5652e",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "42f93ed6-d7ca-44b2-98e8-40281e9eba00",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 282,
+      "height": 95,
+      "rawWidth": 282,
+      "rawHeight": 95,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

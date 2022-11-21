@@ -1,0 +1,265 @@
+"use strict";
+cc._RF.push(module, 'a3639QPfQJE8qgyLt+Sjosc', 'DingQuePanel');
+// Script/UI/DingQuePanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../enum/EnumManager");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var TableMsg_1 = require("../proto/TableMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var InterfaceHelp_1 = require("../utils/InterfaceHelp");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var DingQuePanel = /** @class */ (function (_super) {
+    __extends(DingQuePanel, _super);
+    function DingQuePanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.wanBtn = null;
+        _this.tiaoBtn = null;
+        _this.tongBtn = null;
+        _this.wanBg = null;
+        _this.tiaoBg = null;
+        _this.tongBg = null;
+        _this.moreCardArr = [];
+        return _this;
+    }
+    DingQuePanel.prototype.onLoad = function () {
+        this.initBtnBg();
+        var smallTypeArr = this.getTheBestQue();
+        this.showSmallRecom(smallTypeArr);
+    };
+    DingQuePanel.prototype.initBtnBg = function () {
+        this.wanBg.node.active = false;
+        this.tiaoBg.node.active = false;
+        this.tongBg.node.active = false;
+    };
+    DingQuePanel.prototype.onWanBtnClick = function () {
+        var isMore = this.moreCardArr.indexOf(EnumManager_1.CardTypeEnum.Wan) >= 0;
+        if (isMore) {
+            GloBal_1.Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+        }
+        this.sendDingQue(EnumManager_1.CardTypeEnum.Wan);
+    };
+    DingQuePanel.prototype.onTiaoBtnClick = function () {
+        var isMore = this.moreCardArr.indexOf(EnumManager_1.CardTypeEnum.Tiao) >= 0;
+        if (isMore) {
+            GloBal_1.Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+        }
+        this.sendDingQue(EnumManager_1.CardTypeEnum.Tiao);
+    };
+    DingQuePanel.prototype.onTongBtnClick = function () {
+        var isMore = this.moreCardArr.indexOf(EnumManager_1.CardTypeEnum.Tong) >= 0;
+        if (isMore) {
+            GloBal_1.Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+        }
+        this.sendDingQue(EnumManager_1.CardTypeEnum.Tong);
+    };
+    DingQuePanel.prototype.sendDingQue = function (queType) {
+        var msg = new TableMsg_1.Msg_CS_DingQue();
+        msg.wtt = queType;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        UserInfo_1.default.ins.myDiceType = queType;
+        this.disTory();
+    };
+    DingQuePanel.prototype.showSmallRecom = function (arr) {
+        switch (arr[0]) {
+            case EnumManager_1.CardTypeEnum.Wan:
+                this.wanBg.node.active = true;
+                break;
+            case EnumManager_1.CardTypeEnum.Tiao:
+                this.tiaoBg.node.active = true;
+                break;
+            case EnumManager_1.CardTypeEnum.Tong:
+                this.tongBg.node.active = true;
+                break;
+        }
+    };
+    DingQuePanel.prototype.getTheBestQue = function () {
+        var myCardArr = GloBal_1.Global.Utils.cloneArr(UserInfo_1.default.ins.myHandCardArr);
+        var wanArr = [];
+        var tiaoArr = [];
+        var tongArr = [];
+        var cardNum = 0;
+        for (var i = 0; i < myCardArr.length; i++) {
+            cardNum = Math.floor(myCardArr[i] / 10);
+            if (cardNum == 0) {
+                wanArr.push(myCardArr[i]);
+            }
+            else if (cardNum == 1) {
+                tiaoArr.push(myCardArr[i]);
+            }
+            else if (cardNum == 2) {
+                tongArr.push(myCardArr[i]);
+            }
+        }
+        if (wanArr.length >= 5) {
+            this.moreCardArr.push(EnumManager_1.CardTypeEnum.Wan);
+        }
+        if (tiaoArr.length >= 5) {
+            this.moreCardArr.push(EnumManager_1.CardTypeEnum.Tiao);
+        }
+        if (tongArr.length >= 5) {
+            this.moreCardArr.push(EnumManager_1.CardTypeEnum.Tong);
+        }
+        var haveMoreNum = -1;
+        var moreArr = [];
+        var moreArrType = [];
+        if (wanArr.length == tiaoArr.length && wanArr.length < tongArr.length) {
+            haveMoreNum = wanArr.length;
+            moreArr = [wanArr, tiaoArr];
+            moreArrType = [0, 1];
+        }
+        if (wanArr.length == tongArr.length && wanArr.length < tiaoArr.length) {
+            haveMoreNum = wanArr.length;
+            moreArr = [wanArr, tongArr];
+            moreArrType = [0, 2];
+        }
+        if (tongArr.length == tiaoArr.length && tongArr.length < wanArr.length) {
+            haveMoreNum = wanArr.length;
+            moreArr = [tongArr, tiaoArr];
+            moreArrType = [2, 1];
+        }
+        var smallType = [];
+        if (haveMoreNum >= 0) {
+            var weight0 = this.getCardAllWeight(moreArr[0]);
+            var weight1 = this.getCardAllWeight(moreArr[1]);
+            if (weight0 == weight1) {
+                smallType = moreArrType;
+            }
+            else {
+                smallType[0] = weight0 < weight1 ? moreArrType[0] : moreArrType[1];
+            }
+        }
+        else {
+            var smallArr = wanArr;
+            smallType[0] = EnumManager_1.CardTypeEnum.Wan;
+            if (tiaoArr.length < smallArr.length) {
+                smallType[0] = EnumManager_1.CardTypeEnum.Tiao;
+                smallArr = tiaoArr;
+            }
+            if (tongArr.length < smallArr.length) {
+                smallType[0] = EnumManager_1.CardTypeEnum.Tong;
+                smallArr = tongArr;
+            }
+        }
+        return smallType;
+    };
+    /**获取换三张默认推荐**/
+    DingQuePanel.prototype.getCardAllWeight = function (nowArr) {
+        var dic = [];
+        var aOne;
+        var aTwo;
+        var now;
+        var lOne;
+        var lTwo;
+        var lThree;
+        var msjLight = new InterfaceHelp_1.MajCardLight();
+        var light;
+        for (var i = 0; i < nowArr.length; i++) {
+            light = 0;
+            aOne = nowArr[i - 1];
+            aTwo = nowArr[i - 2];
+            now = nowArr[i];
+            lOne = nowArr[i + 1];
+            lTwo = nowArr[i + 2];
+            lThree = nowArr[i + 3];
+            if (dic[now]) {
+                continue;
+            }
+            msjLight.cardValue = now;
+            /**相邻*/
+            if (aOne && now == aOne + 1 && this.isOne(now, aOne)) {
+                light += 20;
+            }
+            if (lOne && now == lOne - 1 && this.isOne(now, lOne)) {
+                light += 20;
+            }
+            /**相隔*/
+            if (aTwo && now == aTwo + 2 && this.isOne(now, aTwo)) {
+                light += 10;
+            }
+            if (lTwo && now == lTwo - 2 && this.isOne(now, lTwo)) {
+                light += 10;
+            }
+            /***两同*/
+            if (lOne && now == lOne && this.isOne(now, lTwo)) {
+                light += 80;
+                /***三同*/
+                if (lTwo && now == lTwo && this.isOne(now, lTwo)) {
+                    light += 300;
+                    /***四同*/
+                    if (lThree && now == lThree && this.isOne(now, lThree)) {
+                        light += 500;
+                    }
+                }
+            }
+            msjLight.cardLight = light;
+            dic[now] = msjLight;
+        }
+        var allWeight = 0;
+        for (var i = 0; i < nowArr.length; i++) {
+            allWeight += dic[nowArr[i]].cardLight;
+        }
+        return allWeight;
+    };
+    DingQuePanel.prototype.isOne = function (a, b) {
+        if (Math.floor(a / 10) == Math.floor(b / 10)) {
+            return true;
+        }
+        return false;
+    };
+    DingQuePanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Button)
+    ], DingQuePanel.prototype, "wanBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], DingQuePanel.prototype, "tiaoBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], DingQuePanel.prototype, "tongBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], DingQuePanel.prototype, "wanBg", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], DingQuePanel.prototype, "tiaoBg", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], DingQuePanel.prototype, "tongBg", void 0);
+    DingQuePanel = __decorate([
+        ccclass
+    ], DingQuePanel);
+    return DingQuePanel;
+}(UIBase_1.default));
+exports.default = DingQuePanel;
+
+cc._RF.pop();

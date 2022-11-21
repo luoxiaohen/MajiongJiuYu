@@ -1,0 +1,108 @@
+"use strict";
+cc._RF.push(module, '43145S6kQNMjobSeo1AcAgS', 'ChangeThreeItem');
+// Script/UI/changeThree/ChangeThreeItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var ChangeThreeItem = /** @class */ (function (_super) {
+    __extends(ChangeThreeItem, _super);
+    function ChangeThreeItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.bgImage = null;
+        _this.cardImage_0 = null;
+        _this.cardImage_1 = null;
+        _this.cardImage_2 = null;
+        _this.cardImage_3 = null;
+        _this.cardImage_4 = null;
+        _this.cardImage_5 = null;
+        return _this;
+    }
+    ChangeThreeItem.prototype.onLoad = function () {
+        this.createCard();
+    };
+    ChangeThreeItem.prototype.createCard = function () {
+        var myOut = GameInfo_1.default.ins.myYou3MajData.lstOuts;
+        var myGet = GameInfo_1.default.ins.myYou3MajData.lstMajID;
+        var chanegType = GameInfo_1.default.ins.myYou3MajData.type;
+        var bgSource = "";
+        if (chanegType == 0) {
+            bgSource = "changeThree/resource/changeThree_duijiahp";
+        }
+        else if (chanegType == 1) {
+            bgSource = "changeThree/resource/changeThree_shunshi";
+        }
+        else if (chanegType == -1) {
+            bgSource = "changeThree/resource/changeThree_nishi";
+        }
+        GloBal_1.Global.Utils.setNewImageToSprite(this.bgImage, bgSource);
+        var nowImage;
+        for (var i = 0; i < myOut.length; i++) {
+            nowImage = this["cardImage_" + i];
+            GloBal_1.Global.Utils.setNewImageToSprite(nowImage, "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(myOut[i]));
+        }
+        for (var i = 0; i < myGet.length; i++) {
+            nowImage = this["cardImage_" + (i + 3)];
+            GloBal_1.Global.Utils.setNewImageToSprite(nowImage, "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(myGet[i]));
+        }
+    };
+    ChangeThreeItem.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "bgImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_0", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_1", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_2", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_3", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_4", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreeItem.prototype, "cardImage_5", void 0);
+    ChangeThreeItem = __decorate([
+        ccclass
+    ], ChangeThreeItem);
+    return ChangeThreeItem;
+}(UIBase_1.default));
+exports.default = ChangeThreeItem;
+
+cc._RF.pop();

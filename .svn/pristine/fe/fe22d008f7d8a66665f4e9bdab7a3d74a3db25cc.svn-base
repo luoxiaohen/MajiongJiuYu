@@ -1,0 +1,116 @@
+"use strict";
+cc._RF.push(module, 'e93757VeMpOSpwg9+Anh/ud', 'HuPaiTiShiTips');
+// Script/tips/HuPaiTiShiTips.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../Game/info/GameInfo");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var HupaiTishiItem_1 = require("./HupaiTishiItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var HuPaiTiShiTips = /** @class */ (function (_super) {
+    __extends(HuPaiTiShiTips, _super);
+    function HuPaiTiShiTips() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.bgImage = null;
+        _this.mapLabel = null;
+        _this.itemScroller = null;
+        _this.itemGroup = null;
+        _this.itemView = null;
+        return _this;
+    }
+    HuPaiTiShiTips.prototype.onLoad = function () {
+        this.listenData = this.dialogParameters;
+        this.showItem(GloBal_1.Global.Utils.getPreFabBySource("tips/HuPaiTiShiTips/prefab/HupaiTishiItem"));
+        this.showWidth();
+        this.showHave();
+    };
+    HuPaiTiShiTips.prototype.showHave = function () {
+        var allHave = 0;
+        for (var i = 0; i < this.listenData.huData.length; i++) {
+            allHave += this.getHave(this.listenData.huData[i]);
+        }
+        this.mapLabel.string = "s" + allHave + "z";
+    };
+    HuPaiTiShiTips.prototype.getHave = function (huData) {
+        var have = GameInfo_1.default.ins.allOutCardArr[huData.cardValue] ? 4 - GameInfo_1.default.ins.allOutCardArr[huData.cardValue] : 4;
+        for (var i = 0; i < UserInfo_1.default.ins.myHandCardArr.length; i++) {
+            if (UserInfo_1.default.ins.myHandCardArr[i] == huData.cardValue) {
+                have--;
+            }
+        }
+        if (have <= 0) {
+            have = 0;
+        }
+        return have;
+    };
+    HuPaiTiShiTips.prototype.showWidth = function () {
+        var count = this.listenData.huData.length;
+        if (count < 8) {
+            var viewWidth = count * 126 + (count - 1) * 17;
+            this.itemView.width = viewWidth;
+            this.itemScroller.node.width = viewWidth;
+            this.bgImage.node.width = this.itemScroller.node.x + viewWidth + 30;
+        }
+    };
+    HuPaiTiShiTips.prototype.showItem = function (assest) {
+        var item;
+        for (var i = 0; i < this.listenData.huData.length; i++) {
+            item = cc.instantiate(assest).getComponent(HupaiTishiItem_1.default);
+            item.huData = this.listenData.huData[i];
+            this.itemGroup.addChild(item.node);
+        }
+    };
+    HuPaiTiShiTips.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], HuPaiTiShiTips.prototype, "bgImage", void 0);
+    __decorate([
+        property(cc.Label)
+    ], HuPaiTiShiTips.prototype, "mapLabel", void 0);
+    __decorate([
+        property(cc.ScrollView)
+    ], HuPaiTiShiTips.prototype, "itemScroller", void 0);
+    __decorate([
+        property(cc.Node)
+    ], HuPaiTiShiTips.prototype, "itemGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], HuPaiTiShiTips.prototype, "itemView", void 0);
+    HuPaiTiShiTips = __decorate([
+        ccclass
+    ], HuPaiTiShiTips);
+    return HuPaiTiShiTips;
+}(UIBase_1.default));
+exports.default = HuPaiTiShiTips;
+
+cc._RF.pop();

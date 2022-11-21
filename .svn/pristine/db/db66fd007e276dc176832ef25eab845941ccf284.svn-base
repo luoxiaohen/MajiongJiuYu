@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "paipu_xinxilan2",
+    "texture": "33e75f44-13ee-4283-bcbc-df8aae263b50",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      996,
+      80
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      996,
+      80
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

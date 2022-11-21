@@ -1,0 +1,364 @@
+"use strict";
+cc._RF.push(module, 'b930cbP5rhKcaB0YNYml9JB', 'CardHelpManager');
+// Script/UI/card/CardHelpManager.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var InterfaceHelp_1 = require("../../utils/InterfaceHelp");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CardHelpManager = /** @class */ (function () {
+    function CardHelpManager() {
+        /**四方牌墙得初始位置*/
+        this._wallCardInitPoint = [cc.v2(540, -801), cc.v2(1432, -237), cc.v2(620, -140), cc.v2(470, -221)];
+        /**四方牌墙牌宽度*/
+        this._wallCardWidth = [62, 79, 52, 79];
+        /**四方牌墙牌高度*/
+        this._wallCardHeight = [86, 59, 61, 59];
+        /**四方出牌宽度*/
+        this._outCardWidth = [67, 82, 55, 82];
+        /**四方出牌高度*/
+        this._outCardHeight = [90, 67, 75, 67];
+        /**自己出牌的初始位置*/
+        this._myOutCardInitPoint = cc.v2(790, -650);
+        /**下家出牌的初始位置*/
+        this._downOutCardInitPoint = cc.v2(1141, -584);
+        /**对家出牌的初始位置*/
+        this._oppOutCardInitPoint = cc.v2(1035, -200);
+        /**上家出牌的初始位置*/
+        this._upOutCardInitPoint = cc.v2(780, 1264.5);
+        /**自己手牌的初始位置
+         * 当出现碰杠时候,需要修改位置,每次开局需要重新初始化
+        */
+        this._myHandCardInitPoint = cc.v2(26, -1058);
+        /***碰杠之后的移动位置*/
+        this._changePointByEat = 0;
+        /**对家手牌的初始位置
+        */
+        this._oppHandCardInitPoint = cc.v2(570.5, -103);
+        /**下家手牌的初始位置
+       */
+        this._downHandCardInitPoint = cc.v2(1650, -844.5);
+        /**上家手牌的初始位置
+       */
+        this._upHandCardInitPoint = cc.v2(350, -844.5);
+    }
+    CardHelpManager_1 = CardHelpManager;
+    Object.defineProperty(CardHelpManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new CardHelpManager_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "wallCardInitPoint", {
+        get: function () {
+            return this._wallCardInitPoint;
+        },
+        set: function (value) {
+            this._wallCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "wallCardWidth", {
+        get: function () {
+            return this._wallCardWidth;
+        },
+        set: function (value) {
+            this._wallCardWidth = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "wallCardHeight", {
+        get: function () {
+            return this._wallCardHeight;
+        },
+        set: function (value) {
+            this._wallCardHeight = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "outCardWidth", {
+        get: function () {
+            return this._outCardWidth;
+        },
+        set: function (value) {
+            this._outCardWidth = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "outCardHeight", {
+        get: function () {
+            return this._outCardHeight;
+        },
+        set: function (value) {
+            this._outCardHeight = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "myOutCardInitPoint", {
+        get: function () {
+            return this._myOutCardInitPoint;
+        },
+        set: function (value) {
+            this._myOutCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "downOutCardInitPoint", {
+        get: function () {
+            return this._downOutCardInitPoint;
+        },
+        set: function (value) {
+            this._downOutCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "oppOutCardInitPoint", {
+        get: function () {
+            return this._oppOutCardInitPoint;
+        },
+        set: function (value) {
+            this._oppOutCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "upOutCardInitPoint", {
+        get: function () {
+            return this._upOutCardInitPoint;
+        },
+        set: function (value) {
+            this._upOutCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "myHandCardInitPoint", {
+        get: function () {
+            return this._myHandCardInitPoint;
+        },
+        set: function (value) {
+            this._myHandCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "changePointByEat", {
+        get: function () {
+            return this._changePointByEat;
+        },
+        set: function (value) {
+            this._changePointByEat = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "oppHandCardInitPoint", {
+        get: function () {
+            return this._oppHandCardInitPoint;
+        },
+        set: function (value) {
+            this._oppHandCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "downHandCardInitPoint", {
+        get: function () {
+            return this._downHandCardInitPoint;
+        },
+        set: function (value) {
+            this._downHandCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(CardHelpManager.prototype, "upHandCardInitPoint", {
+        get: function () {
+            return this._upHandCardInitPoint;
+        },
+        set: function (value) {
+            this._upHandCardInitPoint = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**重新开局或者其他某些时候 需要初始化一次基础数据*/
+    CardHelpManager.prototype.init = function () {
+        this.myHandCardInitPoint = cc.v2(26, -1058);
+        this.oppHandCardInitPoint = cc.v2(550.5, -103);
+        this.downHandCardInitPoint = cc.v2(1650, -844.5);
+        this.upHandCardInitPoint = cc.v2(325, -844.5);
+        this.changePointByEat = 0;
+    };
+    CardHelpManager.prototype.initOver = function () {
+        this.init();
+    };
+    CardHelpManager.prototype.getLightByValue = function (value, disArr) {
+        for (var i = 0; i < disArr.length; i++) {
+            if (disArr[i].cardValue == value) {
+                return disArr[i].cardLight;
+            }
+        }
+        return 0;
+    };
+    /**获取所有牌中权重最低的三张*/
+    CardHelpManager.prototype.getSmallThree = function (disArr, handArr) {
+        var dis = [];
+        var light;
+        for (var i = 0; i < handArr.length; i++) {
+            light = new InterfaceHelp_1.MajCardLight();
+            if (handArr[i].isShow) {
+                light.cardValue = handArr[i].cardValue;
+                light.cardLight = this.getLightByValue(handArr[i].cardValue, disArr);
+                dis.push(light);
+            }
+        }
+        var threeArr = [];
+        var lightItem;
+        var nowAllLight = 0;
+        var smallAllLight = 0;
+        var nowType = 0;
+        var oneTypeLight = [];
+        for (var i = 0; i < 3; i++) {
+            oneTypeLight = this.getLightByType(dis, i);
+            if (oneTypeLight.length > 3) {
+                nowAllLight = this.getSmallLight(oneTypeLight);
+                if (smallAllLight == 0) {
+                    smallAllLight = nowAllLight;
+                    nowType = i;
+                }
+                else {
+                    if (nowAllLight < smallAllLight) {
+                        smallAllLight = nowAllLight;
+                        nowType = i;
+                    }
+                }
+            }
+            else if (oneTypeLight.length == 3) {
+                threeArr = [oneTypeLight[0].cardValue, oneTypeLight[1].cardValue, oneTypeLight[2].cardValue];
+                return threeArr;
+            }
+        }
+        oneTypeLight = this.getLightByType(dis, nowType);
+        oneTypeLight.sort(GloBal_1.Global.Utils.compareLight);
+        threeArr = [oneTypeLight[0].cardValue, oneTypeLight[1].cardValue, oneTypeLight[2].cardValue];
+        return threeArr;
+    };
+    CardHelpManager.prototype.getSmallLight = function (arr) {
+        var small = 0;
+        arr.sort(GloBal_1.Global.Utils.compareLight);
+        small = arr[0].cardLight + arr[1].cardLight + arr[2].cardLight;
+        return small;
+    };
+    CardHelpManager.prototype.getLightByType = function (dis, type) {
+        var arr = [];
+        for (var i = 0; i < dis.length; i++) {
+            if (Math.floor(dis[i].cardValue / 10) == type) {
+                arr.push(dis[i]);
+            }
+        }
+        return arr;
+    };
+    /**获取所有牌的权重列表**/
+    CardHelpManager.prototype.getThreeCard = function (handItemArr) {
+        var allArr = [];
+        var nowArr = [];
+        for (var i = 0; i < handItemArr.length; i++) {
+            if (handItemArr[i].isShow) {
+                allArr.push(handItemArr[i].cardValue);
+            }
+        }
+        var dic = [];
+        var now;
+        var msjLight;
+        var light;
+        allArr.sort(GloBal_1.Global.Utils.compare);
+        nowArr = this.getNowArr(allArr);
+        var moreArr = [0, 0, 80, 300, 500];
+        for (var i = 0; i < nowArr.length; i++) {
+            msjLight = new InterfaceHelp_1.MajCardLight();
+            light = 0;
+            now = nowArr[i];
+            msjLight.cardValue = now;
+            if (nowArr.indexOf(now - 1) >= 0) {
+                light += 20;
+            }
+            if (nowArr.indexOf(now + 1) >= 0) {
+                light += 20;
+            }
+            if (nowArr.indexOf(now - 2) >= 0 && this.isOne(now, now - 2)) {
+                light += 10;
+            }
+            if (nowArr.indexOf(now + 2) >= 0 && this.isOne(now, now + 2)) {
+                light += 10;
+            }
+            light += moreArr[this.getAllNum(allArr, now)];
+            msjLight.cardLight = light;
+            dic[i] = msjLight;
+        }
+        return dic;
+    };
+    CardHelpManager.prototype.getAllNum = function (nowArr, now) {
+        var index = 0;
+        for (var i = 0; i < nowArr.length; i++) {
+            if (nowArr[i] == now) {
+                index++;
+            }
+        }
+        return index;
+    };
+    CardHelpManager.prototype.getNowArr = function (nowArr) {
+        var newArr = [];
+        for (var i = 0; i < nowArr.length; i++) {
+            if (newArr.indexOf(nowArr[i]) < 0) {
+                newArr.push(nowArr[i]);
+            }
+        }
+        return newArr;
+    };
+    CardHelpManager.prototype.haveThree = function (arr, card) {
+        var nowT = Math.floor(card / 10);
+        var haveIndex = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (Math.floor(arr[i].cardValue / 10) == nowT) {
+                haveIndex++;
+            }
+        }
+        return haveIndex >= 3;
+    };
+    CardHelpManager.prototype.isOne = function (a, b) {
+        if (Math.floor(a / 10) == Math.floor(b / 10)) {
+            return true;
+        }
+        return false;
+    };
+    var CardHelpManager_1;
+    CardHelpManager = CardHelpManager_1 = __decorate([
+        ccclass
+    ], CardHelpManager);
+    return CardHelpManager;
+}());
+exports.default = CardHelpManager;
+
+cc._RF.pop();

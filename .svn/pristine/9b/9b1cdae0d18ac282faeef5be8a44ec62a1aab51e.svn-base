@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_huanpai",
+    "texture": "dce25020-855c-4a87-b36a-6ad471abac69",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      201,
+      92
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      201,
+      92
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

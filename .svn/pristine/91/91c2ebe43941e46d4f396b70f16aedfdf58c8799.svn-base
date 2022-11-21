@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_kuang4",
+    "texture": "1fc82388-00c5-4708-8e94-203d7df3800b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      941,
+      191
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      941,
+      191
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

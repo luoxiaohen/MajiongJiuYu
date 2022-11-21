@@ -1,0 +1,234 @@
+[
+  1,
+  [
+    "bfQzKK+JRPXpSUAbNMmcFy",
+    "c3TPvy2VlCv6VcYyxJyoke"
+  ],
+  [
+    "spriteFrame",
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.BitmapFont",
+      [
+        "_name",
+        "fontSize",
+        "_fntConfig"
+      ],
+      0
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2,
+      4
+    ]
+  ],
+  [
+    [
+      [
+        [
+          0,
+          "MaimaJian",
+          72,
+          {
+            "commonHeight": 72,
+            "fontSize": 72,
+            "atlasName": "MaimaJian.png",
+            "fontDefDictionary": {
+              "32": {
+                "xOffset": 0,
+                "yOffset": 0,
+                "xAdvance": 22,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 0,
+                  "height": 0
+                }
+              },
+              "45": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 53,
+                "rect": {
+                  "x": 286,
+                  "y": 122,
+                  "width": 55,
+                  "height": 32
+                }
+              },
+              "48": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 79,
+                "rect": {
+                  "x": 0,
+                  "y": 0,
+                  "width": 81,
+                  "height": 121
+                }
+              },
+              "49": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 50,
+                "rect": {
+                  "x": 80,
+                  "y": 122,
+                  "width": 52,
+                  "height": 119
+                }
+              },
+              "50": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 76,
+                "rect": {
+                  "x": 133,
+                  "y": 122,
+                  "width": 78,
+                  "height": 119
+                }
+              },
+              "51": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 71,
+                "rect": {
+                  "x": 82,
+                  "y": 0,
+                  "width": 73,
+                  "height": 121
+                }
+              },
+              "52": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 86,
+                "rect": {
+                  "x": 0,
+                  "y": 244,
+                  "width": 88,
+                  "height": 117
+                }
+              },
+              "53": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 71,
+                "rect": {
+                  "x": 212,
+                  "y": 122,
+                  "width": 73,
+                  "height": 119
+                }
+              },
+              "54": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 77,
+                "rect": {
+                  "x": 156,
+                  "y": 0,
+                  "width": 79,
+                  "height": 121
+                }
+              },
+              "55": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 76,
+                "rect": {
+                  "x": 89,
+                  "y": 244,
+                  "width": 78,
+                  "height": 117
+                }
+              },
+              "56": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 78,
+                "rect": {
+                  "x": 236,
+                  "y": 0,
+                  "width": 80,
+                  "height": 121
+                }
+              },
+              "57": {
+                "xOffset": -1,
+                "yOffset": -1,
+                "xAdvance": 77,
+                "rect": {
+                  "x": 0,
+                  "y": 122,
+                  "width": 79,
+                  "height": 121
+                }
+              }
+            },
+            "kerningDict": {}
+          }
+        ]
+      ],
+      0,
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "MaimaJian",
+          "rect": [
+            1,
+            1,
+            339,
+            359
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            341,
+            361
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ]
+  ]
+]

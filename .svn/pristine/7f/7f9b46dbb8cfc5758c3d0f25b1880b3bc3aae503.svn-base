@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_tankuang",
+    "texture": "c909a956-4c97-4f3a-a94c-370d8f414da2",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      308,
+      221
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      308,
+      221
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

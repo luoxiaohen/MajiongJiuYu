@@ -1,0 +1,79 @@
+"use strict";
+cc._RF.push(module, 'b4fbbt+StpOz6Uzdq75rD6L', 'CreateRoomRuleItem');
+// Script/UI/createRoom/CreateRoomRuleItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var LobbyMsgDef_1 = require("../../proto/LobbyMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateRoomRuleItem = /** @class */ (function (_super) {
+    __extends(CreateRoomRuleItem, _super);
+    function CreateRoomRuleItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._height = 0;
+        _this.itemWeights = 0;
+        _this.changeHeight = 0;
+        _this.isMoveUp = false;
+        _this.tableInfo = new LobbyMsgDef_1.TableRuleInfo();
+        return _this;
+    }
+    CreateRoomRuleItem.prototype.getHeight = function () {
+        return this._height;
+    };
+    CreateRoomRuleItem.prototype.setData = function (temp) {
+        this.ruleTemplate = temp;
+        this.ruleInfo = this.ruleTemplate ? this.ruleTemplate.rule : null;
+    };
+    CreateRoomRuleItem.prototype.reviseChangeHeight = function (isAdd) {
+        if (isAdd) {
+            this._height += this.changeHeight;
+        }
+        else {
+            this._height -= this.changeHeight;
+        }
+    };
+    CreateRoomRuleItem.prototype.getSelectData = function () {
+        return this.tableInfo;
+    };
+    CreateRoomRuleItem.prototype.disPatchMove = function (item) {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.GameRuleItemMove, item);
+    };
+    CreateRoomRuleItem.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    CreateRoomRuleItem = __decorate([
+        ccclass
+    ], CreateRoomRuleItem);
+    return CreateRoomRuleItem;
+}(UIBase_1.default));
+exports.default = CreateRoomRuleItem;
+
+cc._RF.pop();

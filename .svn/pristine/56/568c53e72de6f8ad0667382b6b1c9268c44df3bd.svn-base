@@ -1,0 +1,339 @@
+"use strict";
+cc._RF.push(module, '4e5f9Ux1U1OBryzbxtz61sX', 'SmallOverPanel');
+// Script/UI/over/SmallOverPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TableMsg_1 = require("../../proto/TableMsg");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var InterfaceHelp_1 = require("../../utils/InterfaceHelp");
+var CardHelpManager_1 = require("../card/CardHelpManager");
+var OverGameinfoItem_1 = require("./OverGameinfoItem");
+var OverHandCardItem_1 = require("./OverHandCardItem");
+var OverHorseInfoItem_1 = require("./OverHorseInfoItem");
+var OverPlayerInfoItem_1 = require("./OverPlayerInfoItem");
+var SmallOverPlayerHead_1 = require("./SmallOverPlayerHead");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var SmallOverPanel = /** @class */ (function (_super) {
+    __extends(SmallOverPanel, _super);
+    function SmallOverPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.allGroup = null;
+        _this.allValueGroup = null;
+        _this.infoGroup = null;
+        _this.playerHeadGroup = null;
+        _this.nowBaoziLabel = null;
+        _this.nowCountLabel = null;
+        _this.readyBtn = null;
+        _this.lookTable = null;
+        _this.readyLabel = null;
+        _this.playerArr = [];
+        _this.playerInfoItem = null;
+        _this.playerHorseItem = null;
+        _this.playerHandItem = null;
+        _this.playerGameItem = null;
+        return _this;
+    }
+    SmallOverPanel.prototype.onLoad = function () {
+        this.playerHeadPrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/SmallOverPlayerHead");
+        this.playerInfoPrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/OverPlayerInfoItem");
+        this.playerHorsePrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/OverHorseInfoItem");
+        this.playerHandPrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/OverHandCardItem");
+        this.playerGamePrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/OverGameinfoItem");
+        this.createElements();
+    };
+    SmallOverPanel.prototype.createElements = function () {
+        this.setTestData();
+        this.gameResultMsg = GameInfo_1.default.ins.gameResultMsg;
+        this.scoreListMsg = GameInfo_1.default.ins.scoreListMsg;
+        this.createPlayerHead();
+        this.addEvent();
+        if (GameInfo_1.default.ins.nowGameCount < GameInfo_1.default.ins.roomTableInfo.rule.handsCnt) {
+            this.readyLabel.string = "准备";
+        }
+        else {
+            this.readyLabel.string = "战绩统计";
+        }
+        if (GameInfo_1.default.ins.isBaozi) {
+            this.nowBaoziLabel.string = "本局豹子(底分X2)";
+        }
+        if (GameInfo_1.default.ins.isShuangbao) {
+            this.nowBaoziLabel.string = "本局双豹(底分X4)";
+        }
+    };
+    SmallOverPanel.prototype.addEvent = function () {
+        this.lookTable.node.on(cc.Node.EventType.TOUCH_START, this.onTouchStar, this);
+        this.lookTable.node.on(cc.Node.EventType.TOUCH_END, this.onTouchend, this);
+    };
+    SmallOverPanel.prototype.onTouchStar = function () {
+        this.allValueGroup.active = false;
+    };
+    SmallOverPanel.prototype.onTouchend = function () {
+        this.allValueGroup.active = true;
+    };
+    SmallOverPanel.prototype.createValueElement = function () {
+        var player = this.selectPlayer;
+        var sitInfo = player.playerInfo;
+        var resultInfo = this.getGameResultInfo(sitInfo.sitNum);
+        this.showSelectPlayerData(sitInfo, resultInfo);
+        this.showSelectMa(sitInfo, resultInfo);
+        this.showMyHand(resultInfo);
+        this.showValue();
+    };
+    SmallOverPanel.prototype.showValue = function () {
+        if (this.playerGameItem == null) {
+            this.playerGameItem = cc.instantiate(this.playerGamePrefab).getComponent(OverGameinfoItem_1.default);
+        }
+        var scoreInfoArr = [];
+        for (var i = 0; i < GameInfo_1.default.ins.scoreListMsg.scores.length; i++) {
+            if (GameInfo_1.default.ins.scoreListMsg.scores[i].sitNum == this.selectPlayer.playerInfo.sitNum) {
+                scoreInfoArr = GameInfo_1.default.ins.scoreListMsg.scores[i].rcd;
+            }
+        }
+        this.playerGameItem.setData(scoreInfoArr);
+        if (!this.playerGameItem.node.parent) {
+            this.infoGroup.addChild(this.playerGameItem.node);
+        }
+    };
+    SmallOverPanel.prototype.showMyHand = function (resultInfo) {
+        if (this.playerHandItem == null) {
+            this.playerHandItem = cc.instantiate(this.playerHandPrefab).getComponent(OverHandCardItem_1.default);
+        }
+        var huCatd = GameInfo_1.default.ins.hupaiArr[resultInfo.sitNum] ? GameInfo_1.default.ins.hupaiArr[resultInfo.sitNum] : -1;
+        this.playerHandItem.setNewData(resultInfo.lstPuts, resultInfo.lstMajs, huCatd);
+        if (!this.playerHandItem.node.parent) {
+            this.infoGroup.addChild(this.playerHandItem.node);
+        }
+    };
+    SmallOverPanel.prototype.showSelectMa = function (sitInfo, resultInfo) {
+        if (this.playerHorseItem == null) {
+            this.playerHorseItem = cc.instantiate(this.playerHorsePrefab).getComponent(OverHorseInfoItem_1.default);
+        }
+        var arr = [];
+        var data1 = new InterfaceHelp_1.OverBuyHorseInfoData();
+        data1.buyCoun = 105;
+        data1.cardValue = 9;
+        data1.fen = 25;
+        data1.horesNum = 1;
+        data1.playerHead = 1;
+        var data2 = new InterfaceHelp_1.OverBuyHorseInfoData();
+        data2.buyCoun = 107;
+        data2.cardValue = 26;
+        data2.fen = -18;
+        data2.horesNum = 2;
+        data2.playerHead = 1;
+        arr = [data1, data2];
+        this.playerHorseItem.horseArr = arr;
+        if (!this.playerHorseItem.node.parent) {
+            this.infoGroup.addChild(this.playerHorseItem.node);
+        }
+    };
+    SmallOverPanel.prototype.showSelectPlayerData = function (sitInfo, resultInfo) {
+        if (this.playerInfoItem == null) {
+            this.playerInfoItem = cc.instantiate(this.playerInfoPrefab).getComponent(OverPlayerInfoItem_1.default);
+        }
+        var data = new InterfaceHelp_1.OverPlayerItemInfoData();
+        data.playerName = "未获取";
+        data.playerId = "未获取";
+        data.isZhuang = sitInfo.sitNum == GameInfo_1.default.ins.nowBookMakerSit;
+        data.isPaio = false;
+        data.huType = resultInfo.state == 2 ? resultInfo.huNum : -1;
+        data.fenCount = resultInfo.score;
+        this.playerInfoItem.itemInfoDat = data;
+        if (!this.playerInfoItem.node.parent) {
+            this.infoGroup.addChild(this.playerInfoItem.node);
+        }
+    };
+    SmallOverPanel.prototype.getGameResultInfo = function (sit) {
+        for (var i = 0; i < this.gameResultMsg.results.length; i++) {
+            if (this.gameResultMsg.results[i].sitNum == sit) {
+                return this.gameResultMsg.results[i];
+            }
+        }
+    };
+    SmallOverPanel.prototype.createPlayerHead = function () {
+        var newInfo = [];
+        if (this.gameResultMsg.isBreak) {
+            newInfo = this.sortZhuang();
+        }
+        else {
+            newInfo = this.sortWin();
+        }
+        var player;
+        for (var i = 0; i < newInfo.length; i++) {
+            player = cc.instantiate(this.playerHeadPrefab).getComponent(SmallOverPlayerHead_1.default);
+            player.setPlayerData(newInfo[i], this.gameResultMsg.isBreak == 1);
+            if (newInfo[i].sitNum == UserInfo_1.default.ins.mySitIndex) {
+                player.isSelect = true;
+                this.selectPlayer = player;
+                this.createValueElement();
+            }
+            else {
+                player.isSelect = false;
+            }
+            this.playerHeadGroup.addChild(player.node);
+            this.playerArr[i] = player;
+            player.node.on(cc.Node.EventType.TOUCH_START, this.onPlayerClick, this);
+        }
+    };
+    SmallOverPanel.prototype.onPlayerClick = function (e) {
+        var player = e.currentTarget.getComponent(SmallOverPlayerHead_1.default);
+        if (player.isSelect) {
+            return;
+        }
+        this.selectPlayer.isSelect = false;
+        player.isSelect = true;
+        this.selectPlayer = player;
+        this.createValueElement();
+    };
+    SmallOverPanel.prototype.sortWin = function () {
+        var arr = [];
+        var info;
+        var tempArr = [];
+        var sortArr = [];
+        for (var i = 0; i < this.gameResultMsg.results.length; i++) {
+            info = this.gameResultMsg.results[i];
+            if (info.huNum == 0) {
+                arr[0] = info;
+            }
+            if (info.huNum == 1) {
+                arr[1] = info;
+            }
+            if (info.huNum == 2) {
+                arr[2] = info;
+            }
+            if (info.huNum == -1) {
+                tempArr.push(info);
+            }
+        }
+        if (tempArr.length == 1) {
+            arr[3] = tempArr[0];
+        }
+        else {
+            for (var i = 0; i < tempArr.length; i++) {
+                info = tempArr[i];
+                if (info.sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                    sortArr[0] = info;
+                }
+                if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                    sortArr[1] = info;
+                }
+                if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 2) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                    sortArr[2] = info;
+                }
+                if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 3) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                    sortArr[3] = info;
+                }
+            }
+            for (var i = 0; i < sortArr.length; i++) {
+                if (sortArr[i]) {
+                    arr.push(sortArr[i]);
+                }
+            }
+        }
+        return arr;
+    };
+    SmallOverPanel.prototype.sortZhuang = function () {
+        var arr = [];
+        var info;
+        for (var i = 0; i < this.gameResultMsg.results.length; i++) {
+            info = this.gameResultMsg.results[i];
+            if (info.sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                arr[0] = info;
+            }
+            if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                arr[1] = info;
+            }
+            if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 2) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                arr[2] = info;
+            }
+            if (info.sitNum == (GameInfo_1.default.ins.nowBookMakerSit + 3) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)) {
+                arr[3] = info;
+            }
+        }
+        return arr;
+    };
+    SmallOverPanel.prototype.onReadyClick = function () {
+        this.disTory();
+        GameInfo_1.default.ins.initOver();
+        UserInfo_1.default.ins.initOver();
+        CardHelpManager_1.default.ins.initOver();
+        if (GameInfo_1.default.ins.nowGameCount < GameInfo_1.default.ins.roomTableInfo.rule.handsCnt) {
+            GloBal_1.Global.mgr.socketMgr.send(-1, new TableMsg_1.Msg_CS_NextTrun());
+            GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.OpenNewGame);
+        }
+        else {
+            //TODO open the big ovew panel;
+            GloBal_1.Global.DialogManager.createDialog("smallOver/prefab/BigOverPanel", null, function (any, createDialog) {
+                createDialog.y = 0;
+            });
+        }
+    };
+    SmallOverPanel.prototype.setTestData = function () {
+        // GameInfo.ins.gameResultMsg  = {"isBreak":0,"mid":5,"results":[{"curChips":312,"curHorseChips":0,"horseScore":0,"huNum":0,"lstMajs":[5,5,8,8,8,13,13,13,16,16,16],"lstPuts":[{"getType":2,"majID":9,"targetNum":2,"type":3}],"rain":-1,"score":12,"sitNum":0,"state":2},{"curChips":282,"curHorseChips":0,"horseScore":0,"huNum":-1,"lstMajs":[14,15,17,19,21,22,24,27,28,29],"lstPuts":[{"getType":2,"majID":12,"targetNum":2,"type":3}],"rain":0,"score":-18,"sitNum":1,"state":0},{"curChips":282,"curHorseChips":0,"horseScore":0,"huNum":2,"lstMajs":[1,1,3,3,3,17,17,17,19,19,19],"lstPuts":[{"getType":2,"majID":6,"targetNum":0,"type":3}],"rain":-1,"score":-18,"sitNum":2,"state":2},{"curChips":324,"curHorseChips":0,"horseScore":0,"huNum":1,"lstMajs":[22,22,22,23,23,23,27,27],"lstPuts":[{"getType":2,"majID":28,"targetNum":2,"type":3},{"getType":2,"majID":26,"targetNum":0,"type":3}],"rain":-1,"score":24,"sitNum":3,"state":2}],"sid":47}
+        // GameInfo.ins.scoreListMsg = {"mid":5,"scores":[{"rcd":[{"tarSitsEx" : [] ,"curSit":0,"debug":{"baseMo":1,"dob":2,"dobB":2,"dobT":2,"dobTotal":3,"fanMo":0,"huNum":0,"param":1,"param2":0,"tiFan":0,"zmType":1},"fanTypes":[],"huGangTypes":[2],"majid":8,"param":0,"scoreType":1,"tarSits":[1,2,3],"win":12}],"sitNum":0},{"rcd":[{"debug":null,"tarSitsEx" : [] ,"curSit":1,"fanTypes":[],"huGangTypes":[2],"majid":8,"param":0,"scoreType":3,"tarSits":[0],"win":-3},{"debug":null,"tarSitsEx" : [] ,"curSit":1,"fanTypes":[],"huGangTypes":[2,3],"majid":23,"param":0,"scoreType":3,"tarSits":[3],"win":-9},{"debug":null,"tarSitsEx" : [] ,"curSit":1,"fanTypes":[],"huGangTypes":[2],"majid":3,"param":0,"scoreType":3,"tarSits":[2],"win":-6}],"sitNum":1},{"rcd":[{"debug":null,"tarSitsEx" : [] ,"curSit":2,"fanTypes":[],"huGangTypes":[2],"majid":8,"param":0,"scoreType":3,"tarSits":[0],"win":-6},{"debug":null,"tarSitsEx" : [] ,"curSit":2,"fanTypes":[],"huGangTypes":[2,3],"majid":23,"param":0,"scoreType":3,"tarSits":[3],"win":-18},{"tarSitsEx" : [] ,"curSit":2,"debug":{"baseMo":1,"dob":2,"dobB":2,"dobT":2,"dobTotal":3,"fanMo":0,"huNum":2,"param":2,"param2":0,"tiFan":0,"zmType":1},"fanTypes":[],"huGangTypes":[2],"majid":3,"param":0,"scoreType":1,"tarSits":[1],"win":6}],"sitNum":2},{"rcd":[{"debug":null,"tarSitsEx" : [] ,"curSit":3,"fanTypes":[],"huGangTypes":[2],"majid":8,"param":0,"scoreType":3,"tarSits":[0],"win":-3},{"tarSitsEx" : [] ,"curSit":3,"debug":{"baseMo":1,"dob":8,"dobB":8,"dobT":8,"dobTotal":9,"fanMo":0,"huNum":1,"param":1,"param2":0,"tiFan":0,"zmType":1},"fanTypes":[],"huGangTypes":[2,3],"majid":23,"param":0,"scoreType":1,"tarSits":[1,2],"win":27}],"sitNum":3}],"sid":49}
+    };
+    __decorate([
+        property(cc.Node)
+    ], SmallOverPanel.prototype, "allGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], SmallOverPanel.prototype, "allValueGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], SmallOverPanel.prototype, "infoGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], SmallOverPanel.prototype, "playerHeadGroup", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SmallOverPanel.prototype, "nowBaoziLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SmallOverPanel.prototype, "nowCountLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], SmallOverPanel.prototype, "readyBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPanel.prototype, "lookTable", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SmallOverPanel.prototype, "readyLabel", void 0);
+    SmallOverPanel = __decorate([
+        ccclass
+    ], SmallOverPanel);
+    return SmallOverPanel;
+}(UIBase_1.default));
+exports.default = SmallOverPanel;
+
+cc._RF.pop();

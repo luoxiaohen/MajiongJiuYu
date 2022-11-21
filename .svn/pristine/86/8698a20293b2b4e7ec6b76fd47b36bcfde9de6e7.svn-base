@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_shaitaiyang",
+    "texture": "ee9c6299-3c8a-4493-9849-ae43435f8c4b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      222,
+      86
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      222,
+      86
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

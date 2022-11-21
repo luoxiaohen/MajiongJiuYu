@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_shuangbao",
+    "texture": "96f4efe4-3ead-4b1c-9c6f-b439d5344e2a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      75,
+      55
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      75,
+      55
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

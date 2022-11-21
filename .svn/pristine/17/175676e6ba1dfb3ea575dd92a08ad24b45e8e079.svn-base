@@ -1,0 +1,147 @@
+"use strict";
+cc._RF.push(module, '28db8g2P0JDEKzjrAhNiqhf', 'InterfaceHelp');
+// Script/utils/InterfaceHelp.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OverBuyHorseInfoData = exports.OverPlayerItemInfoData = exports.MyActionByOther = exports.HandCardGroup = exports.CanHuCard = exports.ListenCard = exports.HuData = exports.DeckData = exports.FeelCardData = exports.PengGangData = exports.EatCardClass = exports.MajCardLight = void 0;
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var InterfaceHelp = /** @class */ (function () {
+    function InterfaceHelp() {
+    }
+    InterfaceHelp = __decorate([
+        ccclass
+    ], InterfaceHelp);
+    return InterfaceHelp;
+}());
+exports.default = InterfaceHelp;
+/**牌权重计算*/
+var MajCardLight = /** @class */ (function () {
+    function MajCardLight() {
+    }
+    return MajCardLight;
+}());
+exports.MajCardLight = MajCardLight;
+var EatCardClass = /** @class */ (function () {
+    function EatCardClass() {
+    }
+    return EatCardClass;
+}());
+exports.EatCardClass = EatCardClass;
+var PengGangData = /** @class */ (function () {
+    function PengGangData() {
+    }
+    return PengGangData;
+}());
+exports.PengGangData = PengGangData;
+/**最新的摸牌信息*/
+var FeelCardData = /** @class */ (function () {
+    function FeelCardData() {
+    }
+    return FeelCardData;
+}());
+exports.FeelCardData = FeelCardData;
+/**检测当前牌组
+ * 其他人打出牌时候检测 碰 杠 胡
+ * 自己进牌时候检测出牌可听
+ * 自己出牌时候检测是否听牌以及停牌数据
+*/
+var DeckData = /** @class */ (function () {
+    function DeckData() {
+        /**可以碰的牌 手中有两张以上*/
+        this.pengValue = [];
+        /*可以杠的牌 手中有3张**/
+        this.gangValue = [];
+        /**本身可以暗杠的牌 手中已有4张*/
+        this.anGangValue = [];
+        /**所有的胡牌可能,目前计算只做可胡的牌,*/
+        /**补杠*/
+        this.buGangValue = [];
+        this.allTingValue = [];
+        /**所有胡牌数据*/
+        this.huValue = [];
+        /**胡牌啦*/
+        this.huData = null;
+    }
+    return DeckData;
+}());
+exports.DeckData = DeckData;
+var HuData = /** @class */ (function () {
+    function HuData() {
+        /**所胡牌型*/
+        this.HuType = [];
+    }
+    return HuData;
+}());
+exports.HuData = HuData;
+/**自己进牌后,需要出牌时候检测出牌可听 并保存*/
+var ListenCard = /** @class */ (function () {
+    function ListenCard() {
+        /**对应胡牌数据*/
+        this.huData = [];
+    }
+    return ListenCard;
+}());
+exports.ListenCard = ListenCard;
+/**自己出牌之后 根据出牌可听数据检测当前是否处于停牌等胡状态 并保存数据*/
+var CanHuCard = /** @class */ (function () {
+    function CanHuCard() {
+        /**所胡牌型*/
+        this.HuType = [];
+    }
+    return CanHuCard;
+}());
+exports.CanHuCard = CanHuCard;
+var HandCardGroup = /** @class */ (function () {
+    function HandCardGroup() {
+        this.four = [];
+        this.three = [];
+        this.shun = [];
+    }
+    return HandCardGroup;
+}());
+exports.HandCardGroup = HandCardGroup;
+/***别人出牌我的操作数据*/
+var MyActionByOther = /** @class */ (function () {
+    function MyActionByOther() {
+        this.canHu = false;
+        this.canPeng = false;
+        this.canGang = false;
+        this.canGuo = false;
+        this.huData = null;
+        this.gangValue = [];
+    }
+    return MyActionByOther;
+}());
+exports.MyActionByOther = MyActionByOther;
+/***结算界面个人信息item数据*/
+var OverPlayerItemInfoData = /** @class */ (function () {
+    function OverPlayerItemInfoData() {
+        /**-1 : 未胡牌 0-2 :123胡* */
+        this.huType = -1;
+        this.fenCount = 0;
+    }
+    return OverPlayerItemInfoData;
+}());
+exports.OverPlayerItemInfoData = OverPlayerItemInfoData;
+/**结算界面个人买吗信息数据*/
+var OverBuyHorseInfoData = /** @class */ (function () {
+    function OverBuyHorseInfoData() {
+    }
+    return OverBuyHorseInfoData;
+}());
+exports.OverBuyHorseInfoData = OverBuyHorseInfoData;
+
+cc._RF.pop();

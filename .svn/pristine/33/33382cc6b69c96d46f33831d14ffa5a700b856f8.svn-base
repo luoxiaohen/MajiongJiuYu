@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_changan",
+    "texture": "6bc4a644-6841-4ce7-a889-46e01753306f",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      194,
+      188
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      194,
+      188
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

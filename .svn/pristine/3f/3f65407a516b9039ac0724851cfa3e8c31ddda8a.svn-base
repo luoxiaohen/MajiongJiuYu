@@ -1,0 +1,72 @@
+"use strict";
+cc._RF.push(module, 'c0000YFnmlBTJk4dPrbQFoc', 'NetworkManager');
+// Script/Shared/NetworkManager.ts
+
+"use strict";
+//import { Global } from "./Global";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("./GloBal");
+var MessageCallback_1 = require("./MessageCallback");
+var NetworkManager = /** @class */ (function () {
+    function NetworkManager() {
+        this.pomelo = window["pomelo"];
+    }
+    Object.defineProperty(NetworkManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new NetworkManager());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    NetworkManager.prototype.init = function (params, cb) {
+        this.pomelo.init({
+            host: params.host,
+            port: params.port,
+            log: true
+        }, cb);
+    };
+    ;
+    NetworkManager.prototype.disconnect = function () {
+        this.pomelo.disconnect();
+    };
+    ;
+    NetworkManager.prototype.send = function (route, msg, cbRoute, cbFail) {
+        if (cbRoute === void 0) { cbRoute = null; }
+        if (cbFail === void 0) { cbFail = null; }
+    };
+    ;
+    NetworkManager.prototype.notify = function (route, msg) {
+        console.log('Notify:' + route);
+        console.log(msg);
+        this.pomelo.notify(route, msg);
+    };
+    ;
+    NetworkManager.prototype.addReceiveListen = function (route, cbRoute) {
+        cbRoute = cbRoute || route;
+        var pushCallback = function (msg) {
+            if (!!cbRoute) {
+                console.log('push:' + cbRoute);
+                console.log(msg);
+                MessageCallback_1.default.ins.emitMessage(cbRoute, msg);
+            }
+        };
+        this.pomelo.on(route, pushCallback);
+        return pushCallback;
+    };
+    ;
+    NetworkManager.prototype.removeListener = function (route, callback) {
+        this.pomelo.removeListener(route, callback);
+    };
+    ;
+    NetworkManager.prototype.removeAllListeners = function () {
+        GloBal_1.Global.Utils.debugOutput("NetworkLogic ==> removeAllListeners ==> 移除事件监听" + this.pomelo);
+        if (this.pomelo) {
+            this.pomelo.removeAllListeners();
+        }
+    };
+    ;
+    return NetworkManager;
+}());
+exports.default = NetworkManager;
+
+cc._RF.pop();

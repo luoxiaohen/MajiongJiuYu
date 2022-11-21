@@ -1,0 +1,54 @@
+"use strict";
+cc._RF.push(module, 'ada2aZDubhD95wb3sHK409i', 'NetworkLogic');
+// Script/Shared/NetworkLogic.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("./GloBal");
+var MessageCallback_1 = require("./MessageCallback");
+var NetworkManager_1 = require("./NetworkManager");
+var NetworkLogic = /** @class */ (function () {
+    function NetworkLogic() {
+        /**是否手动关闭连接*/
+        this.isManualCloseServerConnection = false;
+    }
+    Object.defineProperty(NetworkLogic, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new NetworkLogic());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    NetworkLogic.prototype.init = function () {
+        this.isManualCloseServerConnection = false;
+        GloBal_1.Global.Utils.debugOutput("NetworkLogic ==> inint ==> 添加事件监听");
+        /// 添加事件监听
+        MessageCallback_1.default.ins.addListener('ServerDisconnection', this);
+        MessageCallback_1.default.ins.addListener('ServerMessagePush', this);
+        MessageCallback_1.default.ins.addListener('PopDialogContentPush', this);
+        /// 服务器推送消息监听
+        // 监听断开信息
+        NetworkManager_1.default.ins.addReceiveListen('close', 'ServerDisconnection');
+        // 推送消息
+        NetworkManager_1.default.ins.addReceiveListen('ServerMessagePush', 'ServerMessagePush');
+    };
+    ;
+    NetworkLogic.prototype.deInit = function () {
+        /// 添加事件监听
+        MessageCallback_1.default.ins.removeListener('ServerDisconnection', this);
+        MessageCallback_1.default.ins.removeListener('ServerMessagePush', this);
+        MessageCallback_1.default.ins.removeListener('PopDialogContentPush', this);
+    };
+    ;
+    NetworkLogic.prototype.connectToServer = function (host, port, cb) {
+        NetworkManager_1.default.ins.init({
+            host: host,
+            port: port
+        }, cb);
+    };
+    ;
+    return NetworkLogic;
+}());
+exports.default = NetworkLogic;
+
+cc._RF.pop();

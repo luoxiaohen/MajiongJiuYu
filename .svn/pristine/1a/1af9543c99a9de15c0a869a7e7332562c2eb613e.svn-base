@@ -1,0 +1,200 @@
+"use strict";
+cc._RF.push(module, 'ac27bACQ01OiqPYHPK0Qf3O', 'SmallOverPlayerHead');
+// Script/UI/over/SmallOverPlayerHead.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var SmallOverPlayerHead = /** @class */ (function (_super) {
+    __extends(SmallOverPlayerHead, _super);
+    function SmallOverPlayerHead() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.bgImag = null;
+        _this.touxiangImage = null;
+        _this.piaoImage = null;
+        _this.zhuangImage = null;
+        _this.horseImage1 = null;
+        _this.horseImage2 = null;
+        _this.huImage = null;
+        _this.fenLabel = null;
+        _this.nameLabel = null;
+        return _this;
+    }
+    Object.defineProperty(SmallOverPlayerHead.prototype, "esultInfo", {
+        get: function () {
+            return this._esultInfo;
+        },
+        set: function (value) {
+            this._esultInfo = value;
+            this.showHorse();
+            this.showFenLabel();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SmallOverPlayerHead.prototype, "playerInfo", {
+        get: function () {
+            return this._playerInfo;
+        },
+        set: function (value) {
+            this._playerInfo = value;
+            this.showZhuangImage();
+            this.showNameLabel();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SmallOverPlayerHead.prototype, "isBreak", {
+        get: function () {
+            return this._isBreak;
+        },
+        set: function (value) {
+            this._isBreak = value;
+            this.showHuImage();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(SmallOverPlayerHead.prototype, "isSelect", {
+        get: function () {
+            return this._isSelect;
+        },
+        set: function (value) {
+            this._isSelect = value;
+            this.showBgImage();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    SmallOverPlayerHead.prototype.onLoad = function () {
+    };
+    SmallOverPlayerHead.prototype.setPlayerData = function (info, isBreak) {
+        this.esultInfo = info;
+        this.isBreak = isBreak;
+        this.playerInfo = GameInfo_1.default.ins.getPlayerBySit(info.sitNum);
+    };
+    SmallOverPlayerHead.prototype.getPointStr = function () {
+        var changeNum = (this.esultInfo.sitNum - UserInfo_1.default.ins.mySitIndex + 40) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        switch (changeNum) {
+            case 0:
+                return "本家";
+            case 1:
+                return "下家";
+            case 2:
+                return "对家";
+            case 3:
+                return "上家";
+        }
+        return "";
+    };
+    SmallOverPlayerHead.prototype.showHorse = function () {
+    };
+    SmallOverPlayerHead.prototype.showNameLabel = function () {
+        this.nameLabel.string = this.getPointStr() + this.playerInfo.player.nike;
+    };
+    SmallOverPlayerHead.prototype.showFenLabel = function () {
+        var _this = this;
+        var fontSource = this.esultInfo.score >= 0 ? "comResource/mapFont/jiesuanJiafen" : "comResource/mapFont/jiesuanJianfen";
+        cc.loader.loadRes(fontSource, cc.Font, function (error, assest) {
+            if (error) {
+                return;
+            }
+            _this.fenLabel.font = assest;
+            _this.fenLabel.string = _this.esultInfo.score >= 0 ? ("+" + _this.esultInfo.score) : _this.esultInfo.score.toString();
+        });
+    };
+    SmallOverPlayerHead.prototype.showZhuangImage = function () {
+        this.zhuangImage.node.active = this.esultInfo.sitNum == GameInfo_1.default.ins.nowBookMakerSit;
+    };
+    SmallOverPlayerHead.prototype.showPiaoImage = function () {
+    };
+    SmallOverPlayerHead.prototype.showHuImage = function () {
+        if (this.isBreak) {
+            this.huImage.node.active = false;
+            return;
+        }
+        if (this.esultInfo.state != 2) {
+            this.huImage.node.active = false;
+            return;
+        }
+        this.huImage.node.active = true;
+        var source = "smallOver/resource/game_hu";
+        if (this.esultInfo.huNum == 0) {
+            source = "smallOver/resource/game_hu";
+        }
+        if (this.esultInfo.huNum == 1) {
+            source = "smallOver/resource/game_hu2";
+        }
+        if (this.esultInfo.huNum == 2) {
+            source = "smallOver/resource/game_hu3";
+        }
+        GloBal_1.Global.Utils.setNewImageToSprite(this.huImage, source);
+    };
+    SmallOverPlayerHead.prototype.showBgImage = function () {
+        var source = this.isSelect ? "smallOver/resource/game_kuang1" : "smallOver/resource/game_kuang2";
+        GloBal_1.Global.Utils.setNewImageToSprite(this.bgImag, source);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "bgImag", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "touxiangImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "piaoImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "zhuangImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "horseImage1", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "horseImage2", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], SmallOverPlayerHead.prototype, "huImage", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SmallOverPlayerHead.prototype, "fenLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], SmallOverPlayerHead.prototype, "nameLabel", void 0);
+    SmallOverPlayerHead = __decorate([
+        ccclass
+    ], SmallOverPlayerHead);
+    return SmallOverPlayerHead;
+}(UIBase_1.default));
+exports.default = SmallOverPlayerHead;
+
+cc._RF.pop();

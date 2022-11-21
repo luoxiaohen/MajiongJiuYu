@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "yaoqingfont_0",
+    "texture": "7319d8c8-d17b-4b6a-9970-6c4e0f8e4fd0",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      240,
+      34
+    ],
+    "offset": [
+      -8,
+      111
+    ],
+    "originalSize": [
+      256,
+      256
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

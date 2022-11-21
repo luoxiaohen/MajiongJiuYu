@@ -1,0 +1,50 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/Shared/GloBal.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, 'dcf38+9hiNE0obrD/S3uLsT', 'GloBal');
+// Script/Shared/GloBal.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Global = void 0;
+var GameProtocol_1 = require("../com/GameProtocol");
+var SocketManager_1 = require("../com/socket/SocketManager");
+var EventCenter_1 = require("../event/EventCenter");
+var CCHelper_1 = require("./CCHelper");
+var DialogManager_1 = require("./DialogManager");
+var MessageCallback_1 = require("./MessageCallback");
+var Utils_1 = require("./Utils");
+exports.Global = {
+    mgr: {
+        socketMgr: new SocketManager_1.SocketManager()
+    },
+    EventCenter: EventCenter_1.default.ins,
+    Utils: Utils_1.default.ins,
+    MessageCallback: MessageCallback_1.default.ins,
+    DialogManager: DialogManager_1.default.ins,
+    CCHelper: CCHelper_1.default.ins,
+    GameProtocol: GameProtocol_1.default.ins,
+    isInit: false,
+};
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxTaGFyZWRcXEdsb0JhbC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxvREFBK0M7QUFDL0MsNkRBQTREO0FBQzVELG9EQUErQztBQUUvQyx1Q0FBa0M7QUFDbEMsaURBQTRDO0FBQzVDLHFEQUFnRDtBQUNoRCxpQ0FBNEI7QUFFakIsUUFBQSxNQUFNLEdBQUc7SUFDaEIsR0FBRyxFQUFHO1FBQ0YsU0FBUyxFQUFHLElBQUksNkJBQWEsRUFBRTtLQUNsQztJQUNELFdBQVcsRUFBRyxxQkFBVyxDQUFDLEdBQUc7SUFDN0IsS0FBSyxFQUFHLGVBQUssQ0FBQyxHQUFHO0lBQ2pCLGVBQWUsRUFBRyx5QkFBZSxDQUFDLEdBQUc7SUFDckMsYUFBYSxFQUFHLHVCQUFhLENBQUMsR0FBRztJQUNqQyxRQUFRLEVBQUcsa0JBQVEsQ0FBQyxHQUFHO0lBQ3ZCLFlBQVksRUFBRyxzQkFBWSxDQUFDLEdBQUc7SUFDL0IsTUFBTSxFQUFDLEtBQUs7Q0FDZixDQUFBIiwiZmlsZSI6IiIsInNvdXJjZVJvb3QiOiIvIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEdhbWVQcm90b2NvbCBmcm9tIFwiLi4vY29tL0dhbWVQcm90b2NvbFwiO1xyXG5pbXBvcnQgeyBTb2NrZXRNYW5hZ2VyIH0gZnJvbSBcIi4uL2NvbS9zb2NrZXQvU29ja2V0TWFuYWdlclwiO1xyXG5pbXBvcnQgRXZlbnRDZW50ZXIgZnJvbSBcIi4uL2V2ZW50L0V2ZW50Q2VudGVyXCI7XHJcbmltcG9ydCBDaGVja0NhcmRNYW5hZ2VyIGZyb20gXCIuLi9tZ3IvQ2hlY2tDYXJkTWFuYWdlclwiO1xyXG5pbXBvcnQgQ0NIZWxwZXIgZnJvbSBcIi4vQ0NIZWxwZXJcIjtcclxuaW1wb3J0IERpYWxvZ01hbmFnZXIgZnJvbSBcIi4vRGlhbG9nTWFuYWdlclwiO1xyXG5pbXBvcnQgTWVzc2FnZUNhbGxiYWNrIGZyb20gXCIuL01lc3NhZ2VDYWxsYmFja1wiO1xyXG5pbXBvcnQgVXRpbHMgZnJvbSBcIi4vVXRpbHNcIjtcclxuXHJcbmV4cG9ydCBsZXQgR2xvYmFsID0ge1xyXG4gICAgbWdyIDoge1xyXG4gICAgICAgIHNvY2tldE1nciA6IG5ldyBTb2NrZXRNYW5hZ2VyKClcclxuICAgIH0sXHJcbiAgICBFdmVudENlbnRlciA6IEV2ZW50Q2VudGVyLmlucyxcclxuICAgIFV0aWxzIDogVXRpbHMuaW5zLFxyXG4gICAgTWVzc2FnZUNhbGxiYWNrIDogTWVzc2FnZUNhbGxiYWNrLmlucyxcclxuICAgIERpYWxvZ01hbmFnZXIgOiBEaWFsb2dNYW5hZ2VyLmlucyxcclxuICAgIENDSGVscGVyIDogQ0NIZWxwZXIuaW5zLFxyXG4gICAgR2FtZVByb3RvY29sIDogR2FtZVByb3RvY29sLmlucyxcclxuICAgIGlzSW5pdDpmYWxzZSxcclxufSJdfQ==

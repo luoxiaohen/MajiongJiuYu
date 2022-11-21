@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_tubiao1",
+    "texture": "99a1f92b-4622-4163-9c82-994ac6ca61ee",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      88,
+      76
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      88,
+      76
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

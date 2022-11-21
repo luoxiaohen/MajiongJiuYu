@@ -1,0 +1,169 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/utils/InterfaceHelp.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '28db8g2P0JDEKzjrAhNiqhf', 'InterfaceHelp');
+// Script/utils/InterfaceHelp.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OverBuyHorseInfoData = exports.OverPlayerItemInfoData = exports.MyActionByOther = exports.HandCardGroup = exports.CanHuCard = exports.ListenCard = exports.HuData = exports.DeckData = exports.FeelCardData = exports.PengGangData = exports.EatCardClass = exports.MajCardLight = void 0;
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var InterfaceHelp = /** @class */ (function () {
+    function InterfaceHelp() {
+    }
+    InterfaceHelp = __decorate([
+        ccclass
+    ], InterfaceHelp);
+    return InterfaceHelp;
+}());
+exports.default = InterfaceHelp;
+/**牌权重计算*/
+var MajCardLight = /** @class */ (function () {
+    function MajCardLight() {
+    }
+    return MajCardLight;
+}());
+exports.MajCardLight = MajCardLight;
+var EatCardClass = /** @class */ (function () {
+    function EatCardClass() {
+    }
+    return EatCardClass;
+}());
+exports.EatCardClass = EatCardClass;
+var PengGangData = /** @class */ (function () {
+    function PengGangData() {
+    }
+    return PengGangData;
+}());
+exports.PengGangData = PengGangData;
+/**最新的摸牌信息*/
+var FeelCardData = /** @class */ (function () {
+    function FeelCardData() {
+    }
+    return FeelCardData;
+}());
+exports.FeelCardData = FeelCardData;
+/**检测当前牌组
+ * 其他人打出牌时候检测 碰 杠 胡
+ * 自己进牌时候检测出牌可听
+ * 自己出牌时候检测是否听牌以及停牌数据
+*/
+var DeckData = /** @class */ (function () {
+    function DeckData() {
+        /**可以碰的牌 手中有两张以上*/
+        this.pengValue = [];
+        /*可以杠的牌 手中有3张**/
+        this.gangValue = [];
+        /**本身可以暗杠的牌 手中已有4张*/
+        this.anGangValue = [];
+        /**所有的胡牌可能,目前计算只做可胡的牌,*/
+        /**补杠*/
+        this.buGangValue = [];
+        this.allTingValue = [];
+        /**所有胡牌数据*/
+        this.huValue = [];
+        /**胡牌啦*/
+        this.huData = null;
+    }
+    return DeckData;
+}());
+exports.DeckData = DeckData;
+var HuData = /** @class */ (function () {
+    function HuData() {
+        /**所胡牌型*/
+        this.HuType = [];
+    }
+    return HuData;
+}());
+exports.HuData = HuData;
+/**自己进牌后,需要出牌时候检测出牌可听 并保存*/
+var ListenCard = /** @class */ (function () {
+    function ListenCard() {
+        /**对应胡牌数据*/
+        this.huData = [];
+    }
+    return ListenCard;
+}());
+exports.ListenCard = ListenCard;
+/**自己出牌之后 根据出牌可听数据检测当前是否处于停牌等胡状态 并保存数据*/
+var CanHuCard = /** @class */ (function () {
+    function CanHuCard() {
+        /**所胡牌型*/
+        this.HuType = [];
+    }
+    return CanHuCard;
+}());
+exports.CanHuCard = CanHuCard;
+var HandCardGroup = /** @class */ (function () {
+    function HandCardGroup() {
+        this.four = [];
+        this.three = [];
+        this.shun = [];
+    }
+    return HandCardGroup;
+}());
+exports.HandCardGroup = HandCardGroup;
+/***别人出牌我的操作数据*/
+var MyActionByOther = /** @class */ (function () {
+    function MyActionByOther() {
+        this.canHu = false;
+        this.canPeng = false;
+        this.canGang = false;
+        this.canGuo = false;
+        this.huData = null;
+        this.gangValue = [];
+    }
+    return MyActionByOther;
+}());
+exports.MyActionByOther = MyActionByOther;
+/***结算界面个人信息item数据*/
+var OverPlayerItemInfoData = /** @class */ (function () {
+    function OverPlayerItemInfoData() {
+        /**-1 : 未胡牌 0-2 :123胡* */
+        this.huType = -1;
+        this.fenCount = 0;
+    }
+    return OverPlayerItemInfoData;
+}());
+exports.OverPlayerItemInfoData = OverPlayerItemInfoData;
+/**结算界面个人买吗信息数据*/
+var OverBuyHorseInfoData = /** @class */ (function () {
+    function OverBuyHorseInfoData() {
+    }
+    return OverBuyHorseInfoData;
+}());
+exports.OverBuyHorseInfoData = OverBuyHorseInfoData;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFx1dGlsc1xcSW50ZXJmYWNlSGVscC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsb0JBQW9CO0FBQ3BCLHdFQUF3RTtBQUN4RSxtQkFBbUI7QUFDbkIsa0ZBQWtGO0FBQ2xGLDhCQUE4QjtBQUM5QixrRkFBa0Y7Ozs7Ozs7OztBQUs1RSxJQUFBLEtBQXNCLEVBQUUsQ0FBQyxVQUFVLEVBQWxDLE9BQU8sYUFBQSxFQUFFLFFBQVEsY0FBaUIsQ0FBQztBQUcxQztJQUFBO0lBQ0EsQ0FBQztJQURvQixhQUFhO1FBRGpDLE9BQU87T0FDYSxhQUFhLENBQ2pDO0lBQUQsb0JBQUM7Q0FERCxBQUNDLElBQUE7a0JBRG9CLGFBQWE7QUFHbEMsVUFBVTtBQUNWO0lBQUE7SUFHQSxDQUFDO0lBQUQsbUJBQUM7QUFBRCxDQUhBLEFBR0MsSUFBQTtBQUhZLG9DQUFZO0FBS3pCO0lBQUE7SUFHQSxDQUFDO0lBQUQsbUJBQUM7QUFBRCxDQUhBLEFBR0MsSUFBQTtBQUhZLG9DQUFZO0FBSXpCO0lBQUE7SUFPQSxDQUFDO0lBQUQsbUJBQUM7QUFBRCxDQVBBLEFBT0MsSUFBQTtBQVBZLG9DQUFZO0FBU3pCLFlBQVk7QUFDWjtJQUFBO0lBT0EsQ0FBQztJQUFELG1CQUFDO0FBQUQsQ0FQQSxBQU9DLElBQUE7QUFQWSxvQ0FBWTtBQVN6Qjs7OztFQUlFO0FBQ0Y7SUFBQTtRQUNDLGtCQUFrQjtRQUNYLGNBQVMsR0FBbUIsRUFBRSxDQUFDO1FBQ3RDLGdCQUFnQjtRQUNULGNBQVMsR0FBbUIsRUFBRSxDQUFDO1FBQ3RDLG9CQUFvQjtRQUNiLGdCQUFXLEdBQW1CLEVBQUUsQ0FBQztRQUN4Qyx3QkFBd0I7UUFDeEIsT0FBTztRQUNBLGdCQUFXLEdBQW1CLEVBQUUsQ0FBQztRQUNqQyxpQkFBWSxHQUF1QixFQUFFLENBQUM7UUFDN0MsV0FBVztRQUNKLFlBQU8sR0FBc0IsRUFBRSxDQUFDO1FBQ3ZDLFFBQVE7UUFDRCxXQUFNLEdBQVksSUFBSSxDQUFDO0lBQy9CLENBQUM7SUFBRCxlQUFDO0FBQUQsQ0FmQSxBQWVDLElBQUE7QUFmWSw0QkFBUTtBQWdCckI7SUFBQTtRQU9DLFNBQVM7UUFDRixXQUFNLEdBQXVCLEVBQUUsQ0FBQztJQUN4QyxDQUFDO0lBQUQsYUFBQztBQUFELENBVEEsQUFTQyxJQUFBO0FBVFksd0JBQU07QUFVbkIsMkJBQTJCO0FBQzNCO0lBQUE7UUFHQyxXQUFXO1FBQ0osV0FBTSxHQUFzQixFQUFFLENBQUM7SUFDdkMsQ0FBQztJQUFELGlCQUFDO0FBQUQsQ0FMQSxBQUtDLElBQUE7QUFMWSxnQ0FBVTtBQU12Qix3Q0FBd0M7QUFDeEM7SUFBQTtRQU9DLFNBQVM7UUFDRixXQUFNLEdBQXVCLEVBQUUsQ0FBQztJQUN4QyxDQUFDO0lBQUQsZ0JBQUM7QUFBRCxDQVRBLEFBU0MsSUFBQTtBQVRZLDhCQUFTO0FBV3RCO0lBQUE7UUFDUSxTQUFJLEdBQW1CLEVBQUUsQ0FBQztRQUMxQixVQUFLLEdBQW1CLEVBQUUsQ0FBQztRQUMzQixTQUFJLEdBQW1CLEVBQUUsQ0FBQztJQUNsQyxDQUFDO0lBQUQsb0JBQUM7QUFBRCxDQUpBLEFBSUMsSUFBQTtBQUpZLHNDQUFhO0FBTTFCLGdCQUFnQjtBQUNoQjtJQUFBO1FBQ1EsVUFBSyxHQUFhLEtBQUssQ0FBQztRQUN4QixZQUFPLEdBQWEsS0FBSyxDQUFDO1FBQzFCLFlBQU8sR0FBYSxLQUFLLENBQUM7UUFDMUIsV0FBTSxHQUFhLEtBQUssQ0FBQztRQUN6QixXQUFNLEdBQVksSUFBSSxDQUFDO1FBQ3ZCLGNBQVMsR0FBbUIsRUFBRSxDQUFDO0lBQ3ZDLENBQUM7SUFBRCxzQkFBQztBQUFELENBUEEsQUFPQyxJQUFBO0FBUFksMENBQWU7QUFRNUIsb0JBQW9CO0FBQ3BCO0lBQUE7UUFLSSx5QkFBeUI7UUFDekIsV0FBTSxHQUFZLENBQUMsQ0FBQyxDQUFDO1FBQ3JCLGFBQVEsR0FBWSxDQUFDLENBQUM7SUFDMUIsQ0FBQztJQUFELDZCQUFDO0FBQUQsQ0FSQSxBQVFDLElBQUE7QUFSWSx3REFBc0I7QUFTbkMsaUJBQWlCO0FBQ2pCO0lBQUE7SUFNQSxDQUFDO0lBQUQsMkJBQUM7QUFBRCxDQU5BLEFBTUMsSUFBQTtBQU5ZLG9EQUFvQiIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbIi8vIExlYXJuIFR5cGVTY3JpcHQ6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3R5cGVzY3JpcHQuaHRtbFxyXG4vLyBMZWFybiBBdHRyaWJ1dGU6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3JlZmVyZW5jZS9hdHRyaWJ1dGVzLmh0bWxcclxuLy8gTGVhcm4gbGlmZS1jeWNsZSBjYWxsYmFja3M6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL2xpZmUtY3ljbGUtY2FsbGJhY2tzLmh0bWxcclxuXHJcbmltcG9ydCB7IEVhdENhcmRFbnVtLCBGZWVsVHlwZUVudW0sIFBsYXlFYXRUeXBlRW51bSB9IGZyb20gXCIuLi9lbnVtL0VudW1NYW5hZ2VyXCI7XHJcbmltcG9ydCB7IEh1VHlwZUVudW0gfSBmcm9tIFwiLi4vcHJvdG8vVGFibGVNc2dEZWZcIjtcclxuXHJcbmNvbnN0IHtjY2NsYXNzLCBwcm9wZXJ0eX0gPSBjYy5fZGVjb3JhdG9yO1xyXG5cclxuQGNjY2xhc3NcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgSW50ZXJmYWNlSGVscHtcclxufVxyXG5cclxuLyoq54mM5p2D6YeN6K6h566XKi9cclxuZXhwb3J0IGNsYXNzIE1hakNhcmRMaWdodHtcclxuXHRjYXJkVmFsdWUgOiBudW1iZXI7XHJcblx0Y2FyZExpZ2h0IDogbnVtYmVyO1xyXG59XHJcblxyXG5leHBvcnQgY2xhc3MgRWF0Q2FyZENsYXNze1xyXG5cdHZhbHVlIDogbnVtYmVyO1xyXG5cdHR5cGU6IFBsYXlFYXRUeXBlRW51bTtcclxufVxyXG5leHBvcnQgY2xhc3MgUGVuZ0dhbmdEYXRhe1xyXG5cdC8qKuWQg+eJjOexu+WeiyovXHJcblx0cHVibGljIGVhdFR5cGU6RWF0Q2FyZEVudW07XHJcblx0Lyoq5ZCD54mM54mM5YC8Ki9cclxuXHRwdWJsaWMgY2FyZFZhbHVlIDogbnVtYmVyO1xyXG5cdC8qKirmjIHmnInogIXnm7jlr7nkuo7nrKzkuIDop4bop5LkvY3nva4qL1xyXG5cdHB1YmxpYyBoYXZlUG9pbnRCeVNlbGYgOiBudW1iZXI7XHJcbn1cclxuXHJcbi8qKuacgOaWsOeahOaRuOeJjOS/oeaBryovXHJcbmV4cG9ydCBjbGFzcyBGZWVsQ2FyZERhdGF7XHJcblx0Lyoq54mM5YC8Ki9cclxuXHRjYXJkVmFsdWUgOiBudW1iZXI7XHJcblx0Lyoq5p2l5rqQKi9cclxuXHRjYXJkVHlwZTpGZWVsVHlwZUVudW07XHJcblx0Lyoq54mM5rGg5Ymp5L2ZKi9cclxuXHRwb29sUmVtYWluaW5nIDogbnVtYmVyO1xyXG59XHJcblxyXG4vKirmo4DmtYvlvZPliY3niYznu4RcclxuICog5YW25LuW5Lq65omT5Ye654mM5pe25YCZ5qOA5rWLIOeisCDmnaAg6IOhIFxyXG4gKiDoh6rlt7Hov5vniYzml7blgJnmo4DmtYvlh7rniYzlj6/lkKxcclxuICog6Ieq5bex5Ye654mM5pe25YCZ5qOA5rWL5piv5ZCm5ZCs54mM5Lul5Y+K5YGc54mM5pWw5o2uXHJcbiovXHJcbmV4cG9ydCBjbGFzcyBEZWNrRGF0YXtcclxuXHQvKirlj6/ku6XnorDnmoTniYwg5omL5Lit5pyJ5Lik5byg5Lul5LiKKi9cclxuXHRwdWJsaWMgcGVuZ1ZhbHVlIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG5cdC8q5Y+v5Lul5p2g55qE54mMIOaJi+S4reaciTPlvKAqKi9cclxuXHRwdWJsaWMgZ2FuZ1ZhbHVlIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG5cdC8qKuacrOi6q+WPr+S7peaal+adoOeahOeJjCDmiYvkuK3lt7LmnIk05bygKi9cclxuXHRwdWJsaWMgYW5HYW5nVmFsdWUgOiBBcnJheTxudW1iZXI+ID0gW107XHJcblx0Lyoq5omA5pyJ55qE6IOh54mM5Y+v6IO9LOebruWJjeiuoeeul+WPquWBmuWPr+iDoeeahOeJjCwqL1xyXG5cdC8qKuihpeadoCovXHJcblx0cHVibGljIGJ1R2FuZ1ZhbHVlIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG5cdHB1YmxpYyBhbGxUaW5nVmFsdWUgOiBBcnJheTxMaXN0ZW5DYXJkPiA9IFtdO1xyXG5cdC8qKuaJgOacieiDoeeJjOaVsOaNriovXHJcblx0cHVibGljIGh1VmFsdWUgOiBBcnJheTxDYW5IdUNhcmQ+ID0gW107XHJcblx0Lyoq6IOh54mM5ZWmKi9cclxuXHRwdWJsaWMgaHVEYXRhIDogSHVEYXRhID0gbnVsbDtcclxufVxyXG5leHBvcnQgY2xhc3MgSHVEYXRhe1xyXG5cdC8qKuiDoeeJjOeJjOWAvCovXHJcblx0cHVibGljIGNhcmRWYWx1ZTpudW1iZXI7XHJcblx0Lyoq5omA6IOh55Wq5pWwKi9cclxuXHRwdWJsaWMgZmFuTnVtIDogbnVtYmVyO1xyXG5cdC8qKuaJgOiDoeWAjeaVsCovXHJcblx0cHVibGljIGJlaU51bSA6IG51bWJlcjtcclxuXHQvKirmiYDog6HniYzlnosqL1xyXG5cdHB1YmxpYyBIdVR5cGUgOiBBcnJheTxIdVR5cGVFbnVtPiA9IFtdO1xyXG59XHJcbi8qKuiHquW3sei/m+eJjOWQjizpnIDopoHlh7rniYzml7blgJnmo4DmtYvlh7rniYzlj6/lkKwg5bm25L+d5a2YKi9cclxuZXhwb3J0IGNsYXNzIExpc3RlbkNhcmQge1xyXG5cdC8qKuWHuueJjOWPr+WQrCovXHJcblx0cHVibGljIG91dENhcmRWYWx1ZSA6IG51bWJlcjtcclxuXHQvKirlr7nlupTog6HniYzmlbDmja4qL1xyXG5cdHB1YmxpYyBodURhdGEgOiBBcnJheTxDYW5IdUNhcmQ+ID0gW107XHJcbn1cclxuLyoq6Ieq5bex5Ye654mM5LmL5ZCOIOagueaNruWHuueJjOWPr+WQrOaVsOaNruajgOa1i+W9k+WJjeaYr+WQpuWkhOS6juWBnOeJjOetieiDoeeKtuaAgSDlubbkv53lrZjmlbDmja4qL1xyXG5leHBvcnQgY2xhc3MgQ2FuSHVDYXJke1xyXG5cdC8qKuiDoeeJjOeJjOWAvCovXHJcblx0cHVibGljIGNhcmRWYWx1ZTpudW1iZXI7XHJcblx0Lyoq5omA6IOh55Wq5pWwKi9cclxuXHRwdWJsaWMgZmFuTnVtIDogbnVtYmVyO1xyXG5cdC8qKuaJgOiDoeWAjeaVsCovXHJcblx0cHVibGljIGJlaU51bSA6IG51bWJlcjtcclxuXHQvKirmiYDog6HniYzlnosqL1xyXG5cdHB1YmxpYyBIdVR5cGUgOiBBcnJheTxIdVR5cGVFbnVtPiA9IFtdO1xyXG59XHJcblxyXG5leHBvcnQgY2xhc3MgSGFuZENhcmRHcm91cCB7XHJcblx0cHVibGljIGZvdXIgOiBBcnJheTxudW1iZXI+ID0gW107XHJcblx0cHVibGljIHRocmVlIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG5cdHB1YmxpYyBzaHVuIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG59XHJcblxyXG4vKioq5Yir5Lq65Ye654mM5oiR55qE5pON5L2c5pWw5o2uKi9cclxuZXhwb3J0IGNsYXNzIE15QWN0aW9uQnlPdGhlcntcclxuXHRwdWJsaWMgY2FuSHUgOiBib29sZWFuID0gZmFsc2U7XHJcblx0cHVibGljIGNhblBlbmcgOiBib29sZWFuID0gZmFsc2U7XHJcblx0cHVibGljIGNhbkdhbmcgOiBib29sZWFuID0gZmFsc2U7XHJcblx0cHVibGljIGNhbkd1byA6IGJvb2xlYW4gPSBmYWxzZTtcclxuXHRwdWJsaWMgaHVEYXRhIDogSHVEYXRhID0gbnVsbDtcclxuXHRwdWJsaWMgZ2FuZ1ZhbHVlIDogQXJyYXk8bnVtYmVyPiA9IFtdO1xyXG59XHJcbi8qKirnu5PnrpfnlYzpnaLkuKrkurrkv6Hmga9pdGVt5pWw5o2uKi9cclxuZXhwb3J0IGNsYXNzIE92ZXJQbGF5ZXJJdGVtSW5mb0RhdGF7XHJcbiAgICBwbGF5ZXJOYW1lIDogc3RyaW5nO1xyXG4gICAgcGxheWVySWQ6c3RyaW5nO1xyXG4gICAgaXNaaHVhbmcgOiBib29sZWFuO1xyXG4gICAgaXNQYWlvIDogYm9vbGVhbjtcclxuICAgIC8qKi0xIDog5pyq6IOh54mMIDAtMiA6MTIz6IOhKiAqL1xyXG4gICAgaHVUeXBlIDogbnVtYmVyID0gLTE7XHJcbiAgICBmZW5Db3VudCA6IG51bWJlciA9IDA7XHJcbn0gXHJcbi8qKue7k+eul+eVjOmdouS4quS6uuS5sOWQl+S/oeaBr+aVsOaNriovXHJcbmV4cG9ydCBjbGFzcyBPdmVyQnV5SG9yc2VJbmZvRGF0YXtcclxuXHRob3Jlc051bSA6IG51bWJlcjtcclxuXHRidXlDb3VuIDogbnVtYmVyO1xyXG5cdHBsYXllckhlYWQgOiBudW1iZXI7XHJcblx0Y2FyZFZhbHVlIDogbnVtYmVyO1xyXG5cdGZlbjpudW1iZXI7XHJcbn1cclxuIl19

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ty_zhunbei",
+    "texture": "ad882bde-9f7a-4440-bdd5-3d3c9122b84d",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      328,
+      104
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      328,
+      104
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

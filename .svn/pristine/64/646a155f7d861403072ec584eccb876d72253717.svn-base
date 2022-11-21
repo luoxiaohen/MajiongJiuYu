@@ -1,0 +1,498 @@
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+
+import { AntesMultipleEnum, PlayStauteEnum } from "../../enum/EnumManager";
+import {  Msg_CS_TableInvite, Msg_SC_InviteTable } from "../../proto/LobbyMsg";
+import { LobbyBaseInfo } from "../../proto/LobbyMsgDef";
+import { Msg_SC_GameOverMsg, Msg_SC_GameResultMsg, Msg_SC_OneSit, Msg_SC_ScoreListMsg, Msg_SC_You3Maj } from "../../proto/TableMsg";
+import { GameScoreInfo, RoomTableInfo, SitInfo } from "../../proto/TableMsgDef";
+import { Global } from "../../Shared/GloBal";
+import MajiongWallCard from "../../UI/card/MajiongWallCard";
+import { RealTimePreformanceData } from "../../utils/InterfaceHelp";
+import UserInfo from "./UserInfo";
+
+const {ccclass, property} = cc._decorator;
+
+@ccclass
+export default class GameInfo{
+    private static _ins: GameInfo;
+    public static get ins() {
+        return this._ins || (this._ins = new GameInfo());
+    }
+    AllCardMax = 108;
+
+
+    /**大厅信息*/
+    private _lobbyInfo:LobbyBaseInfo;
+    public get lobbyInfo():LobbyBaseInfo {
+        return this._lobbyInfo;
+    }
+    public set lobbyInfo(value:LobbyBaseInfo) {
+        this._lobbyInfo = value;
+    }
+
+    /***游戏房间信息*/
+    private _roomTableInfo: RoomTableInfo;
+    public get roomTableInfo(): RoomTableInfo {
+        return this._roomTableInfo;
+    }
+    public set roomTableInfo(value: RoomTableInfo) {
+        this._roomTableInfo = value;
+    }
+    /***当前游戏进程状态*/
+    private _nowGameStatus: PlayStauteEnum;
+    public get nowGameStatus(): PlayStauteEnum {
+        return this._nowGameStatus;
+    }
+    public set nowGameStatus(value: PlayStauteEnum) {
+        this._nowGameStatus = value;
+    }
+
+    /***当前庄家位置*/
+    private _nowBookMakerSit: number;
+    public get nowBookMakerSit(): number {
+        return this._nowBookMakerSit;
+    }
+    public set nowBookMakerSit(value: number) {
+        this._nowBookMakerSit = value;
+    }
+    private _fristSitPlayer: Msg_SC_OneSit;
+    public get fristSitPlayer(): Msg_SC_OneSit {
+        return this._fristSitPlayer;
+    }
+    public set fristSitPlayer(value: Msg_SC_OneSit) {
+        this._fristSitPlayer = value;
+    }
+
+    /**游戏中的玩家信息*/
+    private _gamePlayers: Array<SitInfo> = [];
+    public get gamePlayers(): Array<SitInfo> {
+        return this._gamePlayers;
+    }
+    public set gamePlayers(value: Array<SitInfo>) {
+        this._gamePlayers = value;
+    }
+    public getSitInfoById(gpId):SitInfo{
+        for(let i = 0 ; i < this.gamePlayers.length ; i++){
+            if(this.gamePlayers[i].player.gpid == gpId){
+                return this.gamePlayers[i]
+            }
+        }
+    }
+    /**添加一个新的玩家坐下信息*/
+    public addNewSit(sit : SitInfo){
+        let add:boolean = false;
+		for(let i = 0 ; i < this.gamePlayers.length ; i++){
+			if(this.gamePlayers[i].sitNum == sit.sitNum){
+				this.gamePlayers[i] = sit;
+				add = true;
+			}
+		}
+		if(!add ){
+			this.gamePlayers.push(sit);
+		}
+    }
+    /**移除一个玩家信息*/
+    public removeSit(sit : number){
+		for(let i = 0 ; i < this.gamePlayers.length ; i++){
+			if(this.gamePlayers[i].sitNum == sit){
+				this.gamePlayers.splice(i,1);
+				return;
+			}
+		}
+	}
+    /***更新当前所有桌子上的玩家信息
+     * 当矫座消息回来时候会统一更新一次
+    */
+	public setNewPlayers(players:Array<SitInfo>){
+		this.gamePlayers = players;
+		for(let i= 0 ; i < players.length ; i++){
+			if(UserInfo.ins.isSelf(players[i].player.gpid) ){
+				UserInfo.ins.mySitIndex = players[i].sitNum;
+			}
+		}
+	}
+    /***修改玩家准备状态*/
+    public setNewReady(sitIndex:number , isReady:number = 1){
+        for(let i = 0 ; i < this.gamePlayers.length ; i++){
+			if(this.gamePlayers[i].sitNum == sitIndex){
+				this.gamePlayers[i].onReady = isReady;
+			}
+		}
+    }
+    /**通过座位获取某一个玩家*/
+	public getPlayerBySit(sit:number):SitInfo{
+		for(let i = 0 ; i < this.gamePlayers.length ; i++){
+			if(this.gamePlayers[i] && this.gamePlayers[i].sitNum == sit){
+				return this.gamePlayers[i];
+			}
+            if(!this.gamePlayers[i]){
+                Global.Utils.debugObj(sit+"==>查询不到当前座位玩家？",this.gamePlayers)
+            }
+		}
+		return null;
+	}
+    /***上一手动作是杠*/
+    private _LastIsGang: boolean = false;
+    public get LastIsGang(): boolean {
+        return this._LastIsGang;
+    }
+    public set LastIsGang(value: boolean) {
+        this._LastIsGang = value;
+    }
+	/***是否是自己的庄*/
+	private _isSelfZhuang: boolean = false;
+    public get isSelfZhuang(): boolean {
+        return this._isSelfZhuang;
+    }
+    public set isSelfZhuang(value: boolean) {
+        this._isSelfZhuang = value;
+    }
+
+    /**所有牌墙集合*/
+    private _allWallCardArray: Array<MajiongWallCard> = [];
+    public get allWallCardArray(): Array<MajiongWallCard> {
+        return this._allWallCardArray;
+    }
+    public set allWallCardArray(value: Array<MajiongWallCard>) {
+        this._allWallCardArray = value;
+    }
+
+    /**当前是第几手*/
+    private _nowGameCount: number = 0;
+    public get nowGameCount(): number {
+        return this._nowGameCount;
+    }
+    public set nowGameCount(value: number) {
+        this._nowGameCount = value;
+    }
+    /***本局骰子是否豹子*/
+    private _isBaozi: boolean = false;
+    public get isBaozi(): boolean {
+        return this._isBaozi;
+    }
+    public set isBaozi(value: boolean) {
+        this._isBaozi = value;
+    }
+    /***本局骰子是否双豹*/
+    private _isShuangbao: boolean = false;
+    public get isShuangbao(): boolean {
+        return this._isShuangbao;
+    }
+    public set isShuangbao(value: boolean) {
+        this._isShuangbao = value;
+    }
+
+
+    /**所有玩家一共拿了几张牌*/
+    private _allPlayerGetCard: number = 0;
+    public get allPlayerGetCard(): number {
+        return this._allPlayerGetCard;
+    }
+    public set allPlayerGetCard(value: number) {
+        this._allPlayerGetCard = value;
+    }
+
+	/**所有出牌集合*/
+	private _allOutCardArr: Array<number> = [];
+    public get allOutCardArr(): Array<number> {
+        return this._allOutCardArr;
+    }
+    public set allOutCardArr(value: Array<number>) {
+        this._allOutCardArr = value;
+    }
+    public addCardToAllOut(cardValue : number , num: number =1){
+        if(this.allOutCardArr[cardValue]){
+			this.allOutCardArr[cardValue] = this.allOutCardArr[cardValue]+num;
+		}else{
+			this.allOutCardArr[cardValue] = num;
+		}
+    }
+
+    /***当前谁的动作回合*/
+    private _nowActionSit: number = -1;
+    public get nowActionSit(): number {
+        return this._nowActionSit;
+    }
+    public set nowActionSit(value: number) {
+        this._nowActionSit = value;
+    }
+
+    /***牌局中所有人打出的最后一张牌*/
+    private _otherLastCard: number = -1;
+    public get otherLastCard(): number {
+        return this._otherLastCard;
+    }
+    public set otherLastCard(value: number) {
+        this._otherLastCard = value;
+    }
+
+    /**牌墙剩余数量*/
+    private _remPoolsNum: number = 0;
+    public get remPoolsNum(): number {
+        return this._remPoolsNum;
+    }
+    public set remPoolsNum(value: number) {
+        this._remPoolsNum = value;
+    }
+
+	/**换三数据信息*/
+	private _myYou3MajData: Msg_SC_You3Maj;
+    public get myYou3MajData(): Msg_SC_You3Maj {
+        return this._myYou3MajData;
+    }
+    public set myYou3MajData(value: Msg_SC_You3Maj) {
+        this._myYou3MajData = value;
+    }
+
+
+    /**是否已经过手碰了*/
+    private _isTheirHandsPeng: boolean = false;
+    public get isTheirHandsPeng(): boolean {
+        return this._isTheirHandsPeng;
+    }
+    public set isTheirHandsPeng(value: boolean) {
+        this._isTheirHandsPeng = value;
+    }
+    /***查询过手碰*/
+    public checkTheirHandsPeng(){
+        // if(this.roomTableInfo.rule.guoshou){
+
+        // }
+        this.isTheirHandsPeng = true;
+    }
+
+    /**胡牌数量*/
+    private _huCounts: number = 0;
+    public get huCounts(): number {
+        return this._huCounts;
+    }
+    public set huCounts(value: number) {
+        this._huCounts = value;
+    }
+
+    /**胡牌数组*/
+    private _hupaiArr: Array<number> = [];
+    public get hupaiArr(): Array<number> {
+        return this._hupaiArr;
+    }
+    public set hupaiArr(value: Array<number>) {
+        this._hupaiArr = value;
+    }
+    getPosHu():Array<number>{
+        let arr:Array<number> = [];
+        for(let i = 0 ; i < 4 ; i++){
+            if(this.hupaiArr[i]){
+                arr[i] = null;
+            }else{
+                arr[i] = i;
+            }
+        }
+        return arr;
+    }
+
+    /**结束的游戏结果*/
+    private _gameResultMsg: Msg_SC_GameResultMsg;
+    public get gameResultMsg(): Msg_SC_GameResultMsg {
+        return this._gameResultMsg;
+    }
+    public set gameResultMsg(value: Msg_SC_GameResultMsg) {
+        this._gameResultMsg = value;
+    }
+
+    /**结束的游戏积分*/
+    private _scoreListMsg: Msg_SC_ScoreListMsg;
+    public get scoreListMsg(): Msg_SC_ScoreListMsg {
+        return this._scoreListMsg;
+    }
+    public set scoreListMsg(value: Msg_SC_ScoreListMsg) {
+        this._scoreListMsg = value;
+    }
+
+    /**游戏结束大结算数据 */
+    private _gameOverData: Msg_SC_GameOverMsg;
+    public get gameOverData(): Msg_SC_GameOverMsg {
+        return this._gameOverData;
+    }
+    public set gameOverData(value: Msg_SC_GameOverMsg) {
+        this._gameOverData = value;
+    }
+
+    /**邀请玩家临时数据 */
+    private _createInviteTempData_cs: Msg_CS_TableInvite;
+    public get creatGameInviteTempData_CS(): Msg_CS_TableInvite {
+        return this._createInviteTempData_cs;
+    }
+    public set creatGameInviteTempData_CS(value: Msg_CS_TableInvite) {
+        this._createInviteTempData_cs = value;
+    }
+
+    private _gameInviteData: Msg_SC_InviteTable;
+    public get gameInviteData(): Msg_SC_InviteTable {
+        return this._gameInviteData;
+    }
+    public set gameInviteData(value: Msg_SC_InviteTable) {
+        this._gameInviteData = value;
+    }
+    /**实时战绩前端数据保存 */
+    private _realTimePreformanceData: { [key: number]: RealTimePreformanceData };
+    public get realTimePreformanceData(): { [key: number]: RealTimePreformanceData }{
+        return this._realTimePreformanceData;
+    }
+    public resetRealTimeRreformanceData():void{
+        this._realTimePreformanceData={};
+    }
+    /**
+     *一轮游戏结束信息  
+     */
+    public setRealTimePreformanceData_Result(value: Msg_SC_GameResultMsg) {
+        if(this._nowGameCount==0){
+            return;
+        }
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData = this._realTimePreformanceData[this._nowGameCount];
+        if (mapData) {
+            mapData.gameResult = value;;
+
+        } else {
+            let dataItem = new RealTimePreformanceData();
+            dataItem.curHand = this._nowGameCount;
+            dataItem.gameResult = value;
+            this._realTimePreformanceData[this._nowGameCount]=dataItem;
+        }
+    }
+    /**
+     * 一次游戏积分信息
+     */
+    public setRealTimePreformanceData_ScoreList(value: Msg_SC_ScoreListMsg): void {
+        if(this._nowGameCount==0){
+            return;
+        }
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData = this._realTimePreformanceData[this._nowGameCount];
+        if (mapData) {
+            mapData.gameSore = value;;
+            mapData.sitInfo=this.gamePlayers;
+        } else {
+            let dataItem = new RealTimePreformanceData();
+            dataItem.curHand = this._nowGameCount;
+            dataItem.gameSore = value;
+            mapData.sitInfo=this.gamePlayers;
+            this._realTimePreformanceData[this._nowGameCount]=dataItem;
+        }
+    }
+
+    /**当前在规则界面采集的所有倍数*/
+	private nowMultipleArray : Array<AntesMultipleEnum> = [];
+	public getnowMultipleArray():Array<AntesMultipleEnum>{
+		return this.nowMultipleArray;
+	}
+	public addItemToMultipleArray(antes:AntesMultipleEnum){
+		if(this.nowMultipleArray.indexOf(antes) < 0){
+			this.nowMultipleArray.push(antes);
+		}
+	}
+	public removeItemByMultipleArray(antes:AntesMultipleEnum){
+		let index : number = this.nowMultipleArray.indexOf(antes);
+		if(index >= 0){
+			this.nowMultipleArray.splice(index , 1);
+		}
+	}
+
+
+
+
+
+    /**0：四川话 1:普通话*/
+    private _lauType: number = 0;
+    public get lauType(): number {
+        return this._lauType;
+    }
+    public set lauType(value: number) {
+        this._lauType = value;
+    }
+    /**0：男 1:女*/
+    private _sexType: number = 0;
+    public get sexType(): number {
+        return this._sexType;
+    }
+    public set sexType(value: number) {
+        this._sexType = value;
+    }
+    constructor(){
+        this.lauType = Math.random()*20 < 10 ? 0 : 1;
+        this.sexType = Math.random()*20 < 10 ? 0 : 1;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**牌墙建立后需要排序一次*/
+    sortWall(){
+        this.allWallCardArray.sort((a,b)=>{
+            if(a.cardId<b.cardId){
+				return -1;
+			}else if(a.cardId > b.cardId){
+				return 1;
+			}else{
+				return 0;
+			}
+        })
+    }
+    /**拿牌位置确认后需要再排序一次*/
+    sortWallByGetHand(){
+        this.allWallCardArray.sort((a,b)=>{
+            if(a.majiongDrawOeder<b.majiongDrawOeder){
+				return -1;
+			}else if(a.majiongDrawOeder > b.majiongDrawOeder){
+				return 1;
+			}else{
+				return 0;
+			}
+        })
+    }
+
+
+    initOver(){
+        GameInfo.ins.nowGameStatus = PlayStauteEnum.Stand;
+        for(let i = 0 ; i < 4 ; i++){
+            this.setNewReady(i , 0)
+        }
+        if(this.roomTableInfo.rule.lunZhuang == 1){
+            this.isSelfZhuang = false;
+            this.nowBookMakerSit = -1;
+        }
+        for(let i = 0 ; i < this.allWallCardArray.length ; i++){
+            this.allWallCardArray[i].disTory();
+        }
+        this.allWallCardArray = [];
+        this.allPlayerGetCard = 0;
+        this.allOutCardArr = [];
+        this.nowActionSit = -1;
+        this.otherLastCard = -1;
+        this.myYou3MajData = null;
+        this.isTheirHandsPeng = false;
+        this.huCounts = 0;
+        this.hupaiArr = [];
+        this.isBaozi = false;
+        this.isShuangbao = false;
+    }
+}

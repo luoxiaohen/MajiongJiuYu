@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "56QL3yJfhORa80f3Y5NzyE"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "game_fangxiang_1_1",
+      "rect": [
+        14,
+        91,
+        160,
+        50
+      ],
+      "offset": [
+        0.5,
+        -45.5
+      ],
+      "originalSize": [
+        187,
+        141
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

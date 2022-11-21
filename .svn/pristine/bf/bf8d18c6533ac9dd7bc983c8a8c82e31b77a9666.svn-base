@@ -1,0 +1,98 @@
+"use strict";
+cc._RF.push(module, 'fb268Hn09ZErqAZclP8jYsC', 'GameProtocol');
+// Script/com/GameProtocol.ts
+
+"use strict";
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-08 09:24:45
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-14 14:38:04
+ * @FilePath: \MajiongJiuYu\assets\Script\com\GameProtocol.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var MainManager_1 = require("../MainManager");
+var AccountMsg_1 = require("../proto/AccountMsg");
+var BaseMsg_1 = require("../proto/BaseMsg");
+var LobbyMsg_1 = require("../proto/LobbyMsg");
+var TableMsg_1 = require("../proto/TableMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GameProtocol = /** @class */ (function () {
+    function GameProtocol() {
+    }
+    GameProtocol_1 = GameProtocol;
+    Object.defineProperty(GameProtocol, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new GameProtocol_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    GameProtocol.prototype.initProtocol = function () {
+        var mgr = MainManager_1.MainManager.ins;
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_Account, AccountMsg_1.ACCMSG_SID.SC_AccErrRlst, mgr.onRspAccError, mgr);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_LobErrRlst, mgr.onRspLobbyError, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_TabErrRlst, mgr.onRspTabError, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_Account, AccountMsg_1.ACCMSG_SID.SC_TokenInfo, mgr.onTokenInfo, mgr);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_PlayerInfo, mgr.onRspPlayerInfo, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_LobbyInfo, mgr.onRspLobbyInfo, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_RspGetRoomRuleTemplate, mgr.onGetRoomRuleTemplate, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_RspSaveRoomRuleTemplate, mgr.onSaveRoomRuleTemplate, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_RspDeletRoomRuleTemplate, mgr.onRspDeletRoomRuleTemplate, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_LobbyMsg, LobbyMsg_1.LobMSG_SID.SC_InviteTable, mgr.onIniveTableMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_RoomInfo, mgr.onRspRoomInfo, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_SitOK, mgr.onSitOK, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_OneSit, mgr.onOneSit, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_Ready, mgr.onReady, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartDiceEast, mgr.onStartDiceEast, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_DiceRslt, mgr.onDiceRslt, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartDicePos, mgr.onStartDicePos, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_PrDiceRslt, mgr.onPrDiceRslt, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartDiceGame, mgr.onStartDiceGame, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_BeginDiceMsg, mgr.onBeginDiceMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartGame, mgr.onStartGame, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_YouMajMsg, mgr.onYouMajMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartDingQue, mgr.onStartDingQue, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_QueRslt, mgr.onQueRslt, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_WaitDownMsg, mgr.onWaitDownMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_DownMajMsg, mgr.onDownMajMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_SomeTurnMsg, mgr.onSomeTurnMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_GetMajMsg, mgr.onGetMajMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_WaitYou, mgr.onWaitYou, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_PengMajMsg, mgr.onPengMajMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_GangSelfMsg, mgr.onGangSelfMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_HasHuGangMsg, mgr.onHasHuGangMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_HuMajMsg, mgr.onHuMajMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_BuGanging, mgr.onBuGanging, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_GameResultMsg, mgr.onGameResultMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_ScoreListMsg, mgr.onScoreListMsg, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_StartChange3, mgr.onStartChange3, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_Change3Maj, mgr.onChange3Maj, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_You3Maj, mgr.onYou3Maj, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_PoolsList, mgr.onPoolsList, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_GameOverMsg, mgr.onGameOver, this);
+        GloBal_1.Global.mgr.socketMgr.addReceiveNotify(BaseMsg_1.MSG_MID.MID_TableMsg, TableMsg_1.TabMSG_SID.SC_RealScore, mgr.onRealScore, this);
+    };
+    var GameProtocol_1;
+    GameProtocol = GameProtocol_1 = __decorate([
+        ccclass
+    ], GameProtocol);
+    return GameProtocol;
+}());
+exports.default = GameProtocol;
+
+cc._RF.pop();

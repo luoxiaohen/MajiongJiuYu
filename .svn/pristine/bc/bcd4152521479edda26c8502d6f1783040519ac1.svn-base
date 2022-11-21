@@ -1,0 +1,399 @@
+"use strict";
+cc._RF.push(module, 'fd306RCvitBC4lr01QWocqP', 'LobbyMsg');
+// Script/proto/LobbyMsg.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Msg_SC_InviteTable = exports.Msg_CS_TableInvite = exports.Msg_SC_PubBaseCountData = exports.Msg_CS_GetPubBaseCount = exports.Msg_SC_MaxScoreMajs = exports.Msg_SC_FeeCountData = exports.Msg_CS_GetFeeCount = exports.Msg_SC_BaseCountData = exports.Msg_CS_GetBaseCount = exports.Msg_CS_LobCancelBuyHorse = exports.Msg_CS_LobReqBuyHorse = exports.Msg_SC_RspDeletRoomRuleTemplate = exports.Msg_CS_ReqDeletRoomRuleTemplate = exports.Msg_SC_RspSaveRoomRuleTemplate = exports.Msg_CS_ReqSaveRoomRuleTemplate = exports.Msg_SC_RspGetRoomRuleTemplate = exports.Msg_CS_ReqGetRoomRuleTemplate = exports.Msg_SC_GameRcdRslt = exports.Msg_CS_OpenGameRcdRslt = exports.Msg_SC_GameStepRcd = exports.Msg_CS_OpenGameStepRcd = exports.Msg_SC_RemoveGameRcd = exports.Msg_CS_DelGameRcd = exports.Msg_SC_NewGameRcd = exports.Msg_CS_AddGameRcd = exports.Msg_SC_UpdateGameRcd = exports.Msg_CS_OpenGameRcd = exports.Msg_SC_LeaveRoom = exports.Msg_CS_EnterRoom = exports.Msg_CS_GMMsg = exports.Msg_CS_CreateTable = exports.Msg_SC_LobbyInfo = exports.Msg_SC_PlayerInfo = exports.Msg_CS_TokenLogin = exports.Msg_SC_LobErrRlst = exports.LobMSG_SID = exports.LobbyMsg = void 0;
+var BaseMsg_1 = require("./BaseMsg");
+/**
+* Created by admin on 2022/5/30.
+*/
+var LobbyMsg = /** @class */ (function (_super) {
+    __extends(LobbyMsg, _super);
+    function LobbyMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return LobbyMsg;
+}(BaseMsg_1.BaseMsg));
+exports.LobbyMsg = LobbyMsg;
+var LobMSG_SID;
+(function (LobMSG_SID) {
+    LobMSG_SID[LobMSG_SID["SC_LobErrRlst"] = 0] = "SC_LobErrRlst";
+    LobMSG_SID[LobMSG_SID["CS_GMMsg"] = 1] = "CS_GMMsg";
+    LobMSG_SID[LobMSG_SID["CS_TokenLogin"] = 2] = "CS_TokenLogin";
+    LobMSG_SID[LobMSG_SID["SC_PlayerInfo"] = 3] = "SC_PlayerInfo";
+    LobMSG_SID[LobMSG_SID["SC_LobbyInfo"] = 4] = "SC_LobbyInfo";
+    LobMSG_SID[LobMSG_SID["CS_CreateTable"] = 5] = "CS_CreateTable";
+    LobMSG_SID[LobMSG_SID["CS_EnterRoom"] = 6] = "CS_EnterRoom";
+    LobMSG_SID[LobMSG_SID["SC_LeaveRoom"] = 7] = "SC_LeaveRoom";
+    // 牌谱相关
+    LobMSG_SID[LobMSG_SID["CS_OpenGameRcd"] = 8] = "CS_OpenGameRcd";
+    LobMSG_SID[LobMSG_SID["SC_UpdateGameRcd"] = 9] = "SC_UpdateGameRcd";
+    LobMSG_SID[LobMSG_SID["CS_AddGameRcd"] = 10] = "CS_AddGameRcd";
+    LobMSG_SID[LobMSG_SID["SC_NewGameRcd"] = 11] = "SC_NewGameRcd";
+    LobMSG_SID[LobMSG_SID["CS_DelGameRcd"] = 12] = "CS_DelGameRcd";
+    LobMSG_SID[LobMSG_SID["SC_RemoveGameRcd"] = 13] = "SC_RemoveGameRcd";
+    LobMSG_SID[LobMSG_SID["CS_OpenGameStepRcd"] = 14] = "CS_OpenGameStepRcd";
+    LobMSG_SID[LobMSG_SID["SC_GameStepRcd"] = 15] = "SC_GameStepRcd";
+    LobMSG_SID[LobMSG_SID["CS_OpenGameRcdRslt"] = 16] = "CS_OpenGameRcdRslt";
+    LobMSG_SID[LobMSG_SID["SC_GameRcdRslt"] = 17] = "SC_GameRcdRslt";
+    // 房间创建模板相关
+    LobMSG_SID[LobMSG_SID["CS_ReqGetRoomRuleTemplate"] = 18] = "CS_ReqGetRoomRuleTemplate";
+    LobMSG_SID[LobMSG_SID["SC_RspGetRoomRuleTemplate"] = 19] = "SC_RspGetRoomRuleTemplate";
+    LobMSG_SID[LobMSG_SID["CS_ReqSaveRoomRuleTemplate"] = 20] = "CS_ReqSaveRoomRuleTemplate";
+    LobMSG_SID[LobMSG_SID["SC_RspSaveRoomRuleTemplate"] = 21] = "SC_RspSaveRoomRuleTemplate";
+    LobMSG_SID[LobMSG_SID["CS_ReqDeletRoomRuleTemplate"] = 22] = "CS_ReqDeletRoomRuleTemplate";
+    LobMSG_SID[LobMSG_SID["SC_RspDeletRoomRuleTemplate"] = 23] = "SC_RspDeletRoomRuleTemplate";
+    // 大厅买马
+    LobMSG_SID[LobMSG_SID["CS_LobReqBuyHorse"] = 24] = "CS_LobReqBuyHorse";
+    LobMSG_SID[LobMSG_SID["CS_LobCancelBuyHorse"] = 25] = "CS_LobCancelBuyHorse";
+    // 数据统计
+    LobMSG_SID[LobMSG_SID["CS_GetBaseCount"] = 26] = "CS_GetBaseCount";
+    LobMSG_SID[LobMSG_SID["SC_BaseCountData"] = 27] = "SC_BaseCountData";
+    LobMSG_SID[LobMSG_SID["CS_GetFeeCount"] = 28] = "CS_GetFeeCount";
+    LobMSG_SID[LobMSG_SID["SC_FeeCountData"] = 29] = "SC_FeeCountData";
+    LobMSG_SID[LobMSG_SID["SC_MaxScoreMajs"] = 30] = "SC_MaxScoreMajs";
+    LobMSG_SID[LobMSG_SID["CS_GetPubBaseCount"] = 31] = "CS_GetPubBaseCount";
+    LobMSG_SID[LobMSG_SID["SC_PubBaseCountData"] = 32] = "SC_PubBaseCountData";
+    LobMSG_SID[LobMSG_SID["CS_TableInvite"] = 33] = "CS_TableInvite";
+    LobMSG_SID[LobMSG_SID["SC_InviteTable"] = 34] = "SC_InviteTable";
+    // 大厅刷新牌桌的信息暂时没有，后面根据具体需要来考虑
+    // 断线重连,是否要考虑重连的哪个网关服?
+    LobMSG_SID[LobMSG_SID["MSG_MAX"] = 35] = "MSG_MAX";
+})(LobMSG_SID = exports.LobMSG_SID || (exports.LobMSG_SID = {}));
+// 返回执行错误
+var Msg_SC_LobErrRlst = /** @class */ (function (_super) {
+    __extends(Msg_SC_LobErrRlst, _super);
+    function Msg_SC_LobErrRlst() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_LobErrRlst) || this;
+    }
+    return Msg_SC_LobErrRlst;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_LobErrRlst = Msg_SC_LobErrRlst;
+// Token登录
+var Msg_CS_TokenLogin = /** @class */ (function (_super) {
+    __extends(Msg_CS_TokenLogin, _super);
+    function Msg_CS_TokenLogin() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_TokenLogin) || this;
+    }
+    return Msg_CS_TokenLogin;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_TokenLogin = Msg_CS_TokenLogin;
+// 玩家信息-表示登陆成功
+var Msg_SC_PlayerInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_PlayerInfo, _super);
+    function Msg_SC_PlayerInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_PlayerInfo) || this;
+    }
+    return Msg_SC_PlayerInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PlayerInfo = Msg_SC_PlayerInfo;
+//大厅信息-大厅一些基本数据
+var Msg_SC_LobbyInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_LobbyInfo, _super);
+    function Msg_SC_LobbyInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_LobbyInfo) || this;
+    }
+    return Msg_SC_LobbyInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_LobbyInfo = Msg_SC_LobbyInfo;
+//创建约局牌桌
+var Msg_CS_CreateTable = /** @class */ (function (_super) {
+    __extends(Msg_CS_CreateTable, _super);
+    function Msg_CS_CreateTable() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_CreateTable) || this;
+    }
+    return Msg_CS_CreateTable;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_CreateTable = Msg_CS_CreateTable;
+// 测试-GM指令
+var Msg_CS_GMMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_GMMsg, _super);
+    function Msg_CS_GMMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_GMMsg) || this;
+    }
+    return Msg_CS_GMMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GMMsg = Msg_CS_GMMsg;
+//进入房间 - 返回 TableMsg.SC_RoomInfo
+var Msg_CS_EnterRoom = /** @class */ (function (_super) {
+    __extends(Msg_CS_EnterRoom, _super);
+    function Msg_CS_EnterRoom() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_EnterRoom) || this;
+    }
+    return Msg_CS_EnterRoom;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_EnterRoom = Msg_CS_EnterRoom;
+// 通知客户端离开房间消息，这是表示离开房间回到大厅的标志消息
+var Msg_SC_LeaveRoom = /** @class */ (function (_super) {
+    __extends(Msg_SC_LeaveRoom, _super);
+    function Msg_SC_LeaveRoom() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_LeaveRoom) || this;
+    }
+    return Msg_SC_LeaveRoom;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_LeaveRoom = Msg_SC_LeaveRoom;
+//    // 俱乐部牌桌列表
+//    public static class Msg_CS_TableList extends BaseIDMsg {
+//        public Msg_CS_TableList() { mid = MSG_MID.MID_LobbyMsg.ordinal(); sid = LobMSG_SID.SC_TableList.ordinal();}
+//        public List<LobbyMsgDef.TableSummInfo> tabs; // 牌桌列表(简要信息)
+//    }
+//打开牌谱记录
+var Msg_CS_OpenGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_CS_OpenGameRcd, _super);
+    function Msg_CS_OpenGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_OpenGameRcd) || this;
+    }
+    return Msg_CS_OpenGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_OpenGameRcd = Msg_CS_OpenGameRcd;
+//刷新牌谱记录
+var Msg_SC_UpdateGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_SC_UpdateGameRcd, _super);
+    function Msg_SC_UpdateGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_UpdateGameRcd) || this;
+    }
+    return Msg_SC_UpdateGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_UpdateGameRcd = Msg_SC_UpdateGameRcd;
+//增加一条牌谱记录
+var Msg_CS_AddGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_CS_AddGameRcd, _super);
+    function Msg_CS_AddGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_AddGameRcd) || this;
+    }
+    return Msg_CS_AddGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_AddGameRcd = Msg_CS_AddGameRcd;
+//新增一条牌谱
+var Msg_SC_NewGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_SC_NewGameRcd, _super);
+    function Msg_SC_NewGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_NewGameRcd) || this;
+    }
+    return Msg_SC_NewGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_NewGameRcd = Msg_SC_NewGameRcd;
+//删除一条记录
+var Msg_CS_DelGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_CS_DelGameRcd, _super);
+    function Msg_CS_DelGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_DelGameRcd) || this;
+    }
+    return Msg_CS_DelGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_DelGameRcd = Msg_CS_DelGameRcd;
+//移除一条牌谱记录
+var Msg_SC_RemoveGameRcd = /** @class */ (function (_super) {
+    __extends(Msg_SC_RemoveGameRcd, _super);
+    function Msg_SC_RemoveGameRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_RemoveGameRcd) || this;
+    }
+    return Msg_SC_RemoveGameRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RemoveGameRcd = Msg_SC_RemoveGameRcd;
+//打开牌谱详细数据
+var Msg_CS_OpenGameStepRcd = /** @class */ (function (_super) {
+    __extends(Msg_CS_OpenGameStepRcd, _super);
+    function Msg_CS_OpenGameStepRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_OpenGameStepRcd) || this;
+    }
+    return Msg_CS_OpenGameStepRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_OpenGameStepRcd = Msg_CS_OpenGameStepRcd;
+//牌谱记录详细数据
+var Msg_SC_GameStepRcd = /** @class */ (function (_super) {
+    __extends(Msg_SC_GameStepRcd, _super);
+    function Msg_SC_GameStepRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_GameStepRcd) || this;
+    }
+    return Msg_SC_GameStepRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GameStepRcd = Msg_SC_GameStepRcd;
+//打开牌局记录的最后结算信息
+var Msg_CS_OpenGameRcdRslt = /** @class */ (function (_super) {
+    __extends(Msg_CS_OpenGameRcdRslt, _super);
+    function Msg_CS_OpenGameRcdRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_OpenGameRcdRslt) || this;
+    }
+    return Msg_CS_OpenGameRcdRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_OpenGameRcdRslt = Msg_CS_OpenGameRcdRslt;
+//牌局记录的最后结算信息
+var Msg_SC_GameRcdRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_GameRcdRslt, _super);
+    function Msg_SC_GameRcdRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_GameRcdRslt) || this;
+    }
+    return Msg_SC_GameRcdRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GameRcdRslt = Msg_SC_GameRcdRslt;
+///**请求获取房间模板*/
+var Msg_CS_ReqGetRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_CS_ReqGetRoomRuleTemplate, _super);
+    function Msg_CS_ReqGetRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_ReqGetRoomRuleTemplate) || this;
+    }
+    return Msg_CS_ReqGetRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_ReqGetRoomRuleTemplate = Msg_CS_ReqGetRoomRuleTemplate;
+///**返回房间模板信息*/
+var Msg_SC_RspGetRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_SC_RspGetRoomRuleTemplate, _super);
+    function Msg_SC_RspGetRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_RspGetRoomRuleTemplate) || this;
+    }
+    return Msg_SC_RspGetRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RspGetRoomRuleTemplate = Msg_SC_RspGetRoomRuleTemplate;
+///**请求保存一个房间模板*/ 如果是存在的则是修改，不存在的作为新增
+var Msg_CS_ReqSaveRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_CS_ReqSaveRoomRuleTemplate, _super);
+    function Msg_CS_ReqSaveRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_ReqSaveRoomRuleTemplate) || this;
+    }
+    return Msg_CS_ReqSaveRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_ReqSaveRoomRuleTemplate = Msg_CS_ReqSaveRoomRuleTemplate;
+///**返回保存房间模板结果*/
+var Msg_SC_RspSaveRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_SC_RspSaveRoomRuleTemplate, _super);
+    function Msg_SC_RspSaveRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_RspSaveRoomRuleTemplate) || this;
+    }
+    return Msg_SC_RspSaveRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RspSaveRoomRuleTemplate = Msg_SC_RspSaveRoomRuleTemplate;
+///***请求删除一个房间模板*/
+var Msg_CS_ReqDeletRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_CS_ReqDeletRoomRuleTemplate, _super);
+    function Msg_CS_ReqDeletRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_ReqDeletRoomRuleTemplate) || this;
+    }
+    return Msg_CS_ReqDeletRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_ReqDeletRoomRuleTemplate = Msg_CS_ReqDeletRoomRuleTemplate;
+///***返回删除一个房间模板结果*/
+var Msg_SC_RspDeletRoomRuleTemplate = /** @class */ (function (_super) {
+    __extends(Msg_SC_RspDeletRoomRuleTemplate, _super);
+    function Msg_SC_RspDeletRoomRuleTemplate() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_RspDeletRoomRuleTemplate) || this;
+    }
+    return Msg_SC_RspDeletRoomRuleTemplate;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RspDeletRoomRuleTemplate = Msg_SC_RspDeletRoomRuleTemplate;
+//申请买马(返回TableMsg.SC_HorseRoomInfo)
+var Msg_CS_LobReqBuyHorse = /** @class */ (function (_super) {
+    __extends(Msg_CS_LobReqBuyHorse, _super);
+    function Msg_CS_LobReqBuyHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_LobReqBuyHorse) || this;
+    }
+    return Msg_CS_LobReqBuyHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_LobReqBuyHorse = Msg_CS_LobReqBuyHorse;
+//取消买马
+var Msg_CS_LobCancelBuyHorse = /** @class */ (function (_super) {
+    __extends(Msg_CS_LobCancelBuyHorse, _super);
+    function Msg_CS_LobCancelBuyHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_LobCancelBuyHorse) || this;
+    }
+    return Msg_CS_LobCancelBuyHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_LobCancelBuyHorse = Msg_CS_LobCancelBuyHorse;
+//27获取基础统计数据
+var Msg_CS_GetBaseCount = /** @class */ (function (_super) {
+    __extends(Msg_CS_GetBaseCount, _super);
+    function Msg_CS_GetBaseCount() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_GetBaseCount) || this;
+    }
+    return Msg_CS_GetBaseCount;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GetBaseCount = Msg_CS_GetBaseCount;
+//28返回基础统计数据
+var Msg_SC_BaseCountData = /** @class */ (function (_super) {
+    __extends(Msg_SC_BaseCountData, _super);
+    function Msg_SC_BaseCountData() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_BaseCountData) || this;
+    }
+    return Msg_SC_BaseCountData;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_BaseCountData = Msg_SC_BaseCountData;
+//29获取收费统计数据
+var Msg_CS_GetFeeCount = /** @class */ (function (_super) {
+    __extends(Msg_CS_GetFeeCount, _super);
+    function Msg_CS_GetFeeCount() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_GetFeeCount) || this;
+    }
+    return Msg_CS_GetFeeCount;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GetFeeCount = Msg_CS_GetFeeCount;
+//30返回收费统计数据
+var Msg_SC_FeeCountData = /** @class */ (function (_super) {
+    __extends(Msg_SC_FeeCountData, _super);
+    function Msg_SC_FeeCountData() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_FeeCountData) || this;
+    }
+    return Msg_SC_FeeCountData;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_FeeCountData = Msg_SC_FeeCountData;
+//31返回最大收益牌型数据
+var Msg_SC_MaxScoreMajs = /** @class */ (function (_super) {
+    __extends(Msg_SC_MaxScoreMajs, _super);
+    function Msg_SC_MaxScoreMajs() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_MaxScoreMajs) || this;
+    }
+    return Msg_SC_MaxScoreMajs;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_MaxScoreMajs = Msg_SC_MaxScoreMajs;
+//32获取全服统计数据
+var Msg_CS_GetPubBaseCount = /** @class */ (function (_super) {
+    __extends(Msg_CS_GetPubBaseCount, _super);
+    function Msg_CS_GetPubBaseCount() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_GetPubBaseCount) || this;
+    }
+    return Msg_CS_GetPubBaseCount;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GetPubBaseCount = Msg_CS_GetPubBaseCount;
+//33返回全服统计数据
+var Msg_SC_PubBaseCountData = /** @class */ (function (_super) {
+    __extends(Msg_SC_PubBaseCountData, _super);
+    function Msg_SC_PubBaseCountData() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_PubBaseCountData) || this;
+    }
+    return Msg_SC_PubBaseCountData;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PubBaseCountData = Msg_SC_PubBaseCountData;
+//34主动邀请玩家进入房间
+var Msg_CS_TableInvite = /** @class */ (function (_super) {
+    __extends(Msg_CS_TableInvite, _super);
+    function Msg_CS_TableInvite() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.CS_TableInvite) || this;
+    }
+    return Msg_CS_TableInvite;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_TableInvite = Msg_CS_TableInvite;
+//35邀请进入某个房间
+var Msg_SC_InviteTable = /** @class */ (function (_super) {
+    __extends(Msg_SC_InviteTable, _super);
+    function Msg_SC_InviteTable() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_LobbyMsg, LobMSG_SID.SC_InviteTable) || this;
+    }
+    return Msg_SC_InviteTable;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_InviteTable = Msg_SC_InviteTable;
+
+cc._RF.pop();

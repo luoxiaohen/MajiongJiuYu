@@ -1,0 +1,1126 @@
+"use strict";
+cc._RF.push(module, '16d75Y6Yl5EwIt+LPceS8Ce', 'MajiongTablePanel');
+// Script/UI/MajiongTablePanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../enum/EnumManager");
+var EventType_1 = require("../event/EventType");
+var GameInfo_1 = require("../Game/info/GameInfo");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../mgr/TimeAndMoveManager");
+var LobbyMsgDef_1 = require("../proto/LobbyMsgDef");
+var TableMsg_1 = require("../proto/TableMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var SitDownTips_1 = require("../tips/SitDownTips");
+var UIBase_1 = require("../UIBase");
+var InterfaceHelp_1 = require("../utils/InterfaceHelp");
+var BuyHorseItem_1 = require("./BuyHorseItem");
+var CardHelpManager_1 = require("./card/CardHelpManager");
+var DownHandCardPanel_1 = require("./card/DownHandCardPanel");
+var MajiongWallCard_1 = require("./card/MajiongWallCard");
+var MyHandCardPanel_1 = require("./card/MyHandCardPanel");
+var OppHandCardPanel_1 = require("./card/OppHandCardPanel");
+var UpHandCardPanel_1 = require("./card/UpHandCardPanel");
+var ChangeThreeItem_1 = require("./changeThree/ChangeThreeItem");
+var ChangeThreePanel_1 = require("./changeThree/ChangeThreePanel");
+var DingQuePanel_1 = require("./DingQuePanel");
+var GameTurntablePanel_1 = require("./GameTurntablePanel");
+var PlayerHeadItem_1 = require("./PlayerHeadItem");
+var ThrowPointHeadItem_1 = require("./ThrowPointHeadItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MajiongTablePanel = /** @class */ (function (_super) {
+    __extends(MajiongTablePanel, _super);
+    function MajiongTablePanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.headGroup = null;
+        _this.tipsGroup = null;
+        _this.btnGroup = null;
+        _this.tableElementsGroup = null;
+        _this.readyBtn = null;
+        _this.tableIdLabel = null;
+        _this.tableNameLabel = null;
+        _this.tableTypeLabel = null;
+        _this.tableFenLabel = null;
+        _this.gameBeginImage = null;
+        _this.gameDiceBtn = null;
+        _this.rollDiceLabel = null;
+        _this.cardTableGroup = null;
+        _this.changeThreeBtn = null;
+        _this.fightImage = null;
+        _this.baoziImage = null;
+        _this.infoQuetionBtn = null;
+        _this.listBtn = null;
+        _this.menuBtn = null;
+        _this.hordeBtn = null;
+        _this.gameinfoLabel = null;
+        _this.buyHorseGroup = null;
+        _this.lookBg = null;
+        /**玩家头像位置*/
+        _this.playerPointArr = [cc.v2(26, -679), cc.v2(1738, -328), cc.v2(1431, -11), cc.v2(26, -328)];
+        /**玩家头像集合*/
+        _this.playerHeadArr = [];
+        /**我的初始位置*/
+        _this.myInitSitIndex = -1;
+        /**顽疾定位暂存*/
+        _this.prDiceRsltArr = [];
+        /**自己坐下时候的初始位置暂存*/
+        _this.myInitSit = 0;
+        /**是否已经完成了矫座*/
+        _this.returnPointOver = false;
+        /**是否是掷庄结束*/
+        _this.throwBookMakerOver = false;
+        /**出牌*/
+        _this.majiongOutCardPrefab = null;
+        /**是否已经可以摸牌*/
+        _this.canGetHands = false;
+        _this.getCardPoint = 0;
+        _this.getCardBegin = 0;
+        /**最大玩家人数*/
+        _this.maxPlayerNum = 0;
+        /**当前摸牌人数*/
+        _this.nowGetHandPlayerNum = 0;
+        /**当前手牌牌组添加数量*/
+        _this.addHandPanelNum = 0;
+        /***手牌牌组集合*/
+        _this.handPanelArr = [];
+        return _this;
+    }
+    MajiongTablePanel.prototype.onLoad = function () {
+        this.fightImage.node.active = false;
+        this.baoziImage.node.active = false;
+        this.majiongHandPrefab = GloBal_1.Global.Utils.getPreFabBySource('majiongCard/prefab/MajiongHandCard');
+        this.majiongWallPrefab = GloBal_1.Global.Utils.getPreFabBySource('majiongCard/prefab/MajiongWallCard');
+        this.majiongOutCardPrefab = GloBal_1.Global.Utils.getPreFabBySource('majiongCard/prefab/MajiongOutCard');
+        this.addEvent();
+        this.initUI();
+        this.addPlayerHead();
+        if (GameInfo_1.default.ins.gamePlayers.length == 1 && UserInfo_1.default.ins.isSelf(GameInfo_1.default.ins.gamePlayers[0].player.gpid)) {
+            this.onNewSit(null, GameInfo_1.default.ins.fristSitPlayer);
+        }
+        this.lookBg.node.active = false;
+    };
+    MajiongTablePanel.prototype.initUI = function () {
+        this.showReadyBtn(false);
+        this.showTableInfo();
+        this.showDiceBtn(false);
+        this.showGmaePosition();
+        this.showBuyHrose();
+    };
+    MajiongTablePanel.prototype.showBuyHrose = function () {
+        this.buyHorseItem1 = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource('mainGame/prefab/BuyHorseItem')).getComponent(BuyHorseItem_1.default);
+        this.buyHorseItem2 = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource('mainGame/prefab/BuyHorseItem')).getComponent(BuyHorseItem_1.default);
+        this.buyHorseItem1.index = 1;
+        this.buyHorseItem2.index = 2;
+        this.buyHorseGroup.addChild(this.buyHorseItem1.node);
+        this.buyHorseGroup.addChild(this.buyHorseItem2.node);
+    };
+    MajiongTablePanel.prototype.showGmaePosition = function () {
+        if (this.gamePositionItem) {
+            this.gamePositionItem.disTory();
+        }
+        var prefab = GloBal_1.Global.Utils.getPreFabBySource("turnTable/prefab/GameTurntablePanel");
+        this.gamePositionItem = cc.instantiate(prefab).getComponent(GameTurntablePanel_1.default);
+        this.gamePositionItem.node.x = 960;
+        this.gamePositionItem.node.y = -475;
+        this.btnGroup.addChild(this.gamePositionItem.node);
+    };
+    MajiongTablePanel.prototype.showTableInfo = function () {
+        this.gameinfoLabel.string = GameInfo_1.default.ins.roomTableInfo.roomName;
+        this.tableIdLabel.string = "房间号:" + GameInfo_1.default.ins.roomTableInfo.code;
+        this.tableNameLabel.string = "房间名字:" + GameInfo_1.default.ins.roomTableInfo.roomName;
+        this.tableFenLabel.string = "底分:" + GameInfo_1.default.ins.roomTableInfo.rule.baseScore;
+        var gameName = GloBal_1.Global.Utils.getGameNameByGameType(GameInfo_1.default.ins.roomTableInfo.rule.gamePlayType);
+        var gameType = GloBal_1.Global.Utils.getGameTypeNameByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        this.tableTypeLabel.string = gameName + "[" + gameType + "]";
+        this.showChangThreeBtn(false);
+        GameInfo_1.default.ins.AllCardMax = GloBal_1.Global.Utils.getMaxMajiongByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+    };
+    MajiongTablePanel.prototype.addPlayerHead = function () {
+        var _this = this;
+        var maxPlayer = GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        for (var i = 0; i < maxPlayer; i++) {
+            GloBal_1.Global.Utils.createObjToNode('playerHead/prefab/PlayerHeadItem', this.headGroup, i, this.playerPointArr[i], function (any, createObj) {
+                var item = createObj.getComponent(PlayerHeadItem_1.default);
+                _this.playerHeadArr.push(item);
+                var sitInfo = GameInfo_1.default.ins.getPlayerBySit(item.directionSitNum);
+                if (sitInfo) {
+                    item.sitInfo = sitInfo;
+                }
+            });
+        }
+    };
+    MajiongTablePanel.prototype.addEvent = function () {
+        var _this = this;
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.ThrowBookMaker, function () {
+            for (var i = 0; i < _this.playerHeadArr.length; i++) {
+                _this.playerHeadArr[i].showIsReady(false);
+            }
+            _this.showBeginImage(true);
+        }, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.NEW_ONE_SIT, this.onNewSit, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.playerReady, this.onPlayerReady, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.DiceRslt, this.onDiceRslt, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.StartDicePos, this.onStartDicePos, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.PrDiceRslt, this.onPrDiceRslt, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.StartDiceGame, this.onStartDiceGame, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.BeginDiceMsg, this.onBeginDiceMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.DrawHandCard, this.onDrawHandCard, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.YouMajMsg, this.onYouMajMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.StartDingQue, this.onStartDingQue, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.QueRslt, this.onQueRslt, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.WaitDownMsg, this.onWaitDownMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.DownMajMsg, this.onDownMajMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.OtherDrawCard, this.onOtherDrawCard, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.PengMajMsg, this.onPengMajMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GangSelfMsg, this.onGangSelfMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.BuGanging, this.onBuGanging, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.HuMajMsg, this.onHuMajMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.ScoreListMsg, this.onScoreListMsg, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GetMajMsg, this.onGetFeel, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.ChangeThree, this.onChangeThree, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.Change3Maj, this.onChange3Maj, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.You3Maj, this.onYou3Maj, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.PlayerHeadSitClick, this.onHeadSitClick, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.OpenNewGame, this.onNewGame, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.RealScore, this.onRealScore, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.ShowBaoziFight, this.showbaoziFight, this);
+    };
+    MajiongTablePanel.prototype.showbaoziFight = function () {
+        var source = null;
+        var baoziSource = null;
+        if (GameInfo_1.default.ins.isBaozi) {
+            source = "mainGame/resource/game_baozi";
+            baoziSource = "comResource/font/game_baozi";
+        }
+        if (GameInfo_1.default.ins.isShuangbao) {
+            source = "mainGame/resource/game_shuangbao";
+            baoziSource = "comResource/font/game_shuangbao";
+        }
+        if (source == null) {
+            this.fightImage.node.active = false;
+            cc.Tween.stopAllByTarget(this.fightImage.node);
+            return;
+        }
+        this.fightImage.node.active = true;
+        this.baoziImage.node.active = true;
+        GloBal_1.Global.Utils.setNewImageToSprite(this.fightImage, source);
+        GloBal_1.Global.Utils.setNewImageToSprite(this.baoziImage, baoziSource);
+        this.showFightAction();
+    };
+    MajiongTablePanel.prototype.showFightAction = function () {
+        var _this = this;
+        cc.tween(this.fightImage.node).to(2, { opacity: 255 }).call(function () {
+            _this.hideFightAction();
+        }).start();
+    };
+    MajiongTablePanel.prototype.hideFightAction = function () {
+        var _this = this;
+        cc.tween(this.fightImage.node).to(2, { opacity: 0 }).call(function () {
+            _this.showFightAction();
+        }).start();
+    };
+    /**收到实时积分消息*/
+    MajiongTablePanel.prototype.onRealScore = function (e, msg) {
+        if (msg.event.tarScore) {
+            var headItem = void 0;
+            for (var l = 0; l < msg.event.tarSits.length; l++) {
+                for (var i = 0; i < this.playerHeadArr.length; i++) {
+                    if (this.playerHeadArr[i].sitInfo.sitNum == msg.event.tarSits[l]) {
+                        headItem = this.playerHeadArr[i];
+                        headItem.showShishiJifenChange(msg.event.tarScore[l]);
+                        if (msg.event.tarSits[l] == UserInfo_1.default.ins.mySitIndex) {
+                            UserInfo_1.default.ins.gameFen += msg.event.tarScore[l];
+                        }
+                    }
+                }
+            }
+            for (var i = 0; i < this.playerHeadArr.length; i++) {
+                if (this.playerHeadArr[i].sitInfo.sitNum == msg.event.curSit) {
+                    headItem = this.playerHeadArr[i];
+                    headItem.showShishiJifenChange(msg.event.win);
+                    if (msg.event.curSit == UserInfo_1.default.ins.mySitIndex) {
+                        UserInfo_1.default.ins.gameFen += msg.event.win;
+                    }
+                }
+            }
+        }
+    };
+    /**头像上点击坐下*/
+    MajiongTablePanel.prototype.onHeadSitClick = function (e, sitNum) {
+        if (this.sitDownTips) {
+            this.sitDownTips.disTory();
+            this.sitDownTips = null;
+        }
+        this.sitDownTips = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/SitDown/prefab/SitDownTips")).getComponent(SitDownTips_1.default);
+        this.sitDownTips.setData(sitNum);
+        this.tipsGroup.addChild(this.sitDownTips.node);
+        this.sitDownTips.node.x = 0;
+        this.sitDownTips.node.y = 0;
+    };
+    /**服务器通知换三张*/
+    MajiongTablePanel.prototype.onChangeThree = function (e, msg) {
+        if (this.changeThreePanel) {
+            this.changeThreePanel.disTory();
+        }
+        this.changeThreePanel = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("changeThree/prefab/ChangeThreePanel")).getComponent(ChangeThreePanel_1.default);
+        this.node.addChild(this.changeThreePanel.node);
+        this.changeThreePanel.node.x = -322;
+        this.changeThreePanel.node.y = -161;
+    };
+    /**换三状态改变*/
+    MajiongTablePanel.prototype.onChange3Maj = function (e, msg) {
+        this.getHandPanelBySit(msg.okSit).showOnChangeThree(msg);
+        this.changeThreePanel.showOneReady(msg.okSit);
+    };
+    /***得到换三张结果*/
+    MajiongTablePanel.prototype.onYou3Maj = function (e, msg) {
+        this.changeThreePanel.setData(msg, this.onChanegEnd, this);
+    };
+    /**换三表现结束*/
+    MajiongTablePanel.prototype.onChanegEnd = function (msg) {
+        this.changeThreePanel.disTory();
+        this.changeThreePanel = null;
+        for (var i = 0; i < 4; i++) {
+            this.getHandPanelBySit(i).showEndChangeThree();
+        }
+        this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).showGetChangeThree(msg);
+    };
+    /**一轮结束*/
+    MajiongTablePanel.prototype.onScoreListMsg = function (e) {
+        this.showBeginImage(false);
+        this.showSmallOver();
+    };
+    /**展示单据结算面板*/
+    MajiongTablePanel.prototype.showSmallOver = function () {
+        GloBal_1.Global.DialogManager.createDialog('smallOver/prefab/SmallOverPanel', null, function (any, createDialog) {
+            createDialog.x = -960;
+            createDialog.y = -540;
+        });
+    };
+    /**有人补杠*/
+    MajiongTablePanel.prototype.onBuGanging = function (e, msg) {
+        if (UserInfo_1.default.ins.mySitIndex != msg.sit) {
+            var deck = UserInfo_1.default.ins.getQiangHu(msg.majID);
+            if (deck && deck.HuType.length > 0) {
+                var eatClass = new InterfaceHelp_1.EatCardClass();
+                eatClass.type = EnumManager_1.PlayEatTypeEnum.Hu;
+                eatClass.value = deck.cardValue;
+                if (!GloBal_1.Global.Utils.getIsDice(msg.majID, UserInfo_1.default.ins.myDiceType)) {
+                    var canHu = UserInfo_1.default.ins.getCanHu();
+                    var actionData = new InterfaceHelp_1.MyActionByOther();
+                    actionData.canHu = canHu != null;
+                    actionData.huData = canHu;
+                    actionData.canGang = false;
+                    actionData.canPeng = false;
+                    actionData.canGuo = UserInfo_1.default.ins.getCanGuo();
+                    this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).showActionItem(actionData);
+                }
+            }
+        }
+    };
+    /**有人胡牌*/
+    MajiongTablePanel.prototype.onHuMajMsg = function (e, msg) {
+        GameInfo_1.default.ins.huCounts = msg.huNum + 1;
+        if (msg.majID) {
+            GameInfo_1.default.ins.otherLastCard = msg.majID;
+        }
+        this.getHandPanelBySit(msg.huSit).showHupai(msg);
+        if (msg.tarSit) {
+            this.getHandPanelBySit(msg.tarSit).clearLastPlay();
+        }
+        if (msg.huCnt > 1) {
+            this.getHandPanelBySit(msg.tarSit).showDianPao(msg.huCnt);
+        }
+    };
+    /**自己杠*/
+    MajiongTablePanel.prototype.onGangSelfMsg = function (e, msg) {
+        var addIndex = msg.isPapo == 0 ? 4 : 1;
+        GameInfo_1.default.ins.addCardToAllOut(addIndex);
+        this.getHandPanelBySit(msg.pengSiteNum).showSelfGang(msg);
+    };
+    /**某人碰杠*/
+    MajiongTablePanel.prototype.onPengMajMsg = function (e, msg) {
+        var addIndex = msg.isGang == 1 ? 3 : 2;
+        GameInfo_1.default.ins.addCardToAllOut(msg.majID, addIndex);
+        this.getHandPanelBySit(msg.pengSiteNum).showPengGang(msg);
+        this.getHandPanelBySit(msg.fromSiteNum).clearLastPlay();
+    };
+    /**我摸牌*/
+    MajiongTablePanel.prototype.onGetFeel = function (e, msg) {
+        this.gamePositionItem.SetCurrentTurnState(GameInfo_1.default.ins.AllCardMax - GameInfo_1.default.ins.allPlayerGetCard, UserInfo_1.default.ins.mySitIndex, GameInfo_1.default.ins.getPosHu());
+    };
+    /**收到某人摸牌*/
+    MajiongTablePanel.prototype.onOtherDrawCard = function (e, msg) {
+        this.removeOneWall();
+        var panel = this.getHandPanelBySit(msg.siteNum);
+        panel.showFeelWall(null);
+        this.gamePositionItem.SetCurrentTurnState(GameInfo_1.default.ins.AllCardMax - GameInfo_1.default.ins.allPlayerGetCard, msg.siteNum, GameInfo_1.default.ins.getPosHu());
+    };
+    /***移除一张牌墙*/
+    MajiongTablePanel.prototype.removeOneWall = function () {
+        GameInfo_1.default.ins.allWallCardArray[GameInfo_1.default.ins.allPlayerGetCard].node.active = false;
+        GameInfo_1.default.ins.allPlayerGetCard++;
+    };
+    /***收到别人出牌*/
+    MajiongTablePanel.prototype.onDownMajMsg = function (e, msg) {
+        if (UserInfo_1.default.ins.mySitIndex != msg.downSiteNum) {
+            var handPanel = this.getHandPanelBySit(msg.downSiteNum);
+            handPanel.showOutCard(msg.majID);
+            GameInfo_1.default.ins.otherLastCard = msg.majID;
+        }
+        else {
+            UserInfo_1.default.ins.spliceCardByMyHand(msg.majID);
+        }
+        if (UserInfo_1.default.ins.selfIsLookPlayer && UserInfo_1.default.ins.mySitIndex == msg.downSiteNum) {
+            this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).showOutCard(msg.majID);
+        }
+        this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).closeHupaiTips();
+        this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).closeOutTing();
+    };
+    /***某个人的回合开始*/
+    MajiongTablePanel.prototype.onWaitDownMsg = function (e, msg) {
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            if (this.playerHeadArr[i].sitInfo.sitNum == msg.siteNum) {
+                this.playerHeadArr[i].isMyAction = true;
+            }
+            else {
+                this.playerHeadArr[i].isMyAction = false;
+            }
+        }
+        this.gamePositionItem.SetCurrentTurnState(GameInfo_1.default.ins.AllCardMax - GameInfo_1.default.ins.allPlayerGetCard, msg.siteNum, GameInfo_1.default.ins.getPosHu());
+    };
+    /**收到定缺*/
+    MajiongTablePanel.prototype.onQueRslt = function (e, msg) {
+        var _this = this;
+        var delay = 0.1;
+        if (GameInfo_1.default.ins.roomTableInfo.rule.gamePlayType == 2) {
+            this.showChangThreeBtn(true);
+            delay = 1;
+        }
+        cc.tween(this.node).delay(delay).call(function () {
+            for (var i = 0; i < msg.infos.length; i++) {
+                var info = msg.infos[i];
+                var head = void 0;
+                for (var i_1 = 0; i_1 < _this.playerHeadArr.length; i_1++) {
+                    _this.playerHeadArr[i_1].showIsDingQueIng(false);
+                    if (_this.playerHeadArr[i_1].sitInfo.sitNum == info.sitNum) {
+                        head = _this.playerHeadArr[i_1];
+                        head.showQue(info.wtt);
+                    }
+                }
+            }
+            _this.getHandPanelBySit(UserInfo_1.default.ins.mySitIndex).showDingQueed();
+        }).start();
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            if (this.dingQuePanel) {
+                this.dingQuePanel.disTory();
+                this.dingQuePanel = null;
+            }
+        }
+    };
+    /**通过位置获取手牌组*/
+    MajiongTablePanel.prototype.getHandPanelBySit = function (sit) {
+        for (var i = 0; i < this.handPanelArr.length; i++) {
+            if (this.handPanelArr[i].sitIndex == sit) {
+                return this.handPanelArr[i];
+            }
+        }
+        return null;
+    };
+    /**定缺*/
+    MajiongTablePanel.prototype.onStartDingQue = function (e, msg) {
+        var _this = this;
+        GloBal_1.Global.DialogManager.createDialog("dingQue/prefab/DingQuePanel", null, function (any, createDialog) {
+            createDialog.x = 0;
+            createDialog.y = 200;
+            _this.dingQuePanel = createDialog.getComponent(DingQuePanel_1.default);
+        }, this.tableElementsGroup);
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            this.playerHeadArr[i].showIsDingQueIng(true);
+        }
+    };
+    /**收到我的手牌数据*/
+    MajiongTablePanel.prototype.onYouMajMsg = function (e, msg) {
+        var _this = this;
+        if (this.canGetHands) {
+            cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.getWallTime).call(function () {
+                _this.setWallDrawOeder();
+                _this.showGetHand();
+            }).start();
+        }
+    };
+    /**开始游戏 准备发牌*/
+    MajiongTablePanel.prototype.onDrawHandCard = function (e, msg) {
+        var data = e.data;
+    };
+    /**投掷拿牌的骰子*/
+    MajiongTablePanel.prototype.onBeginDiceMsg = function (e, msg) {
+        GameInfo_1.default.ins.nowBookMakerSit = msg.bankerSite;
+        if (this.returnPointOver) {
+            this.showThrowFrist();
+        }
+    };
+    /***投掷拿牌骰子*/
+    MajiongTablePanel.prototype.showThrowFrist = function () {
+        this.showDiceBtn(true);
+    };
+    /**收到了矫座结果*/
+    MajiongTablePanel.prototype.onStartDiceGame = function (e, msg) {
+        var _this = this;
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.zhuangRollTime + TimeAndMoveManager_1.default.ins.diceRotation).call(function () {
+            for (var i = 0; i < _this.playerHeadArr.length; i++) {
+                _this.playerHeadArr[i].showPlayerDice(false);
+            }
+            if (UserInfo_1.default.ins.selfIsLookPlayer) {
+                for (var i = 0; i < _this.playerHeadArr.length; i++) {
+                    if (_this.playerHeadArr[i].directionSitNum == 0) {
+                        UserInfo_1.default.ins.mySitIndex = _this.playerHeadArr[i].sitInfo.sitNum;
+                    }
+                }
+            }
+            _this.showChangeChar();
+        }).start();
+    };
+    /**展示矫座相关动作*/
+    MajiongTablePanel.prototype.showChangeChar = function () {
+        this.showChangeTempChar();
+    };
+    /**展示临时的矫座头像*/
+    MajiongTablePanel.prototype.showChangeTempChar = function () {
+        var _this = this;
+        var pointArr = [cc.v2(700, -700), cc.v2(1000, -700), cc.v2(1000, -400), cc.v2(700, -400)];
+        var players = GameInfo_1.default.ins.gamePlayers;
+        var newPlayers = [];
+        var noMe = [];
+        var haveMe = [];
+        for (var i = 0; i < players.length; i++) {
+            if (UserInfo_1.default.ins.isSelf(players[i].player.gpid)) {
+                haveMe.push(players[i]);
+                if (players[i].sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                    GameInfo_1.default.ins.isSelfZhuang = true;
+                }
+                this.gamePositionItem.InitPlayerDicType(UserInfo_1.default.ins.mySitIndex, GameInfo_1.default.ins.AllCardMax - GameInfo_1.default.ins.allPlayerGetCard);
+            }
+            else {
+                if (haveMe.length > 0) {
+                    haveMe.push(players[i]);
+                }
+                else {
+                    noMe.push(players[i]);
+                }
+            }
+        }
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            this.gamePositionItem.InitPlayerDicType(UserInfo_1.default.ins.mySitIndex, GameInfo_1.default.ins.AllCardMax - GameInfo_1.default.ins.allPlayerGetCard);
+        }
+        newPlayers = haveMe.concat(noMe);
+        var throwHeadArr = [];
+        for (var i = 0; i < newPlayers.length; i++) {
+            GloBal_1.Global.Utils.createObjToNode("playerHead/prefab/ThrowPointHeadItem", this.headGroup, { sitInfo: newPlayers[i], rslt: this.getRsltDataById(newPlayers[i].player.gpid) }, pointArr[i], function (any, createObj) {
+                var item = createObj.getComponent(ThrowPointHeadItem_1.default);
+                throwHeadArr.push(item);
+            });
+        }
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.changeCharTime).call(function () {
+            var _loop_1 = function (i) {
+                throwHeadArr[i].hideThrow();
+                cc.tween(throwHeadArr[i].node).to(TimeAndMoveManager_1.default.ins.changeCharAcyionTime, { x: _this.playerPointArr[i].x, y: _this.playerPointArr[i].y - 203 }).call(function () {
+                    throwHeadArr[i].onDestroy();
+                }).start();
+            };
+            for (var i = 0; i < throwHeadArr.length; i++) {
+                _loop_1(i);
+            }
+            cc.tween(_this.node).delay(TimeAndMoveManager_1.default.ins.changeCharAcyionTime + 0.1).call(function () {
+                _this.returnPlayerHeadPoint();
+            }).start();
+        }).start();
+    };
+    /**玩家头像位置复原*/
+    MajiongTablePanel.prototype.returnPlayerHeadPoint = function () {
+        var players = GameInfo_1.default.ins.gamePlayers;
+        var newPlayers = [];
+        var noMe = [];
+        var haveMe = [];
+        for (var i = 0; i < players.length; i++) {
+            if (UserInfo_1.default.ins.isSelf(players[i].player.gpid)) {
+                haveMe.push(players[i]);
+                if (players[i].sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                    GameInfo_1.default.ins.isSelfZhuang = true;
+                }
+            }
+            else {
+                if (haveMe.length > 0) {
+                    haveMe.push(players[i]);
+                }
+                else {
+                    noMe.push(players[i]);
+                }
+            }
+        }
+        newPlayers = haveMe.concat(noMe);
+        var head;
+        for (var i = 0; i < newPlayers.length; i++) {
+            head = this.getMyHeadBySit((i + this.myInitSit) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType));
+            head.sitInfo = newPlayers[i];
+            head.showZhuang(false);
+            if (head.sitInfo.sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                head.showZhuang(true);
+            }
+        }
+        this.showWallMajiong();
+        this.returnPointOver = true;
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ThrowFrist) {
+            this.showThrowFrist();
+        }
+    };
+    /**通过位置获取我自己的头像*/
+    MajiongTablePanel.prototype.getMyHeadBySit = function (headSit) {
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            if (this.playerHeadArr[i].directionSitNum == headSit) {
+                return this.playerHeadArr[i];
+            }
+        }
+    };
+    /**获取暂存的位置*/
+    MajiongTablePanel.prototype.getRsltDataById = function (gpId) {
+        for (var i = 0; i < this.prDiceRsltArr.length; i++) {
+            if (this.prDiceRsltArr[i].playerId == gpId) {
+                return this.prDiceRsltArr[i];
+            }
+        }
+    };
+    /**定位骰子结果返回*/
+    MajiongTablePanel.prototype.onPrDiceRslt = function (e, msg) {
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ChangeChar) {
+            var pr = new UserInfo_1.PrDiceRsltData();
+            pr.msg = msg;
+            for (var i = 0; i < this.playerHeadArr.length; i++) {
+                if (this.playerHeadArr[i].sitInfo.sitNum == msg.sit) {
+                    this.playerHeadArr[i].showRollDiceAction(msg.bigNum, msg.smlNum);
+                    pr.playerId = this.playerHeadArr[i].playerInfo.gpid;
+                }
+            }
+            this.prDiceRsltArr.push(pr);
+        }
+    };
+    /**开始定位*/
+    MajiongTablePanel.prototype.onStartDicePos = function (e, msg) {
+        if (this.throwBookMakerOver) {
+            this.showDiceBtn(true);
+        }
+    };
+    /**投掷骰子结果返回*/
+    MajiongTablePanel.prototype.onDiceRslt = function (e, msg) {
+        var _this = this;
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ThrowBookMaker) {
+            for (var i = 0; i < this.playerHeadArr.length; i++) {
+                if (this.playerHeadArr[i].directionSitNum == 0) {
+                    this.playerHeadArr[i].showDiceBookMaker(msg);
+                    cc.tween(this.node).delay(0.7 + TimeAndMoveManager_1.default.ins.zhuangRollTime + TimeAndMoveManager_1.default.ins.diceRotation).call(function () {
+                        _this.showZhuangAction();
+                        _this.throwBookMakerOver = true;
+                        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ChangeChar) {
+                            _this.showDiceBtn(true);
+                        }
+                    }).start();
+                }
+            }
+        }
+        else if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ThrowFrist) {
+            if (msg.bigNum == msg.smlNum && (GameInfo_1.default.ins.roomTableInfo.rule.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.Baozi || GameInfo_1.default.ins.roomTableInfo.rule.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.ShuaiPiao)) {
+                GameInfo_1.default.ins.isBaozi = true;
+                this.showbaoziFight();
+            }
+            if (msg.bigNum != msg.smlNum && GameInfo_1.default.ins.roomTableInfo.rule.baozi == LobbyMsgDef_1.GamePiaoTypeEnum.ShuaiPiao) {
+                var piaoIndex = ((msg.bigNum + msg.smlNum - 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType) + GameInfo_1.default.ins.nowBookMakerSit) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+                for (var i = 0; i < this.playerHeadArr.length; i++) {
+                    if (this.playerHeadArr[i].sitInfo.sitNum == piaoIndex) {
+                        this.playerHeadArr[i].isPiao = true;
+                    }
+                }
+            }
+            for (var i = 0; i < this.playerHeadArr.length; i++) {
+                if (this.playerHeadArr[i].sitInfo.sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                    this.playerHeadArr[i].showDiceBookMaker(msg);
+                    cc.tween(this.node).delay(0.7 + TimeAndMoveManager_1.default.ins.zhuangRollTime + TimeAndMoveManager_1.default.ins.diceRotation).call(function () {
+                        _this.canGetHands = true;
+                        _this.beginGetCard(msg);
+                    }).start();
+                }
+            }
+        }
+    };
+    /**开始拿牌*/
+    MajiongTablePanel.prototype.beginGetCard = function (msg) {
+        var _this = this;
+        GloBal_1.Global.Utils.debugOutput("我在这里开始拿牌了、。、、、");
+        this.getCardPoint = msg.bigNum;
+        this.getCardBegin = msg.smlNum;
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.DrawHandCard) {
+            cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.getWallTime).call(function () {
+                _this.setWallDrawOeder();
+                _this.showGetHand();
+            }).start();
+        }
+    };
+    /**设置牌墙初始拿牌顺序*/
+    MajiongTablePanel.prototype.setWallDrawOeder = function () {
+        var now = (this.getCardPoint + this.getCardBegin - 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        var begin = 0;
+        var roomType = GameInfo_1.default.ins.roomTableInfo.rule.roomType;
+        var wallSuite = GloBal_1.Global.Utils.getMajiongWallByGameType(roomType);
+        for (var i = 0; i < now; i++) {
+            begin += wallSuite[i];
+        }
+        begin += (this.getCardBegin + 1) * 2;
+        var beginIndex = 0;
+        for (var i = begin; i < GameInfo_1.default.ins.allWallCardArray.length; i++) {
+            GameInfo_1.default.ins.allWallCardArray[i].majiongDrawOeder = beginIndex;
+            beginIndex++;
+        }
+        for (var i = 0; i < begin; i++) {
+            GameInfo_1.default.ins.allWallCardArray[i].majiongDrawOeder = beginIndex;
+            beginIndex++;
+        }
+        GameInfo_1.default.ins.sortWallByGetHand();
+    };
+    /**展示拿牌*/
+    MajiongTablePanel.prototype.showGetHand = function () {
+        var roomType = GameInfo_1.default.ins.roomTableInfo.rule.roomType;
+        this.maxPlayerNum = GloBal_1.Global.Utils.getMaxPlayerByGameType(roomType);
+        this.createAllHandPanel();
+    };
+    /**展示摸牌动作*/
+    MajiongTablePanel.prototype.showGetAction = function () {
+        var _this = this;
+        this.addHandPanelNum++;
+        if (this.addHandPanelNum == this.maxPlayerNum) {
+            /**分4次发牌*/
+            this.schedule(function () {
+                _this.onGetHandTimer();
+            }, TimeAndMoveManager_1.default.ins.getWallTime, 3, 0);
+            GloBal_1.Global.Utils.playSound("sound/1");
+        }
+    };
+    MajiongTablePanel.prototype.onGetHandTimer = function () {
+        this.nowGetHandPlayerNum++;
+        for (var i = 0; i < this.handPanelArr.length; i++) {
+            var getNums = this.getNums(this.nowGetHandPlayerNum, this.handPanelArr[i].sitIndex);
+            this.showGetWall(getNums);
+            this.handPanelArr[i].showGetHnads(getNums);
+        }
+    };
+    /**获取当前需要发几张牌*/
+    MajiongTablePanel.prototype.getNums = function (index, sitIndex) {
+        var getHands = 0;
+        if (index < 4) {
+            getHands = 4;
+        }
+        else {
+            if (sitIndex == GameInfo_1.default.ins.nowBookMakerSit) {
+                getHands = 2;
+            }
+            else {
+                getHands = 1;
+            }
+        }
+        return getHands;
+    };
+    /**展示牌墙有牌被拿走*/
+    MajiongTablePanel.prototype.showGetWall = function (getNum) {
+        if (getNum === void 0) { getNum = 1; }
+        for (var i = GameInfo_1.default.ins.allPlayerGetCard; i < GameInfo_1.default.ins.allPlayerGetCard + getNum; i++) {
+            GameInfo_1.default.ins.allWallCardArray[i].node.active = false;
+        }
+        GameInfo_1.default.ins.allPlayerGetCard += getNum;
+    };
+    /***添加所有手牌牌组*/
+    MajiongTablePanel.prototype.createAllHandPanel = function () {
+        var _this = this;
+        var arr = [this.majiongHandPrefab, this.majiongOutCardPrefab];
+        GloBal_1.Global.DialogManager.createDialog("majiongCard/prefab/MyHandCardPanel", arr, function (any, createDialog) {
+            createDialog.x = CardHelpManager_1.default.ins.myHandCardInitPoint.x;
+            createDialog.y = CardHelpManager_1.default.ins.myHandCardInitPoint.y;
+            createDialog.getComponent(MyHandCardPanel_1.default).sitIndex = UserInfo_1.default.ins.mySitIndex;
+            _this.handPanelArr[UserInfo_1.default.ins.mySitIndex] = createDialog.getComponent(MyHandCardPanel_1.default);
+            _this.showGetAction();
+        }, this.cardTableGroup);
+        GloBal_1.Global.DialogManager.createDialog("majiongCard/prefab/OppHandCardPanel", arr, function (any, createDialog) {
+            createDialog.x = CardHelpManager_1.default.ins.oppHandCardInitPoint.x;
+            createDialog.y = CardHelpManager_1.default.ins.oppHandCardInitPoint.y;
+            createDialog.getComponent(OppHandCardPanel_1.default).sitIndex = (UserInfo_1.default.ins.mySitIndex + 2) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+            _this.handPanelArr[(UserInfo_1.default.ins.mySitIndex + 2) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)] = createDialog.getComponent(OppHandCardPanel_1.default);
+            _this.showGetAction();
+        }, this.cardTableGroup);
+        GloBal_1.Global.DialogManager.createDialog("majiongCard/prefab/DownHandCardPanel", arr, function (any, createDialog) {
+            createDialog.x = CardHelpManager_1.default.ins.downHandCardInitPoint.x;
+            createDialog.y = CardHelpManager_1.default.ins.downHandCardInitPoint.y;
+            createDialog.getComponent(DownHandCardPanel_1.default).sitIndex = (UserInfo_1.default.ins.mySitIndex + 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+            _this.handPanelArr[(UserInfo_1.default.ins.mySitIndex + 1) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)] = createDialog.getComponent(DownHandCardPanel_1.default);
+            _this.showGetAction();
+        }, this.cardTableGroup);
+        GloBal_1.Global.DialogManager.createDialog("majiongCard/prefab/UpHandCardPanel", arr, function (any, createDialog) {
+            createDialog.x = CardHelpManager_1.default.ins.upHandCardInitPoint.x;
+            createDialog.y = CardHelpManager_1.default.ins.upHandCardInitPoint.y;
+            createDialog.getComponent(UpHandCardPanel_1.default).sitIndex = (UserInfo_1.default.ins.mySitIndex + 3) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+            _this.handPanelArr[(UserInfo_1.default.ins.mySitIndex + 3) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)] = createDialog.getComponent(UpHandCardPanel_1.default);
+            _this.showGetAction();
+        }, this.cardTableGroup);
+    };
+    /**创建牌墙*/
+    MajiongTablePanel.prototype.showWallMajiong = function () {
+        var roomType = GameInfo_1.default.ins.roomTableInfo.rule.roomType;
+        var wallSuite = GloBal_1.Global.Utils.getMajiongWallByGameType(roomType);
+        var wallIndex = 0;
+        var initPoint;
+        var finalPoint = new cc.Vec2(0, 0);
+        var tempIndex = 0;
+        var cardId = 0;
+        for (var i = 0; i < GloBal_1.Global.Utils.getMaxPlayerByGameType(roomType); i++) { // 
+            var sitNum = this.getZhuangSit(i);
+            for (var l = 0; l < wallSuite[i]; l++) {
+                initPoint = CardHelpManager_1.default.ins.wallCardInitPoint[sitNum];
+                finalPoint = this.getWallPoint(sitNum, initPoint, l);
+                var item = cc.instantiate(this.majiongWallPrefab);
+                this.cardTableGroup.addChild(item);
+                item.x = finalPoint.x;
+                item.y = finalPoint.y;
+                if (sitNum == 0 || sitNum == 3) {
+                    tempIndex = wallSuite[i] - l - 1;
+                    cardId = wallIndex + tempIndex;
+                }
+                else {
+                    tempIndex = 0;
+                    cardId = wallIndex % 2 == 0 ? wallIndex + 1 : wallIndex - 1;
+                    wallIndex++;
+                }
+                item.getComponent(MajiongWallCard_1.default).cardId = cardId;
+                item.getComponent(MajiongWallCard_1.default).cardPoint = sitNum;
+                GameInfo_1.default.ins.allWallCardArray.push(item.getComponent(MajiongWallCard_1.default));
+            }
+            if (sitNum == 0 || sitNum == 3) {
+                wallIndex += wallSuite[i];
+            }
+        }
+        GameInfo_1.default.ins.sortWall();
+    };
+    /**获取当前牌墙位置*/
+    MajiongTablePanel.prototype.getWallPoint = function (sitNum, initPoint, index) {
+        var wallPoint = new cc.Vec2(0, 0);
+        switch (sitNum) {
+            case 0:
+                wallPoint.x = initPoint.x + Math.floor(index / 2) * CardHelpManager_1.default.ins.wallCardWidth[sitNum];
+                wallPoint.y = index % 2 == 0 ? initPoint.y - 20 : initPoint.y;
+                break;
+            case 1:
+                wallPoint.x = index % 2 == 0 ? (initPoint.x) + Math.floor(index / 2) * 1 : (initPoint.x + 15) + Math.floor(index / 2) * 1;
+                wallPoint.y = index % 2 == 0 ? initPoint.y - Math.floor(index / 2) * (CardHelpManager_1.default.ins.wallCardHeight[sitNum] - 16) : initPoint.y - Math.floor(index / 2) * (CardHelpManager_1.default.ins.wallCardHeight[sitNum] - 16) + 16;
+                break;
+            case 2:
+                wallPoint.x = initPoint.x + Math.floor(index / 2) * CardHelpManager_1.default.ins.wallCardWidth[sitNum];
+                wallPoint.y = index % 2 == 0 ? initPoint.y - 20 : initPoint.y;
+                break;
+            case 3:
+                wallPoint.x = index % 2 == 0 ? (initPoint.x) - Math.floor(index / 2) * 1 : (initPoint.x - 15) - Math.floor(index / 2) * 1;
+                wallPoint.y = index % 2 == 0 ? initPoint.y - Math.floor(index / 2) * (CardHelpManager_1.default.ins.wallCardHeight[sitNum] - 16) : initPoint.y - Math.floor(index / 2) * (CardHelpManager_1.default.ins.wallCardHeight[sitNum] - 16) + 16;
+                break;
+        }
+        return wallPoint;
+    };
+    /**获取当前该发谁的牌墙*/
+    MajiongTablePanel.prototype.getZhuangSit = function (index) {
+        return (GameInfo_1.default.ins.nowBookMakerSit - UserInfo_1.default.ins.mySitIndex - index + 16) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+    };
+    /**展示入庄动画*/
+    MajiongTablePanel.prototype.showZhuangAction = function () {
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            if (this.playerHeadArr[i].sitInfo.sitNum == GameInfo_1.default.ins.nowBookMakerSit) {
+                this.playerHeadArr[i].showZhuang(true);
+            }
+        }
+    };
+    /**展示准备状态*/
+    MajiongTablePanel.prototype.onPlayerReady = function (e, data) {
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            if (this.playerHeadArr[i].sitInfo && this.playerHeadArr[i].sitInfo.sitNum == data.okSit) {
+                this.playerHeadArr[i].showIsReady(true);
+            }
+        }
+        if (data.okSit == UserInfo_1.default.ins.mySitIndex) {
+            this.showReadyBtn(false);
+        }
+    };
+    /**有人坐下*/
+    MajiongTablePanel.prototype.onNewSit = function (e, data) {
+        var _this = this;
+        cc.tween(this.node).delay(0.5).call(function () {
+            _this.playerHeadArr[data.newSit.sitNum].sitInfo = data.newSit;
+            if (UserInfo_1.default.ins.isSelf(data.newSit.player.gpid)) {
+                _this.myInitSit = data.newSit.sitNum;
+                _this.myInitSitIndex = data.newSit.sitNum;
+                var now = 0;
+                var index = 0;
+                for (var i = data.newSit.sitNum; i < data.newSit.sitNum + 4; i++) {
+                    now = (i + 40) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+                    var v2 = _this.playerPointArr[index];
+                    cc.tween(_this.playerHeadArr[now].node).to(TimeAndMoveManager_1.default.ins.newPlayerSitMcTime, { x: v2.x + 10, y: v2.y + 10 }).call(function () {
+                        /**展示准备按钮*/
+                        if (_this.playerHeadArr[data.newSit.sitNum].sitInfo.onReady) {
+                            _this.showReadyBtn(false);
+                        }
+                        else {
+                            _this.showReadyBtn(true);
+                        }
+                        _this.playerHeadArr[data.newSit.sitNum].showUiPoint();
+                        if (GloBal_1.Global.Utils.getlocalStorageItem('init_ready_x') == "1") {
+                            _this.onReadyClick(null, null);
+                            _this.showReadyBtn(false);
+                        }
+                    })
+                        .start();
+                    index++;
+                }
+                for (var i = 0; i < _this.playerHeadArr.length; i++) {
+                    if (_this.playerHeadArr[i].playerInfo == null) {
+                        _this.playerHeadArr[i].showNone();
+                    }
+                }
+            }
+        }, this).start();
+    };
+    /**展示和隐藏准备按钮*/
+    MajiongTablePanel.prototype.showReadyBtn = function (boo) {
+        this.readyBtn.node.active = boo;
+    };
+    /**点击骰子*/
+    MajiongTablePanel.prototype.showDiceBtn = function (boo) {
+        var _this = this;
+        this.gameDiceBtn.node.active = boo;
+        if (boo) {
+            var index_1 = 0;
+            this.schedule(function () {
+                var now = 3 - index_1;
+                _this.rollDiceLabel.string = "长按摇骰 (" + now + "S)";
+                if (index_1 == 3) {
+                    var msg = new TableMsg_1.Msg_CS_DoDice();
+                    GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+                    _this.onGameDiceClick(null, null);
+                }
+                index_1++;
+            }, 1, 3, 0);
+        }
+    };
+    /**展示对局开始和对局结束*/
+    MajiongTablePanel.prototype.showBeginImage = function (isBegin) {
+        var _this = this;
+        if (isBegin) {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.gameBeginImage, "comResource/font/game_duijukaishi", function () {
+                _this.showBeginImageAction();
+            });
+        }
+        else {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.gameBeginImage, "comResource/font/game_duijujieshu", function () {
+                _this.showBeginImageAction();
+            });
+        }
+    };
+    /**展示开始或结束动画*/
+    MajiongTablePanel.prototype.showBeginImageAction = function () {
+        var _this = this;
+        cc.tween(this.gameBeginImage.node).to(0.2, { opacity: 255, scaleX: 1, scaleY: 1 }).call(function () {
+            _this.schedule(function () {
+                _this.gameBeginImage.node.opacity = 0;
+                _this.gameBeginImage.node.scaleX = 0;
+                _this.gameBeginImage.node.scaleY = 0;
+            }, 2, 1, 0);
+        }).start();
+    };
+    //---------------------------------------------------UI  event-----------------------------------------------
+    /***准备按钮点击*/
+    MajiongTablePanel.prototype.onReadyClick = function (event, param) {
+        GloBal_1.Global.Utils.debugOutput("MajiongTablePanel ==> 准备按钮点击");
+        var msg = new TableMsg_1.Msg_CS_Ready();
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    /**投掷骰子点击*/
+    MajiongTablePanel.prototype.onGameDiceClick = function (event, param) {
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.CheckBookMaker) {
+            var msg = new TableMsg_1.Msg_CS_DoDice();
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+            this.showDiceBtn(false);
+        }
+        else if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ChangeChar) {
+            var msg = new TableMsg_1.Msg_CS_PressDice();
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+            this.showDiceBtn(false);
+        }
+        else if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ThrowFrist) {
+            var msg = new TableMsg_1.Msg_CS_DoDice();
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+            this.showDiceBtn(false);
+        }
+    };
+    MajiongTablePanel.prototype.removeEevnt = function () {
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.NEW_ONE_SIT, this.onNewSit, this);
+    };
+    /***换三记录点击*/
+    MajiongTablePanel.prototype.onChangeThreeBtnClick = function () {
+        if (this.changeThreeItem) {
+            this.changeThreeItem.disTory();
+            this.changeThreeItem = null;
+        }
+        else {
+            this.changeThreeItem = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("changeThree/prefab/ChangeThreeItem")).getComponent(ChangeThreeItem_1.default);
+            this.node.addChild(this.changeThreeItem.node);
+            this.changeThreeItem.node.x = -560;
+            this.changeThreeItem.node.y = -325;
+        }
+    };
+    MajiongTablePanel.prototype.onGameinfoQuestionClic = function () {
+    };
+    MajiongTablePanel.prototype.onGameListBtnClick = function () {
+    };
+    MajiongTablePanel.prototype.onGameMenuBtnClick = function () {
+    };
+    MajiongTablePanel.prototype.onGameHorseBtnClick = function () {
+    };
+    MajiongTablePanel.prototype.showChangThreeBtn = function (boo) {
+        this.changeThreeBtn.node.active = boo;
+    };
+    MajiongTablePanel.prototype.onNewGame = function () {
+        this.canGetHands = false;
+        this.getCardPoint = 0;
+        this.getCardBegin = 0;
+        this.nowGetHandPlayerNum = 0;
+        this.addHandPanelNum = 0;
+        for (var i = 0; i < this.handPanelArr.length; i++) {
+            this.handPanelArr[i].disTory();
+        }
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            this.playerHeadArr[i].showFen();
+        }
+        if (this.gamePositionItem) {
+            this.gamePositionItem.InitPlayerDicType(0, GameInfo_1.default.ins.AllCardMax);
+        }
+        for (var i = 0; i < this.playerHeadArr.length; i++) {
+            this.playerHeadArr[i].showDingQue(EnumManager_1.CardTypeEnum.EndValue);
+            this.playerHeadArr[i].isMyAction = false;
+            this.playerHeadArr[i].isPiao = false;
+        }
+        this.showWallMajiong();
+        this.baoziImage.node.active = false;
+        this.fightImage.node.active = false;
+        cc.Tween.stopAllByTarget(this.fightImage.node);
+    };
+    MajiongTablePanel.prototype.onRecordBtnClick = function () {
+        GloBal_1.Global.DialogManager.createDialog("gameRecord/prefab/GameRecordPannel", null, function (any, dialog) {
+            dialog.y = 0;
+        });
+    };
+    MajiongTablePanel.prototype.desTory = function () {
+        this.removeEevnt();
+    };
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "headGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "tipsGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "btnGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "tableElementsGroup", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MajiongTablePanel.prototype, "readyBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "tableIdLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "tableNameLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "tableTypeLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "tableFenLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "gameBeginImage", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MajiongTablePanel.prototype, "gameDiceBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "rollDiceLabel", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "cardTableGroup", void 0);
+    __decorate([
+        property(cc.Button)
+    ], MajiongTablePanel.prototype, "changeThreeBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "fightImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "baoziImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "infoQuetionBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "listBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "menuBtn", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "hordeBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], MajiongTablePanel.prototype, "gameinfoLabel", void 0);
+    __decorate([
+        property(cc.Node)
+    ], MajiongTablePanel.prototype, "buyHorseGroup", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], MajiongTablePanel.prototype, "lookBg", void 0);
+    MajiongTablePanel = __decorate([
+        ccclass
+    ], MajiongTablePanel);
+    return MajiongTablePanel;
+}(UIBase_1.default));
+exports.default = MajiongTablePanel;
+
+cc._RF.pop();

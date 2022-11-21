@@ -1,0 +1,71 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/UIBase.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '5a1fb+ZDshN4I4TLlhxcDlh', 'UIBase');
+// Script/UIBase.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("./Shared/GloBal");
+var ccclass = cc._decorator.ccclass;
+var UIBase = /** @class */ (function (_super) {
+    __extends(UIBase, _super);
+    function UIBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    UIBase.prototype.disTory = function () {
+        if (this.node && this.node.parent) {
+            this.node.parent.removeChild(this.node);
+            this.destroy();
+        }
+        else {
+            GloBal_1.Global.Utils.debugOutput("you want remove a nil object");
+        }
+    };
+    UIBase = __decorate([
+        ccclass
+    ], UIBase);
+    return UIBase;
+}(cc.Component));
+exports.default = UIBase;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxVSUJhc2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsMENBQXlDO0FBRWpDLElBQUEsT0FBTyxHQUFLLEVBQUUsQ0FBQyxVQUFVLFFBQWxCLENBQW1CO0FBRWxDO0lBQW9DLDBCQUFZO0lBQWhEOztJQWNBLENBQUM7SUFSRyx3QkFBTyxHQUFQO1FBQ0ksSUFBRyxJQUFJLENBQUMsSUFBSSxJQUFJLElBQUksQ0FBQyxJQUFJLENBQUMsTUFBTSxFQUFDO1lBQzdCLElBQUksQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLFdBQVcsQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLENBQUM7WUFDeEMsSUFBSSxDQUFDLE9BQU8sRUFBRSxDQUFDO1NBQ2xCO2FBQUk7WUFDRCxlQUFNLENBQUMsS0FBSyxDQUFDLFdBQVcsQ0FBQyw4QkFBOEIsQ0FBQyxDQUFDO1NBQzVEO0lBQ0wsQ0FBQztJQWJnQixNQUFNO1FBRDFCLE9BQU87T0FDYSxNQUFNLENBYzFCO0lBQUQsYUFBQztDQWRELEFBY0MsQ0FkbUMsRUFBRSxDQUFDLFNBQVMsR0FjL0M7a0JBZG9CLE1BQU0iLCJmaWxlIjoiIiwic291cmNlUm9vdCI6Ii8iLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBHbG9iYWwgfSBmcm9tIFwiLi9TaGFyZWQvR2xvQmFsXCI7XHJcblxyXG5jb25zdCB7IGNjY2xhc3MgfSA9IGNjLl9kZWNvcmF0b3I7XHJcbkBjY2NsYXNzXHJcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIFVJQmFzZSBleHRlbmRzIGNjLkNvbXBvbmVudCB7XHJcbiAgICAvKirmiZPlvIB1aeeahOWPguaVsCAqL1xyXG4gICAgcHVibGljIGRpYWxvZ1BhcmFtZXRlcnM6IGFueTtcclxuXHJcblxyXG5cclxuICAgIGRpc1RvcnkoKXtcclxuICAgICAgICBpZih0aGlzLm5vZGUgJiYgdGhpcy5ub2RlLnBhcmVudCl7XHJcbiAgICAgICAgICAgIHRoaXMubm9kZS5wYXJlbnQucmVtb3ZlQ2hpbGQodGhpcy5ub2RlKTtcclxuICAgICAgICAgICAgdGhpcy5kZXN0cm95KCk7XHJcbiAgICAgICAgfWVsc2V7XHJcbiAgICAgICAgICAgIEdsb2JhbC5VdGlscy5kZWJ1Z091dHB1dChcInlvdSB3YW50IHJlbW92ZSBhIG5pbCBvYmplY3RcIik7XHJcbiAgICAgICAgfVxyXG4gICAgfVxyXG59XHJcblxyXG4iXX0=

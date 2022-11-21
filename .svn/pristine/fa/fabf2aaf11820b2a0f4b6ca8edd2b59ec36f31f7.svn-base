@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_shunshi",
+    "texture": "9f2b8189-1f90-4a81-98cf-d857963825f6",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1018,
+      201
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1018,
+      201
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_fu8",
+    "texture": "7a0ca4cb-0ab5-44a8-a5b3-a6a8a827754e",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      74,
+      105
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      74,
+      105
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

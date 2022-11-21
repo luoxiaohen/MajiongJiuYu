@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_jskuang",
+    "texture": "f3dca72e-7f45-4abb-835b-7fbfcf4b53b5",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      124,
+      115
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      124,
+      115
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

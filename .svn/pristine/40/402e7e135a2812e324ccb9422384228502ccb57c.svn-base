@@ -1,0 +1,110 @@
+"use strict";
+cc._RF.push(module, 'a631eiGmIRCnacS2cQYMLz1', 'CallBack');
+// Script/com/CallBack.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CallBack = void 0;
+var GloBal_1 = require("../Shared/GloBal");
+var ObjectPool_1 = require("./ObjectPool");
+/**
+     * 回调函数 封装
+     */
+var CallBack = /** @class */ (function () {
+    function CallBack() {
+    }
+    CallBack.prototype.create = function (_call, _targetRef, _once) {
+        if (_once === void 0) { _once = false; }
+        var _params = [];
+        for (var _i = 3; _i < arguments.length; _i++) {
+            _params[_i - 3] = arguments[_i];
+        }
+        if (_call) {
+            this.mOnce = _once;
+            this.mOnCallBackFunction = _targetRef ? _call.bind(_targetRef) : _call;
+            this.mRef = _targetRef;
+            this.mParams = _params;
+        }
+    };
+    CallBack.prototype.excute = function () {
+        var _params = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            _params[_i] = arguments[_i];
+        }
+        if (this.mOnCallBackFunction) {
+            var _newParams = _params.length == 0 ? this.mParams : _params;
+            GloBal_1.Global.Utils.debugOutput("回调的消息：" + _newParams);
+            this.mOnCallBackFunction.apply(this.mRef, _newParams);
+            if (this.mOnce) {
+                CallBack.unbind(this);
+            }
+        }
+        else {
+            //Log.warn("无效的回调函数调用");
+        }
+    };
+    /**
+     * 延迟执行
+     * @param _delay
+     * @param _params
+     */
+    CallBack.prototype.delayExcute = function (_delay) {
+        var _this = this;
+        if (_delay === void 0) { _delay = 1; }
+        var _params = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            _params[_i - 1] = arguments[_i];
+        }
+        _delay = _delay < 0 ? 0 : _delay;
+        setTimeout(function (_p) {
+            _this.excute.apply(_this, _p);
+        }, _delay, _params);
+    };
+    CallBack.prototype.checkEqual = function (_call, _targetRef) {
+        return _call == this.mOnCallBackFunction && _targetRef == this.mRef;
+    };
+    CallBack.prototype.equalTarget = function (_targetRef) {
+        return this.mRef == _targetRef;
+    };
+    /**在获取时调用 */
+    CallBack.prototype.objectInit = function () {
+    };
+    CallBack.prototype.objectReset = function () {
+        this.mOnce = false;
+        this.mOnCallBackFunction = null;
+        this.mRef = null;
+        this.mParams = null;
+    };
+    /**[public | static]
+     *
+     * @param _call
+     * @param _targetRef
+     * @param _once 是否执行一次 执行后主动释放
+     * @param _params 执行参数 可预先缓存参数 也可以在excute时传入参数 excute的参数优先
+     */
+    CallBack.bind = function (_call, _targetRef, _once) {
+        if (_once === void 0) { _once = false; }
+        var _params = [];
+        for (var _i = 3; _i < arguments.length; _i++) {
+            _params[_i - 3] = arguments[_i];
+        }
+        this.sCallBackPool.regObject(CallBack);
+        var _callBack = this.sCallBackPool.getObject();
+        // _callBack.create(_call, _targetRef,_once,_params );
+        _params.unshift(_call, _targetRef, _once);
+        _callBack.create.apply(_callBack, _params);
+        return _callBack;
+    };
+    /**[public | static]
+     *
+     * @param _callBack
+     */
+    CallBack.unbind = function (_callBack) {
+        _callBack && this.sCallBackPool.putObject(_callBack);
+    };
+    CallBack.sCallBackPool = new ObjectPool_1.ObjectPool();
+    return CallBack;
+}());
+exports.CallBack = CallBack;
+
+cc._RF.pop();

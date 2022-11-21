@@ -1,0 +1,680 @@
+"use strict";
+cc._RF.push(module, '48c93PPjYFLYYDo8cD1DJ2O', 'CheckCardManager');
+// Script/mgr/CheckCardManager.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var UserInfo_1 = require("../Game/info/UserInfo");
+var TableMsgDef_1 = require("../proto/TableMsgDef");
+var GloBal_1 = require("../Shared/GloBal");
+var InterfaceHelp_1 = require("../utils/InterfaceHelp");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CheckCardManager = /** @class */ (function () {
+    function CheckCardManager() {
+    }
+    CheckCardManager_1 = CheckCardManager;
+    Object.defineProperty(CheckCardManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new CheckCardManager_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**计算手牌牌组
+     * 原手牌不需要计算打出可听的牌及蕃 只需要计算是否有听牌
+    */
+    CheckCardManager.prototype.deckCalculationMyHand = function () {
+        var data = new InterfaceHelp_1.DeckData();
+        data.pengValue = this.getPeng();
+        data.gangValue = this.getGang();
+        data.anGangValue = this.getAnGang();
+        data.buGangValue = this.getBuGang();
+        data.allTingValue = [];
+        data.huValue = this.getAllHu(UserInfo_1.default.ins.myHandCardArr);
+        data.huData = this.getHuHand(UserInfo_1.default.ins.myHandCardArr, null);
+        return data;
+    };
+    /**计算进牌之后的牌组 自己摸牌 自己碰牌 自己杠牌
+    */
+    CheckCardManager.prototype.deckCalculationAddCard = function (addCard) {
+        var data = new InterfaceHelp_1.DeckData();
+        data.pengValue = this.getPeng();
+        data.gangValue = this.getGang();
+        data.anGangValue = this.getAnGang();
+        data.buGangValue = this.getBuGang();
+        var arr = UserInfo_1.default.ins.myHandCardArr;
+        data.huValue = this.getAllHu(this.getNewHand(addCard, arr));
+        data.allTingValue = this.getAllTing(UserInfo_1.default.ins.myHandCardArr);
+        data.huData = this.getHuHand(arr, addCard);
+        return data;
+    };
+    /**获取所有打出可听*/
+    CheckCardManager.prototype.getAllTing = function (handArr) {
+        var listenArr = [];
+        var newHand = handArr;
+        var tempArr = [];
+        var forNum = newHand.length;
+        var tempListen;
+        for (var i = 0; i < forNum; i++) {
+            for (var l = 0; l < newHand.length; l++) {
+                tempArr[l] = newHand[l];
+            }
+            tempListen = new InterfaceHelp_1.ListenCard();
+            tempListen.outCardValue = newHand[i];
+            tempArr.splice(i, 1);
+            tempListen.huData = this.getAllHu(tempArr);
+            if (tempListen.huData.length > 0) {
+                listenArr.push(tempListen);
+            }
+        }
+        return listenArr;
+    };
+    /**当前手牌是否可以胡*/
+    CheckCardManager.prototype.getHuHand = function (handArr, addCard) {
+        var canHu = new InterfaceHelp_1.HuData();
+        canHu = this.getHuData(handArr, addCard);
+        if (canHu.HuType.length > 0) {
+            this.removeAgin(canHu.HuType);
+            canHu.fanNum = this.getAllFan(canHu.HuType);
+            canHu.beiNum = this.getAllBei(canHu.HuType);
+        }
+        if (canHu.HuType && canHu.HuType.length > 0) {
+            return canHu;
+        }
+        else {
+            return null;
+        }
+    };
+    /***获取所有可胡的牌*/
+    CheckCardManager.prototype.getAllHu = function (handArr) {
+        var arr = [];
+        /**先判断手中是否还有定缺牌,如果有定缺牌必不可能有胡*/
+        for (var i = 0; i < handArr.length; i++) {
+            if (GloBal_1.Global.Utils.getIsDice(handArr[i], UserInfo_1.default.ins.myDiceType)) {
+                return [];
+            }
+        }
+        var canHu = new InterfaceHelp_1.CanHuCard();
+        if (handArr.length == 1) {
+            canHu = this.getHuData(handArr, handArr[0]);
+            this.removeAgin(canHu.HuType);
+            canHu.fanNum = this.getAllFan(canHu.HuType);
+            canHu.beiNum = this.getAllBei(canHu.HuType);
+            arr.push(canHu);
+            return arr;
+        }
+        var fristCard = Math.floor(handArr[0] / 10);
+        var lastCard = Math.floor(handArr[handArr.length - 1] / 10);
+        for (var i = fristCard * 10 + 1; i <= fristCard * 10 + 9; i++) {
+            canHu = this.getHuData(handArr, i);
+            if (canHu.HuType.length > 0) {
+                this.removeAgin(canHu.HuType);
+                canHu.fanNum = this.getAllFan(canHu.HuType);
+                canHu.beiNum = this.getAllBei(canHu.HuType);
+                arr.push(canHu);
+            }
+        }
+        if (fristCard != lastCard) {
+            for (var i = lastCard * 10 + 1; i <= lastCard * 10 + 9; i++) {
+                canHu = this.getHuData(handArr, i);
+                if (canHu.HuType.length > 0) {
+                    this.removeAgin(canHu.HuType);
+                    canHu.fanNum = this.getAllFan(canHu.HuType);
+                    canHu.beiNum = this.getAllBei(canHu.HuType);
+                    arr.push(canHu);
+                }
+            }
+        }
+        return this.checkCanHu(arr);
+    };
+    /**获取一个新的牌组*/
+    CheckCardManager.prototype.getNewHand = function (card, handeArr) {
+        var newHand = [];
+        for (var i = 0; i < handeArr.length; i++) {
+            newHand.push(handeArr[i]);
+        }
+        if (card > 0) {
+            newHand.push(card);
+        }
+        newHand.sort(GloBal_1.Global.Utils.compare);
+        return newHand;
+    };
+    /**计算当前牌可以胡什么*/
+    CheckCardManager.prototype.getHuData = function (handArr, card) {
+        if (card === void 0) { card = null; }
+        var newHand = [];
+        if (card > 0) {
+            newHand = this.getNewHand(card, handArr);
+        }
+        else {
+            for (var i = 0; i < handArr.length; i++) {
+                newHand.push(handArr[i]);
+            }
+        }
+        var canHu = new InterfaceHelp_1.CanHuCard();
+        /**手牌只有2张并相等必然是金钩钓*/
+        if (newHand.length == 2 && newHand[0] == newHand[1]) {
+            canHu.HuType.push(TableMsgDef_1.HuTypeEnum.JinGouDiao);
+            if (this.haveJiangDui(newHand)) {
+                canHu.HuType.push(TableMsgDef_1.HuTypeEnum.JiangDui);
+            }
+        }
+        if (this.haveDui(newHand) == 7) {
+            canHu.HuType.push(TableMsgDef_1.HuTypeEnum.QiDui);
+            if (this.haveGang(newHand) >= 1) {
+                canHu.HuType.push(TableMsgDef_1.HuTypeEnum.LongQiDui);
+            }
+        }
+        if (this.haveDuiDuiHu(newHand)) {
+            canHu.HuType.push(TableMsgDef_1.HuTypeEnum.DuiDuiHu);
+            if (this.haveJiangDui(newHand)) {
+                canHu.HuType.push(TableMsgDef_1.HuTypeEnum.JiangDui);
+            }
+        }
+        if (this.havePinghu(newHand)) {
+            canHu.HuType.push(TableMsgDef_1.HuTypeEnum.PingHu);
+            if (this.haveYaoJiu(newHand)) {
+                canHu.HuType.push(TableMsgDef_1.HuTypeEnum.YaoJiu);
+            }
+        }
+        if (canHu.HuType.length) {
+            if (this.isQingYiSe(newHand, true)) {
+                canHu.HuType.push(TableMsgDef_1.HuTypeEnum.QingYiSe);
+            }
+        }
+        if (canHu.HuType.length > 0) {
+            if (card && card >= 0) {
+                canHu.cardValue = card;
+            }
+            else if (UserInfo_1.default.ins.myLastFeelCard >= 0) {
+                canHu.cardValue = UserInfo_1.default.ins.myLastFeelCard;
+            }
+            else {
+                canHu.cardValue = handArr[handArr.length - 1];
+            }
+            this.removeAgin(canHu.HuType);
+        }
+        return canHu;
+    };
+    /***去掉不可重复胡的*/
+    CheckCardManager.prototype.removeAgin = function (arr) {
+        if (arr.length > 1 && arr.indexOf(TableMsgDef_1.HuTypeEnum.PingHu) >= 0) {
+            arr.splice(arr.indexOf(TableMsgDef_1.HuTypeEnum.PingHu), 1);
+        }
+        if (arr.indexOf(TableMsgDef_1.HuTypeEnum.JinGouDiao) >= 0) {
+            if (arr.indexOf(TableMsgDef_1.HuTypeEnum.DuiDuiHu) >= 0) {
+                arr.splice(arr.indexOf(TableMsgDef_1.HuTypeEnum.DuiDuiHu), 1);
+            }
+        }
+        if (arr.indexOf(TableMsgDef_1.HuTypeEnum.LongQiDui) >= 0) {
+            if (arr.indexOf(TableMsgDef_1.HuTypeEnum.QiDui) >= 0) {
+                arr.splice(arr.indexOf(TableMsgDef_1.HuTypeEnum.QiDui), 1);
+            }
+        }
+        if (arr.indexOf(TableMsgDef_1.HuTypeEnum.JiangDui) >= 0) {
+            if (arr.indexOf(TableMsgDef_1.HuTypeEnum.DuiDuiHu) >= 0) {
+                arr.splice(arr.indexOf(TableMsgDef_1.HuTypeEnum.DuiDuiHu), 1);
+            }
+        }
+    };
+    /**是否可以胡幺九*/
+    CheckCardManager.prototype.haveYaoJiu = function (newHand) {
+        var arr = [1, 9];
+        var penggang = UserInfo_1.default.ins.myPengGang;
+        for (var m = 0; m < penggang.length; m++) {
+            if (arr.indexOf(penggang[m].cardValue) < 0) {
+                return false;
+            }
+        }
+        var nowCard;
+        var duiArr = [];
+        for (var i = 0; i < newHand.length; i++) {
+            nowCard = newHand[i];
+            if (nowCard == newHand[i + 1]) {
+                duiArr.push(newHand[i]);
+                i = i + 1;
+            }
+        }
+        if (duiArr.length < 1) {
+            return false;
+        }
+        var tempArr = [];
+        for (var i = 0; i < duiArr.length; i++) {
+            for (var l = 0; l < newHand.length; l++) {
+                tempArr[l] = newHand[l];
+            }
+            if (arr.indexOf(duiArr[i] % 10) < 0) {
+                continue;
+            }
+            tempArr.splice(tempArr.indexOf(duiArr[i]), 2);
+            for (var k = 0; k < tempArr.length; k++) {
+                var card = tempArr[k];
+                if (this.haveThree(tempArr, card)) {
+                    if (arr.indexOf(card % 10) < 0) {
+                        continue;
+                    }
+                    for (var m = 0; m < 3; m++) {
+                        tempArr.splice(tempArr.indexOf(card), 1);
+                    }
+                    k = -1;
+                }
+                else if (this.haveShunzi(tempArr, card)) {
+                    if (arr.indexOf(card % 10) < 0 && arr.indexOf((card + 1) % 10) < 0 && arr.indexOf((card + 2) % 10) < 0) {
+                        continue;
+                    }
+                    tempArr.splice(tempArr.indexOf(card), 1);
+                    tempArr.splice(tempArr.indexOf(card + 1), 1);
+                    tempArr.splice(tempArr.indexOf(card + 2), 1);
+                    k = -1;
+                }
+            }
+            if (tempArr.length == 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**是否可以平胡*/
+    CheckCardManager.prototype.havePinghu = function (newHand) {
+        var nowCard;
+        var duiArr = [];
+        for (var i = 0; i < newHand.length; i++) {
+            nowCard = newHand[i];
+            if (nowCard == newHand[i + 1]) {
+                duiArr.push(newHand[i]);
+                i = i + 1;
+            }
+        }
+        if (duiArr.length < 1) {
+            return false;
+        }
+        var tempArr = [];
+        for (var i = 0; i < duiArr.length; i++) {
+            for (var l = 0; l < newHand.length; l++) {
+                tempArr[l] = newHand[l];
+            }
+            tempArr.splice(tempArr.indexOf(duiArr[i]), 2);
+            for (var k = 0; k < tempArr.length; k++) {
+                var card = tempArr[k];
+                if (this.haveThree(tempArr, card)) {
+                    for (var m = 0; m < 3; m++) {
+                        tempArr.splice(tempArr.indexOf(card), 1);
+                    }
+                    k = -1;
+                }
+                else if (this.haveShunzi(tempArr, card)) {
+                    tempArr.splice(tempArr.indexOf(card), 1);
+                    tempArr.splice(tempArr.indexOf(card + 1), 1);
+                    tempArr.splice(tempArr.indexOf(card + 2), 1);
+                    k = -1;
+                }
+            }
+            if (tempArr.length == 0) {
+                return true;
+            }
+        }
+        return false;
+    };
+    CheckCardManager.prototype.haveShunzi = function (cardArr, card) {
+        if (cardArr.indexOf(card) >= 0 && cardArr.indexOf(card + 1) >= 0 && cardArr.indexOf(card + 2) >= 0) {
+            return true;
+        }
+        return false;
+    };
+    CheckCardManager.prototype.haveThree = function (cardArr, card) {
+        var index = 0;
+        for (var i = 0; i < cardArr.length; i++) {
+            if (cardArr[i] == card) {
+                index++;
+            }
+        }
+        return index >= 3;
+    };
+    /**是否可能是将对*/
+    CheckCardManager.prototype.haveJiangDui = function (newHand) {
+        var arr = [2, 5, 8];
+        for (var i = 0; i < newHand.length; i++) {
+            if (arr.indexOf(newHand[i] % 10) < 0) {
+                return false;
+            }
+        }
+        var penggang = UserInfo_1.default.ins.myPengGang;
+        for (var i = 0; i < penggang.length; i++) {
+            if (arr.indexOf(penggang[i].cardValue % 10) < 0) {
+                return false;
+            }
+        }
+        return true;
+    };
+    /**是否可能是对对胡*/
+    CheckCardManager.prototype.haveDuiDuiHu = function (newHand) {
+        var nowCard;
+        var haveDui = false;
+        var keNum = 0;
+        for (var i = 0; i < newHand.length; i++) {
+            nowCard = newHand[i];
+            if (nowCard == newHand[i + 1] && nowCard != newHand[i + 2]) {
+                if (haveDui) {
+                    return false;
+                }
+                else {
+                    haveDui = true;
+                    i = i + 1;
+                }
+            }
+            else if (nowCard == newHand[i + 1] && nowCard == newHand[i + 2]) {
+                keNum++;
+                i = i + 2;
+            }
+            else {
+                return false;
+            }
+        }
+        if (haveDui && keNum >= 1) {
+            return true;
+        }
+    };
+    CheckCardManager.prototype.haveGang = function (tempArr) {
+        var num = 0;
+        var arr = [];
+        for (var i = 0; i < tempArr.length; i++) {
+            if (tempArr[i + 3]) {
+                if (tempArr[i] == tempArr[i + 3]) {
+                    arr.push(tempArr[i]);
+                    i = i + 3;
+                }
+            }
+            else {
+                i = tempArr.length;
+            }
+        }
+        return arr.length;
+    };
+    CheckCardManager.prototype.haveDui = function (tempArr) {
+        var num = 0;
+        var arr = [];
+        for (var i = 0; i < tempArr.length; i++) {
+            if (tempArr[i + 1]) {
+                if (tempArr[i] == tempArr[i + 1]) {
+                    arr.push(tempArr[i]);
+                    i = i + 1;
+                }
+            }
+            else {
+                i = tempArr.length;
+            }
+        }
+        return arr.length;
+    };
+    /**检测查询后的胡牌数据
+     * 主要是相同牌的胡牌只需要保留最大蕃
+    */
+    CheckCardManager.prototype.checkCanHu = function (tempCan) {
+        var huArr = [];
+        var hu;
+        for (var i = 0; i < tempCan.length; i++) {
+            hu = tempCan[i];
+            var otherHu = void 0;
+            var tempHu = void 0;
+            for (var l = i + 1; l < tempCan.length; l++) {
+                otherHu = tempCan[l];
+                if (hu.cardValue == otherHu.cardValue) {
+                    var bigHu = hu.fanNum > otherHu.fanNum ? hu : otherHu;
+                    if (tempHu) {
+                        tempHu = tempHu.fanNum > bigHu.fanNum ? tempHu : bigHu;
+                    }
+                    else {
+                        tempHu = bigHu;
+                    }
+                }
+            }
+            if (tempHu) {
+                if (!this.isHaveHu(huArr, tempHu)) {
+                    huArr.push(tempHu);
+                }
+            }
+            else {
+                if (!this.isHaveHu(huArr, hu)) {
+                    huArr.push(hu);
+                }
+            }
+        }
+        return huArr;
+    };
+    /**查询是否有相同胡*/
+    CheckCardManager.prototype.isHaveHu = function (arr, hu) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].cardValue == hu.cardValue) {
+                return true;
+            }
+        }
+        return false;
+    };
+    /**获取补杠数据*/
+    CheckCardManager.prototype.getBuGang = function (addCard) {
+        if (addCard === void 0) { addCard = null; }
+        var arr = [];
+        var handArr = UserInfo_1.default.ins.myHandCardArr;
+        var tempArr = [];
+        for (var i = 0; i < handArr.length; i++) {
+            tempArr.push(handArr[i]);
+        }
+        if (addCard) {
+            tempArr.push(addCard);
+            tempArr.sort(GloBal_1.Global.Utils.compare);
+        }
+        var peng = UserInfo_1.default.ins.myPengGang;
+        for (var l = 0; l < tempArr.length; l++) {
+            var cardStr = tempArr[l];
+            for (var i = 0; i < peng.length; i++) {
+                if (peng[i].cardValue == cardStr) {
+                    arr.push(cardStr);
+                }
+            }
+        }
+        return arr;
+    };
+    /**获取杠数据*/
+    CheckCardManager.prototype.getAnGang = function (addCard) {
+        if (addCard === void 0) { addCard = null; }
+        var arr = [];
+        var handArr = UserInfo_1.default.ins.myHandCardArr;
+        var tempArr = [];
+        for (var i = 0; i < handArr.length; i++) {
+            tempArr.push(handArr[i]);
+        }
+        if (addCard) {
+            tempArr.push(addCard);
+            tempArr.sort(GloBal_1.Global.Utils.compare);
+        }
+        for (var i = 0; i < tempArr.length; i++) {
+            if (tempArr[i + 3]) {
+                if (tempArr[i] == tempArr[i + 3]) {
+                    if (arr.indexOf(tempArr[i]) < 0) {
+                        arr.push(tempArr[i]);
+                    }
+                    i = i + 3;
+                }
+            }
+            else {
+                i = tempArr.length;
+            }
+        }
+        return arr;
+    };
+    /**获取杠数据*/
+    CheckCardManager.prototype.getGang = function (addCard) {
+        if (addCard === void 0) { addCard = null; }
+        var arr = [];
+        var handArr = UserInfo_1.default.ins.myHandCardArr;
+        var tempArr = [];
+        for (var i = 0; i < handArr.length; i++) {
+            tempArr.push(handArr[i]);
+        }
+        if (addCard) {
+            tempArr.push(addCard);
+            tempArr.sort(GloBal_1.Global.Utils.compare);
+        }
+        for (var i = 0; i < tempArr.length; i++) {
+            if (tempArr[i + 2]) {
+                if (tempArr[i] == tempArr[i + 2]) {
+                    if (arr.indexOf(tempArr[i]) < 0) {
+                        arr.push(tempArr[i]);
+                    }
+                    i = i + 2;
+                }
+            }
+            else {
+                i = tempArr.length;
+            }
+        }
+        return arr;
+    };
+    /***
+     * 获取所有可碰的牌
+    */
+    CheckCardManager.prototype.getPeng = function (addCard) {
+        if (addCard === void 0) { addCard = null; }
+        var arr = [];
+        var handArr = UserInfo_1.default.ins.myHandCardArr;
+        var tempArr = [];
+        for (var i = 0; i < handArr.length; i++) {
+            tempArr.push(handArr[i]);
+        }
+        if (addCard) {
+            tempArr.push(addCard);
+            tempArr.sort(GloBal_1.Global.Utils.compare);
+        }
+        for (var i = 0; i < tempArr.length; i++) {
+            if (tempArr[i + 1]) {
+                if (tempArr[i] == tempArr[i + 1]) {
+                    arr.push(tempArr[i]);
+                    i = i + 1;
+                }
+            }
+            else {
+                i = tempArr.length;
+            }
+        }
+        return arr;
+    };
+    /**判断当前牌是否是清一色 无定缺牌情况下*/
+    CheckCardManager.prototype.isQingYiSe = function (handArr, isChengPengGang) {
+        if (isChengPengGang === void 0) { isChengPengGang = false; }
+        if (!isChengPengGang) {
+            return Math.floor(handArr[handArr.length - 1] / 10) == Math.floor(handArr[0] / 10);
+        }
+        else {
+            /**手牌必须清一色 才去计算碰杠区*/
+            if (Math.floor(handArr[handArr.length - 1] / 10) == Math.floor(handArr[0] / 10)) {
+                var key = Math.floor(handArr[0] / 10);
+                var pengGang = UserInfo_1.default.ins.myPengGang;
+                for (var i = 0; i < pengGang.length; i++) {
+                    if (Math.floor(pengGang[i].cardValue / 10) != key) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    };
+    /**
+     * 、在这里计算所有蕃
+    */
+    CheckCardManager.prototype.getAllFan = function (huArr) {
+        var fan = 0;
+        return fan;
+    };
+    /**在这里计算所有倍数*/
+    CheckCardManager.prototype.getAllBei = function (huArr) {
+        var bei = 0;
+        return bei;
+    };
+    //------------------------------------------------------------------------------------------------------------------------------------------
+    CheckCardManager.prototype.havePengByOther = function () {
+        if (GloBal_1.Global.Utils.getIsDice(UserInfo_1.default.ins.otherLastOutCard, UserInfo_1.default.ins.myDiceType)) {
+            return false;
+        }
+        var haveNum = 0;
+        for (var i = 0; i < UserInfo_1.default.ins.myHandCardArr.length; i++) {
+            if (UserInfo_1.default.ins.myHandCardArr[i] == UserInfo_1.default.ins.otherLastOutCard) {
+                haveNum++;
+            }
+        }
+        return haveNum >= 2;
+    };
+    CheckCardManager.prototype.haveGangByOther = function () {
+        if (GloBal_1.Global.Utils.getIsDice(UserInfo_1.default.ins.otherLastOutCard, UserInfo_1.default.ins.myDiceType)) {
+            return false;
+        }
+        var haveNum = 0;
+        for (var i = 0; i < UserInfo_1.default.ins.myHandCardArr.length; i++) {
+            if (UserInfo_1.default.ins.myHandCardArr[i] == UserInfo_1.default.ins.otherLastOutCard) {
+                haveNum++;
+            }
+        }
+        return haveNum >= 3;
+    };
+    CheckCardManager.prototype.haveHuByOther = function () {
+        if (GloBal_1.Global.Utils.getIsDice(UserInfo_1.default.ins.otherLastOutCard, UserInfo_1.default.ins.myDiceType)) {
+            return null;
+        }
+        if (GloBal_1.Global.Utils.getIsDice(UserInfo_1.default.ins.myLastFeelCard, UserInfo_1.default.ins.myDiceType)) {
+            return null;
+        }
+        if (UserInfo_1.default.ins.haveDiceCard()) {
+            return null;
+        }
+        return this.getHuHand(UserInfo_1.default.ins.myHandCardArr, UserInfo_1.default.ins.otherLastOutCard);
+    };
+    CheckCardManager.prototype.haveGangBySelf = function () {
+        return this.getAnGang(UserInfo_1.default.ins.myLastFeelCard);
+    };
+    CheckCardManager.prototype.haveGangByPeng = function () {
+        return this.getBuGang(UserInfo_1.default.ins.myLastFeelCard);
+    };
+    CheckCardManager.prototype.haveHuBySelf = function () {
+        if (GloBal_1.Global.Utils.getIsDice(UserInfo_1.default.ins.myLastFeelCard, UserInfo_1.default.ins.myDiceType)) {
+            return null;
+        }
+        if (UserInfo_1.default.ins.haveDiceCard()) {
+            return null;
+        }
+        return this.getHuHand(UserInfo_1.default.ins.myHandCardArr, UserInfo_1.default.ins.myLastFeelCard);
+    };
+    CheckCardManager.prototype.haveQianggangHuBySelf = function (cardValue) {
+        if (GloBal_1.Global.Utils.getIsDice(cardValue, UserInfo_1.default.ins.myDiceType)) {
+            return null;
+        }
+        if (UserInfo_1.default.ins.haveDiceCard()) {
+            return null;
+        }
+        return this.getHuHand(UserInfo_1.default.ins.myHandCardArr, cardValue);
+    };
+    CheckCardManager.prototype.haveOutListion = function () {
+        return this.getAllTing(UserInfo_1.default.ins.myHandCardArr);
+    };
+    var CheckCardManager_1;
+    CheckCardManager = CheckCardManager_1 = __decorate([
+        ccclass
+    ], CheckCardManager);
+    return CheckCardManager;
+}());
+exports.default = CheckCardManager;
+
+cc._RF.pop();

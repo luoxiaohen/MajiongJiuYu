@@ -1,0 +1,94 @@
+"use strict";
+cc._RF.push(module, 'e14874XL3RKhpRi6A9/cP6a', 'GameRealTimePannel');
+// Script/UI/gameRecord/GameRealTimePannel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GameRealTimePannel = /** @class */ (function (_super) {
+    __extends(GameRealTimePannel, _super);
+    function GameRealTimePannel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.player_info_content = null;
+        _this.buy_horse_info_content = null;
+        _this.watch_player_tip = null;
+        _this.watch_player_content = null;
+        return _this;
+        // update (dt) {}
+    }
+    // LIFE-CYCLE CALLBACKS:
+    GameRealTimePannel.prototype.onLoad = function () {
+        this.playerInfoPrefab = GloBal_1.Global.Utils.getPreFabBySource("gameRecord/prefab/RealTimePlayerInfoItem");
+        this.watchPlayerItemPrefab = GloBal_1.Global.Utils.getPreFabBySource("gameRecord/prefab/WatchPlayerHeadItem");
+    };
+    GameRealTimePannel.prototype.start = function () {
+    };
+    GameRealTimePannel.prototype.initeValue = function () {
+        for (var index = 0; index < 4; index++) {
+            var obj = cc.instantiate(this.playerInfoPrefab);
+            this.player_info_content.addChild(obj);
+        }
+        var horseContentHight = 0;
+        for (var index = 0; index < 10; index++) {
+            var obj = cc.instantiate(this.playerInfoPrefab);
+            horseContentHight += obj.height;
+            this.buy_horse_info_content.addChild(obj);
+        }
+        this.buy_horse_info_content.height = horseContentHight;
+        this.watch_player_tip.y = -horseContentHight + this.buy_horse_info_content.y - (this.watch_player_tip.height / 2);
+        this.watch_player_content.y = this.watch_player_tip.y - 50;
+        var watchPlayerNum = 5;
+        for (var index = 0; index < watchPlayerNum; index++) {
+            var obj = cc.instantiate(this.watchPlayerItemPrefab);
+            this.watch_player_content.addChild(obj);
+        }
+        var line = Math.ceil(watchPlayerNum / 3);
+        var wathchHeight = line * 150 + (line - 1) * 30;
+        this.node.height = -this.watch_player_content.y + wathchHeight;
+    };
+    __decorate([
+        property(cc.Node)
+    ], GameRealTimePannel.prototype, "player_info_content", void 0);
+    __decorate([
+        property(cc.Node)
+    ], GameRealTimePannel.prototype, "buy_horse_info_content", void 0);
+    __decorate([
+        property(cc.Node)
+    ], GameRealTimePannel.prototype, "watch_player_tip", void 0);
+    __decorate([
+        property(cc.Node)
+    ], GameRealTimePannel.prototype, "watch_player_content", void 0);
+    GameRealTimePannel = __decorate([
+        ccclass
+    ], GameRealTimePannel);
+    return GameRealTimePannel;
+}(cc.Component));
+exports.default = GameRealTimePannel;
+
+cc._RF.pop();

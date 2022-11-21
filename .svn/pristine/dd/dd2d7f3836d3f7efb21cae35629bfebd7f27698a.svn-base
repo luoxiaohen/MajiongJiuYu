@@ -1,0 +1,43 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/proto/MsgCommDef.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, 'a7b169KUgpESp3uESpS/jQN', 'MsgCommDef');
+// Script/proto/MsgCommDef.ts
+
+"use strict";
+/**
+* @Author: ZZ
+* @Date: Created in 11:07 2017/10/19
+* @Description:
+* @Modified By:
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MsgCommDef = void 0;
+var MsgCommDef = /** @class */ (function () {
+    function MsgCommDef() {
+    }
+    return MsgCommDef;
+}());
+exports.MsgCommDef = MsgCommDef;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxwcm90b1xcTXNnQ29tbURlZi50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7Ozs7O0VBS0U7OztBQUVGO0lBQUE7SUFFQSxDQUFDO0lBQUQsaUJBQUM7QUFBRCxDQUZBLEFBRUMsSUFBQTtBQUZhLGdDQUFVIiwiZmlsZSI6IiIsInNvdXJjZVJvb3QiOiIvIiwic291cmNlc0NvbnRlbnQiOlsiXHJcblxyXG4vKipcclxuKiBAQXV0aG9yOiBaWlxyXG4qIEBEYXRlOiBDcmVhdGVkIGluIDExOjA3IDIwMTcvMTAvMTlcclxuKiBARGVzY3JpcHRpb246XHJcbiogQE1vZGlmaWVkIEJ5OlxyXG4qL1xyXG5cclxuZXhwb3J0ICBjbGFzcyBNc2dDb21tRGVmIHtcclxuXHRcclxufVxyXG4iXX0=

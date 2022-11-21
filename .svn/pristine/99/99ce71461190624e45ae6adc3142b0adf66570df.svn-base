@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_caidan",
+    "texture": "b76c6392-0b09-46c6-bc3d-48bf282d7ba7",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      425,
+      782
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      425,
+      782
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

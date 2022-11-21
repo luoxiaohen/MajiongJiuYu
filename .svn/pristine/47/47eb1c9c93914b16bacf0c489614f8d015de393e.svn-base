@@ -1,0 +1,141 @@
+"use strict";
+cc._RF.push(module, 'f7a5dwVH4ZDm5J0grScUEr7', 'OppHandCardPanel');
+// Script/UI/card/OppHandCardPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var CardHelpManager_1 = require("./CardHelpManager");
+var HandCardPanel_1 = require("./HandCardPanel");
+var MajiongHandCard_1 = require("./MajiongHandCard");
+var MajiongOutCard_1 = require("./MajiongOutCard");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var OppHandCardPanel = /** @class */ (function (_super) {
+    __extends(OppHandCardPanel, _super);
+    function OppHandCardPanel() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    OppHandCardPanel.prototype.onLoad = function () {
+        _super.prototype.onLoad.call(this);
+    };
+    OppHandCardPanel.prototype.start = function () {
+        this.initHandData();
+    };
+    OppHandCardPanel.prototype.initHandData = function () {
+        _super.prototype.initHandData.call(this);
+        this.bySelfPoint = EnumManager_1.CardGroupPointBySelfEnum.Opp;
+        var item;
+        item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard_1.default);
+        item.bySelfPoint = this.bySelfPoint;
+        item.node.x = 0;
+        item.node.y = 0;
+        item.isFeel = true;
+        this.handItemArr[13] = item;
+        this.node.addChild(item.node);
+        for (var i = 1; i < 14; i++) {
+            item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard_1.default);
+            item.bySelfPoint = this.bySelfPoint;
+            item.node.x = i * item.cardSize._w + this.feelCardChange[this.bySelfPoint];
+            item.node.y = 0;
+            this.handItemArr[13 - i] = item;
+            this.node.addChild(item.node);
+        }
+    };
+    /**展示胡牌*/
+    OppHandCardPanel.prototype.showHupai = function (msg) {
+        _super.prototype.showHupai.call(this, msg);
+    };
+    OppHandCardPanel.prototype.showGetHnads = function (getNum) {
+        _super.prototype.showGetHnads.call(this, getNum);
+        var item;
+        var showIndex = 0;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            item = this.handItemArr[i];
+            if (!item.isShow && showIndex < getNum) {
+                showIndex++;
+                item.node.y = 15;
+                item.isShow = true;
+                item.showGetAction(i + showIndex);
+            }
+        }
+    };
+    /***创建一张出牌*/
+    OppHandCardPanel.prototype.createOutCard = function (value) {
+        if (value === void 0) { value = 1; }
+        _super.prototype.createOutCard.call(this, value);
+        var item = cc.instantiate(this.dialogParameters[1]).getComponent(MajiongOutCard_1.default);
+        item.bySelfPoint = this.bySelfPoint;
+        item.cardValue = value;
+        var row = this.getOutRow();
+        var baseNum = 0;
+        if (row > 0) {
+            baseNum = this.myOutArray.length - this.getBaseNum();
+        }
+        else {
+            baseNum = this.myOutArray.length;
+        }
+        var changeX = baseNum * CardHelpManager_1.default.ins.outCardWidth[2] - row * CardHelpManager_1.default.ins.outCardWidth[2];
+        var changeY = row * 57;
+        var initX = CardHelpManager_1.default.ins.oppOutCardInitPoint.x - CardHelpManager_1.default.ins.oppHandCardInitPoint.x;
+        var initY = CardHelpManager_1.default.ins.oppHandCardInitPoint.y + CardHelpManager_1.default.ins.oppOutCardInitPoint.y;
+        item.node.x = initX - changeX;
+        item.node.y = initY + changeY;
+        item.node.zIndex = 40 - this.myOutArray.length;
+        this.onMyOutChangeData(item);
+        this.node.addChild(item.node);
+        this.lastOutCard = item;
+    };
+    OppHandCardPanel.prototype.showOutCard = function (value) {
+        _super.prototype.showOutCard.call(this, value);
+    };
+    OppHandCardPanel.prototype.changeMoveMyHand = function (outItem) {
+        _super.prototype.changeMoveMyHand.call(this, outItem);
+    };
+    OppHandCardPanel.prototype.showFeelWall = function (cardValue) {
+        _super.prototype.showFeelWall.call(this, cardValue);
+    };
+    OppHandCardPanel.prototype.clearLastPlay = function () {
+        _super.prototype.clearLastPlay.call(this);
+    };
+    OppHandCardPanel.prototype.showPengGang = function (msg) {
+        _super.prototype.showPengGang.call(this, msg);
+    };
+    OppHandCardPanel.prototype.showSelfGang = function (msg) {
+        _super.prototype.showSelfGang.call(this, msg);
+    };
+    OppHandCardPanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    OppHandCardPanel = __decorate([
+        ccclass
+    ], OppHandCardPanel);
+    return OppHandCardPanel;
+}(HandCardPanel_1.default));
+exports.default = OppHandCardPanel;
+
+cc._RF.pop();

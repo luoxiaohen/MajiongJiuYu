@@ -1,0 +1,830 @@
+"use strict";
+cc._RF.push(module, '9b4caoLeJxMk7WoN8T1ampB', 'TableMsg');
+// Script/proto/TableMsg.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Msg_SC_GameResultMsg = exports.Msg_CS_GetGameResultMsg = exports.Msg_SC_UpdateHands = exports.Msg_CS_UpdateHands = exports.Msg_SC_HuMajMsg = exports.Msg_CS_HuMajMsg = exports.Msg_SC_HasHuGangMsg = exports.Msg_SC_GangSelfMsg = exports.Msg_CS_GangSelfMsg = exports.Msg_SC_PengMajMsg = exports.Msg_CS_PengMajMsg = exports.Msg_SC_DownMajMsg = exports.Msg_CS_DownMajMsg = exports.Msg_CS_PassMsg = exports.Msg_SC_WaitYou = exports.Msg_SC_GetMajMsg = exports.Msg_SC_WaitDownMsg = exports.Msg_SC_SomeTurnMsg = exports.Msg_SC_QueRslt = exports.Msg_SC_DingQue = exports.Msg_CS_DingQue = exports.Msg_SC_StartDingQue = exports.Msg_SC_You3Maj = exports.Msg_SC_Change3Maj = exports.Msg_CS_Change3Maj = exports.Msg_SC_StartChange3 = exports.Msg_SC_YouMajMsg = exports.Msg_SC_StartGame = exports.Msg_SC_PrDiceRslt = exports.Msg_SC_DiceRslt = exports.Msg_CS_DoDice = exports.Msg_SC_PressDice = exports.Msg_CS_PressDice = exports.Msg_SC_BeginDiceMsg = exports.Msg_SC_StartDiceGame = exports.Msg_SC_StartDicePos = exports.Msg_SC_StartDiceEast = exports.Msg_SC_OneLeave = exports.Msg_SC_OneSit = exports.Msg_CS_LeaveRoom = exports.Msg_SC_Ready = exports.Msg_CS_Ready = exports.Msg_SC_SitOK = exports.Msg_CS_SitDown = exports.Msg_CS_FindEnterRoom = exports.Msg_SC_RoomInfo = exports.Msg_SC_OnTable = exports.Msg_SC_TabErrRlst = exports.TabMSG_SID = exports.TableMsg = void 0;
+exports.Msg_SC_NextTrunOK = exports.Msg_SC_LimitHuPeng = exports.Msg_CS_Fan3Tin = exports.Msg_SC_CancelBuyHorse = exports.Msg_SC_HorseRoomState = exports.Msg_SC_HorseRoomInfo = exports.Msg_SC_NewHorseScoreRslt = exports.Msg_SC_SelHorseRslt = exports.Msg_CS_SelHorse = exports.Msg_SC_StartSelHorse = exports.Msg_SC_UpdateHorser = exports.Msg_CS_CancelBuyHorse = exports.Msg_CS_ReqBuyHorse = exports.Msg_SC_NewMahjRcd = exports.Msg_CS_AddMahjRcd = exports.Msg_CSC_TestTimeMsg = exports.Msg_SC_RqCloseGameErr = exports.Msg_SC_BuGanging = exports.Msg_SC_PoolsList = exports.Msg_SC_VoteCloseRslt = exports.Msg_SC_VoteRslt = exports.Msg_SC_RqCloseGame = exports.Msg_CS_VoteCloseGame = exports.Msg_CS_RqCloseGame = exports.Msg_SC_SyncGameState = exports.Msg_SC_UpdatePlayerInfo = exports.Msg_SC_RealScore = exports.Msg_SC_GameOverMsg = exports.Msg_CS_NextTrun = exports.Msg_SC_ScoreListMsg = exports.Msg_CS_GetScoreListMsg = void 0;
+var BaseMsg_1 = require("./BaseMsg");
+/**
+* Created by admin on 2022/5/30.
+*/
+var TableMsg = /** @class */ (function (_super) {
+    __extends(TableMsg, _super);
+    function TableMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return TableMsg;
+}(BaseMsg_1.BaseMsg));
+exports.TableMsg = TableMsg;
+var TabMSG_SID;
+(function (TabMSG_SID) {
+    TabMSG_SID[TabMSG_SID["SC_TabErrRlst"] = 0] = "SC_TabErrRlst";
+    TabMSG_SID[TabMSG_SID["SC_OnTable"] = 1] = "SC_OnTable";
+    TabMSG_SID[TabMSG_SID["SC_RoomInfo"] = 2] = "SC_RoomInfo";
+    TabMSG_SID[TabMSG_SID["CS_FindEnterRoom"] = 3] = "CS_FindEnterRoom";
+    TabMSG_SID[TabMSG_SID["CS_SitDown"] = 4] = "CS_SitDown";
+    TabMSG_SID[TabMSG_SID["SC_SitOK"] = 5] = "SC_SitOK";
+    TabMSG_SID[TabMSG_SID["CS_Ready"] = 6] = "CS_Ready";
+    TabMSG_SID[TabMSG_SID["SC_Ready"] = 7] = "SC_Ready";
+    TabMSG_SID[TabMSG_SID["CS_LeaveRoom"] = 8] = "CS_LeaveRoom";
+    TabMSG_SID[TabMSG_SID["SC_OneSit"] = 9] = "SC_OneSit";
+    TabMSG_SID[TabMSG_SID["SC_OneLeave"] = 10] = "SC_OneLeave";
+    // 牌局
+    TabMSG_SID[TabMSG_SID["SC_StartDiceEast"] = 11] = "SC_StartDiceEast";
+    TabMSG_SID[TabMSG_SID["SC_StartDicePos"] = 12] = "SC_StartDicePos";
+    TabMSG_SID[TabMSG_SID["SC_StartDiceGame"] = 13] = "SC_StartDiceGame";
+    TabMSG_SID[TabMSG_SID["SC_BeginDiceMsg"] = 14] = "SC_BeginDiceMsg";
+    TabMSG_SID[TabMSG_SID["CS_PressDice"] = 15] = "CS_PressDice";
+    TabMSG_SID[TabMSG_SID["SC_PressDice"] = 16] = "SC_PressDice";
+    TabMSG_SID[TabMSG_SID["CS_DoDice"] = 17] = "CS_DoDice";
+    TabMSG_SID[TabMSG_SID["SC_DiceRslt"] = 18] = "SC_DiceRslt";
+    TabMSG_SID[TabMSG_SID["SC_PrDiceRslt"] = 19] = "SC_PrDiceRslt";
+    TabMSG_SID[TabMSG_SID["SC_StartGame"] = 20] = "SC_StartGame";
+    TabMSG_SID[TabMSG_SID["SC_YouMajMsg"] = 21] = "SC_YouMajMsg";
+    TabMSG_SID[TabMSG_SID["SC_StartChange3"] = 22] = "SC_StartChange3";
+    TabMSG_SID[TabMSG_SID["CS_Change3Maj"] = 23] = "CS_Change3Maj";
+    TabMSG_SID[TabMSG_SID["SC_Change3Maj"] = 24] = "SC_Change3Maj";
+    TabMSG_SID[TabMSG_SID["SC_You3Maj"] = 25] = "SC_You3Maj";
+    TabMSG_SID[TabMSG_SID["SC_StartDingQue"] = 26] = "SC_StartDingQue";
+    TabMSG_SID[TabMSG_SID["CS_DingQue"] = 27] = "CS_DingQue";
+    TabMSG_SID[TabMSG_SID["SC_DingQue"] = 28] = "SC_DingQue";
+    TabMSG_SID[TabMSG_SID["SC_QueRslt"] = 29] = "SC_QueRslt";
+    TabMSG_SID[TabMSG_SID["SC_SomeTurnMsg"] = 30] = "SC_SomeTurnMsg";
+    TabMSG_SID[TabMSG_SID["SC_WaitDownMsg"] = 31] = "SC_WaitDownMsg";
+    TabMSG_SID[TabMSG_SID["SC_GetMajMsg"] = 32] = "SC_GetMajMsg";
+    TabMSG_SID[TabMSG_SID["SC_WaitYou"] = 33] = "SC_WaitYou";
+    TabMSG_SID[TabMSG_SID["CS_PassMsg"] = 34] = "CS_PassMsg";
+    TabMSG_SID[TabMSG_SID["CS_DownMajMsg"] = 35] = "CS_DownMajMsg";
+    TabMSG_SID[TabMSG_SID["SC_DownMajMsg"] = 36] = "SC_DownMajMsg";
+    TabMSG_SID[TabMSG_SID["CS_PengMajMsg"] = 37] = "CS_PengMajMsg";
+    TabMSG_SID[TabMSG_SID["SC_PengMajMsg"] = 38] = "SC_PengMajMsg";
+    TabMSG_SID[TabMSG_SID["CS_GangSelfMsg"] = 39] = "CS_GangSelfMsg";
+    TabMSG_SID[TabMSG_SID["SC_GangSelfMsg"] = 40] = "SC_GangSelfMsg";
+    TabMSG_SID[TabMSG_SID["SC_HasHuGangMsg"] = 41] = "SC_HasHuGangMsg";
+    TabMSG_SID[TabMSG_SID["CS_HuMajMsg"] = 42] = "CS_HuMajMsg";
+    TabMSG_SID[TabMSG_SID["SC_HuMajMsg"] = 43] = "SC_HuMajMsg";
+    TabMSG_SID[TabMSG_SID["CS_UpdateHands"] = 44] = "CS_UpdateHands";
+    TabMSG_SID[TabMSG_SID["SC_UpdateHands"] = 45] = "SC_UpdateHands";
+    TabMSG_SID[TabMSG_SID["CS_GetGameResultMsg"] = 46] = "CS_GetGameResultMsg";
+    TabMSG_SID[TabMSG_SID["SC_GameResultMsg"] = 47] = "SC_GameResultMsg";
+    TabMSG_SID[TabMSG_SID["CS_GetScoreListMsg"] = 48] = "CS_GetScoreListMsg";
+    TabMSG_SID[TabMSG_SID["SC_ScoreListMsg"] = 49] = "SC_ScoreListMsg";
+    TabMSG_SID[TabMSG_SID["CS_NextTrun"] = 50] = "CS_NextTrun";
+    TabMSG_SID[TabMSG_SID["SC_GameOverMsg"] = 51] = "SC_GameOverMsg";
+    TabMSG_SID[TabMSG_SID["SC_RealScore"] = 52] = "SC_RealScore";
+    TabMSG_SID[TabMSG_SID["SC_UpdatePlayerInfo"] = 53] = "SC_UpdatePlayerInfo";
+    TabMSG_SID[TabMSG_SID["SC_SyncGameState"] = 54] = "SC_SyncGameState";
+    TabMSG_SID[TabMSG_SID["CS_RqCloseGame"] = 55] = "CS_RqCloseGame";
+    TabMSG_SID[TabMSG_SID["SC_RqCloseGame"] = 56] = "SC_RqCloseGame";
+    TabMSG_SID[TabMSG_SID["CS_VoteCloseGame"] = 57] = "CS_VoteCloseGame";
+    TabMSG_SID[TabMSG_SID["SC_VoteRslt"] = 58] = "SC_VoteRslt";
+    TabMSG_SID[TabMSG_SID["SC_VoteCloseRslt"] = 59] = "SC_VoteCloseRslt";
+    TabMSG_SID[TabMSG_SID["SC_PoolsList"] = 60] = "SC_PoolsList";
+    TabMSG_SID[TabMSG_SID["SC_BuGanging"] = 61] = "SC_BuGanging";
+    TabMSG_SID[TabMSG_SID["SC_RqCloseGameErr"] = 62] = "SC_RqCloseGameErr";
+    TabMSG_SID[TabMSG_SID["CSC_TestTimeMsg"] = 63] = "CSC_TestTimeMsg";
+    TabMSG_SID[TabMSG_SID["CS_AddMahjRcd"] = 64] = "CS_AddMahjRcd";
+    TabMSG_SID[TabMSG_SID["SC_NewMahjRcd"] = 65] = "SC_NewMahjRcd";
+    TabMSG_SID[TabMSG_SID["CS_ReqBuyHorse"] = 66] = "CS_ReqBuyHorse";
+    TabMSG_SID[TabMSG_SID["CS_CancelBuyHorse"] = 67] = "CS_CancelBuyHorse";
+    TabMSG_SID[TabMSG_SID["SC_UpdateHorser"] = 68] = "SC_UpdateHorser";
+    TabMSG_SID[TabMSG_SID["SC_StartSelHorse"] = 69] = "SC_StartSelHorse";
+    TabMSG_SID[TabMSG_SID["CS_SelHorse"] = 70] = "CS_SelHorse";
+    TabMSG_SID[TabMSG_SID["SC_SelHorseRslt"] = 71] = "SC_SelHorseRslt";
+    TabMSG_SID[TabMSG_SID["SC_HorseRoomInfo"] = 72] = "SC_HorseRoomInfo";
+    TabMSG_SID[TabMSG_SID["SC_NewHorseScoreRslt"] = 73] = "SC_NewHorseScoreRslt";
+    TabMSG_SID[TabMSG_SID["SC_HorseRoomState"] = 74] = "SC_HorseRoomState";
+    TabMSG_SID[TabMSG_SID["SC_CancelBuyHorse"] = 75] = "SC_CancelBuyHorse";
+    TabMSG_SID[TabMSG_SID["CS_Fan3Tin"] = 76] = "CS_Fan3Tin";
+    TabMSG_SID[TabMSG_SID["SC_LimitHuPeng"] = 77] = "SC_LimitHuPeng";
+    TabMSG_SID[TabMSG_SID["SC_NextTrunOK"] = 78] = "SC_NextTrunOK";
+    TabMSG_SID[TabMSG_SID["MSG_MAX"] = 79] = "MSG_MAX";
+})(TabMSG_SID = exports.TabMSG_SID || (exports.TabMSG_SID = {}));
+// 返回执行错误
+var Msg_SC_TabErrRlst = /** @class */ (function (_super) {
+    __extends(Msg_SC_TabErrRlst, _super);
+    function Msg_SC_TabErrRlst() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_TabErrRlst) || this;
+    }
+    return Msg_SC_TabErrRlst;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_TabErrRlst = Msg_SC_TabErrRlst;
+//返回房间号，进入某个房间后的决定性消息
+var Msg_SC_OnTable = /** @class */ (function (_super) {
+    __extends(Msg_SC_OnTable, _super);
+    function Msg_SC_OnTable() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_OnTable) || this;
+    }
+    return Msg_SC_OnTable;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_OnTable = Msg_SC_OnTable;
+//返回房间信息
+var Msg_SC_RoomInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_RoomInfo, _super);
+    function Msg_SC_RoomInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_RoomInfo) || this;
+    }
+    return Msg_SC_RoomInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RoomInfo = Msg_SC_RoomInfo;
+//搜索进入房间 - 返回 TableMsg.SC_RoomInfo
+var Msg_CS_FindEnterRoom = /** @class */ (function (_super) {
+    __extends(Msg_CS_FindEnterRoom, _super);
+    function Msg_CS_FindEnterRoom() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_FindEnterRoom) || this;
+    }
+    return Msg_CS_FindEnterRoom;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_FindEnterRoom = Msg_CS_FindEnterRoom;
+//入座某个位置
+var Msg_CS_SitDown = /** @class */ (function (_super) {
+    __extends(Msg_CS_SitDown, _super);
+    function Msg_CS_SitDown() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_SitDown) || this;
+    }
+    return Msg_CS_SitDown;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_SitDown = Msg_CS_SitDown;
+//成功入座某个位置
+var Msg_SC_SitOK = /** @class */ (function (_super) {
+    __extends(Msg_SC_SitOK, _super);
+    function Msg_SC_SitOK() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_SitOK) || this;
+    }
+    return Msg_SC_SitOK;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_SitOK = Msg_SC_SitOK;
+//准备好
+var Msg_CS_Ready = /** @class */ (function (_super) {
+    __extends(Msg_CS_Ready, _super);
+    function Msg_CS_Ready() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_Ready) || this;
+    }
+    return Msg_CS_Ready;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_Ready = Msg_CS_Ready;
+//广播准备好了
+var Msg_SC_Ready = /** @class */ (function (_super) {
+    __extends(Msg_SC_Ready, _super);
+    function Msg_SC_Ready() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_Ready) || this;
+    }
+    return Msg_SC_Ready;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_Ready = Msg_SC_Ready;
+//离开房间
+var Msg_CS_LeaveRoom = /** @class */ (function (_super) {
+    __extends(Msg_CS_LeaveRoom, _super);
+    function Msg_CS_LeaveRoom() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_LeaveRoom) || this;
+    }
+    return Msg_CS_LeaveRoom;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_LeaveRoom = Msg_CS_LeaveRoom;
+//广播某人上桌
+var Msg_SC_OneSit = /** @class */ (function (_super) {
+    __extends(Msg_SC_OneSit, _super);
+    function Msg_SC_OneSit() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_OneSit) || this;
+    }
+    return Msg_SC_OneSit;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_OneSit = Msg_SC_OneSit;
+//广播某人离开
+var Msg_SC_OneLeave = /** @class */ (function (_super) {
+    __extends(Msg_SC_OneLeave, _super);
+    function Msg_SC_OneLeave() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_OneLeave) || this;
+    }
+    return Msg_SC_OneLeave;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_OneLeave = Msg_SC_OneLeave;
+//开始定庄
+var Msg_SC_StartDiceEast = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartDiceEast, _super);
+    function Msg_SC_StartDiceEast() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartDiceEast) || this;
+    }
+    return Msg_SC_StartDiceEast;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartDiceEast = Msg_SC_StartDiceEast;
+//开始定位
+var Msg_SC_StartDicePos = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartDicePos, _super);
+    function Msg_SC_StartDicePos() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartDicePos) || this;
+    }
+    return Msg_SC_StartDicePos;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartDicePos = Msg_SC_StartDicePos;
+//刷新新的位置
+var Msg_SC_StartDiceGame = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartDiceGame, _super);
+    function Msg_SC_StartDiceGame() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartDiceGame) || this;
+    }
+    return Msg_SC_StartDiceGame;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartDiceGame = Msg_SC_StartDiceGame;
+//开始牌局，需要庄家掷骰子决定开始
+var Msg_SC_BeginDiceMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_BeginDiceMsg, _super);
+    function Msg_SC_BeginDiceMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_BeginDiceMsg) || this;
+    }
+    return Msg_SC_BeginDiceMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_BeginDiceMsg = Msg_SC_BeginDiceMsg;
+//按下骰子，只在定位置时用
+var Msg_CS_PressDice = /** @class */ (function (_super) {
+    __extends(Msg_CS_PressDice, _super);
+    function Msg_CS_PressDice() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_PressDice) || this;
+    }
+    return Msg_CS_PressDice;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_PressDice = Msg_CS_PressDice;
+//广播按下骰子消息
+var Msg_SC_PressDice = /** @class */ (function (_super) {
+    __extends(Msg_SC_PressDice, _super);
+    function Msg_SC_PressDice() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_PressDice) || this;
+    }
+    return Msg_SC_PressDice;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PressDice = Msg_SC_PressDice;
+//掷骰子（暂考虑通用的）类似手松开
+var Msg_CS_DoDice = /** @class */ (function (_super) {
+    __extends(Msg_CS_DoDice, _super);
+    function Msg_CS_DoDice() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_DoDice) || this;
+    }
+    return Msg_CS_DoDice;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_DoDice = Msg_CS_DoDice;
+//掷骰子结果
+var Msg_SC_DiceRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_DiceRslt, _super);
+    function Msg_SC_DiceRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_DiceRslt) || this;
+    }
+    return Msg_SC_DiceRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_DiceRslt = Msg_SC_DiceRslt;
+//掷个人骰子结果
+var Msg_SC_PrDiceRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_PrDiceRslt, _super);
+    function Msg_SC_PrDiceRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_PrDiceRslt) || this;
+    }
+    return Msg_SC_PrDiceRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PrDiceRslt = Msg_SC_PrDiceRslt;
+//开始游戏，发牌
+var Msg_SC_StartGame = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartGame, _super);
+    function Msg_SC_StartGame() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartGame) || this;
+    }
+    return Msg_SC_StartGame;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartGame = Msg_SC_StartGame;
+//单独，你的手牌（发牌结果）
+var Msg_SC_YouMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_YouMajMsg, _super);
+    function Msg_SC_YouMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_YouMajMsg) || this;
+    }
+    return Msg_SC_YouMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_YouMajMsg = Msg_SC_YouMajMsg;
+//通知客户端开始换三张
+var Msg_SC_StartChange3 = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartChange3, _super);
+    function Msg_SC_StartChange3() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartChange3) || this;
+    }
+    return Msg_SC_StartChange3;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartChange3 = Msg_SC_StartChange3;
+//换三张
+var Msg_CS_Change3Maj = /** @class */ (function (_super) {
+    __extends(Msg_CS_Change3Maj, _super);
+    function Msg_CS_Change3Maj() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_Change3Maj) || this;
+    }
+    return Msg_CS_Change3Maj;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_Change3Maj = Msg_CS_Change3Maj;
+//换三张同步动作，包含剩余未扣牌人数（=0自动开始倒计时掷骰子）
+var Msg_SC_Change3Maj = /** @class */ (function (_super) {
+    __extends(Msg_SC_Change3Maj, _super);
+    function Msg_SC_Change3Maj() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_Change3Maj) || this;
+    }
+    return Msg_SC_Change3Maj;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_Change3Maj = Msg_SC_Change3Maj;
+//换三张的结果
+var Msg_SC_You3Maj = /** @class */ (function (_super) {
+    __extends(Msg_SC_You3Maj, _super);
+    function Msg_SC_You3Maj() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_You3Maj) || this;
+    }
+    return Msg_SC_You3Maj;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_You3Maj = Msg_SC_You3Maj;
+//通知客户端开始定却
+var Msg_SC_StartDingQue = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartDingQue, _super);
+    function Msg_SC_StartDingQue() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartDingQue) || this;
+    }
+    return Msg_SC_StartDingQue;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartDingQue = Msg_SC_StartDingQue;
+//定却
+var Msg_CS_DingQue = /** @class */ (function (_super) {
+    __extends(Msg_CS_DingQue, _super);
+    function Msg_CS_DingQue() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_DingQue) || this;
+    }
+    return Msg_CS_DingQue;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_DingQue = Msg_CS_DingQue;
+//定却操作动作
+var Msg_SC_DingQue = /** @class */ (function (_super) {
+    __extends(Msg_SC_DingQue, _super);
+    function Msg_SC_DingQue() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_DingQue) || this;
+    }
+    return Msg_SC_DingQue;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_DingQue = Msg_SC_DingQue;
+//定却结果
+var Msg_SC_QueRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_QueRslt, _super);
+    function Msg_SC_QueRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_QueRslt) || this;
+    }
+    return Msg_SC_QueRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_QueRslt = Msg_SC_QueRslt;
+//广播该谁，同时摸牌
+var Msg_SC_SomeTurnMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_SomeTurnMsg, _super);
+    function Msg_SC_SomeTurnMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_SomeTurnMsg) || this;
+    }
+    return Msg_SC_SomeTurnMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_SomeTurnMsg = Msg_SC_SomeTurnMsg;
+//广播该谁出牌
+var Msg_SC_WaitDownMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_WaitDownMsg, _super);
+    function Msg_SC_WaitDownMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_WaitDownMsg) || this;
+    }
+    return Msg_SC_WaitDownMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_WaitDownMsg = Msg_SC_WaitDownMsg;
+//单独，你的牌：所得牌，得牌方式
+var Msg_SC_GetMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_GetMajMsg, _super);
+    function Msg_SC_GetMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_GetMajMsg) || this;
+    }
+    return Msg_SC_GetMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GetMajMsg = Msg_SC_GetMajMsg;
+//判断客户端有胡碰杠，告知客户端等待对方消息（需要过、碰杠、胡中一个）
+var Msg_SC_WaitYou = /** @class */ (function (_super) {
+    __extends(Msg_SC_WaitYou, _super);
+    function Msg_SC_WaitYou() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_WaitYou) || this;
+    }
+    return Msg_SC_WaitYou;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_WaitYou = Msg_SC_WaitYou;
+// 过
+var Msg_CS_PassMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_PassMsg, _super);
+    function Msg_CS_PassMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_PassMsg) || this;
+    }
+    return Msg_CS_PassMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_PassMsg = Msg_CS_PassMsg;
+//出牌
+var Msg_CS_DownMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_DownMajMsg, _super);
+    function Msg_CS_DownMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_DownMajMsg) || this;
+    }
+    return Msg_CS_DownMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_DownMajMsg = Msg_CS_DownMajMsg;
+//广播，出牌
+var Msg_SC_DownMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_DownMajMsg, _super);
+    function Msg_SC_DownMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_DownMajMsg) || this;
+    }
+    return Msg_SC_DownMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_DownMajMsg = Msg_SC_DownMajMsg;
+//碰或杠
+var Msg_CS_PengMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_PengMajMsg, _super);
+    function Msg_CS_PengMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_PengMajMsg) || this;
+    }
+    return Msg_CS_PengMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_PengMajMsg = Msg_CS_PengMajMsg;
+//广播碰或杠
+var Msg_SC_PengMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_PengMajMsg, _super);
+    function Msg_SC_PengMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_PengMajMsg) || this;
+    }
+    return Msg_SC_PengMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PengMajMsg = Msg_SC_PengMajMsg;
+//自己杠
+var Msg_CS_GangSelfMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_GangSelfMsg, _super);
+    function Msg_CS_GangSelfMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_GangSelfMsg) || this;
+    }
+    return Msg_CS_GangSelfMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GangSelfMsg = Msg_CS_GangSelfMsg;
+//广播自己杠
+var Msg_SC_GangSelfMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_GangSelfMsg, _super);
+    function Msg_SC_GangSelfMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_GangSelfMsg) || this;
+    }
+    return Msg_SC_GangSelfMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GangSelfMsg = Msg_SC_GangSelfMsg;
+//告知有人抢杠
+var Msg_SC_HasHuGangMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_HasHuGangMsg, _super);
+    function Msg_SC_HasHuGangMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_HasHuGangMsg) || this;
+    }
+    return Msg_SC_HasHuGangMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_HasHuGangMsg = Msg_SC_HasHuGangMsg;
+//胡牌
+var Msg_CS_HuMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_HuMajMsg, _super);
+    function Msg_CS_HuMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_HuMajMsg) || this;
+    }
+    return Msg_CS_HuMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_HuMajMsg = Msg_CS_HuMajMsg;
+//广播胡牌
+var Msg_SC_HuMajMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_HuMajMsg, _super);
+    function Msg_SC_HuMajMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_HuMajMsg) || this;
+    }
+    return Msg_SC_HuMajMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_HuMajMsg = Msg_SC_HuMajMsg;
+//请求手牌信息
+var Msg_CS_UpdateHands = /** @class */ (function (_super) {
+    __extends(Msg_CS_UpdateHands, _super);
+    function Msg_CS_UpdateHands() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_UpdateHands) || this;
+    }
+    return Msg_CS_UpdateHands;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_UpdateHands = Msg_CS_UpdateHands;
+//刷新手牌信息
+var Msg_SC_UpdateHands = /** @class */ (function (_super) {
+    __extends(Msg_SC_UpdateHands, _super);
+    function Msg_SC_UpdateHands() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_UpdateHands) || this;
+    }
+    return Msg_SC_UpdateHands;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_UpdateHands = Msg_SC_UpdateHands;
+//获取游戏结果
+var Msg_CS_GetGameResultMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_GetGameResultMsg, _super);
+    function Msg_CS_GetGameResultMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_GetGameResultMsg) || this;
+    }
+    return Msg_CS_GetGameResultMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GetGameResultMsg = Msg_CS_GetGameResultMsg;
+//一把游戏结束结果（流局，所有人手牌）
+var Msg_SC_GameResultMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_GameResultMsg, _super);
+    function Msg_SC_GameResultMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_GameResultMsg) || this;
+    }
+    return Msg_SC_GameResultMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GameResultMsg = Msg_SC_GameResultMsg;
+//获取积分列表
+var Msg_CS_GetScoreListMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_GetScoreListMsg, _super);
+    function Msg_CS_GetScoreListMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_GetScoreListMsg) || this;
+    }
+    return Msg_CS_GetScoreListMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_GetScoreListMsg = Msg_CS_GetScoreListMsg;
+//积分列表
+var Msg_SC_ScoreListMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_ScoreListMsg, _super);
+    function Msg_SC_ScoreListMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_ScoreListMsg) || this;
+    }
+    return Msg_SC_ScoreListMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_ScoreListMsg = Msg_SC_ScoreListMsg;
+//下一局
+var Msg_CS_NextTrun = /** @class */ (function (_super) {
+    __extends(Msg_CS_NextTrun, _super);
+    function Msg_CS_NextTrun() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_NextTrun) || this;
+    }
+    return Msg_CS_NextTrun;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_NextTrun = Msg_CS_NextTrun;
+//整局游戏结束结果
+var Msg_SC_GameOverMsg = /** @class */ (function (_super) {
+    __extends(Msg_SC_GameOverMsg, _super);
+    function Msg_SC_GameOverMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_GameOverMsg) || this;
+    }
+    return Msg_SC_GameOverMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_GameOverMsg = Msg_SC_GameOverMsg;
+// 实时计分消息(胡杠时发生)
+var Msg_SC_RealScore = /** @class */ (function (_super) {
+    __extends(Msg_SC_RealScore, _super);
+    function Msg_SC_RealScore() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_RealScore) || this;
+    }
+    return Msg_SC_RealScore;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RealScore = Msg_SC_RealScore;
+//刷新某个玩家信息(在桌的)
+var Msg_SC_UpdatePlayerInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_UpdatePlayerInfo, _super);
+    function Msg_SC_UpdatePlayerInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_UpdatePlayerInfo) || this;
+    }
+    return Msg_SC_UpdatePlayerInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_UpdatePlayerInfo = Msg_SC_UpdatePlayerInfo;
+//重新上线，同步当前牌局
+var Msg_SC_SyncGameState = /** @class */ (function (_super) {
+    __extends(Msg_SC_SyncGameState, _super);
+    function Msg_SC_SyncGameState() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_SyncGameState) || this;
+    }
+    return Msg_SC_SyncGameState;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_SyncGameState = Msg_SC_SyncGameState;
+//申请关闭房间
+var Msg_CS_RqCloseGame = /** @class */ (function (_super) {
+    __extends(Msg_CS_RqCloseGame, _super);
+    function Msg_CS_RqCloseGame() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_RqCloseGame) || this;
+    }
+    return Msg_CS_RqCloseGame;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_RqCloseGame = Msg_CS_RqCloseGame;
+//投票关闭房间
+var Msg_CS_VoteCloseGame = /** @class */ (function (_super) {
+    __extends(Msg_CS_VoteCloseGame, _super);
+    function Msg_CS_VoteCloseGame() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_VoteCloseGame) || this;
+    }
+    return Msg_CS_VoteCloseGame;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_VoteCloseGame = Msg_CS_VoteCloseGame;
+//广播有人申请关房
+var Msg_SC_RqCloseGame = /** @class */ (function (_super) {
+    __extends(Msg_SC_RqCloseGame, _super);
+    function Msg_SC_RqCloseGame() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_RqCloseGame) || this;
+    }
+    return Msg_SC_RqCloseGame;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RqCloseGame = Msg_SC_RqCloseGame;
+//投票状态(仅同意)
+var Msg_SC_VoteRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_VoteRslt, _super);
+    function Msg_SC_VoteRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_VoteRslt) || this;
+    }
+    return Msg_SC_VoteRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_VoteRslt = Msg_SC_VoteRslt;
+//投票结果广播
+var Msg_SC_VoteCloseRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_VoteCloseRslt, _super);
+    function Msg_SC_VoteCloseRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_VoteCloseRslt) || this;
+    }
+    return Msg_SC_VoteCloseRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_VoteCloseRslt = Msg_SC_VoteCloseRslt;
+// 牌墙剩余牌列表(GM:getpools)
+var Msg_SC_PoolsList = /** @class */ (function (_super) {
+    __extends(Msg_SC_PoolsList, _super);
+    function Msg_SC_PoolsList() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_PoolsList) || this;
+    }
+    return Msg_SC_PoolsList;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_PoolsList = Msg_SC_PoolsList;
+// 广播有人要补杠
+var Msg_SC_BuGanging = /** @class */ (function (_super) {
+    __extends(Msg_SC_BuGanging, _super);
+    function Msg_SC_BuGanging() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_BuGanging) || this;
+    }
+    return Msg_SC_BuGanging;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_BuGanging = Msg_SC_BuGanging;
+// 发起投票处于冷却时间
+var Msg_SC_RqCloseGameErr = /** @class */ (function (_super) {
+    __extends(Msg_SC_RqCloseGameErr, _super);
+    function Msg_SC_RqCloseGameErr() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_RqCloseGameErr) || this;
+    }
+    return Msg_SC_RqCloseGameErr;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_RqCloseGameErr = Msg_SC_RqCloseGameErr;
+// 测试时间消息
+var Msg_CSC_TestTimeMsg = /** @class */ (function (_super) {
+    __extends(Msg_CSC_TestTimeMsg, _super);
+    function Msg_CSC_TestTimeMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CSC_TestTimeMsg) || this;
+    }
+    return Msg_CSC_TestTimeMsg;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CSC_TestTimeMsg = Msg_CSC_TestTimeMsg;
+//增加一条牌谱记录
+var Msg_CS_AddMahjRcd = /** @class */ (function (_super) {
+    __extends(Msg_CS_AddMahjRcd, _super);
+    function Msg_CS_AddMahjRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_AddMahjRcd) || this;
+    }
+    return Msg_CS_AddMahjRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_AddMahjRcd = Msg_CS_AddMahjRcd;
+//新增一条牌谱
+var Msg_SC_NewMahjRcd = /** @class */ (function (_super) {
+    __extends(Msg_SC_NewMahjRcd, _super);
+    function Msg_SC_NewMahjRcd() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_NewMahjRcd) || this;
+    }
+    return Msg_SC_NewMahjRcd;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_NewMahjRcd = Msg_SC_NewMahjRcd;
+//申请买马
+var Msg_CS_ReqBuyHorse = /** @class */ (function (_super) {
+    __extends(Msg_CS_ReqBuyHorse, _super);
+    function Msg_CS_ReqBuyHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_ReqBuyHorse) || this;
+    }
+    return Msg_CS_ReqBuyHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_ReqBuyHorse = Msg_CS_ReqBuyHorse;
+//取消买马
+var Msg_CS_CancelBuyHorse = /** @class */ (function (_super) {
+    __extends(Msg_CS_CancelBuyHorse, _super);
+    function Msg_CS_CancelBuyHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_CancelBuyHorse) || this;
+    }
+    return Msg_CS_CancelBuyHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_CancelBuyHorse = Msg_CS_CancelBuyHorse;
+//刷新买马者信息（通用，只要改变都刷新，包括庄家买马）
+var Msg_SC_UpdateHorser = /** @class */ (function (_super) {
+    __extends(Msg_SC_UpdateHorser, _super);
+    function Msg_SC_UpdateHorser() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_UpdateHorser) || this;
+    }
+    return Msg_SC_UpdateHorser;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_UpdateHorser = Msg_SC_UpdateHorser;
+//通知开始选马牌
+var Msg_SC_StartSelHorse = /** @class */ (function (_super) {
+    __extends(Msg_SC_StartSelHorse, _super);
+    function Msg_SC_StartSelHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_StartSelHorse) || this;
+    }
+    return Msg_SC_StartSelHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_StartSelHorse = Msg_SC_StartSelHorse;
+//玩家选马牌
+var Msg_CS_SelHorse = /** @class */ (function (_super) {
+    __extends(Msg_CS_SelHorse, _super);
+    function Msg_CS_SelHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_SelHorse) || this;
+    }
+    return Msg_CS_SelHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_SelHorse = Msg_CS_SelHorse;
+//广播选马牌结果（所有人选完以后统一广播）
+var Msg_SC_SelHorseRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_SelHorseRslt, _super);
+    function Msg_SC_SelHorseRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_SelHorseRslt) || this;
+    }
+    return Msg_SC_SelHorseRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_SelHorseRslt = Msg_SC_SelHorseRslt;
+//买马战绩，一手结束后给买马者单独推送的信息
+var Msg_SC_NewHorseScoreRslt = /** @class */ (function (_super) {
+    __extends(Msg_SC_NewHorseScoreRslt, _super);
+    function Msg_SC_NewHorseScoreRslt() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_NewHorseScoreRslt) || this;
+    }
+    return Msg_SC_NewHorseScoreRslt;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_NewHorseScoreRslt = Msg_SC_NewHorseScoreRslt;
+//买马后的给买马者单独推送的房间信息
+var Msg_SC_HorseRoomInfo = /** @class */ (function (_super) {
+    __extends(Msg_SC_HorseRoomInfo, _super);
+    function Msg_SC_HorseRoomInfo() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_HorseRoomInfo) || this;
+    }
+    return Msg_SC_HorseRoomInfo;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_HorseRoomInfo = Msg_SC_HorseRoomInfo;
+//给买马者单独推送的房间状态和结算信息（包括开局、关闭结算）
+var Msg_SC_HorseRoomState = /** @class */ (function (_super) {
+    __extends(Msg_SC_HorseRoomState, _super);
+    function Msg_SC_HorseRoomState() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_HorseRoomState) || this;
+    }
+    return Msg_SC_HorseRoomState;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_HorseRoomState = Msg_SC_HorseRoomState;
+//给买马者单独推送的取消买马信息
+var Msg_SC_CancelBuyHorse = /** @class */ (function (_super) {
+    __extends(Msg_SC_CancelBuyHorse, _super);
+    function Msg_SC_CancelBuyHorse() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_CancelBuyHorse) || this;
+    }
+    return Msg_SC_CancelBuyHorse;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_CancelBuyHorse = Msg_SC_CancelBuyHorse;
+// 出现3番下叫，每手牌出现发送一次（只有3番时才发送，用于统计）
+var Msg_CS_Fan3Tin = /** @class */ (function (_super) {
+    __extends(Msg_CS_Fan3Tin, _super);
+    function Msg_CS_Fan3Tin() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.CS_Fan3Tin) || this;
+    }
+    return Msg_CS_Fan3Tin;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_CS_Fan3Tin = Msg_CS_Fan3Tin;
+// 77出现受限制的胡碰消息（因过手胡过手碰和2分起胡限制的胡碰消息）
+var Msg_SC_LimitHuPeng = /** @class */ (function (_super) {
+    __extends(Msg_SC_LimitHuPeng, _super);
+    function Msg_SC_LimitHuPeng() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_LimitHuPeng) || this;
+    }
+    return Msg_SC_LimitHuPeng;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_LimitHuPeng = Msg_SC_LimitHuPeng;
+//78广播谁点了下一手
+var Msg_SC_NextTrunOK = /** @class */ (function (_super) {
+    __extends(Msg_SC_NextTrunOK, _super);
+    function Msg_SC_NextTrunOK() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableMsg, TabMSG_SID.SC_NextTrunOK) || this;
+    }
+    return Msg_SC_NextTrunOK;
+}(BaseMsg_1.BaseIDMsg));
+exports.Msg_SC_NextTrunOK = Msg_SC_NextTrunOK;
+
+cc._RF.pop();

@@ -1,0 +1,121 @@
+"use strict";
+cc._RF.push(module, '4ac164BXwBOQrlGbJQAekYK', 'LobbyMsgDef');
+// Script/proto/LobbyMsgDef.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TableSummInfo = exports.TableRuleTempl = exports.TableRuleInfo = exports.LobbyBaseInfo = exports.PlayerData = exports.PlayerInfo = exports.GamePlayTypeEnum = exports.GamePiaoTypeEnum = exports.GameRoomTypeEnum = exports.LeaveRoomReason = exports.LobbyErrCode = exports.LobbyMsgDef = void 0;
+/**
+* Created by admin on 2022/5/30.
+*/
+var LobbyMsgDef = /** @class */ (function () {
+    function LobbyMsgDef() {
+    }
+    return LobbyMsgDef;
+}());
+exports.LobbyMsgDef = LobbyMsgDef;
+var LobbyErrCode;
+(function (LobbyErrCode) {
+    LobbyErrCode[LobbyErrCode["eOK"] = 0] = "eOK";
+    LobbyErrCode[LobbyErrCode["eOtherErr"] = 1] = "eOtherErr";
+    LobbyErrCode[LobbyErrCode["eTokenErr"] = 2] = "eTokenErr";
+    LobbyErrCode[LobbyErrCode["eSrvNotFind"] = 3] = "eSrvNotFind";
+    LobbyErrCode[LobbyErrCode["eTidError"] = 4] = "eTidError";
+    LobbyErrCode[LobbyErrCode["eInOtherTab"] = 5] = "eInOtherTab";
+    LobbyErrCode[LobbyErrCode["eNotLogin"] = 6] = "eNotLogin";
+    LobbyErrCode[LobbyErrCode["eOtherOnline"] = 7] = "eOtherOnline";
+    LobbyErrCode[LobbyErrCode["eFavHandNumErr"] = 8] = "eFavHandNumErr";
+    LobbyErrCode[LobbyErrCode["eFavHasFav"] = 9] = "eFavHasFav";
+    LobbyErrCode[LobbyErrCode["eTidHandNumErr"] = 10] = "eTidHandNumErr";
+    LobbyErrCode[LobbyErrCode["eGameRcdNonExist"] = 11] = "eGameRcdNonExist";
+    LobbyErrCode[LobbyErrCode["eNotExistPTempl"] = 12] = "eNotExistPTempl";
+    LobbyErrCode[LobbyErrCode["ePTemplOverCnt"] = 13] = "ePTemplOverCnt";
+    LobbyErrCode[LobbyErrCode["eLowGold"] = 14] = "eLowGold";
+    LobbyErrCode[LobbyErrCode["eNotTable"] = 15] = "eNotTable";
+    LobbyErrCode[LobbyErrCode["eLimitReadCount"] = 16] = "eLimitReadCount";
+    LobbyErrCode[LobbyErrCode["eTabSrvNotFind"] = 17] = "eTabSrvNotFind";
+    LobbyErrCode[LobbyErrCode["eMax"] = 18] = "eMax";
+})(LobbyErrCode = exports.LobbyErrCode || (exports.LobbyErrCode = {}));
+// 离开房间关闭房间原因
+var LeaveRoomReason;
+(function (LeaveRoomReason) {
+    LeaveRoomReason[LeaveRoomReason["eNormal"] = 0] = "eNormal";
+    LeaveRoomReason[LeaveRoomReason["eOverTime"] = 1] = "eOverTime";
+    LeaveRoomReason[LeaveRoomReason["eEndClose"] = 2] = "eEndClose";
+    LeaveRoomReason[LeaveRoomReason["eDiss"] = 3] = "eDiss";
+    LeaveRoomReason[LeaveRoomReason["eVoteDiss"] = 4] = "eVoteDiss";
+    LeaveRoomReason[LeaveRoomReason["eCloseSrvDiss"] = 5] = "eCloseSrvDiss";
+    LeaveRoomReason[LeaveRoomReason["eOtherReason"] = 6] = "eOtherReason";
+    LeaveRoomReason[LeaveRoomReason["eMax"] = 7] = "eMax";
+})(LeaveRoomReason = exports.LeaveRoomReason || (exports.LeaveRoomReason = {}));
+/**游戏房间类型*/
+var GameRoomTypeEnum;
+(function (GameRoomTypeEnum) {
+    GameRoomTypeEnum[GameRoomTypeEnum["None"] = 0] = "None";
+    GameRoomTypeEnum[GameRoomTypeEnum["SiRenSanFang"] = 1] = "SiRenSanFang";
+    GameRoomTypeEnum[GameRoomTypeEnum["SiRenLiangFang"] = 2] = "SiRenLiangFang";
+    GameRoomTypeEnum[GameRoomTypeEnum["SanRenLiangFang"] = 3] = "SanRenLiangFang";
+    GameRoomTypeEnum[GameRoomTypeEnum["LiangRenMaJiang"] = 4] = "LiangRenMaJiang";
+    GameRoomTypeEnum[GameRoomTypeEnum["eMax"] = 5] = "eMax";
+})(GameRoomTypeEnum = exports.GameRoomTypeEnum || (exports.GameRoomTypeEnum = {}));
+/**飘的类型*/
+var GamePiaoTypeEnum;
+(function (GamePiaoTypeEnum) {
+    GamePiaoTypeEnum[GamePiaoTypeEnum["None"] = 0] = "None";
+    GamePiaoTypeEnum[GamePiaoTypeEnum["Baozi"] = 1] = "Baozi";
+    GamePiaoTypeEnum[GamePiaoTypeEnum["ShuaiPiao"] = 2] = "ShuaiPiao";
+    GamePiaoTypeEnum[GamePiaoTypeEnum["ZhuangJiaBiPiao"] = 3] = "ZhuangJiaBiPiao";
+    GamePiaoTypeEnum[GamePiaoTypeEnum["eMax"] = 4] = "eMax";
+})(GamePiaoTypeEnum = exports.GamePiaoTypeEnum || (exports.GamePiaoTypeEnum = {}));
+/**游戏玩法类型*/
+var GamePlayTypeEnum;
+(function (GamePlayTypeEnum) {
+    GamePlayTypeEnum[GamePlayTypeEnum["None"] = 0] = "None";
+    GamePlayTypeEnum[GamePlayTypeEnum["XueZhanDaoDi"] = 1] = "XueZhanDaoDi";
+    GamePlayTypeEnum[GamePlayTypeEnum["HuanSanZhang"] = 2] = "HuanSanZhang";
+    GamePlayTypeEnum[GamePlayTypeEnum["eMax"] = 3] = "eMax";
+})(GamePlayTypeEnum = exports.GamePlayTypeEnum || (exports.GamePlayTypeEnum = {}));
+// 玩家基本信息 - 他人可见信息
+var PlayerInfo = /** @class */ (function () {
+    function PlayerInfo() {
+    }
+    return PlayerInfo;
+}());
+exports.PlayerInfo = PlayerInfo;
+// 玩家详细信息
+var PlayerData = /** @class */ (function () {
+    function PlayerData() {
+    }
+    return PlayerData;
+}());
+exports.PlayerData = PlayerData;
+// 大厅信息，暂时没有内容
+var LobbyBaseInfo = /** @class */ (function () {
+    function LobbyBaseInfo() {
+    }
+    return LobbyBaseInfo;
+}());
+exports.LobbyBaseInfo = LobbyBaseInfo;
+// 牌桌规则（对于勾选项，都是1表示勾选，0表示不选择）
+var TableRuleInfo = /** @class */ (function () {
+    function TableRuleInfo() {
+    }
+    return TableRuleInfo;
+}());
+exports.TableRuleInfo = TableRuleInfo;
+// 房间模板单元信息
+var TableRuleTempl = /** @class */ (function () {
+    function TableRuleTempl() {
+    }
+    return TableRuleTempl;
+}());
+exports.TableRuleTempl = TableRuleTempl;
+// 大厅内可见的牌桌简要信息
+var TableSummInfo = /** @class */ (function () {
+    function TableSummInfo() {
+    }
+    return TableSummInfo;
+}());
+exports.TableSummInfo = TableSummInfo;
+
+cc._RF.pop();

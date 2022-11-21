@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_sirenliangfang",
+    "texture": "fb3ad43a-7d20-4696-b90d-8f9bc6f8de2d",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      138,
+      31
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      138,
+      31
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

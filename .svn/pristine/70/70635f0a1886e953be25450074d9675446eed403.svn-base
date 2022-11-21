@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_wenzikuang",
+    "texture": "7bc1ed7d-abe7-465f-a77f-ba1256f7b189",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      185,
+      69
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      185,
+      69
+    ],
+    "capInsets": [
+      29,
+      0,
+      29,
+      0
+    ]
+  }
+}

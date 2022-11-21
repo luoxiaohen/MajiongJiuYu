@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_youtintg",
+    "texture": "494960a7-e998-455e-a1ad-f526e92a78d9",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      153,
+      92
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      153,
+      92
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

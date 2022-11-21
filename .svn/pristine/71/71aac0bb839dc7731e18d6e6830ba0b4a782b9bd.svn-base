@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "51nI7Q7mJPGJe2rlZzmmo4"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "game_kuang2",
+      "rect": [
+        0,
+        0,
+        360,
+        194
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        360,
+        194
+      ],
+      "capInsets": [
+        33,
+        24,
+        33,
+        23
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

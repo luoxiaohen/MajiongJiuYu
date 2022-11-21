@@ -1,0 +1,137 @@
+[
+  1,
+  [
+    "dfRUF1GGZLZIX1uI7fjULM",
+    "91iXvpV5tFJISwVF7I+/Xe",
+    "a4/0hxieVDO5dYFeN7JClg"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    [
+      [
+        {
+          "name": "game_piao",
+          "rect": [
+            0,
+            0,
+            83,
+            86
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            83,
+            86
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "game_hu",
+          "rect": [
+            0,
+            0,
+            66,
+            46
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            66,
+            46
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        1
+      ]
+    ],
+    [
+      [
+        {
+          "name": "game_zzzhuang",
+          "rect": [
+            0,
+            0,
+            50,
+            51
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            50,
+            51
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        2
+      ]
+    ]
+  ]
+]

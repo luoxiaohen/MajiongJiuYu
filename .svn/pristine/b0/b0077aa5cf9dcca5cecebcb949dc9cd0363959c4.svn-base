@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "denglu_beijing",
+    "texture": "c2c4b9ff-9f0c-4228-8576-ff79d9cdf5f0",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1080,
+      2334
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1080,
+      2334
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

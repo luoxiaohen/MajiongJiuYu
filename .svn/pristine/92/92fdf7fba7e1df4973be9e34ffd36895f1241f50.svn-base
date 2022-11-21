@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_xuanze1",
+    "texture": "501283bc-15f3-423f-ac2a-da3ce1361a49",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      49,
+      48
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      49,
+      48
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,239 @@
+"use strict";
+cc._RF.push(module, '1a4abfXu8NKsIWFYymbFAYf', 'BigOverPanel');
+// Script/UI/over/BigOverPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var LobbyMsg_1 = require("../../proto/LobbyMsg");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var BigOverHorseInfoItem_1 = require("./BigOverHorseInfoItem");
+var BigOverPlayerInfoItem_1 = require("./BigOverPlayerInfoItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var NewClass = /** @class */ (function (_super) {
+    __extends(NewClass, _super);
+    function NewClass() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.contentNode = null;
+        _this.viewType = 0;
+        return _this;
+        // update (dt) {}
+    }
+    // LIFE-CYCLE CALLBACKS:
+    NewClass.prototype.onLoad = function () {
+        this.playerInfoItemPrefab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/BigOverPlayerInfoItem");
+        this.horsePlayerInfoItemPrfab = GloBal_1.Global.Utils.getPreFabBySource("smallOver/prefab/BigOverHorseInfoItem");
+        this.playerInfoItemArr = [];
+        this.roomTypeLabel = this.node.getChildByName("room_type_label").getComponent(cc.Label);
+        this.roomNameLabel = this.node.getChildByName("room_name_label").getComponent(cc.Label);
+        this.createNmeLabel = this.node.getChildByName("create_name_label").getComponent(cc.Label);
+        this.downScoreNumLabel = this.node.getChildByName("down_score_num_label").getComponent(cc.Label);
+        this.sumBattleNumLabel = this.node.getChildByName("sum_battle_num_label").getComponent(cc.Label);
+        this.gameEndTimeLabel = this.node.getChildByName("game_end_time_label").getComponent(cc.Label);
+        this.downRulesLabel = this.node.getChildByName("down_rules_label").getComponent(cc.Label);
+    };
+    NewClass.prototype.start = function () {
+        var gameOverData = GameInfo_1.default.ins.gameOverData;
+        // let data={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
+        // let data_1={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
+        // let data_2={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
+        // let msg:Msg_SC_GameOverMsg=JSON.parse(JSON.stringify(data_2));
+        // console.log("收到大结算数据: ",data,"---msg",msg);
+        // gameOverData=msg;
+        if (!gameOverData) {
+            GloBal_1.Global.Utils.debugOutput("BigOverPanel:  " + "无大结算数据！！！");
+            GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GameOverMsg, this.start, this);
+            return;
+        }
+        this.viewType = gameOverData.calcInfos.length - 4;
+        this.createChildNode();
+        var paramPlayerData = [];
+        var paramHorseData = [];
+        var playerDataArr = [];
+        var calcInfos = gameOverData.calcInfos;
+        for (var index = 0; index < 4; index++) {
+            playerDataArr.push(calcInfos[index]);
+        }
+        var dataSortArr = playerDataArr.sort(function (a, b) {
+            return b.score - a.score;
+        });
+        for (var index = 0; index < 4; index++) {
+            var dataItem = dataSortArr[index];
+            var infoItem = this.getInfoItemByData(dataItem, index);
+            paramPlayerData.push(infoItem);
+        }
+        for (var index = 4; index < calcInfos.length; index++) {
+            var dataItem = calcInfos[index];
+            var infoItem = this.getInfoItemByData(dataItem, index);
+            paramHorseData.push(infoItem);
+        }
+        if (this.viewType > 0) {
+            this.contentNode.y = 418.8;
+            this.downRulesLabel.node.y = -387;
+        }
+        else {
+            this.contentNode.y = 408.8;
+            this.downRulesLabel.node.y = -340;
+        }
+        this.initItemData(paramPlayerData, paramHorseData);
+        var roomInfo = GameInfo_1.default.ins.roomTableInfo;
+        this.initTopLabels(roomInfo, gameOverData);
+        var ruleStr = GloBal_1.Global.Utils.getRoomTableInfoStr(roomInfo.rule);
+        this.downRulesLabel.string = ruleStr;
+    };
+    NewClass.prototype.getInfoItemByData = function (infoItem, index) {
+        var playerInfo = GameInfo_1.default.ins.getPlayerBySit(infoItem.sit);
+        var dataItem = {
+            type: this.viewType,
+            player_head_url: "smallOver/resource/game_jstouxiang2",
+            playr_rank_num: index + 1,
+            player_rank_url: index > 2 ? "" : "smallOver/resource/game_di" + (index + 1),
+            player_name: playerInfo ? playerInfo.player.nike : "",
+            player_ID: playerInfo ? playerInfo.player.aid.toString() : "",
+            zimo_num: infoItem.zmCnt,
+            jiepao_num: infoItem.jpCnt,
+            gangpai_num: infoItem.gpCnt,
+            dianpao_num: infoItem.dpCnt,
+            player_score: infoItem.score + infoItem.bankerHScore,
+            duiju_num: infoItem.score,
+            zhuangma_num: infoItem.bankerHScore,
+            score_horse_num: infoItem.scoreHorse,
+            game_horse_url: index >= 4 ? "smallOver/resource/game_ma" + (index - 3) : "",
+            card_num: index >= 4 ? 108 : 0,
+        };
+        if (index >= 4) {
+            dataItem.player_rank_url = "";
+        }
+        return dataItem;
+    };
+    NewClass.prototype.createChildNode = function () {
+        for (var index = 0; index < 4; index++) {
+            var prefabItem = cc.instantiate(this.playerInfoItemPrefab);
+            if (this.viewType > 0) {
+                prefabItem.height = 145;
+            }
+            else {
+                prefabItem.height = 166;
+            }
+            this.contentNode.addChild(prefabItem);
+            this.playerInfoItemArr.push(prefabItem);
+        }
+        if (this.viewType > 0) {
+            var prefabItem = cc.instantiate(this.horsePlayerInfoItemPrfab);
+            this.horsePlayerInfoItem = prefabItem.getComponent(BigOverHorseInfoItem_1.default);
+            this.contentNode.addChild(prefabItem);
+        }
+    };
+    NewClass.prototype.initItemData = function (data, horseData) {
+        if (data.length != this.playerInfoItemArr.length) {
+            GloBal_1.Global.Utils.debugOutput("BigOverPannel  初始化大结算数据长度不一致！！！");
+            return;
+        }
+        for (var index = 0; index < data.length; index++) {
+            var dataItem = data[index];
+            var nodeItem = this.playerInfoItemArr[index];
+            var intemCompnent = nodeItem.getComponent(BigOverPlayerInfoItem_1.default);
+            intemCompnent.initValue(dataItem);
+        }
+        if (this.horsePlayerInfoItem) {
+            this.horsePlayerInfoItem.node.active = this.viewType > 0;
+            this.horsePlayerInfoItem.initValue(horseData);
+        }
+    };
+    NewClass.prototype.initTopLabels = function (roomData, gameOverData) {
+        var gameName = GloBal_1.Global.Utils.getGameNameByGameType(roomData.rule.gamePlayType);
+        var gameType = GloBal_1.Global.Utils.getGameTypeNameByGameType(roomData.rule.roomType);
+        var roomName = gameName + "-" + gameType;
+        this.roomTypeLabel.string = roomName;
+        this.roomNameLabel.string = roomData.roomName;
+        this.createNmeLabel.string = roomData.creater;
+        this.downScoreNumLabel.string = roomData.rule.baseScore + "";
+        this.sumBattleNumLabel.string = gameOverData.handCnt + "/" + roomData.rule.handsCnt;
+        var timeStr = new Date().toString().split("GMT");
+        this.gameEndTimeLabel.string = timeStr[0];
+        var playerAgain = this.node.getChildByName("playagain_btn");
+        var back_btn = this.node.getChildByName("back_btn");
+        var isCreater = roomData.crtAid == UserInfo_1.default.ins.myInfo.aid;
+        playerAgain.active = isCreater;
+        if (!isCreater) {
+            back_btn.x = 0;
+        }
+    };
+    NewClass.prototype.onExitBtnClick = function () {
+        GloBal_1.Global.Utils.debugOutput("BigOverPanel  点击退出按钮");
+        this.disTory();
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.BackToLobby);
+    };
+    NewClass.prototype.onPlayAgainBtnClick = function () {
+        GloBal_1.Global.Utils.debugOutput("BigOverPanel  再来一次");
+        var msg = new LobbyMsg_1.Msg_CS_TableInvite();
+        var gameRule = GameInfo_1.default.ins.roomTableInfo.rule;
+        msg.tid = ""; //房间编号应该使用新创建的下一场的tid
+        var myInfo = UserInfo_1.default.ins.myInfo;
+        var palyers = GameInfo_1.default.ins.gamePlayers;
+        var objs = [];
+        for (var _i = 0, palyers_1 = palyers; _i < palyers_1.length; _i++) {
+            var item = palyers_1[_i];
+            if (item.player.aid != myInfo.aid) {
+                objs.push(item.player.gpid);
+            }
+        }
+        msg.objs = objs;
+        GameInfo_1.default.ins.creatGameInviteTempData_CS = msg;
+        this.creatRoom(gameRule);
+        this.disTory();
+    };
+    NewClass.prototype.creatRoom = function (_rule) {
+        var ruleInfo = _rule;
+        var msg = new LobbyMsg_1.Msg_CS_CreateTable();
+        msg.info = ruleInfo;
+        msg.name = UserInfo_1.default.ins.myInfo.nike;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+    };
+    NewClass.prototype.disTory = function () {
+        this.removeListener();
+        this.contentNode.removeAllChildren();
+        _super.prototype.disTory.call(this);
+    };
+    NewClass.prototype.removeListener = function () {
+        GloBal_1.Global.EventCenter.removeEventListener(EventType_1.default.GameOverMsg, this.start, this);
+    };
+    __decorate([
+        property(cc.Node)
+    ], NewClass.prototype, "contentNode", void 0);
+    NewClass = __decorate([
+        ccclass
+    ], NewClass);
+    return NewClass;
+}(UIBase_1.default));
+exports.default = NewClass;
+
+cc._RF.pop();

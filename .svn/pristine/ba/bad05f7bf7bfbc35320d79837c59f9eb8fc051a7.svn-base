@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_3zimo",
+    "texture": "947f1227-e2f4-4656-98e9-d3c1aa2f2d5b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      198,
+      86
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      198,
+      86
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

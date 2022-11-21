@@ -1,0 +1,340 @@
+"use strict";
+cc._RF.push(module, '32e22DeRApJBKFSmgGjf3oE', 'UserInfo');
+// Script/Game/info/UserInfo.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrDiceRsltData = void 0;
+var EnumManager_1 = require("../../enum/EnumManager");
+var CheckCardManager_1 = require("../../mgr/CheckCardManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var GameInfo_1 = require("./GameInfo");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var UserInfo = /** @class */ (function () {
+    function UserInfo() {
+        /***我是否是观战者*/
+        this._selfIsLookPlayer = true;
+        /**我自己的座位*/
+        this._mySitIndex = -1;
+        /**我自己的手牌数据*/
+        this._myHandCardArr = [];
+        /***我选择的定缺类型*/
+        this._myDiceType = EnumManager_1.CardTypeEnum.EndValue;
+        /***我的分数*/
+        this._gameFen = 0;
+        /**我的最后一张摸牌*/
+        this._myLastFeelCard = -1;
+        /**我的碰杠牌组数据*/
+        this._myPengGang = [];
+        /***当前得出牌可听*/
+        this._outTing = [];
+    }
+    UserInfo_1 = UserInfo;
+    Object.defineProperty(UserInfo, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new UserInfo_1());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "myInfo", {
+        get: function () {
+            return this._myInfo;
+        },
+        set: function (value) {
+            this._myInfo = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "selfIsLookPlayer", {
+        get: function () {
+            return this._selfIsLookPlayer;
+        },
+        set: function (value) {
+            this._selfIsLookPlayer = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /***是否是自己*/
+    UserInfo.prototype.isSelf = function (gpid) {
+        return this.myInfo.gpid == gpid;
+    };
+    Object.defineProperty(UserInfo.prototype, "mySitIndex", {
+        get: function () {
+            return this._mySitIndex;
+        },
+        set: function (value) {
+            this._mySitIndex = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "myHandCardArr", {
+        get: function () {
+            return this._myHandCardArr;
+        },
+        set: function (value) {
+            this._myHandCardArr = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    UserInfo.prototype.addNewCardToMyHand = function (card) {
+        this.myHandCardArr.push(card);
+        this.myHandCardArr.sort(GloBal_1.Global.Utils.compare);
+        this.sortHandByDingQueed();
+    };
+    UserInfo.prototype.spliceCardByMyHand = function (cardValue) {
+        this.myHandCardArr.splice(this.myHandCardArr.indexOf(cardValue), 1);
+    };
+    /**从某个位置删除一个手牌 number*/
+    UserInfo.prototype.spliceNumByMyCard = function (index) {
+        this.myHandCardArr.splice(index, 1);
+    };
+    /**从某个位置删除X个手牌 number*/
+    UserInfo.prototype.spliceNumsByMyCard = function (index, num) {
+        this.myHandCardArr.splice(index, num);
+    };
+    Object.defineProperty(UserInfo.prototype, "myDiceType", {
+        get: function () {
+            return this._myDiceType;
+        },
+        set: function (value) {
+            this._myDiceType = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "gameFen", {
+        get: function () {
+            return this._gameFen;
+        },
+        set: function (value) {
+            this._gameFen = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**定缺完成后整理手牌*/
+    UserInfo.prototype.sortHandByDingQueed = function () {
+        var add = this.myHandCardArr;
+        var que = [];
+        var hand = [];
+        for (var i = 0; i < add.length; i++) {
+            if (GloBal_1.Global.Utils.getIsDice(add[i], this.myDiceType)) {
+                que.push(add[i]);
+            }
+            else {
+                hand.push(add[i]);
+            }
+        }
+        hand.sort(GloBal_1.Global.Utils.compare);
+        que.sort(GloBal_1.Global.Utils.compare);
+        var all = hand.concat(que);
+        this.myHandCardArr = all;
+    };
+    Object.defineProperty(UserInfo.prototype, "myLastFeelCard", {
+        get: function () {
+            return this._myLastFeelCard;
+        },
+        set: function (value) {
+            this._myLastFeelCard = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "otherLastOutCard", {
+        get: function () {
+            return this._otherLastOutCard;
+        },
+        set: function (value) {
+            this._otherLastOutCard = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(UserInfo.prototype, "myPengGang", {
+        get: function () {
+            return this._myPengGang;
+        },
+        set: function (value) {
+            this._myPengGang = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    UserInfo.prototype.changePenggang = function (eatData) {
+        for (var i = 0; i < this.myPengGang.length; i++) {
+            if (this.myPengGang[i].cardValue == eatData.cardValue) {
+                this.myPengGang[i] = eatData;
+            }
+        }
+    };
+    Object.defineProperty(UserInfo.prototype, "outTing", {
+        get: function () {
+            return this._outTing;
+        },
+        set: function (value) {
+            this._outTing = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /***获取我的可操作选项*/
+    UserInfo.prototype.getMyActionList = function () {
+    };
+    /**别人出牌是否需要展示过*/
+    UserInfo.prototype.getCanGuo = function () {
+        if (GameInfo_1.default.ins.remPoolsNum <= 4 && GameInfo_1.default.ins.roomTableInfo.rule.last4Hu) {
+            return false;
+        }
+        return true;
+    };
+    /**别人出牌是否需要展示碰*/
+    UserInfo.prototype.getCanPeng = function () {
+        GameInfo_1.default.ins.checkTheirHandsPeng();
+        //达成过手碰条件 并且满足碰条件则可以碰
+        if (GameInfo_1.default.ins.isTheirHandsPeng && CheckCardManager_1.default.ins.havePengByOther()) {
+            return true;
+        }
+        return false;
+    };
+    /**别人出牌是否需要展示杠*/
+    UserInfo.prototype.getCanGang = function () {
+        if (CheckCardManager_1.default.ins.haveGangByOther()) {
+            return true;
+        }
+        return false;
+    };
+    /**别人出牌是否需要展示胡*/
+    UserInfo.prototype.getCanHu = function () {
+        return CheckCardManager_1.default.ins.haveHuByOther();
+    };
+    /**自己摸牌师傅需要展示杠*/
+    UserInfo.prototype.getSelfGang = function () {
+        var arr = [];
+        arr = CheckCardManager_1.default.ins.haveGangBySelf();
+        return arr;
+    };
+    UserInfo.prototype.getBuGang = function () {
+        var pengArr = CheckCardManager_1.default.ins.haveGangByPeng();
+        return pengArr;
+    };
+    /**自己摸牌时候是否需要展示胡*/
+    UserInfo.prototype.getSelfHu = function () {
+        return CheckCardManager_1.default.ins.haveHuBySelf();
+    };
+    /**补杠抢时候是否需要展示胡*/
+    UserInfo.prototype.getQiangHu = function (cardValue) {
+        return CheckCardManager_1.default.ins.haveQianggangHuBySelf(cardValue);
+    };
+    /***自己牌时候需要展示出牌可听*/
+    UserInfo.prototype.getOutTing = function () {
+        var arr = CheckCardManager_1.default.ins.haveOutListion();
+        this.outTing = arr.length > 0 ? arr : null;
+    };
+    /***通过牌查找当前可听*/
+    UserInfo.prototype.getTingByCardValue = function (cardValue) {
+        if (this.outTing) {
+            for (var i = 0; i < this.outTing.length; i++) {
+                if (this.outTing[i].outCardValue == cardValue) {
+                    return this.outTing[i];
+                }
+            }
+        }
+        return null;
+    };
+    /**获取可出牌得类型 */
+    UserInfo.prototype.getOutType = function (data, arr) {
+        var nowHave = 4;
+        var nowAllFan = this.getMaxFan(data);
+        if (GameInfo_1.default.ins.allOutCardArr[data.outCardValue]) {
+            nowHave -= GameInfo_1.default.ins.allOutCardArr[data.outCardValue];
+        }
+        if (nowHave <= 0) {
+            return 2;
+        }
+        var tingData;
+        var isMore = true;
+        for (var i = 0; i < arr.length; i++) {
+            var tempHave = 4;
+            tingData = arr[i];
+            if (GameInfo_1.default.ins.allOutCardArr[tingData.outCardValue]) {
+                tempHave -= GameInfo_1.default.ins.allOutCardArr[tingData.outCardValue];
+            }
+            if (nowHave < tempHave) {
+                isMore = false;
+            }
+        }
+        if (isMore) {
+            return 0;
+        }
+        var isBig = true;
+        var tempFan = 0;
+        for (var i = 0; i < arr.length; i++) {
+            tingData = arr[i];
+            tempFan = this.getMaxFan(tingData);
+            if (nowAllFan < tempFan) {
+                isBig = false;
+            }
+        }
+        if (isBig) {
+            return 1;
+        }
+        return 3;
+    };
+    UserInfo.prototype.getMaxFan = function (data) {
+        var nowFan = 0;
+        for (var i = 0; i < data.huData.length; i++) {
+            if (data.huData[i].fanNum > nowFan) {
+                nowFan = data.huData[i].fanNum;
+            }
+        }
+        return nowFan;
+    };
+    /**是否还有未打出的定缺牌*/
+    UserInfo.prototype.haveDiceCard = function () {
+        for (var i = 0; i < this.myHandCardArr.length; i++) {
+            if (GloBal_1.Global.Utils.getIsDice(this.myHandCardArr[i], this.myDiceType)) {
+                return true;
+            }
+        }
+        return false;
+    };
+    UserInfo.prototype.initOver = function () {
+        this.myHandCardArr = [];
+        this.myDiceType = -1;
+        this.myLastFeelCard = -1;
+        this.otherLastOutCard = -1;
+        this.myPengGang = [];
+    };
+    var UserInfo_1;
+    UserInfo = UserInfo_1 = __decorate([
+        ccclass
+    ], UserInfo);
+    return UserInfo;
+}());
+exports.default = UserInfo;
+/**定位骰子保存*/
+var PrDiceRsltData = /** @class */ (function () {
+    function PrDiceRsltData() {
+    }
+    return PrDiceRsltData;
+}());
+exports.PrDiceRsltData = PrDiceRsltData;
+
+cc._RF.pop();

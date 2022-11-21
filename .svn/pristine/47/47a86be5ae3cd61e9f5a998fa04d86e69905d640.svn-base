@@ -1,0 +1,249 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/enum/EnumManager.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '8eb60phndRDJaGxwiBDBXeJ', 'EnumManager');
+// Script/enum/EnumManager.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameRuleTypeEnum = exports.BigOverTypeEnum = exports.TurnTableItemStateEnum = exports.AntesMultipleEnum = exports.FeelTypeEnum = exports.EatCardEnum = exports.PlayEatTypeEnum = exports.PlayStauteEnum = exports.CardGroupPointBySelfEnum = exports.DirectionEnum = exports.CardTypeEnum = void 0;
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var EnumManager = /** @class */ (function (_super) {
+    __extends(EnumManager, _super);
+    function EnumManager() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    EnumManager = __decorate([
+        ccclass
+    ], EnumManager);
+    return EnumManager;
+}(cc.Component));
+exports.default = EnumManager;
+/**牌类枚举**/
+var CardTypeEnum;
+(function (CardTypeEnum) {
+    CardTypeEnum[CardTypeEnum["Wan"] = 0] = "Wan";
+    CardTypeEnum[CardTypeEnum["Tiao"] = 1] = "Tiao";
+    CardTypeEnum[CardTypeEnum["Tong"] = 2] = "Tong";
+    CardTypeEnum[CardTypeEnum["EndValue"] = 3] = "EndValue";
+})(CardTypeEnum = exports.CardTypeEnum || (exports.CardTypeEnum = {}));
+/***位置枚举*/
+var DirectionEnum;
+(function (DirectionEnum) {
+    /**东*/
+    DirectionEnum[DirectionEnum["Dong"] = 0] = "Dong";
+    /**北*/
+    DirectionEnum[DirectionEnum["Bei"] = 1] = "Bei";
+    /**西*/
+    DirectionEnum[DirectionEnum["Xi"] = 2] = "Xi";
+    /**南*/
+    DirectionEnum[DirectionEnum["Nan"] = 3] = "Nan";
+})(DirectionEnum = exports.DirectionEnum || (exports.DirectionEnum = {}));
+/***牌组相对于第一视角的位置定义*/
+var CardGroupPointBySelfEnum;
+(function (CardGroupPointBySelfEnum) {
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Self"] = 0] = "Self";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Down"] = 1] = "Down";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Opp"] = 2] = "Opp";
+    CardGroupPointBySelfEnum[CardGroupPointBySelfEnum["Up"] = 3] = "Up";
+})(CardGroupPointBySelfEnum = exports.CardGroupPointBySelfEnum || (exports.CardGroupPointBySelfEnum = {}));
+/**开牌状态机*/
+var PlayStauteEnum;
+(function (PlayStauteEnum) {
+    /**观战**/
+    PlayStauteEnum[PlayStauteEnum["LookGame"] = 0] = "LookGame";
+    /**坐下*/
+    PlayStauteEnum[PlayStauteEnum["Stand"] = 1] = "Stand";
+    /**准备*/
+    PlayStauteEnum[PlayStauteEnum["Ready"] = 2] = "Ready";
+    /**掷庄*/
+    PlayStauteEnum[PlayStauteEnum["ThrowBookMaker"] = 3] = "ThrowBookMaker";
+    /**矫座*/
+    PlayStauteEnum[PlayStauteEnum["ChangeChar"] = 4] = "ChangeChar";
+    /**定庄*/
+    PlayStauteEnum[PlayStauteEnum["CheckBookMaker"] = 5] = "CheckBookMaker";
+    /**砌牌*/
+    PlayStauteEnum[PlayStauteEnum["PileCard"] = 6] = "PileCard";
+    /**掷先*/
+    PlayStauteEnum[PlayStauteEnum["ThrowFrist"] = 7] = "ThrowFrist";
+    /**摸手牌*/
+    PlayStauteEnum[PlayStauteEnum["DrawHandCard"] = 8] = "DrawHandCard";
+    /**换三张*/
+    PlayStauteEnum[PlayStauteEnum["ChangeThree"] = 9] = "ChangeThree";
+    /**定缺*/
+    PlayStauteEnum[PlayStauteEnum["CheckDice"] = 10] = "CheckDice";
+    /**摸新牌*/
+    PlayStauteEnum[PlayStauteEnum["DrawNewCard"] = 11] = "DrawNewCard";
+    /**等待操作*/
+    PlayStauteEnum[PlayStauteEnum["WaitOperate"] = 12] = "WaitOperate";
+    /**出牌*/
+    PlayStauteEnum[PlayStauteEnum["PlayCard"] = 13] = "PlayCard";
+    /**停牌**/
+    PlayStauteEnum[PlayStauteEnum["StopCard"] = 14] = "StopCard";
+    /**胡牌*/
+    PlayStauteEnum[PlayStauteEnum["HuCard"] = 15] = "HuCard";
+    /**小局结束*/
+    PlayStauteEnum[PlayStauteEnum["EndInnings"] = 16] = "EndInnings";
+    /**小结算*/
+    PlayStauteEnum[PlayStauteEnum["SmallGameSettlement"] = 17] = "SmallGameSettlement";
+    /**大结算*/
+    PlayStauteEnum[PlayStauteEnum["BigGameSettlement"] = 18] = "BigGameSettlement";
+    PlayStauteEnum[PlayStauteEnum["EndValue"] = 19] = "EndValue";
+})(PlayStauteEnum = exports.PlayStauteEnum || (exports.PlayStauteEnum = {}));
+/**吃碰杠胡过*/
+var PlayEatTypeEnum;
+(function (PlayEatTypeEnum) {
+    PlayEatTypeEnum[PlayEatTypeEnum["Peng"] = 0] = "Peng";
+    PlayEatTypeEnum[PlayEatTypeEnum["Gang"] = 1] = "Gang";
+    PlayEatTypeEnum[PlayEatTypeEnum["Hu"] = 2] = "Hu";
+    PlayEatTypeEnum[PlayEatTypeEnum["Guo"] = 3] = "Guo";
+})(PlayEatTypeEnum = exports.PlayEatTypeEnum || (exports.PlayEatTypeEnum = {}));
+/**碰杠枚举*/
+var EatCardEnum;
+(function (EatCardEnum) {
+    /**碰对家*/
+    EatCardEnum[EatCardEnum["EatOpposite"] = 0] = "EatOpposite";
+    /**碰上家*/
+    EatCardEnum[EatCardEnum["EatUp"] = 1] = "EatUp";
+    /**碰下家*/
+    EatCardEnum[EatCardEnum["EatDown"] = 2] = "EatDown";
+    /**杠对家*/
+    EatCardEnum[EatCardEnum["CrossOpposite"] = 3] = "CrossOpposite";
+    /**杠上家*/
+    EatCardEnum[EatCardEnum["CrossUp"] = 4] = "CrossUp";
+    /**杠下家*/
+    EatCardEnum[EatCardEnum["CrossDown"] = 5] = "CrossDown";
+    /**暗杠*/
+    EatCardEnum[EatCardEnum["CrossSelf"] = 6] = "CrossSelf";
+    /**巴杠上家*/
+    EatCardEnum[EatCardEnum["CrossAllUp"] = 7] = "CrossAllUp";
+    /**巴杠下家*/
+    EatCardEnum[EatCardEnum["CrossAllDown"] = 8] = "CrossAllDown";
+    /**巴杠对家*/
+    EatCardEnum[EatCardEnum["CrossAllOpp"] = 9] = "CrossAllOpp";
+    EatCardEnum[EatCardEnum["EndValue"] = 10] = "EndValue";
+})(EatCardEnum = exports.EatCardEnum || (exports.EatCardEnum = {}));
+/**摸牌来源*/
+var FeelTypeEnum;
+(function (FeelTypeEnum) {
+    /**常规摸牌*/
+    FeelTypeEnum[FeelTypeEnum["CommonFeel"] = 0] = "CommonFeel";
+    /**杠后摸牌*/
+    FeelTypeEnum[FeelTypeEnum["GangFeel"] = 1] = "GangFeel";
+})(FeelTypeEnum = exports.FeelTypeEnum || (exports.FeelTypeEnum = {}));
+/**底注翻倍枚举**/
+var AntesMultipleEnum;
+(function (AntesMultipleEnum) {
+    AntesMultipleEnum[AntesMultipleEnum["None"] = 0] = "None";
+    /**基础倍率*/
+    AntesMultipleEnum[AntesMultipleEnum["initial"] = 1] = "initial";
+    /**买马加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openBuyHorse"] = 2] = "openBuyHorse";
+    /**飘加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openDouble"] = 3] = "openDouble";
+    /**16手加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["moreHand"] = 4] = "moreHand";
+    /**换三加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["changeThree"] = 5] = "changeThree";
+    /**庄家必买马加倍*/
+    AntesMultipleEnum[AntesMultipleEnum["openBookmakerMustBuyHorse"] = 6] = "openBookmakerMustBuyHorse";
+    AntesMultipleEnum[AntesMultipleEnum["EndValue"] = 7] = "EndValue";
+})(AntesMultipleEnum = exports.AntesMultipleEnum || (exports.AntesMultipleEnum = {}));
+/**转盘元素状态 */
+var TurnTableItemStateEnum;
+(function (TurnTableItemStateEnum) {
+    TurnTableItemStateEnum[TurnTableItemStateEnum["None"] = 0] = "None";
+    /**当前玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["CurrentRound"] = 1] = "CurrentRound";
+    /**非当前玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["NotInRound"] = 2] = "NotInRound";
+    /**海底状态下 玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["CurRoundInSeabed"] = 3] = "CurRoundInSeabed";
+    /**海底状态  非玩家回合 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["NotCurRoundInSeabed"] = 4] = "NotCurRoundInSeabed";
+    /**玩家结束状态 */
+    TurnTableItemStateEnum[TurnTableItemStateEnum["Finish"] = 5] = "Finish";
+})(TurnTableItemStateEnum = exports.TurnTableItemStateEnum || (exports.TurnTableItemStateEnum = {}));
+var BigOverTypeEnum;
+(function (BigOverTypeEnum) {
+    /**无马 */
+    BigOverTypeEnum[BigOverTypeEnum["None"] = 0] = "None";
+    /**有马 */
+    BigOverTypeEnum[BigOverTypeEnum["BuyMa"] = 1] = "BuyMa";
+    /**庄马 */
+    BigOverTypeEnum[BigOverTypeEnum["ZhuangMa"] = 2] = "ZhuangMa";
+})(BigOverTypeEnum = exports.BigOverTypeEnum || (exports.BigOverTypeEnum = {}));
+var GameRuleTypeEnum;
+(function (GameRuleTypeEnum) {
+    GameRuleTypeEnum[GameRuleTypeEnum["FengDing"] = 0] = "FengDing";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZiMo"] = 1] = "ZiMo";
+    GameRuleTypeEnum[GameRuleTypeEnum["GameType"] = 2] = "GameType";
+    GameRuleTypeEnum[GameRuleTypeEnum["Baozi"] = 3] = "Baozi";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShuangBao"] = 4] = "ShuangBao";
+    GameRuleTypeEnum[GameRuleTypeEnum["BaoYu"] = 5] = "BaoYu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiShiYu"] = 6] = "JiShiYu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LiangGangTongChuan"] = 7] = "LiangGangTongChuan";
+    GameRuleTypeEnum[GameRuleTypeEnum["MenQing"] = 8] = "MenQing";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZhongZhang"] = 9] = "ZhongZhang";
+    GameRuleTypeEnum[GameRuleTypeEnum["YaoJiu"] = 10] = "YaoJiu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiangDui"] = 11] = "JiangDui";
+    GameRuleTypeEnum[GameRuleTypeEnum["TianDiHu"] = 12] = "TianDiHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["JiaXinWu"] = 13] = "JiaXinWu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LunZhuang"] = 14] = "LunZhuang";
+    GameRuleTypeEnum[GameRuleTypeEnum["TiFan"] = 15] = "TiFan";
+    GameRuleTypeEnum[GameRuleTypeEnum["GuoShouHu"] = 16] = "GuoShouHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["LiangFenQiHu"] = 17] = "LiangFenQiHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZuiHouSiZhang"] = 18] = "ZuiHouSiZhang";
+    GameRuleTypeEnum[GameRuleTypeEnum["ChaDaHu"] = 19] = "ChaDaHu";
+    GameRuleTypeEnum[GameRuleTypeEnum["DianGangHua"] = 20] = "DianGangHua";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShaiTaiYang"] = 21] = "ShaiTaiYang";
+    GameRuleTypeEnum[GameRuleTypeEnum["ZiMoLiangPai"] = 22] = "ZiMoLiangPai";
+    GameRuleTypeEnum[GameRuleTypeEnum["ShiShiJieSuan"] = 23] = "ShiShiJieSuan";
+})(GameRuleTypeEnum = exports.GameRuleTypeEnum || (exports.GameRuleTypeEnum = {}));
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxlbnVtXFxFbnVtTWFuYWdlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsb0JBQW9CO0FBQ3BCLHdFQUF3RTtBQUN4RSxtQkFBbUI7QUFDbkIsa0ZBQWtGO0FBQ2xGLDhCQUE4QjtBQUM5QixrRkFBa0Y7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFNUUsSUFBQSxLQUFzQixFQUFFLENBQUMsVUFBVSxFQUFsQyxPQUFPLGFBQUEsRUFBRSxRQUFRLGNBQWlCLENBQUM7QUFHMUM7SUFBeUMsK0JBQVk7SUFBckQ7O0lBQ0EsQ0FBQztJQURvQixXQUFXO1FBRC9CLE9BQU87T0FDYSxXQUFXLENBQy9CO0lBQUQsa0JBQUM7Q0FERCxBQUNDLENBRHdDLEVBQUUsQ0FBQyxTQUFTLEdBQ3BEO2tCQURvQixXQUFXO0FBRy9CLFVBQVU7QUFDVixJQUFZLFlBS1o7QUFMQSxXQUFZLFlBQVk7SUFDeEIsNkNBQUcsQ0FBQTtJQUNILCtDQUFJLENBQUE7SUFDSiwrQ0FBSSxDQUFBO0lBQ0osdURBQVEsQ0FBQTtBQUNULENBQUMsRUFMWSxZQUFZLEdBQVosb0JBQVksS0FBWixvQkFBWSxRQUt4QjtBQUNELFVBQVU7QUFDVixJQUFZLGFBU1g7QUFURCxXQUFZLGFBQWE7SUFDeEIsTUFBTTtJQUNOLGlEQUFJLENBQUE7SUFDSixNQUFNO0lBQ04sK0NBQUcsQ0FBQTtJQUNILE1BQU07SUFDTiw2Q0FBRSxDQUFBO0lBQ0YsTUFBTTtJQUNOLCtDQUFHLENBQUE7QUFDSixDQUFDLEVBVFcsYUFBYSxHQUFiLHFCQUFhLEtBQWIscUJBQWEsUUFTeEI7QUFDRCxvQkFBb0I7QUFDcEIsSUFBWSx3QkFLWDtBQUxELFdBQVksd0JBQXdCO0lBQ25DLHVFQUFJLENBQUE7SUFDSix1RUFBSSxDQUFBO0lBQ0oscUVBQUcsQ0FBQTtJQUNILG1FQUFFLENBQUE7QUFDSCxDQUFDLEVBTFcsd0JBQXdCLEdBQXhCLGdDQUF3QixLQUF4QixnQ0FBd0IsUUFLbkM7QUFDRCxVQUFVO0FBQ1YsSUFBWSxjQXlDWDtBQXpDRCxXQUFZLGNBQWM7SUFDekIsUUFBUTtJQUNSLDJEQUFRLENBQUE7SUFDUixPQUFPO0lBQ1AscURBQUssQ0FBQTtJQUNMLE9BQU87SUFDUCxxREFBSyxDQUFBO0lBQ0wsT0FBTztJQUNQLHVFQUFjLENBQUE7SUFDZCxPQUFPO0lBQ1AsK0RBQVUsQ0FBQTtJQUNWLE9BQU87SUFDUCx1RUFBYyxDQUFBO0lBQ2QsT0FBTztJQUNQLDJEQUFRLENBQUE7SUFDUixPQUFPO0lBQ1AsK0RBQVUsQ0FBQTtJQUNWLFFBQVE7SUFDUixtRUFBWSxDQUFBO0lBQ1osUUFBUTtJQUNSLGlFQUFXLENBQUE7SUFDWCxPQUFPO0lBQ1AsOERBQVMsQ0FBQTtJQUNULFFBQVE7SUFDUixrRUFBVyxDQUFBO0lBQ1gsU0FBUztJQUNULGtFQUFXLENBQUE7SUFDWCxPQUFPO0lBQ1AsNERBQVEsQ0FBQTtJQUNSLFFBQVE7SUFDUiw0REFBUSxDQUFBO0lBQ1IsT0FBTztJQUNQLHdEQUFNLENBQUE7SUFDTixTQUFTO0lBQ1QsZ0VBQVUsQ0FBQTtJQUNWLFFBQVE7SUFDUixrRkFBbUIsQ0FBQTtJQUNuQixRQUFRO0lBQ1IsOEVBQWlCLENBQUE7SUFFakIsNERBQVEsQ0FBQTtBQUNULENBQUMsRUF6Q1csY0FBYyxHQUFkLHNCQUFjLEtBQWQsc0JBQWMsUUF5Q3pCO0FBRUQsVUFBVTtBQUNWLElBQVksZUFLWDtBQUxELFdBQVksZUFBZTtJQUMxQixxREFBSSxDQUFBO0lBQ0oscURBQUksQ0FBQTtJQUNKLGlEQUFFLENBQUE7SUFDRixtREFBRyxDQUFBO0FBQ0osQ0FBQyxFQUxXLGVBQWUsR0FBZix1QkFBZSxLQUFmLHVCQUFlLFFBSzFCO0FBRUQsU0FBUztBQUNULElBQVksV0FzQlg7QUF0QkQsV0FBWSxXQUFXO0lBQ3RCLFFBQVE7SUFDUiwyREFBVyxDQUFBO0lBQ1gsUUFBUTtJQUNSLCtDQUFLLENBQUE7SUFDTCxRQUFRO0lBQ1IsbURBQU8sQ0FBQTtJQUNQLFFBQVE7SUFDUiwrREFBYSxDQUFBO0lBQ2IsUUFBUTtJQUNSLG1EQUFPLENBQUE7SUFDUCxRQUFRO0lBQ1IsdURBQVMsQ0FBQTtJQUNULE9BQU87SUFDUCx1REFBUyxDQUFBO0lBQ1QsU0FBUztJQUNULHlEQUFVLENBQUE7SUFDVixTQUFTO0lBQ1QsNkRBQVksQ0FBQTtJQUNaLFNBQVM7SUFDVCwyREFBVyxDQUFBO0lBQ1gsc0RBQVEsQ0FBQTtBQUNULENBQUMsRUF0QlcsV0FBVyxHQUFYLG1CQUFXLEtBQVgsbUJBQVcsUUFzQnRCO0FBRUQsU0FBUztBQUNULElBQVksWUFLWDtBQUxELFdBQVksWUFBWTtJQUN2QixTQUFTO0lBQ1QsMkRBQVUsQ0FBQTtJQUNWLFNBQVM7SUFDVCx1REFBUSxDQUFBO0FBQ1QsQ0FBQyxFQUxXLFlBQVksR0FBWixvQkFBWSxLQUFaLG9CQUFZLFFBS3ZCO0FBQ0QsWUFBWTtBQUNaLElBQVksaUJBZVg7QUFmRCxXQUFZLGlCQUFpQjtJQUM1Qix5REFBSSxDQUFBO0lBQ0osU0FBUztJQUNULCtEQUFPLENBQUE7SUFDUCxTQUFTO0lBQ1QseUVBQVksQ0FBQTtJQUNaLFFBQVE7SUFDUixxRUFBVSxDQUFBO0lBQ1YsVUFBVTtJQUNWLGlFQUFRLENBQUE7SUFDUixTQUFTO0lBQ1QsdUVBQVcsQ0FBQTtJQUNYLFlBQVk7SUFDWixtR0FBeUIsQ0FBQTtJQUN6QixpRUFBUSxDQUFBO0FBQ1QsQ0FBQyxFQWZXLGlCQUFpQixHQUFqQix5QkFBaUIsS0FBakIseUJBQWlCLFFBZTVCO0FBRUQsWUFBWTtBQUNaLElBQVksc0JBWVg7QUFaRCxXQUFZLHNCQUFzQjtJQUNqQyxtRUFBSSxDQUFBO0lBQ0osWUFBWTtJQUNaLG1GQUFZLENBQUE7SUFDWixhQUFhO0lBQ2IsK0VBQVUsQ0FBQTtJQUNWLGdCQUFnQjtJQUNoQiwyRkFBZ0IsQ0FBQTtJQUNoQixpQkFBaUI7SUFDakIsaUdBQW1CLENBQUE7SUFDbkIsWUFBWTtJQUNaLHVFQUFNLENBQUE7QUFDUCxDQUFDLEVBWlcsc0JBQXNCLEdBQXRCLDhCQUFzQixLQUF0Qiw4QkFBc0IsUUFZakM7QUFFRCxJQUFZLGVBT1g7QUFQRCxXQUFZLGVBQWU7SUFDMUIsUUFBUTtJQUNSLHFEQUFJLENBQUE7SUFDSixRQUFRO0lBQ1IsdURBQUssQ0FBQTtJQUNMLFFBQVE7SUFDUiw2REFBUSxDQUFBO0FBQ1QsQ0FBQyxFQVBXLGVBQWUsR0FBZix1QkFBZSxLQUFmLHVCQUFlLFFBTzFCO0FBRUQsSUFBWSxnQkF5Qlg7QUF6QkQsV0FBWSxnQkFBZ0I7SUFDM0IsK0RBQVUsQ0FBQTtJQUNWLHVEQUFJLENBQUE7SUFDSiwrREFBUSxDQUFBO0lBQ1IseURBQUssQ0FBQTtJQUNMLGlFQUFTLENBQUE7SUFDVCx5REFBSyxDQUFBO0lBQ0wsNkRBQU8sQ0FBQTtJQUNQLG1GQUFrQixDQUFBO0lBQ2xCLDZEQUFPLENBQUE7SUFDUCxtRUFBVSxDQUFBO0lBQ1YsNERBQU0sQ0FBQTtJQUNOLGdFQUFRLENBQUE7SUFDUixnRUFBUSxDQUFBO0lBQ1IsZ0VBQVEsQ0FBQTtJQUNSLGtFQUFTLENBQUE7SUFDVCwwREFBSyxDQUFBO0lBQ0wsa0VBQVMsQ0FBQTtJQUNULHdFQUFZLENBQUE7SUFDWiwwRUFBYSxDQUFBO0lBQ2IsOERBQU8sQ0FBQTtJQUNQLHNFQUFXLENBQUE7SUFDWCxzRUFBVyxDQUFBO0lBQ1gsd0VBQVksQ0FBQTtJQUNaLDBFQUFhLENBQUE7QUFDZCxDQUFDLEVBekJXLGdCQUFnQixHQUFoQix3QkFBZ0IsS0FBaEIsd0JBQWdCLFFBeUIzQiIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbIi8vIExlYXJuIFR5cGVTY3JpcHQ6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3R5cGVzY3JpcHQuaHRtbFxyXG4vLyBMZWFybiBBdHRyaWJ1dGU6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL3JlZmVyZW5jZS9hdHRyaWJ1dGVzLmh0bWxcclxuLy8gTGVhcm4gbGlmZS1jeWNsZSBjYWxsYmFja3M6XHJcbi8vICAtIGh0dHBzOi8vZG9jcy5jb2Nvcy5jb20vY3JlYXRvci9tYW51YWwvZW4vc2NyaXB0aW5nL2xpZmUtY3ljbGUtY2FsbGJhY2tzLmh0bWxcclxuXHJcbmNvbnN0IHtjY2NsYXNzLCBwcm9wZXJ0eX0gPSBjYy5fZGVjb3JhdG9yO1xyXG5cclxuQGNjY2xhc3NcclxuZXhwb3J0IGRlZmF1bHQgY2xhc3MgRW51bU1hbmFnZXIgZXh0ZW5kcyBjYy5Db21wb25lbnQge1xyXG59XHJcblxyXG4gLyoq54mM57G75p6a5Li+KiovXHJcbiBleHBvcnQgZW51bSBDYXJkVHlwZUVudW17XHJcblx0V2FuLFxyXG5cdFRpYW8sXHJcblx0VG9uZyxcclxuXHRFbmRWYWx1ZVxyXG59XHJcbi8qKirkvY3nva7mnprkuL4qL1xyXG5leHBvcnQgZW51bSBEaXJlY3Rpb25FbnVte1xyXG5cdC8qKuS4nCovXHJcblx0RG9uZyxcclxuXHQvKirljJcqL1xyXG5cdEJlaSxcclxuXHQvKiropb8qL1xyXG5cdFhpLFxyXG5cdC8qKuWNlyovXHJcblx0TmFuLFxyXG59XHJcbi8qKirniYznu4Tnm7jlr7nkuo7nrKzkuIDop4bop5LnmoTkvY3nva7lrprkuYkqL1xyXG5leHBvcnQgZW51bSBDYXJkR3JvdXBQb2ludEJ5U2VsZkVudW17XHJcblx0U2VsZixcclxuXHREb3duLFxyXG5cdE9wcCxcclxuXHRVcFxyXG59XHJcbi8qKuW8gOeJjOeKtuaAgeacuiovXHJcbmV4cG9ydCBlbnVtIFBsYXlTdGF1dGVFbnVte1xyXG5cdC8qKuinguaImCoqL1xyXG5cdExvb2tHYW1lLFxyXG5cdC8qKuWdkOS4iyovXHJcblx0U3RhbmQsXHJcblx0Lyoq5YeG5aSHKi9cclxuXHRSZWFkeSxcclxuXHQvKirmjrfluoQqL1xyXG5cdFRocm93Qm9va01ha2VyLFxyXG5cdC8qKuefq+W6pyovXHJcblx0Q2hhbmdlQ2hhcixcclxuXHQvKirlrprluoQqL1xyXG5cdENoZWNrQm9va01ha2VyLFxyXG5cdC8qKuegjOeJjCovXHJcblx0UGlsZUNhcmQsXHJcblx0Lyoq5o635YWIKi9cclxuXHRUaHJvd0ZyaXN0LFxyXG5cdC8qKuaRuOaJi+eJjCovXHJcblx0RHJhd0hhbmRDYXJkLFxyXG5cdC8qKuaNouS4ieW8oCovXHJcblx0Q2hhbmdlVGhyZWUsXHJcblx0Lyoq5a6a57y6Ki9cclxuXHRDaGVja0RpY2UsXHJcblx0Lyoq5pG45paw54mMKi9cclxuXHREcmF3TmV3Q2FyZCxcclxuXHQvKirnrYnlvoXmk43kvZwqL1xyXG5cdFdhaXRPcGVyYXRlLFxyXG5cdC8qKuWHuueJjCovXHJcblx0UGxheUNhcmQsXHJcblx0Lyoq5YGc54mMKiovXHJcblx0U3RvcENhcmQsXHJcblx0Lyoq6IOh54mMKi9cclxuXHRIdUNhcmQsXHJcblx0Lyoq5bCP5bGA57uT5p2fKi9cclxuXHRFbmRJbm5pbmdzLFxyXG5cdC8qKuWwj+e7k+eulyovXHJcblx0U21hbGxHYW1lU2V0dGxlbWVudCxcclxuXHQvKirlpKfnu5PnrpcqL1xyXG5cdEJpZ0dhbWVTZXR0bGVtZW50LFxyXG5cclxuXHRFbmRWYWx1ZVxyXG59XHJcblxyXG4vKirlkIPnorDmnaDog6Hov4cqL1xyXG5leHBvcnQgZW51bSBQbGF5RWF0VHlwZUVudW17XHJcblx0UGVuZyxcclxuXHRHYW5nLFxyXG5cdEh1LFxyXG5cdEd1b1xyXG59XHJcblxyXG4vKirnorDmnaDmnprkuL4qL1xyXG5leHBvcnQgZW51bSBFYXRDYXJkRW51bSB7XHJcblx0Lyoq56Kw5a+55a62Ki9cclxuXHRFYXRPcHBvc2l0ZSxcclxuXHQvKirnorDkuIrlrrYqL1xyXG5cdEVhdFVwLFxyXG5cdC8qKueisOS4i+WutiovXHJcblx0RWF0RG93bixcclxuXHQvKirmnaDlr7nlrrYqL1xyXG5cdENyb3NzT3Bwb3NpdGUsXHJcblx0Lyoq5p2g5LiK5a62Ki9cclxuXHRDcm9zc1VwLFxyXG5cdC8qKuadoOS4i+WutiovXHJcblx0Q3Jvc3NEb3duLFxyXG5cdC8qKuaal+adoCovXHJcblx0Q3Jvc3NTZWxmLFxyXG5cdC8qKuW3tOadoOS4iuWutiovXHJcblx0Q3Jvc3NBbGxVcCxcclxuXHQvKirlt7TmnaDkuIvlrrYqL1xyXG5cdENyb3NzQWxsRG93bixcclxuXHQvKirlt7TmnaDlr7nlrrYqL1xyXG5cdENyb3NzQWxsT3BwLFxyXG5cdEVuZFZhbHVlXHJcbn1cclxuXHJcbi8qKuaRuOeJjOadpea6kCovXHJcbmV4cG9ydCBlbnVtIEZlZWxUeXBlRW51bXtcclxuXHQvKirluLjop4TmkbjniYwqL1xyXG5cdENvbW1vbkZlZWwsXHJcblx0Lyoq5p2g5ZCO5pG454mMKi9cclxuXHRHYW5nRmVlbCxcclxufVxyXG4vKirlupXms6jnv7vlgI3mnprkuL4qKi9cclxuZXhwb3J0IGVudW0gQW50ZXNNdWx0aXBsZUVudW17XHJcblx0Tm9uZSxcclxuXHQvKirln7rnoYDlgI3njocqL1xyXG5cdGluaXRpYWwsXHJcblx0Lyoq5Lmw6ams5Yqg5YCNKi9cclxuXHRvcGVuQnV5SG9yc2UsXHJcblx0Lyoq6aOY5Yqg5YCNKi9cclxuXHRvcGVuRG91YmxlLFxyXG5cdC8qKjE25omL5Yqg5YCNKi9cclxuXHRtb3JlSGFuZCxcclxuXHQvKirmjaLkuInliqDlgI0qL1xyXG5cdGNoYW5nZVRocmVlLFxyXG5cdC8qKuW6hOWutuW/heS5sOmprOWKoOWAjSovXHJcblx0b3BlbkJvb2ttYWtlck11c3RCdXlIb3JzZSxcclxuXHRFbmRWYWx1ZVxyXG59XHJcblxyXG4vKirovaznm5jlhYPntKDnirbmgIEgKi9cclxuZXhwb3J0IGVudW0gVHVyblRhYmxlSXRlbVN0YXRlRW51bXtcclxuXHROb25lLFxyXG5cdC8qKuW9k+WJjeeOqeWutuWbnuWQiCAqL1xyXG5cdEN1cnJlbnRSb3VuZCxcclxuXHQvKirpnZ7lvZPliY3njqnlrrblm57lkIggKi9cclxuXHROb3RJblJvdW5kLFxyXG5cdC8qKua1t+W6leeKtuaAgeS4iyDnjqnlrrblm57lkIggKi9cclxuXHRDdXJSb3VuZEluU2VhYmVkLFxyXG5cdC8qKua1t+W6leeKtuaAgSAg6Z2e546p5a625Zue5ZCIICovXHJcblx0Tm90Q3VyUm91bmRJblNlYWJlZCxcclxuXHQvKirnjqnlrrbnu5PmnZ/nirbmgIEgKi9cclxuXHRGaW5pc2gsXHJcbn1cclxuXHJcbmV4cG9ydCBlbnVtIEJpZ092ZXJUeXBlRW51bXtcclxuXHQvKirml6DpqawgKi9cclxuXHROb25lLFxyXG5cdC8qKuaciemprCAqL1xyXG5cdEJ1eU1hLFxyXG5cdC8qKuW6hOmprCAqL1xyXG5cdFpodWFuZ01hLFxyXG59XHJcblxyXG5leHBvcnQgZW51bSBHYW1lUnVsZVR5cGVFbnVte1xyXG5cdEZlbmdEaW5nPTAsXHJcblx0WmlNbyxcclxuXHRHYW1lVHlwZSxcclxuXHRCYW96aSxcclxuXHRTaHVhbmdCYW8sXHJcblx0QmFvWXUsXHJcblx0SmlTaGlZdSxcclxuXHRMaWFuZ0dhbmdUb25nQ2h1YW4sXHJcblx0TWVuUWluZyxcclxuXHRaaG9uZ1poYW5nLFxyXG5cdFlhb0ppdSxcclxuXHRKaWFuZ0R1aSxcclxuXHRUaWFuRGlIdSxcclxuXHRKaWFYaW5XdSxcclxuXHRMdW5aaHVhbmcsXHJcblx0VGlGYW4sXHJcblx0R3VvU2hvdUh1LFxyXG5cdExpYW5nRmVuUWlIdSxcclxuXHRadWlIb3VTaVpoYW5nLFxyXG5cdENoYURhSHUsXHJcblx0RGlhbkdhbmdIdWEsXHJcblx0U2hhaVRhaVlhbmcsXHJcblx0WmlNb0xpYW5nUGFpLFxyXG5cdFNoaVNoaUppZVN1YW4sXHJcbn0iXX0=

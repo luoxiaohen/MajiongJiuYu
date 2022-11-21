@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_sanrenliangfang",
+    "texture": "9e892e9e-97ae-4c70-bfea-5bc64aab7d8b",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      138,
+      31
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      138,
+      31
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

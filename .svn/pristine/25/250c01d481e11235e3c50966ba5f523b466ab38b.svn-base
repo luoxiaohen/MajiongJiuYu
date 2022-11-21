@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "7bwe19q+dGX6d/uhJW97GJ"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "createRoom_wenzikuang",
+      "rect": [
+        0,
+        0,
+        185,
+        69
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        185,
+        69
+      ],
+      "capInsets": [
+        22,
+        16,
+        17,
+        16
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

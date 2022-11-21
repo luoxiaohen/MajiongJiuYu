@@ -1,0 +1,204 @@
+"use strict";
+cc._RF.push(module, '9ebe09W4KVDMpaLxE+WS6pV', 'DialogManager');
+// Script/Shared/DialogManager.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("./GloBal");
+var MessageCallback_1 = require("./MessageCallback");
+var DialogManager = /** @class */ (function () {
+    function DialogManager() {
+    }
+    Object.defineProperty(DialogManager, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new DialogManager());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    DialogManager.prototype.init = function (rootNode) {
+        this.rootNode = rootNode;
+        // 创建dialog node
+        this.dialogNode = this.rootNode.getChildByName("tipsLayar");
+        this.dialogNode.width = rootNode.width;
+        this.dialogNode.height = rootNode.height;
+        this.frontNode = this.rootNode.getChildByName("frontNode");
+        this.frontNode.width = rootNode.width;
+        this.frontNode.height = rootNode.height;
+        this.loadedDialogPrefabs = {};
+        this.createdDialogs = {};
+        MessageCallback_1.default.ins.addListener("DesignResolutionChanged", this);
+    };
+    ;
+    DialogManager.prototype.messageCallbackHandler = function (route, msg) {
+        if (route === "DesignResolutionChanged") {
+            this.updateDialogNodeSize(msg);
+        }
+    };
+    ;
+    DialogManager.prototype.updateDialogNodeSize = function (size) {
+        this.dialogNode.width = size.width;
+        this.dialogNode.height = size.height;
+        this.frontNode.width = size.width;
+        this.frontNode.height = size.height;
+    };
+    ;
+    /**
+     * 创建dialog
+     * @param dialogRes dialog种类，必须与prefab和dialog对应的管理js脚本名字相同
+     * @param params 创建dialog需要传入的参数
+     * @param cb 创建完成的会调
+     */
+    DialogManager.prototype.createDialog = function (dialogRes, params, cb, parent) {
+        if (params === void 0) { params = {}; }
+        if (cb === void 0) { cb = null; }
+        if (parent === void 0) { parent = null; }
+        cc.log("create dialog:" + dialogRes);
+        // console.log("create dialog:" + dialogRes);
+        var fileName = dialogRes;
+        var arr = dialogRes.split('/');
+        var dialogType = arr[arr.length - 1];
+        // 验证数据
+        if (!dialogRes) {
+            cc.error('Create Dialog failed: dialog type is null');
+            console.log("DialogManager ===> 数据验证错误");
+            return;
+        }
+        var createdDialogs = this.createdDialogs;
+        var createDialog = null;
+        var loadedDialogPrefabs = this.loadedDialogPrefabs;
+        if (!!loadedDialogPrefabs[dialogRes]) {
+            console.log("DialogManager ==> not loadedDialogPrefabs");
+            createDialog = cc.instantiate(loadedDialogPrefabs[dialogRes]);
+            createdDialogs[dialogRes] = createDialog;
+            createDialog.getComponent(dialogType).dialogParameters = params || {};
+            createDialog.getComponent(dialogType).isDestroy = false;
+            createDialog.parent = parent ? parent : this.dialogNode;
+            createDialog.y = -1920;
+            GloBal_1.Global.Utils.invokeCallback(cb, null, createDialog);
+        }
+        else {
+            console.log("DialogManager ==> to load a new prefab");
+            cc.loader.loadRes(fileName, function (err, data) {
+                if (!!err) {
+                    cc.error(err);
+                    GloBal_1.Global.Utils.invokeCallback(cb, err);
+                }
+                else {
+                    console.log("DialogManager ==> load handler");
+                    loadedDialogPrefabs[dialogRes] = data;
+                    createDialog = cc.instantiate(data);
+                    console.log("DialogManager ==> load handler" + createDialog.getComponent(dialogType));
+                    createdDialogs[dialogRes] = createDialog;
+                    createDialog.getComponent(dialogType).dialogParameters = params || {};
+                    createDialog.getComponent(dialogType).isDestroy = false;
+                    createDialog.parent = parent ? parent : this.dialogNode;
+                    createDialog.y = 0;
+                    GloBal_1.Global.Utils.invokeCallback(cb, null, createDialog);
+                }
+            }.bind(this));
+        }
+    };
+    ;
+    DialogManager.prototype.isDialogExit = function (dialogRes) {
+        return !!this.createdDialogs[dialogRes];
+    };
+    ;
+    /**
+     * 将dialog添加进dialogManager
+     * @param dialogType dialog类型
+     * @param dialog dialog节点
+     */
+    DialogManager.prototype.addDialogToManager = function (dialogType, dialog) {
+        this.createdDialogs[dialogType] = this.createdDialogs[dialogType] || dialog;
+    };
+    ;
+    /**
+     * 删除dialog
+     * @param dialogRes 删除的dialog类型
+     * @param isClearPrefabs 是否清除dialog对应的prefab
+     */
+    DialogManager.prototype.destroyDialog = function (dialogRes, isClearPrefabs) {
+        if (isClearPrefabs === void 0) { isClearPrefabs = false; }
+        isClearPrefabs = isClearPrefabs || false;
+        var createdDialogs = this.createdDialogs;
+        var dialog = null;
+        var dialogController = null;
+        if (typeof (dialogRes) === 'object') {
+            dialog = dialogRes.node;
+            dialogController = dialogRes;
+            for (var key in createdDialogs) {
+                if (createdDialogs.hasOwnProperty(key)) {
+                    if (createdDialogs[key] === dialog) {
+                        dialogRes = key;
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            dialog = createdDialogs[dialogRes] || null;
+            var arr = dialogRes.split('/');
+            var dialogType = arr[arr.length - 1];
+            if (dialog) {
+                dialogController = dialog.getComponent(dialogType);
+            }
+        }
+        if (!dialog) {
+            cc.warn('destroy dialog not exist:' + dialogRes);
+        }
+        else {
+            var dialogActionWidgetCtrl = dialog.getComponent("DialogActionWidgetCtrl");
+            if (!!dialogActionWidgetCtrl) {
+                dialogActionWidgetCtrl.dialogOut(function () {
+                    // 删除界面
+                    dialog.destroy();
+                    dialogController.isDestroy = true;
+                    // 移除属性
+                    delete createdDialogs[dialogRes];
+                    if (isClearPrefabs) {
+                        cc.loader.releaseRes(dialogRes);
+                        delete this.loadedDialogPrefabs[dialogRes];
+                    }
+                    cc.log('destroy dialog succeed:' + dialogRes);
+                }.bind(this));
+            }
+            else {
+                // 删除界面
+                dialog.destroy();
+                dialogController.isDestroy = true;
+                // 移除属性
+                delete createdDialogs[dialogRes];
+                if (isClearPrefabs) {
+                    cc.loader.releaseRes(dialogRes);
+                    delete this.loadedDialogPrefabs[dialogRes];
+                }
+                cc.log('destroy dialog succeed:' + dialogRes);
+            }
+        }
+    };
+    ;
+    DialogManager.prototype.destroyAllDialog = function (exceptArr) {
+        if (exceptArr === void 0) { exceptArr = null; }
+        cc.log('destroyAllDialog');
+        for (var key in this.createdDialogs) {
+            if (this.createdDialogs.hasOwnProperty(key)) {
+                if (!!exceptArr && exceptArr.indexOf(key) >= 0)
+                    continue;
+                var dialog = this.createdDialogs[key];
+                // 删除界面
+                dialog.destroy();
+                var arr = key.split('/');
+                var dialogType = arr[arr.length - 1];
+                dialog.getComponent(dialogType).isDestroy = true;
+                // 移除属性
+                delete this.createdDialogs[key];
+            }
+        }
+    };
+    ;
+    return DialogManager;
+}());
+exports.default = DialogManager;
+
+cc._RF.pop();

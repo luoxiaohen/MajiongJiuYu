@@ -1,0 +1,190 @@
+"use strict";
+cc._RF.push(module, '2465c82cY1DuIig6pI/71LQ', 'SocketManager');
+// Script/com/socket/SocketManager.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SocketManager = exports.SocketType = void 0;
+var GloBal_1 = require("../../Shared/GloBal");
+var Socket_1 = require("./Socket");
+var SocketType;
+(function (SocketType) {
+    SocketType[SocketType["Default"] = 0] = "Default";
+})(SocketType = exports.SocketType || (exports.SocketType = {}));
+var SocketManager = /** @class */ (function () {
+    function SocketManager() {
+        this.mSocketLib = {};
+        this.mAgenClass = null;
+        this.mUrlSep = ":";
+        this.mTmpHandlerLib = {};
+        //ssl证书地址，目前发现如果socket服务器采用亚马逊颁发的证书的话 安卓端会出现连接不上的问题
+        //故而 需要在客户端的socket连接处加上证书（https://curl.se/docs/caextract.html 下载相应证书）
+        //let _pemUrl =cc.url.raw("resources/cacert.pem");
+        //if( cc.loader.md5Pipe ){
+        //	_pemUrl = cc.loader.md5Pipe.transformURL(_pemUrl);
+        //}
+        this.wssCacertPath = null;
+    }
+    /**[public]
+     * 配置基本信息
+     * @param _agentClass socket代理类
+     * @param _urlSep url分隔符通常情况下是冒号
+     */
+    SocketManager.prototype.config = function (_agentClass, _urlSep) {
+        if (_urlSep === void 0) { _urlSep = ":"; }
+        this.mAgenClass = _agentClass;
+        this.mUrlSep = _urlSep;
+    };
+    /**[public]
+     * 创建socket连接
+     * @param _host
+     * @param _port
+     * @param _socketType
+     */
+    SocketManager.prototype.createSocket = function (_host, _port, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _url = this.mergeUrl(_host, _port);
+        this.createSocketByUrl(_url);
+    };
+    SocketManager.prototype.createSocketByUrl = function (_url, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        _socketType = this.getSocketType(_socketType);
+        var _agent = new this.mAgenClass();
+        this.destorySocket(_socketType);
+        var _socket = new Socket_1.Socket(_socketType, _agent);
+        this.addHandlers(_socket);
+        _socket.startConnect(_url, this.wssCacertPath);
+        this.mSocketLib[_socketType] = _socket;
+    };
+    SocketManager.prototype.addHandlers = function (_socket) {
+        var _handlerLib = this.mTmpHandlerLib[_socket.socketType];
+        if (_handlerLib) {
+            for (var _id in _handlerLib) {
+                var _handlerList = _handlerLib[_id];
+                _handlerList.forEach(function (_handler) {
+                    _socket.addReceiveNotify(_handler["mid"], _handler["sid"], _handler["handler"], _handler["target"]);
+                });
+            }
+        }
+    };
+    SocketManager.prototype.mergeUrl = function (_host, _port) {
+        return "" + _host + this.mUrlSep + _port;
+    };
+    /**[public]
+     * 获取socket
+     * @param _socketType
+     */
+    SocketManager.prototype.getSocket = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        _socketType = this.getSocketType(_socketType);
+        return this.mSocketLib[_socketType];
+    };
+    /**[public]
+     * 销毁某个socket
+     * @param _socketType
+     */
+    SocketManager.prototype.destorySocket = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.destory();
+            delete this.mSocketLib[_socket.socketType];
+        }
+    };
+    /**[public]
+     * 关闭连接
+     * @param _socketType
+     */
+    SocketManager.prototype.closeSocket = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.close();
+            this.destorySocket(_socketType);
+        }
+    };
+    /**[public]
+     * 重连
+     * @param _socketType
+     */
+    SocketManager.prototype.reconnect = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.reconnect();
+        }
+    };
+    /**[public]
+     * 是否连接
+     * @param _socketType
+     */
+    SocketManager.prototype.isConnected = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        return _socket ? _socket.connected : false;
+    };
+    /**[public]
+     * 发送
+     * @param _socketType
+     * * ..._datas
+     */
+    SocketManager.prototype.send = function (_socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _datas = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            _datas[_i - 1] = arguments[_i];
+        }
+        GloBal_1.Global.Utils.debugOutput("SocketManager ==> send msg : ");
+        GloBal_1.Global.Utils.debugOutput(_datas);
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.send.apply(_socket, _datas);
+        }
+    };
+    /**[public]
+     * 添加通知回调
+     * @param _id
+     * @param _handler
+     * @param _target
+     * @param _socketType
+     */
+    SocketManager.prototype.addReceiveNotify = function (_mid, _sid, _handler, _target, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.addReceiveNotify(_mid, _sid, _handler, _target);
+        }
+        _socketType = this.getSocketType(_socketType);
+        var _lib = this.mTmpHandlerLib[_socketType] || {};
+        this.mTmpHandlerLib[_socketType] = _lib;
+        var _id = (_mid << 16) + _sid;
+        var _list = _lib[_id] || [];
+        _lib[_id] = _list;
+        _list.push({ mid: _mid, sid: _sid, handler: _handler, target: _target });
+    };
+    SocketManager.prototype.removeReceiveNotify = function (_target, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        _socket && _socket.removeReceiveNotify(_target);
+    };
+    /**[public]
+     * 广播通知
+     * @param _id
+     * @param _data
+     * @param _socketType
+     */
+    SocketManager.prototype.notifyReceive = function (_id, _data, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _socket = this.getSocket(_socketType);
+        if (_socket) {
+            _socket.notifyReceive(_id, _data);
+        }
+    };
+    SocketManager.prototype.getSocketType = function (_socketType) {
+        return _socketType == -1 ? SocketType.Default : _socketType;
+    };
+    return SocketManager;
+}());
+exports.SocketManager = SocketManager;
+
+cc._RF.pop();

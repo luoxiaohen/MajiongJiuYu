@@ -1,0 +1,72 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/event/EventCenter.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '2dc5d0NuBtB+prJcqryEPgq', 'EventCenter');
+// Script/event/EventCenter.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventCenter = /** @class */ (function () {
+    function EventCenter() {
+        this.eventTarget = new cc.EventTarget();
+    }
+    Object.defineProperty(EventCenter, "ins", {
+        get: function () {
+            if (!this._ins) {
+                this._ins = new EventCenter();
+            }
+            return this._ins;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**
+     * Listen to a notification
+     * @param name
+     * @param callback
+     */
+    EventCenter.prototype.addEventListener = function (type, callback, target) {
+        this.eventTarget.on(type, callback, target);
+    };
+    /**
+     * Dispatch a notification
+     * @param name
+     */
+    EventCenter.prototype.dispatchEvent = function (type, data) {
+        this.eventTarget.emit(type, type, data);
+    };
+    EventCenter.prototype.hasEventListener = function ($type) {
+        return this.eventTarget != null && this.eventTarget.hasEventListener($type);
+    };
+    /**
+     * Cancel listen
+     * @param name
+     */
+    EventCenter.prototype.removeEventListener = function (type, callback, target) {
+        this.eventTarget.off(type, callback, target);
+    };
+    return EventCenter;
+}());
+exports.default = EventCenter;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxldmVudFxcRXZlbnRDZW50ZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTtJQUFBO1FBQ1ksZ0JBQVcsR0FBbUIsSUFBSSxFQUFFLENBQUMsV0FBVyxFQUFFLENBQUM7SUF1Qy9ELENBQUM7SUFwQ0csc0JBQWtCLGtCQUFHO2FBQXJCO1lBQ0ksSUFBRyxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUM7Z0JBQ1osSUFBSSxDQUFDLElBQUksR0FBQyxJQUFJLFdBQVcsRUFBRSxDQUFDO2FBQzdCO1lBQ0QsT0FBTyxJQUFJLENBQUMsSUFBSSxDQUFFO1FBQ3RCLENBQUM7OztPQUFBO0lBR0Q7Ozs7T0FJRztJQUNJLHNDQUFnQixHQUF2QixVQUEyQixJQUFZLEVBQUUsUUFBMkMsRUFBRSxNQUFZO1FBQ2hHLElBQUksQ0FBQyxXQUFXLENBQUMsRUFBRSxDQUFDLElBQUksRUFBRSxRQUFRLEVBQUUsTUFBTSxDQUFDLENBQUM7SUFDOUMsQ0FBQztJQUVEOzs7T0FHRztJQUNJLG1DQUFhLEdBQXBCLFVBQXdCLElBQVksRUFBRSxJQUFRO1FBQzVDLElBQUksQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRSxJQUFJLEVBQUUsSUFBSSxDQUFDLENBQUM7SUFDMUMsQ0FBQztJQUVNLHNDQUFnQixHQUF2QixVQUF3QixLQUFLO1FBQzNCLE9BQU8sSUFBSSxDQUFDLFdBQVcsSUFBSSxJQUFJLElBQUksSUFBSSxDQUFDLFdBQVcsQ0FBQyxnQkFBZ0IsQ0FBQyxLQUFLLENBQUMsQ0FBQztJQUM5RSxDQUFDO0lBRUQ7OztPQUdHO0lBQ0kseUNBQW1CLEdBQTFCLFVBQThCLElBQVksRUFBRSxRQUEyQyxFQUFFLE1BQVk7UUFDbkcsSUFBSSxDQUFDLFdBQVcsQ0FBQyxHQUFHLENBQUMsSUFBSSxFQUFFLFFBQVEsRUFBRSxNQUFNLENBQUMsQ0FBQztJQUMvQyxDQUFDO0lBQ0wsa0JBQUM7QUFBRCxDQXhDQSxBQXdDQyxJQUFBIiwiZmlsZSI6IiIsInNvdXJjZVJvb3QiOiIvIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IEV2ZW50VHlwZSBmcm9tIFwiLi9FdmVudFR5cGVcIjtcclxuXHJcbmV4cG9ydCBkZWZhdWx0IGNsYXNzIEV2ZW50Q2VudGVyIHtcclxuICAgIHByaXZhdGUgZXZlbnRUYXJnZXQ6IGNjLkV2ZW50VGFyZ2V0ID0gbmV3IGNjLkV2ZW50VGFyZ2V0KCk7XHJcbiAgXHJcbiAgICBwcml2YXRlIHN0YXRpYyBfaW5zOiBFdmVudENlbnRlcjtcclxuICAgIHB1YmxpYyBzdGF0aWMgZ2V0IGlucygpIHtcclxuICAgICAgICBpZighdGhpcy5faW5zKXtcclxuICAgICAgICAgIHRoaXMuX2lucz1uZXcgRXZlbnRDZW50ZXIoKTtcclxuICAgICAgICB9XHJcbiAgICAgICAgcmV0dXJuIHRoaXMuX2lucyA7XHJcbiAgICB9XHJcblxyXG4gIFxyXG4gICAgLyoqXHJcbiAgICAgKiBMaXN0ZW4gdG8gYSBub3RpZmljYXRpb25cclxuICAgICAqIEBwYXJhbSBuYW1lXHJcbiAgICAgKiBAcGFyYW0gY2FsbGJhY2tcclxuICAgICAqL1xyXG4gICAgcHVibGljIGFkZEV2ZW50TGlzdGVuZXI8VD4odHlwZTogc3RyaW5nLCBjYWxsYmFjazogKCR0eXBlOiBzdHJpbmcsICRkYXRhOiBUKSA9PiB2b2lkLCB0YXJnZXQ/OiBhbnkpOiB2b2lkIHtcclxuICAgICAgdGhpcy5ldmVudFRhcmdldC5vbih0eXBlLCBjYWxsYmFjaywgdGFyZ2V0KTtcclxuICAgIH1cclxuICBcclxuICAgIC8qKlxyXG4gICAgICogRGlzcGF0Y2ggYSBub3RpZmljYXRpb25cclxuICAgICAqIEBwYXJhbSBuYW1lXHJcbiAgICAgKi9cclxuICAgIHB1YmxpYyBkaXNwYXRjaEV2ZW50PFQ+KHR5cGU6IHN0cmluZywgZGF0YT86IFQpIHtcclxuICAgICAgdGhpcy5ldmVudFRhcmdldC5lbWl0KHR5cGUsIHR5cGUsIGRhdGEpO1xyXG4gICAgfVxyXG4gIFxyXG4gICAgcHVibGljIGhhc0V2ZW50TGlzdGVuZXIoJHR5cGUpOiBib29sZWFuIHtcclxuICAgICAgcmV0dXJuIHRoaXMuZXZlbnRUYXJnZXQgIT0gbnVsbCAmJiB0aGlzLmV2ZW50VGFyZ2V0Lmhhc0V2ZW50TGlzdGVuZXIoJHR5cGUpO1xyXG4gICAgfVxyXG4gIFxyXG4gICAgLyoqXHJcbiAgICAgKiBDYW5jZWwgbGlzdGVuXHJcbiAgICAgKiBAcGFyYW0gbmFtZVxyXG4gICAgICovXHJcbiAgICBwdWJsaWMgcmVtb3ZlRXZlbnRMaXN0ZW5lcjxUPih0eXBlOiBzdHJpbmcsIGNhbGxiYWNrOiAoJHR5cGU6IHN0cmluZywgJGRhdGE6IFQpID0+IHZvaWQsIHRhcmdldD86IGFueSk6IHZvaWQge1xyXG4gICAgICB0aGlzLmV2ZW50VGFyZ2V0Lm9mZih0eXBlLCBjYWxsYmFjaywgdGFyZ2V0KTtcclxuICAgIH1cclxufSJdfQ==

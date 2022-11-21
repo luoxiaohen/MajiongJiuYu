@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "c46557f2-899c-4bab-93aa-302ecd0d978f",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 77,
+  "height": 74,
+  "platformSettings": {},
+  "subMetas": {
+    "game_jiantou1": {
+      "ver": "1.0.6",
+      "uuid": "e33318e9-36c5-4838-b40c-95dbe4eb7a38",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "c46557f2-899c-4bab-93aa-302ecd0d978f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 77,
+      "height": 74,
+      "rawWidth": 77,
+      "rawHeight": 74,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

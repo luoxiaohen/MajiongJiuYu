@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_gangshanghua",
+    "texture": "c3f854ec-dfdb-4e66-a77d-3d765498ebfb",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      343,
+      134
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      343,
+      134
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

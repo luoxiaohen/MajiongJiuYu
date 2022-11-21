@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_dingque6",
+    "texture": "9f5de409-f2d6-41eb-a994-090efca0bc50",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      198,
+      198
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      198,
+      198
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

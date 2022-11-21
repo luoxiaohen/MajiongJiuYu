@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_qvxiao",
+    "texture": "90b9b83e-958d-4603-b986-497c8c464b95",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      146,
+      149
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      146,
+      149
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,621 @@
+"use strict";
+cc._RF.push(module, '9ba5fSH/IhE7puGAiqjTzcd', 'FanRuleItem');
+// Script/UI/createRoom/FanRuleItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var LobbyMsgDef_1 = require("../../proto/LobbyMsgDef");
+var GloBal_1 = require("../../Shared/GloBal");
+var CreateCheckItem_1 = require("./CreateCheckItem");
+var CreateRoomHelper_1 = require("./CreateRoomHelper");
+var CreateRoomRuleItem_1 = require("./CreateRoomRuleItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var FanRuleItem = /** @class */ (function (_super) {
+    __extends(FanRuleItem, _super);
+    function FanRuleItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.baseGroup = null;
+        _this.paoGroup = null;
+        _this.huGroup = null;
+        _this.zimojiafanGroup = null;
+        _this.zimojiaPaoGroup = null;
+        _this.saitaiyangGroup = null;
+        _this.jichuQustionBtn = null;
+        _this.zimoQustionBtn = null;
+        _this.lunzhuangQustionBtn = null;
+        _this.gpsQustionBtn = null;
+        return _this;
+    }
+    FanRuleItem.prototype.onLoad = function () {
+    };
+    FanRuleItem.prototype.setData = function (temp) {
+        _super.prototype.setData.call(this, temp);
+        this.initElements();
+    };
+    FanRuleItem.prototype.initElements = function () {
+        this.itemWeights = 997;
+        this.changeHeight = 199;
+        this.addItem();
+        this.initRuleInfo();
+        this._height = this.getHeight();
+        if (this.ruleInfo.sunshine > 0) {
+            this.saitaiyangGroup.scaleY = 1;
+            this.huGroup.y = -1299;
+        }
+        else {
+            this.saitaiyangGroup.scaleY = 0;
+            this.huGroup.y = -1100;
+        }
+        this.showAllItem();
+        this.addEvent();
+    };
+    FanRuleItem.prototype.addEvent = function () {
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.CreateRoom_Check_Click, this.onCheckClick, this);
+        this.zimojiaPaoGroup.on(cc.Node.EventType.TOUCH_START, this.onZimoPaoClick, this);
+        this.zimojiafanGroup.on(cc.Node.EventType.TOUCH_START, this.onZimojiafanClick, this);
+        this.jichuQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onJichuClick, this);
+        this.zimoQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onZiMoClick, this);
+        this.lunzhuangQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onLunZhuangClick, this);
+        this.gpsQustionBtn.node.on(cc.Node.EventType.TOUCH_START, this.onGpsQClick, this);
+    };
+    FanRuleItem.prototype.onCheckClick = function (e, data) {
+        var item = data;
+        switch (item.boxValue) {
+            case 15:
+                this.onZimoJiaFenClick();
+                break;
+            case 16:
+                this.onMenqingClick();
+                break;
+            case 17:
+                this.onZhongzhangClick();
+                break;
+            case 18:
+                this.onYaojiuClick();
+                break;
+            case 19:
+                this.onJiangduiClick();
+                break;
+            case 20:
+                this.onJiaxinClick();
+                break;
+            case 21:
+                this.onTiandiClick();
+                break;
+            case 22:
+                this.onWujiaoClick();
+                break;
+            case 23:
+                this.onBaoyuClick();
+                break;
+            case 24:
+                this.onJishiyuClick();
+                break;
+            case 25:
+                this.onSaitaiyangClick();
+                break;
+            case 26:
+                this.onLiangangClick();
+                break;
+            case 27:
+                this.onSaitaiyangyuClick();
+                break;
+            case 28:
+                this.onSaitaiyangfanyuClick();
+                break;
+            case 29:
+                this.onGuozhuangClick();
+                break;
+            case 30:
+                this.onGuozhuangPengClick();
+                break;
+            case 31:
+                this.onLiangfenClick();
+                break;
+            case 32:
+                this.onSizhangClick();
+                break;
+            case 33:
+                this.onLiangPaiClick();
+                break;
+            case 34:
+                this.onLiushuiClick();
+                break;
+            case 35:
+                this.onLunzhuangClick();
+                break;
+            case 36:
+                this.onIPClick();
+                break;
+            case 37:
+                this.onGpsClick();
+                break;
+        }
+    };
+    FanRuleItem.prototype.onSaitaiyangyuClick = function () {
+        this.ruleInfo.sunshine = 1;
+        this.showSunShine();
+    };
+    FanRuleItem.prototype.onSaitaiyangfanyuClick = function () {
+        this.ruleInfo.sunshine = 2;
+        this.showSunShine();
+    };
+    FanRuleItem.prototype.onGuozhuangClick = function () {
+        this.ruleInfo.passHu = this.ruleInfo.passHu == 1 ? 0 : 1;
+        this.showGuozhuangHu();
+    };
+    FanRuleItem.prototype.onGuozhuangPengClick = function () {
+        this.ruleInfo.passPeng = this.ruleInfo.passPeng == 1 ? 0 : 1;
+        this.showGuozhuangPeng();
+    };
+    FanRuleItem.prototype.onLunzhuangClick = function () {
+        this.ruleInfo.lunZhuang = this.ruleInfo.lunZhuang == 1 ? 0 : 1;
+        this.showLunzhuang();
+    };
+    FanRuleItem.prototype.onLiangfenClick = function () {
+        this.ruleInfo.hu2Score = this.ruleInfo.hu2Score == 1 ? 0 : 1;
+        this.showLiangfen();
+    };
+    FanRuleItem.prototype.onSizhangClick = function () {
+        this.ruleInfo.last4Hu = this.ruleInfo.last4Hu == 1 ? 0 : 1;
+        this.showSizhanghu();
+    };
+    FanRuleItem.prototype.onLiangPaiClick = function () {
+        this.ruleInfo.zmOpen = this.ruleInfo.zmOpen == 1 ? 0 : 1;
+        this.showZimoliangpai();
+    };
+    FanRuleItem.prototype.onLiushuiClick = function () {
+        this.ruleInfo.realTimeCalc = this.ruleInfo.realTimeCalc == 1 ? 0 : 1;
+        this.showLiushui();
+    };
+    FanRuleItem.prototype.onIPClick = function () {
+        this.ruleInfo.limitIP = this.ruleInfo.limitIP == 1 ? 0 : 1;
+        this.showIp();
+    };
+    FanRuleItem.prototype.onGpsClick = function () {
+        this.ruleInfo.limitGPS = this.ruleInfo.limitGPS == 1 ? 0 : 1;
+        this.showGps();
+    };
+    FanRuleItem.prototype.onBaoyuClick = function () {
+        this.ruleInfo.caGua = this.ruleInfo.caGua == 1 ? 0 : 1;
+        this.showChagua();
+    };
+    FanRuleItem.prototype.onJishiyuClick = function () {
+        this.ruleInfo.jiShiYu = this.ruleInfo.jiShiYu == 1 ? 0 : 1;
+        this.showJishiyu();
+    };
+    FanRuleItem.prototype.onSaitaiyangClick = function () {
+        if (this.ruleInfo.sunshine) {
+            this.ruleInfo.sunshine = 0;
+        }
+        else {
+            this.ruleInfo.sunshine = 1;
+        }
+        this.showSaitaiyangItem();
+        this.showSaitaiyang();
+    };
+    FanRuleItem.prototype.showSaitaiyangItem = function () {
+        var _this = this;
+        if (this.ruleInfo.sunshine) {
+            this.isMoveUp = false;
+            CreateRoomHelper_1.default.ins.gameRuleItemIsMove = true;
+            this.saitaiyangGroup.active = true;
+            cc.tween(this.saitaiyangGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { scaleY: 1 }).start();
+            cc.tween(this.huGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { y: -1299 }).call(function () {
+                CreateRoomHelper_1.default.ins.gameRuleItemIsMove = false;
+            }).start();
+        }
+        else {
+            this.isMoveUp = true;
+            CreateRoomHelper_1.default.ins.gameRuleItemIsMove = true;
+            cc.tween(this.saitaiyangGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { scaleY: 0 }).start();
+            cc.tween(this.huGroup).to(this.changeHeight * TimeAndMoveManager_1.default.ins.gameRuleItemMoveTime, { y: -1100 }).call(function () {
+                CreateRoomHelper_1.default.ins.gameRuleItemIsMove = false;
+                _this.saitaiyangGroup.active = false;
+            }).start();
+        }
+    };
+    FanRuleItem.prototype.onLiangangClick = function () {
+        this.ruleInfo.allGangShift = this.ruleInfo.allGangShift == 1 ? 0 : 1;
+        this.showLiangang();
+    };
+    FanRuleItem.prototype.onZimoJiaFenClick = function () {
+        this.ruleInfo.zmType = this.ruleInfo.zmType == 0 ? 0 : 1;
+        this.showZimoJIafen();
+    };
+    FanRuleItem.prototype.onMenqingClick = function () {
+        this.ruleInfo.menqing = this.ruleInfo.menqing == 1 ? 0 : 1;
+        this.showMenqing();
+    };
+    FanRuleItem.prototype.onZhongzhangClick = function () {
+        this.ruleInfo.zhongzhang = this.ruleInfo.zhongzhang == 1 ? 0 : 1;
+        this.showZhongzhang();
+    };
+    FanRuleItem.prototype.onYaojiuClick = function () {
+        this.ruleInfo.yao9 = this.ruleInfo.yao9 == 1 ? 0 : 1;
+        this.showYaojiu();
+    };
+    FanRuleItem.prototype.onJiangduiClick = function () {
+        this.ruleInfo.jiangdui = this.ruleInfo.jiangdui == 1 ? 0 : 1;
+        this.showJiangdui();
+    };
+    FanRuleItem.prototype.onJiaxinClick = function () {
+        this.ruleInfo.jiaxin5 = this.ruleInfo.jiaxin5 == 1 ? 0 : 1;
+        this.showJiaxin();
+    };
+    FanRuleItem.prototype.onTiandiClick = function () {
+        this.ruleInfo.tdHu = this.ruleInfo.tdHu == 1 ? 0 : 1;
+        this.showTiandihu();
+    };
+    FanRuleItem.prototype.onWujiaoClick = function () {
+        this.ruleInfo.findMaxHu = this.ruleInfo.findMaxHu == 1 ? 0 : 1;
+        this.showFindMax();
+    };
+    FanRuleItem.prototype.onZimoPaoClick = function () {
+        if (this.ruleInfo.dianGangHua == 1) {
+            this.ruleInfo.dianGangHua = 2;
+        }
+        else {
+            this.ruleInfo.dianGangHua = 1;
+        }
+        this.showZimoPao();
+    };
+    FanRuleItem.prototype.onZimojiafanClick = function () {
+        if (this.ruleInfo.zmType == 1) {
+            this.ruleInfo.zmType = 2;
+        }
+        else {
+            this.ruleInfo.zmType = 1;
+        }
+        this.showZimoFan();
+    };
+    FanRuleItem.prototype.onJichuClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 5);
+    };
+    FanRuleItem.prototype.onZiMoClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 6);
+    };
+    FanRuleItem.prototype.onLunZhuangClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 7);
+    };
+    FanRuleItem.prototype.onGpsQClick = function () {
+        GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoomRuleTipsClick, 8);
+    };
+    FanRuleItem.prototype.showAllItem = function () {
+        this.showSunShine();
+        this.showZimoPao();
+        this.showZimoFan();
+        this.showZimoJIafen();
+        this.showMenqing();
+        this.showZhongzhang();
+        this.showYaojiu();
+        this.showJiangdui();
+        this.showJiaxin();
+        this.showTiandihu();
+        this.showFindMax();
+        this.showChagua();
+        this.showJishiyu();
+        this.showSaitaiyang();
+        this.showLiangang();
+        this.showGuozhuangHu();
+        this.showLunzhuang();
+        this.showLiangfen();
+        this.showSizhanghu();
+        this.showZimoliangpai();
+        this.showLiushui();
+        this.showIp();
+        this.showGps();
+    };
+    FanRuleItem.prototype.showZimoFan = function () {
+        if (this.ruleInfo.zmType == 1) {
+            cc.find("/label1", this.zimojiafanGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[1];
+            cc.find("/label2", this.zimojiafanGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[2];
+            cc.find("/zimoBtnImage", this.zimojiafanGroup).getComponent(cc.Sprite).node.x = -9;
+        }
+        else {
+            cc.find("/label1", this.zimojiafanGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[2];
+            cc.find("/label2", this.zimojiafanGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[1];
+            cc.find("/zimoBtnImage", this.zimojiafanGroup).getComponent(cc.Sprite).node.x = 244;
+        }
+    };
+    FanRuleItem.prototype.showZimoPao = function () {
+        if (this.ruleInfo.dianGangHua == 1) {
+            cc.find("/label1", this.zimojiaPaoGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[1];
+            cc.find("/label2", this.zimojiaPaoGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[2];
+            cc.find("/zimoBtnImage", this.zimojiaPaoGroup).getComponent(cc.Sprite).node.x = -9;
+        }
+        else {
+            cc.find("/label1", this.zimojiaPaoGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[2];
+            cc.find("/label2", this.zimojiaPaoGroup).getComponent(cc.Label).node.color = CreateRoomHelper_1.default.ins.colorData[1];
+            cc.find("/zimoBtnImage", this.zimojiaPaoGroup).getComponent(cc.Sprite).node.x = 244;
+        }
+    };
+    FanRuleItem.prototype.showSunShine = function () {
+        if (this.ruleInfo.sunshine == 1) {
+            this.taiyangBox.showSelect(true);
+            this.taiyangyuBox.showSelect(false);
+            this.taiyangBox.textColor(CreateRoomHelper_1.default.ins.colorData[2]);
+            this.taiyangyuBox.textColor(CreateRoomHelper_1.default.ins.colorData[1]);
+        }
+        else if (this.ruleInfo.sunshine == 2) {
+            this.taiyangBox.showSelect(false);
+            this.taiyangyuBox.showSelect(true);
+            this.taiyangBox.textColor(CreateRoomHelper_1.default.ins.colorData[1]);
+            this.taiyangyuBox.textColor(CreateRoomHelper_1.default.ins.colorData[2]);
+        }
+    };
+    FanRuleItem.prototype.showGps = function () {
+        this.showLabelAndBox(this.gpsBox, this.ruleInfo.limitGPS == 1);
+    };
+    FanRuleItem.prototype.showIp = function () {
+        this.showLabelAndBox(this.ipBox, this.ruleInfo.limitIP == 1);
+    };
+    FanRuleItem.prototype.showLiushui = function () {
+        this.showLabelAndBox(this.liushuiBox, this.ruleInfo.realTimeCalc == 1);
+    };
+    FanRuleItem.prototype.showZimoliangpai = function () {
+        this.showLabelAndBox(this.liangpaiBox, this.ruleInfo.zmOpen == 1);
+    };
+    FanRuleItem.prototype.showSizhanghu = function () {
+        this.showLabelAndBox(this.sizhanghuBox, this.ruleInfo.last4Hu == 1);
+    };
+    FanRuleItem.prototype.showLiangfen = function () {
+        this.showLabelAndBox(this.liangfenhuBox, this.ruleInfo.hu2Score == 1);
+    };
+    FanRuleItem.prototype.showLunzhuang = function () {
+        this.showLabelAndBox(this.lunzhuangBox, this.ruleInfo.lunZhuang == 1);
+    };
+    FanRuleItem.prototype.showGuozhuangHu = function () {
+        this.showLabelAndBox(this.guozhuanghuBox, this.ruleInfo.passHu == 1);
+    };
+    FanRuleItem.prototype.showGuozhuangPeng = function () {
+        this.showLabelAndBox(this.guozhuangpengBox, this.ruleInfo.passPeng == 1);
+    };
+    FanRuleItem.prototype.showLiangang = function () {
+        this.showLabelAndBox(this.liangangBox, this.ruleInfo.allGangShift == 1);
+    };
+    FanRuleItem.prototype.showSaitaiyang = function () {
+        this.showLabelAndBox(this.saitaiyangBox, this.ruleInfo.sunshine > 0);
+    };
+    FanRuleItem.prototype.showJishiyu = function () {
+        this.showLabelAndBox(this.jishiyuBox, this.ruleInfo.jiShiYu == 1);
+    };
+    FanRuleItem.prototype.showChagua = function () {
+        this.showLabelAndBox(this.baoyuBox, this.ruleInfo.caGua == 1);
+    };
+    FanRuleItem.prototype.showFindMax = function () {
+        this.showLabelAndBox(this.wujiaoBox, this.ruleInfo.findMaxHu == 1);
+    };
+    FanRuleItem.prototype.showTiandihu = function () {
+        this.showLabelAndBox(this.tiandiBox, this.ruleInfo.tdHu == 1);
+    };
+    FanRuleItem.prototype.showJiaxin = function () {
+        this.showLabelAndBox(this.jiaxinBox, this.ruleInfo.jiaxin5 == 1);
+    };
+    FanRuleItem.prototype.showJiangdui = function () {
+        this.showLabelAndBox(this.jiangduiBox, this.ruleInfo.jiangdui == 1);
+    };
+    FanRuleItem.prototype.showYaojiu = function () {
+        this.showLabelAndBox(this.yaojiuBox, this.ruleInfo.yao9 == 1);
+    };
+    FanRuleItem.prototype.showZhongzhang = function () {
+        this.showLabelAndBox(this.zhongzhangBox, this.ruleInfo.zhongzhang == 1);
+    };
+    FanRuleItem.prototype.showZimoJIafen = function () {
+        this.showLabelAndBox(this.zimoJiafenBox, this.ruleInfo.zmType > 0);
+    };
+    FanRuleItem.prototype.showMenqing = function () {
+        this.showLabelAndBox(this.menqingBox, this.ruleInfo.menqing == 1);
+    };
+    FanRuleItem.prototype.showLabelAndBox = function (box, isSelect) {
+        box.textColor(isSelect ? CreateRoomHelper_1.default.ins.colorData[2] : CreateRoomHelper_1.default.ins.colorData[1]);
+    };
+    FanRuleItem.prototype.getHeight = function () {
+        return this.ruleInfo.sunshine > 0 ? 1966 : 1767;
+    };
+    FanRuleItem.prototype.initRuleInfo = function () {
+        if (!this.ruleInfo) {
+            this.ruleInfo = new LobbyMsgDef_1.TableRuleInfo();
+            for (var key in this.ruleInfo) {
+                this.ruleInfo[key] = null;
+            }
+            this.ruleInfo.zmType = 1;
+            this.ruleInfo.tdHu = 1;
+            this.ruleInfo.findMaxHu = 1;
+            this.ruleInfo.dianGangHua = 2;
+            this.ruleInfo.jiShiYu = 1;
+            this.ruleInfo.passHu = 1;
+            this.ruleInfo.zmOpen = 1;
+        }
+    };
+    FanRuleItem.prototype.addItem = function () {
+        var prefab = GloBal_1.Global.Utils.getPreFabBySource("createRoom/prefab/CreateCheckItem");
+        this.zimoJiafenBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.zimoJiafenBox.node.x = 92;
+        this.zimoJiafenBox.node.y = -234;
+        this.zimoJiafenBox.setData(15, true, 1, true);
+        this.baseGroup.addChild(this.zimoJiafenBox.node);
+        this.menqingBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.menqingBox.node.x = 92;
+        this.menqingBox.node.y = -339;
+        this.menqingBox.setData(16, false, 1, true);
+        this.baseGroup.addChild(this.menqingBox.node);
+        this.zhongzhangBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.zhongzhangBox.node.x = 605;
+        this.zhongzhangBox.node.y = -339;
+        this.zhongzhangBox.setData(17, false, 1, true);
+        this.baseGroup.addChild(this.zhongzhangBox.node);
+        this.yaojiuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.yaojiuBox.node.x = 92;
+        this.yaojiuBox.node.y = -444;
+        this.yaojiuBox.setData(18, false, 1, true);
+        this.baseGroup.addChild(this.yaojiuBox.node);
+        this.jiangduiBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.jiangduiBox.node.x = 605;
+        this.jiangduiBox.node.y = -444;
+        this.jiangduiBox.setData(19, false, 1, true);
+        this.baseGroup.addChild(this.jiangduiBox.node);
+        this.jiaxinBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.jiaxinBox.node.x = 92;
+        this.jiaxinBox.node.y = -548;
+        this.jiaxinBox.setData(20, false, 1, true);
+        this.baseGroup.addChild(this.jiaxinBox.node);
+        this.tiandiBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.tiandiBox.node.x = 605;
+        this.tiandiBox.node.y = -548;
+        this.tiandiBox.setData(21, true, 1, true);
+        this.baseGroup.addChild(this.tiandiBox.node);
+        this.wujiaoBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.wujiaoBox.node.x = 92;
+        this.wujiaoBox.node.y = -653;
+        this.wujiaoBox.setData(22, true, 1, true);
+        this.baseGroup.addChild(this.wujiaoBox.node);
+        //----------------------------------------------------------------------------
+        this.baoyuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.baoyuBox.node.x = 92;
+        this.baoyuBox.node.y = -187;
+        this.baoyuBox.setData(23, false, 1, true);
+        this.paoGroup.addChild(this.baoyuBox.node);
+        this.jishiyuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.jishiyuBox.node.x = 605;
+        this.jishiyuBox.node.y = -187;
+        this.jishiyuBox.setData(24, true, 1, true);
+        this.paoGroup.addChild(this.jishiyuBox.node);
+        this.saitaiyangBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.saitaiyangBox.node.x = 92;
+        this.saitaiyangBox.node.y = -295;
+        this.saitaiyangBox.setData(25, false, 1, true);
+        this.paoGroup.addChild(this.saitaiyangBox.node);
+        this.liangangBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.liangangBox.node.x = 605;
+        this.liangangBox.node.y = -295;
+        this.liangangBox.setData(26, false, 1, true);
+        this.paoGroup.addChild(this.liangangBox.node);
+        this.taiyangBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.taiyangBox.node.x = 92;
+        this.taiyangBox.node.y = -129;
+        this.taiyangBox.setData(27, false, 2, true);
+        this.saitaiyangGroup.addChild(this.taiyangBox.node);
+        this.taiyangyuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.taiyangyuBox.node.x = 453;
+        this.taiyangyuBox.node.y = -129;
+        this.taiyangyuBox.setData(28, false, 2, true);
+        this.saitaiyangGroup.addChild(this.taiyangyuBox.node);
+        //----------------------------------------------------------------------
+        this.guozhuanghuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.guozhuanghuBox.node.x = 92;
+        this.guozhuanghuBox.node.y = -106;
+        this.guozhuanghuBox.setData(29, true, 1, true);
+        this.huGroup.addChild(this.guozhuanghuBox.node);
+        this.guozhuangpengBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.guozhuangpengBox.node.x = 605;
+        this.guozhuangpengBox.node.y = -106;
+        this.guozhuangpengBox.setData(30, false, 1, true);
+        this.huGroup.addChild(this.guozhuangpengBox.node);
+        this.liangfenhuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.liangfenhuBox.node.x = 92;
+        this.liangfenhuBox.node.y = -214;
+        this.liangfenhuBox.setData(31, false, 1, true);
+        this.huGroup.addChild(this.liangfenhuBox.node);
+        this.sizhanghuBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.sizhanghuBox.node.x = 605;
+        this.sizhanghuBox.node.y = -214;
+        this.sizhanghuBox.setData(32, false, 1, true);
+        this.huGroup.addChild(this.sizhanghuBox.node);
+        this.liangpaiBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.liangpaiBox.node.x = 92;
+        this.liangpaiBox.node.y = -322;
+        this.liangpaiBox.setData(33, true, 1, true);
+        this.huGroup.addChild(this.liangpaiBox.node);
+        this.liushuiBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.liushuiBox.node.x = 605;
+        this.liushuiBox.node.y = -322;
+        this.liushuiBox.setData(34, false, 1, true);
+        this.huGroup.addChild(this.liushuiBox.node);
+        this.lunzhuangBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.lunzhuangBox.node.x = 92;
+        this.lunzhuangBox.node.y = -430;
+        this.lunzhuangBox.setData(35, false, 1, true);
+        this.huGroup.addChild(this.lunzhuangBox.node);
+        this.ipBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.ipBox.node.x = 92;
+        this.ipBox.node.y = -580;
+        this.ipBox.setData(36, false, 1, true);
+        this.huGroup.addChild(this.ipBox.node);
+        this.gpsBox = cc.instantiate(prefab).getComponent(CreateCheckItem_1.default);
+        this.gpsBox.node.x = 605;
+        this.gpsBox.node.y = -580;
+        this.gpsBox.setData(37, false, 1, true);
+        this.huGroup.addChild(this.gpsBox.node);
+    };
+    FanRuleItem.prototype.getSelectData = function () {
+        return this.ruleInfo;
+    };
+    FanRuleItem.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "baseGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "paoGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "huGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "zimojiafanGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "zimojiaPaoGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], FanRuleItem.prototype, "saitaiyangGroup", void 0);
+    __decorate([
+        property(cc.Button)
+    ], FanRuleItem.prototype, "jichuQustionBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], FanRuleItem.prototype, "zimoQustionBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], FanRuleItem.prototype, "lunzhuangQustionBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], FanRuleItem.prototype, "gpsQustionBtn", void 0);
+    FanRuleItem = __decorate([
+        ccclass
+    ], FanRuleItem);
+    return FanRuleItem;
+}(CreateRoomRuleItem_1.default));
+exports.default = FanRuleItem;
+
+cc._RF.pop();

@@ -1,0 +1,21 @@
+"use strict";
+cc._RF.push(module, 'a7b169KUgpESp3uESpS/jQN', 'MsgCommDef');
+// Script/proto/MsgCommDef.ts
+
+"use strict";
+/**
+* @Author: ZZ
+* @Date: Created in 11:07 2017/10/19
+* @Description:
+* @Modified By:
+*/
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MsgCommDef = void 0;
+var MsgCommDef = /** @class */ (function () {
+    function MsgCommDef() {
+    }
+    return MsgCommDef;
+}());
+exports.MsgCommDef = MsgCommDef;
+
+cc._RF.pop();

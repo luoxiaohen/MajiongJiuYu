@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_zheng6",
+    "texture": "d210da3c-786d-4730-bb48-f19177bea9ff",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      74,
+      105
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      74,
+      105
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

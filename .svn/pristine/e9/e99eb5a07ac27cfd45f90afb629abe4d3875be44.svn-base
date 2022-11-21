@@ -1,0 +1,209 @@
+"use strict";
+cc._RF.push(module, 'edb57jIAhlEG4o1sTyQyfHh', 'PieChartPanel');
+// Script/UI/pieChart/PieChartPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var PieChartItem_1 = require("./PieChartItem");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var PieChartPanel = /** @class */ (function (_super) {
+    __extends(PieChartPanel, _super);
+    function PieChartPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.group_0 = null;
+        _this.group_1 = null;
+        _this.group_2 = null;
+        _this.group_3 = null;
+        _this.group_4 = null;
+        _this.group_5 = null;
+        /****牌型数据集合*/
+        _this._allDataList = {
+            0: { data: { 0: 5, 1: 5, 2: 5, 3: 5 }, count: 20 },
+            1: { data: { 0: 50, 1: 50, 2: 50, 3: 50 }, count: 200 },
+            2: { data: { 0: 20, 1: 40, 2: 15, 3: 5 }, count: 80 },
+            3: { data: { 0: 10, 1: 15, 2: 10, 3: 35 }, count: 70 },
+            4: { data: { 0: 10, 1: 5, 2: 5, 3: 0 }, count: 20 },
+            5: { data: { 0: 25, 1: 35, 2: 0, 3: 0 }, count: 60 },
+        };
+        /***主属性画板集合*/
+        _this.ctxArray = [];
+        /**当前选中的主属性序号*/
+        _this.nowSelectKey = -1;
+        /**是否还在属性选择动画进行中*/
+        _this.isSHowAction = false;
+        /***主属性颜色集合*/
+        _this.baseColor = [cc.color(160, 221, 224, 255),
+            cc.color(125, 145, 211, 255),
+            cc.color(75, 189, 209, 255),
+            cc.color(97, 199, 56, 255),
+            cc.color(229, 195, 59, 255),
+            cc.color(228, 105, 62, 255),
+        ];
+        /***主属性颜色集合*/
+        _this.moreColor = [cc.color(227, 15, 15, 255),
+            cc.color(19, 1, 1, 255),
+            cc.color(20, 168, 214, 255),
+            cc.color(13, 241, 159, 255)
+        ];
+        return _this;
+    }
+    PieChartPanel.prototype.start = function () {
+    };
+    Object.defineProperty(PieChartPanel.prototype, "allDataList", {
+        get: function () {
+            return this._allDataList;
+        },
+        set: function (value) {
+            this._allDataList = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    PieChartPanel.prototype.onLoad = function () {
+        this.picChartPrefab = GloBal_1.Global.Utils.getPreFabBySource('pieChart/prefab/PieChartItem');
+        this.createBasePic();
+        this.addEvent();
+    };
+    PieChartPanel.prototype.addEvent = function () {
+    };
+    /**添加主属性饼图*/
+    PieChartPanel.prototype.createBasePic = function () {
+        var allBase = this.getAllBase();
+        var nowValue;
+        var lastP = 0;
+        for (var key in this.allDataList) {
+            nowValue = this.allDataList[key].count / allBase;
+            var ctx = this["group_" + key].getChildByName("baseGroup").getComponent(cc.Graphics);
+            ctx.clear();
+            ctx.fillColor = this.baseColor[Number(key)];
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, 246, 0, Math.PI * nowValue * 2, true);
+            ctx.lineTo(0, 0);
+            ctx.strokeColor = cc.color(160, 221, 224, 1);
+            ctx.stroke();
+            ctx.fill();
+            lastP += nowValue;
+            var newMax = 360 / allBase * this.allDataList[key].count;
+            for (var i = 0; i < newMax; i++) {
+                var item = cc.instantiate(this.picChartPrefab);
+                item.getComponent(PieChartItem_1.default).setClick(key, this.onItemClick, this);
+                this["group_" + key].addChild(item);
+                item.angle = i - 90;
+            }
+            this["group_" + key].angle = -lastP * 360 + 90;
+            this.ctxArray.push(ctx);
+        }
+    };
+    /**
+     * 饼图个体点击
+    */
+    PieChartPanel.prototype.onItemClick = function (key) {
+        var _this = this;
+        if (this.isSHowAction) {
+            return;
+        }
+        if (Number(key) == this.nowSelectKey) {
+            return;
+        }
+        this.isSHowAction = true;
+        if (this.nowSelect) {
+            var nowGrou = this["group_" + this.nowSelectKey];
+            for (var i = 0; i < 4; i++) {
+                var moreGroup = nowGrou.getChildByName("moreGroup_" + i);
+                var ctx = moreGroup.getComponent(cc.Graphics);
+                ctx.clear();
+            }
+            cc.tween(this.nowSelect.node).to(0.2, { scaleX: 1, scaleY: 1 }).start();
+        }
+        cc.tween(this.ctxArray[Number(key)].node).to(0.2, { scaleX: 1.05, scaleY: 1.05 }).call(function () {
+            _this.isSHowAction = false;
+            _this.nowSelect = _this.ctxArray[Number(key)];
+            _this.nowSelectKey = Number(key);
+            _this.isSHowMoreData();
+        }).start();
+    };
+    PieChartPanel.prototype.isSHowMoreData = function () {
+        var nowGrou = this["group_" + this.nowSelectKey];
+        var moreGroup;
+        var ctx;
+        var nowValue;
+        var nowData = this.allDataList[this.nowSelectKey.toString()].data;
+        var lastP = 0;
+        for (var key in nowData) {
+            moreGroup = nowGrou.getChildByName("moreGroup_" + key);
+            ctx = moreGroup.getComponent(cc.Graphics);
+            nowValue = nowData[key] / this.getAllBase();
+            ctx.clear();
+            ctx.fillColor = this.moreColor[Number(key)];
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, 290, 0, nowValue * Math.PI * 2, true);
+            ctx.lineTo(0, 0);
+            ctx.strokeColor = cc.color(160, 221, 224, 1);
+            ctx.stroke();
+            ctx.fill();
+            var texmpKey = this.nowSelectKey > 0 ? this.nowSelectKey - 1 : 0;
+            // moreGroup.angle = ;
+            lastP += nowValue;
+        }
+    };
+    /***获取所有主属性数据条数*/
+    PieChartPanel.prototype.getAllBase = function () {
+        var allBase = 0;
+        for (var key in this.allDataList) {
+            allBase += this.allDataList[key].count;
+        }
+        return allBase;
+    };
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_0", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_1", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_2", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_3", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_4", void 0);
+    __decorate([
+        property(cc.Node)
+    ], PieChartPanel.prototype, "group_5", void 0);
+    PieChartPanel = __decorate([
+        ccclass
+    ], PieChartPanel);
+    return PieChartPanel;
+}(UIBase_1.default));
+exports.default = PieChartPanel;
+
+cc._RF.pop();

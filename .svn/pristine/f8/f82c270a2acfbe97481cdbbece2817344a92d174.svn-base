@@ -1,0 +1,51 @@
+[
+  1,
+  [
+    "21moQkLwNDh711ZBrt8lh5"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    {
+      "name": "createRoom_jindutiao",
+      "rect": [
+        0,
+        0,
+        834,
+        11
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "originalSize": [
+        834,
+        11
+      ],
+      "capInsets": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  [
+    0
+  ],
+  0,
+  [
+    0
+  ],
+  [
+    0
+  ],
+  [
+    0
+  ]
+]

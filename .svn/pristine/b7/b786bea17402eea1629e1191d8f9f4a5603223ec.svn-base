@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "buyhorse_1_0",
+    "texture": "1efaa37a-dbed-4d7e-a512-50120848d606",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      240,
+      75
+    ],
+    "offset": [
+      -8,
+      90.5
+    ],
+    "originalSize": [
+      256,
+      256
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

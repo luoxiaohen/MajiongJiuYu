@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_chuangjian2",
+    "texture": "151fa128-7bb8-4b09-aa71-6b34d18ac0b6",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      560,
+      162
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      560,
+      162
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

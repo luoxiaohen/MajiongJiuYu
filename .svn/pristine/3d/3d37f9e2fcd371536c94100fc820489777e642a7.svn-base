@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_duijia",
+    "texture": "141bd013-4ec2-45fd-8b6b-6a6455289589",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      130,
+      323
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      130,
+      323
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

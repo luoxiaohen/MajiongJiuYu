@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "denglu_suo",
+    "texture": "d3b36134-485b-43b9-977b-2bdcd2af98bf",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      33,
+      52
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      33,
+      52
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

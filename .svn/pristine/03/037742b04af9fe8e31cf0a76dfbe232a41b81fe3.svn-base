@@ -1,0 +1,102 @@
+"use strict";
+cc._RF.push(module, 'a9ab6V51dZMkJF+vBwgp41x', 'SocketAdapter');
+// Script/com/SocketAdapter.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FuncMap = exports.SocketAdapter = void 0;
+var GloBal_1 = require("../Shared/GloBal");
+/**
+* socket服务器适配器
+*/
+var SocketAdapter = /** @class */ (function () {
+    function SocketAdapter() {
+    }
+    /**
+     * 初始化
+     */
+    SocketAdapter.prototype.onInit = function (_socket) {
+        this.mSocket = _socket;
+        // this.mPU = window["pu"];
+        // this.mPU.crypto = window["CryptoJS"];
+    };
+    /**
+     * 发生错误时
+     */
+    SocketAdapter.prototype.onError = function (_msg) {
+        console.log("connect fail" + _msg);
+        //nk.Toast.show("连接失败"+_msg);
+    };
+    /**
+     * 连接关闭
+     */
+    SocketAdapter.prototype.onClose = function () {
+        console.log("connect close");
+        //nk.Toast.show("连接关闭")
+    };
+    /**
+     * 连接成功
+     * _isReconnect 是否是重连状态
+     */
+    SocketAdapter.prototype.onConnected = function (_isReconnect) {
+        console.log("connected _isReconnect  " + _isReconnect);
+    };
+    /**
+     * 接收到数据
+     */
+    SocketAdapter.prototype.onData = function (msg) {
+        var sid = 0;
+        var mid = 0;
+        try {
+            // msg = this.readUTF();
+            var cCMD = msg.charAt(0);
+            if (cCMD == "{") {
+                var s = JSON.parse(msg);
+                mid = s.mid;
+                sid = s.sid;
+                if (false == this.DoMsg((s.mid << 16) + s.sid, msg)) {
+                }
+            }
+            else if (cCMD == "P") {
+                var subMsg = msg.substring(1, msg.length);
+            }
+        }
+        catch (e) {
+            var errMsg = e.message;
+            var errStack = e.stack;
+            var date = new Date();
+            var dateStr = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            var format = "T_Mahj-\u5F02\u5E38\uFF1A\n\u65F6\u95F4:" + dateStr + "\n\u9519\u8BEF\u4FE1\u606F:" + errMsg + "\n\u534F\u8BAE:\n" + mid + "," + sid + "\n\u5806\u6808:\n" + errStack;
+            console.error(format);
+        }
+    };
+    // 消息分派
+    SocketAdapter.prototype.DoMsg = function (id, str) {
+        GloBal_1.Global.mgr.socketMgr.notifyReceive(id, str);
+        // if(data){
+        // 	if (data != null) {
+        // 		data.func.call(data.target, str);
+        // 		return true;
+        // 	}
+        // }
+        return false;
+    };
+    /**
+     * 打包发送的socket数据 并返回
+     */
+    SocketAdapter.prototype.onPackageSendData = function (_data) {
+        var _sendData = JSON.stringify(_data);
+        GloBal_1.Global.Utils.debugOutput("send: " + _sendData + "socket");
+        return _sendData;
+    };
+    return SocketAdapter;
+}());
+exports.SocketAdapter = SocketAdapter;
+var FuncMap = /** @class */ (function () {
+    function FuncMap() {
+    }
+    return FuncMap;
+}());
+exports.FuncMap = FuncMap;
+
+cc._RF.pop();

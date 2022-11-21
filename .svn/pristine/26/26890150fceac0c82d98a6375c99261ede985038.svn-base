@@ -1,0 +1,478 @@
+"use strict";
+cc._RF.push(module, '369f28F3R9DEJOqG6xwE6AA', 'GameTurntablePanel');
+// Script/UI/GameTurntablePanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../enum/EnumManager");
+var GameInfo_1 = require("../Game/info/GameInfo");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var SeabedItem = /** @class */ (function () {
+    function SeabedItem(_dir, _spriteNode, labelNode, _sprite, _label) {
+        this.dir = _dir;
+        this.spiteNode = _spriteNode;
+        this.labelNode = labelNode;
+        this.sprite = _sprite;
+        this.label = _label;
+        this.spriteAnim = this.spiteNode.getComponent(cc.Animation);
+        this.labelAnim = this.labelNode.getComponent(cc.Animation);
+    }
+    Object.defineProperty(SeabedItem.prototype, "labelShow", {
+        set: function (_value) {
+            if (_value != "out") {
+                this.label.string = _value;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    SeabedItem.prototype.playAnim = function () {
+        this.spriteAnim.play();
+        this.labelAnim.play();
+    };
+    SeabedItem.prototype.stopAnim = function () {
+        this.spriteAnim.stop();
+        this.labelAnim.stop();
+        this.spiteNode.opacity = 255;
+        this.labelNode.opacity = 255;
+    };
+    SeabedItem.prototype.reset = function () {
+        this.stopAnim();
+    };
+    return SeabedItem;
+}());
+var PlayerDirecItem = /** @class */ (function () {
+    function PlayerDirecItem(_dir, _lightNode, _darkNode, _lightSprite, _darkSprite) {
+        this.dir = _dir;
+        this.lightNode = _lightNode;
+        this.darkNode = _darkNode;
+        this.lightSprite = _lightSprite;
+        this.darkSprite = _darkSprite;
+        this.playerState = EnumManager_1.TurnTableItemStateEnum.None;
+        this.lightAnim = _lightNode.getComponent(cc.Animation);
+    }
+    Object.defineProperty(PlayerDirecItem.prototype, "PlayerState", {
+        get: function () {
+            return this.playerState;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    PlayerDirecItem.prototype.setSeabedItem = function (_seabedItem) {
+        this.seabedItem = _seabedItem;
+        this.seabedItem.labelShow = "";
+    };
+    Object.defineProperty(PlayerDirecItem.prototype, "isSeabedSate", {
+        get: function () {
+            return this.playerState == EnumManager_1.TurnTableItemStateEnum.CurRoundInSeabed || this.playerState == EnumManager_1.TurnTableItemStateEnum.NotCurRoundInSeabed;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PlayerDirecItem.prototype, "isFinisheState", {
+        get: function () {
+            return this.playerState == EnumManager_1.TurnTableItemStateEnum.Finish;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    PlayerDirecItem.prototype.setPlayerDirState = function (_state, _parm) {
+        if (_parm === void 0) { _parm = null; }
+        this.stopPlayerAnim();
+        this.playerState = _state;
+        this.lightNode.active = _state == EnumManager_1.TurnTableItemStateEnum.CurrentRound || _state == EnumManager_1.TurnTableItemStateEnum.NotInRound;
+        this.darkNode.active = _state == EnumManager_1.TurnTableItemStateEnum.NotInRound || _state == EnumManager_1.TurnTableItemStateEnum.Finish;
+        this.seabedItem.spiteNode.active = this.isSeabedSate;
+        switch (_state) {
+            case EnumManager_1.TurnTableItemStateEnum.CurrentRound:
+                this.playPlayerAnim();
+                break;
+            case EnumManager_1.TurnTableItemStateEnum.NotInRound:
+                break;
+            case EnumManager_1.TurnTableItemStateEnum.CurRoundInSeabed:
+                this.playPlayerAnim();
+                this.seabedItem.labelShow = _parm.value;
+                break;
+            case EnumManager_1.TurnTableItemStateEnum.NotCurRoundInSeabed:
+                this.seabedItem.labelShow = _parm.value;
+                break;
+            case EnumManager_1.TurnTableItemStateEnum.Finish:
+                break;
+        }
+    };
+    PlayerDirecItem.prototype.playPlayerAnim = function () {
+        if (this.isSeabedSate) {
+            this.seabedItem.playAnim();
+        }
+        else {
+            this.lightAnim.play();
+        }
+    };
+    PlayerDirecItem.prototype.stopPlayerAnim = function () {
+        this.lightAnim.stop();
+        this.lightNode.opacity = 255;
+        this.seabedItem.stopAnim();
+    };
+    PlayerDirecItem.prototype.reset = function () {
+        this.playerState = EnumManager_1.TurnTableItemStateEnum.None;
+        this.lightNode.active = true;
+        this.stopPlayerAnim();
+        this.seabedItem = null;
+    };
+    return PlayerDirecItem;
+}());
+var GameTurntablePanel = /** @class */ (function (_super) {
+    __extends(GameTurntablePanel, _super);
+    function GameTurntablePanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.table_bg = null;
+        _this.label_remain = null;
+        _this.darkDirectorNodeRoot = null;
+        _this.lightDirectorNodeRoot = null;
+        _this.darkDirectorNodeArr = [];
+        _this.darkDirectorSpriteArr = [];
+        _this.lightDirectorNodeArr = [];
+        _this.lightDirectorSpriteArr = [];
+        _this.seabedStateNodeRoot = null;
+        /*** 转盘图片路径*/
+        _this.resSpriteBasePath = "turnTable/resource/";
+        /*** 转盘底部图片命名前缀 */
+        _this.resSpriteBgPrefix = "game_fangxiang_";
+        /*** 转盘暗图片命名前缀*/
+        _this.resSpriteDarkPrefix = "game_an_zi_";
+        /*** 转盘亮图片命名前缀*/
+        _this.resSpriteLightPrefix = "game_fangxiang_zi_";
+        /**当前剩余牌数 */
+        _this.nowRemainCardNum = 0;
+        _this.nowTableDicType = EnumManager_1.DirectionEnum.Dong;
+        _this.nowTurnPlayerDirect = 1;
+        _this.sumCardNum = 108;
+        _this.triggerSeabedPlayer = -1;
+        _this.playerArr = [1, 2, 3];
+        return _this;
+    }
+    GameTurntablePanel.prototype.onLoad = function () {
+        this.darkDirectorSpriteArr = [];
+        this.lightDirectorSpriteArr = [];
+        for (var _i = 0, _a = this.darkDirectorNodeArr; _i < _a.length; _i++) {
+            var item = _a[_i];
+            var sprite = item.getComponent(cc.Sprite);
+            sprite && this.darkDirectorSpriteArr.push(sprite);
+        }
+        for (var _b = 0, _c = this.lightDirectorNodeArr; _b < _c.length; _b++) {
+            var item = _c[_b];
+            var sprite = item.getComponent(cc.Sprite);
+            sprite && this.lightDirectorSpriteArr.push(sprite);
+        }
+        this.ResetTable();
+    };
+    GameTurntablePanel.prototype.start = function () {
+    };
+    /** 初始化桌面显示（游戏准备阶段） */
+    GameTurntablePanel.prototype.ResetTable = function () {
+        this.playerArr = [0, 1, null, 3];
+        this.triggerSeabedPlayer = -1;
+        for (var key in this.playerDirecItemMap) {
+            var item = this.playerDirecItemMap[key];
+            item.reset();
+        }
+        this.playerDirecItemMap = {};
+        this.initPlayerNodeMap(0, true);
+        this.setRemainCardNum(108);
+    };
+    GameTurntablePanel.prototype.ontestbtnclick = function () {
+        if (this.nowRemainCardNum <= 0) {
+            GloBal_1.Global.Utils.debugOutput("当前剩余牌数为0！！！");
+            return;
+        }
+        this.nowTurnPlayerDirect++;
+        this.nowTurnPlayerDirect = this.nowTurnPlayerDirect % 4;
+        while (!this.playerArr.includes(this.nowTurnPlayerDirect)) {
+            this.nowTurnPlayerDirect++;
+            this.nowTurnPlayerDirect = this.nowTurnPlayerDirect % 4;
+        }
+        this.setRemainCardNum(--this.nowRemainCardNum);
+        this.SetCurrentTurnState(this.nowRemainCardNum, this.nowTurnPlayerDirect, this.playerArr);
+    };
+    GameTurntablePanel.prototype.onResetBtnClick = function () {
+        GloBal_1.Global.Utils.debugOutput("重置转盘！！");
+        this.ResetTable();
+        this.InitPlayerDicType(GloBal_1.Global.Utils.getRandomNum(0, 3));
+        this.setRemainCardNum(11);
+        this.nowTurnPlayerDirect++;
+        this.nowTurnPlayerDirect = this.nowTurnPlayerDirect % 4;
+        while (!this.playerArr.includes(this.nowTurnPlayerDirect)) {
+            this.nowTurnPlayerDirect++;
+            this.nowTurnPlayerDirect = this.nowTurnPlayerDirect % 4;
+        }
+        this.SetCurrentTurnState(this.nowRemainCardNum, this.nowTurnPlayerDirect, this.playerArr);
+    };
+    /**
+     * 初始化设置用户玩家位置（游戏开始阶段）
+     * @param _direcType DirectionEnum
+     * @param _sumCardNum 总牌数
+     * @returns
+     */
+    GameTurntablePanel.prototype.InitPlayerDicType = function (_direcType, _sumCardNum) {
+        if (_sumCardNum === void 0) { _sumCardNum = 108; }
+        this.ResetTable();
+        this.sumCardNum = _sumCardNum;
+        this.nowTableDicType = _direcType;
+        if (this.darkDirectorSpriteArr.length != this.lightDirectorSpriteArr.length) {
+            GloBal_1.Global.Utils.debugOutput("GameTurntable:   预制体图片数量设置有误!");
+            return;
+        }
+        this.setTableSprite(this.table_bg, this.resSpriteBasePath + this.resSpriteBgPrefix + _direcType);
+        this.initPlayerNodeMap(_direcType);
+        this.initSeabadMap(_direcType);
+    };
+    GameTurntablePanel.prototype.initPlayerNodeMap = function (_direcType, _isReset) {
+        if (_isReset === void 0) { _isReset = false; }
+        this.playerDirecItemMap = {};
+        var darkSpriteUrl = this.resSpriteBasePath + this.resSpriteDarkPrefix + _direcType;
+        var lightSpriteUrl = this.resSpriteBasePath + this.resSpriteLightPrefix + _direcType;
+        for (var index = 0; index < 4; index++) {
+            var formatIndex = "_" + (index + _direcType) % 4;
+            var darkSprite = this.darkDirectorSpriteArr[index];
+            var lightSprite = this.lightDirectorSpriteArr[index];
+            var darkNode = this.darkDirectorNodeArr[index];
+            var lightNode = this.lightDirectorNodeArr[index];
+            var mapKey = (index + _direcType) % 4;
+            if (!_isReset) {
+                var playerDirecItem = new PlayerDirecItem(mapKey, lightNode, darkNode, lightSprite, darkSprite);
+                this.playerDirecItemMap[mapKey] = playerDirecItem;
+            }
+            this.setTableSprite(darkSprite, darkSpriteUrl + formatIndex);
+            this.setTableSprite(lightSprite, lightSpriteUrl + formatIndex);
+        }
+    };
+    GameTurntablePanel.prototype.initSeabadMap = function (_direcType) {
+        var seabedSpiteUrl = this.resSpriteBasePath + this.resSpriteBgPrefix + _direcType + "_";
+        for (var index = 0; index < 4; index++) {
+            var mapKey = (index + _direcType) % 4;
+            var seabedItem = this.seabedStateNodeRoot;
+            if (seabedItem) {
+                var spriteNode = seabedItem.getChildByName("down_sprite_" + index);
+                var numLabelNode = seabedItem.getChildByName("num_label_" + index);
+                if (spriteNode && numLabelNode) {
+                    var sea_item = new SeabedItem(mapKey, spriteNode, numLabelNode, spriteNode.getComponent(cc.Sprite), numLabelNode.getComponent(cc.Label));
+                    this.setTableSprite(sea_item.sprite, seabedSpiteUrl + mapKey);
+                    var playerItem = this.playerDirecItemMap[mapKey];
+                    if (playerItem) {
+                        playerItem.setSeabedItem(sea_item);
+                    }
+                }
+            }
+        }
+    };
+    GameTurntablePanel.prototype.setTableSprite = function (_sprite, _url) {
+        if (!_sprite || !_url) {
+            GloBal_1.Global.Utils.debugOutput("GameTurntable:   图片设置出错!");
+            return;
+        }
+        GloBal_1.Global.Utils.setNewImageToSprite(_sprite, _url);
+    };
+    /**
+     * 设置当前回合数据（游戏中）
+     * @param _remainCardsNum  剩余牌数
+     * @param _curentTurnPlayer 当前回合玩家
+     * @param _playerArr 当前桌子剩余玩家
+     */
+    GameTurntablePanel.prototype.SetCurrentTurnState = function (_remainCardsNum, _curentTurnPlayer, _playerArr) {
+        this.playerArr = _playerArr;
+        for (var index = 0; index < _playerArr.length; index++) {
+            var playerItem = this.playerDirecItemMap[index];
+            if (_playerArr[index] == null) {
+                playerItem.setPlayerDirState(EnumManager_1.TurnTableItemStateEnum.Finish);
+            }
+        }
+        this.setRemainCardNum(_remainCardsNum);
+        this.setTurningPlayer(_curentTurnPlayer);
+        this.setSeabedStateData(_playerArr);
+    };
+    /**
+     * 设置当前剩余牌数
+     * @param _num 数量
+     */
+    GameTurntablePanel.prototype.setRemainCardNum = function (_num) {
+        this.nowRemainCardNum = _num;
+        if (_num >= 0) {
+            this.label_remain.string = _num.toString();
+        }
+        else {
+            this.label_remain.string = "";
+        }
+    };
+    /**
+     * @param _playerArr 当前桌上剩余玩家 ,为[]时表示全部
+     */
+    GameTurntablePanel.prototype.setSeabedStateData = function (_playerArr) {
+        if (_playerArr === void 0) { _playerArr = []; }
+        if (this.nowRemainCardNum > 4) {
+            return;
+        }
+        var isTriggerTime = this.nowRemainCardNum == 4;
+        if (isTriggerTime) {
+            this.triggerSeabedPlayer = this.nowTurnPlayerDirect;
+        }
+        this.setSeabedStateLabelShow(_playerArr, isTriggerTime);
+    };
+    GameTurntablePanel.prototype.setSeabedStateLabelShow = function (_playerArr, triggerTime) {
+        if (triggerTime === void 0) { triggerTime = false; }
+        var remainPlayerNum = 0;
+        for (var _i = 0, _playerArr_1 = _playerArr; _i < _playerArr_1.length; _i++) {
+            var item = _playerArr_1[_i];
+            if (item != null) {
+                remainPlayerNum++;
+            }
+        }
+        for (var _a = 0, _playerArr_2 = _playerArr; _a < _playerArr_2.length; _a++) {
+            var _player = _playerArr_2[_a];
+            if (_player == null) {
+                continue;
+            }
+            var playerItem = this.playerDirecItemMap[_player];
+            var offsetDir = this.getOffsetNum(this.nowTurnPlayerDirect, _player, _playerArr);
+            var showNum = this.sumCardNum - this.nowRemainCardNum + offsetDir;
+            var showStr = showNum > 108 ? "out" : showNum == 108 ? "海底" : showNum + "";
+            var param = { value: showStr };
+            if (!triggerTime) {
+                if (this.nowTurnPlayerDirect == playerItem.dir) {
+                    playerItem.setPlayerDirState(EnumManager_1.TurnTableItemStateEnum.CurRoundInSeabed, param);
+                }
+                else {
+                    playerItem.setPlayerDirState(EnumManager_1.TurnTableItemStateEnum.NotCurRoundInSeabed, param);
+                }
+            }
+            else {
+                if (this.nowTurnPlayerDirect == playerItem.dir) {
+                    playerItem.setPlayerDirState(EnumManager_1.TurnTableItemStateEnum.CurrentRound);
+                }
+                else {
+                    playerItem.setPlayerDirState(EnumManager_1.TurnTableItemStateEnum.NotCurRoundInSeabed, param);
+                }
+            }
+        }
+    };
+    /**
+    * 设置当前轮到的玩家
+    * @param _direcEnum DirectionEnum
+    */
+    GameTurntablePanel.prototype.setTurningPlayer = function (_direcEnum) {
+        this.nowTurnPlayerDirect = _direcEnum;
+        var turningPlayerItem = this.playerDirecItemMap[_direcEnum];
+        if (turningPlayerItem.isFinisheState) {
+            GloBal_1.Global.Utils.debugOutput("当前轮到的玩家已经结束游戏！！！");
+            return;
+        }
+        for (var key in this.playerDirecItemMap) {
+            var playerItem = this.playerDirecItemMap[key];
+            if (playerItem.isFinisheState) {
+                continue;
+            }
+            var isTurningPlayer = Number(key) == _direcEnum;
+            if (!playerItem.isSeabedSate) {
+                var state = this.getTurnItemState(isTurningPlayer, false);
+                playerItem.setPlayerDirState(state);
+            }
+        }
+    };
+    GameTurntablePanel.prototype.getTurnItemState = function (_isTurn, _isSeabed) {
+        var state = EnumManager_1.TurnTableItemStateEnum.None;
+        if (_isTurn) {
+            if (_isSeabed) {
+                state = EnumManager_1.TurnTableItemStateEnum.CurRoundInSeabed;
+            }
+            else {
+                state = EnumManager_1.TurnTableItemStateEnum.CurrentRound;
+            }
+        }
+        else {
+            if (_isSeabed) {
+                state = EnumManager_1.TurnTableItemStateEnum.NotCurRoundInSeabed;
+            }
+            else {
+                state = EnumManager_1.TurnTableItemStateEnum.NotInRound;
+            }
+        }
+        return state;
+    };
+    GameTurntablePanel.prototype.getOffsetNum = function (_startDir, _endDir, _playerArr) {
+        if (this.isUndefiendOrNull(_playerArr[_startDir]) || this.isUndefiendOrNull(_playerArr[_endDir])) {
+            GloBal_1.Global.Utils.debugOutput("无法到达位置！！");
+            return 0;
+        }
+        var offset = 0;
+        for (var index = _startDir; index < _startDir + 4; index++) {
+            if (_playerArr[index % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType)] == null) {
+                continue;
+            }
+            if (index % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType) == _endDir) {
+                break;
+            }
+            offset++;
+        }
+        return offset;
+    };
+    GameTurntablePanel.prototype.isUndefiendOrNull = function (_value) {
+        return _value == null || _value == undefined;
+    };
+    GameTurntablePanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], GameTurntablePanel.prototype, "table_bg", void 0);
+    __decorate([
+        property(cc.Label)
+    ], GameTurntablePanel.prototype, "label_remain", void 0);
+    __decorate([
+        property({ type: cc.Node })
+    ], GameTurntablePanel.prototype, "darkDirectorNodeRoot", void 0);
+    __decorate([
+        property({ type: cc.Node })
+    ], GameTurntablePanel.prototype, "lightDirectorNodeRoot", void 0);
+    __decorate([
+        property({ type: [cc.Node] })
+    ], GameTurntablePanel.prototype, "darkDirectorNodeArr", void 0);
+    __decorate([
+        property({ type: [cc.Node] })
+    ], GameTurntablePanel.prototype, "lightDirectorNodeArr", void 0);
+    __decorate([
+        property({ type: cc.Node })
+    ], GameTurntablePanel.prototype, "seabedStateNodeRoot", void 0);
+    GameTurntablePanel = __decorate([
+        ccclass
+    ], GameTurntablePanel);
+    return GameTurntablePanel;
+}(UIBase_1.default));
+exports.default = GameTurntablePanel;
+
+cc._RF.pop();

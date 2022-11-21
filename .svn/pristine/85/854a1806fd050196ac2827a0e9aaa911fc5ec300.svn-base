@@ -1,0 +1,8 @@
+"use strict";
+cc._RF.push(module, 'c89bcC5ExFEzbRN1NSHIc6Q', 'ISocketAgent');
+// Script/com/socket/ISocketAgent.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+
+cc._RF.pop();

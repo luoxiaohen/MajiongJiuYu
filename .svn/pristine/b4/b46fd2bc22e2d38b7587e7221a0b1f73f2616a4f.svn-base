@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "denglu_xiala",
+    "texture": "aaebf122-890e-484b-87dc-acde758b19d7",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      31,
+      19
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      31,
+      19
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

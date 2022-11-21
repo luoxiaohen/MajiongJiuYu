@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_sshuanpai",
+    "texture": "6d5e5fe3-5c62-4b2a-ad20-24b8ff191aa6",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      569,
+      93
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      569,
+      93
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

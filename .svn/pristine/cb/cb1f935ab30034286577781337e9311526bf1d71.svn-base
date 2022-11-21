@@ -1,0 +1,1031 @@
+"use strict";
+cc._RF.push(module, '1a2cbuO3u9BcZQ/t6cP+/Ld', 'MyHandCardPanel');
+// Script/UI/card/MyHandCardPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EnumManager_1 = require("../../enum/EnumManager");
+var EventType_1 = require("../../event/EventType");
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var TableMsg_1 = require("../../proto/TableMsg");
+var GloBal_1 = require("../../Shared/GloBal");
+var HuPaiTiShiTips_1 = require("../../tips/HuPaiTiShiTips");
+var InterfaceHelp_1 = require("../../utils/InterfaceHelp");
+var ChangeThreeTips_1 = require("../changeThree/ChangeThreeTips");
+var CardHelpManager_1 = require("./CardHelpManager");
+var HandCardPanel_1 = require("./HandCardPanel");
+var MajiongEatItem_1 = require("./MajiongEatItem");
+var MajiongHandCard_1 = require("./MajiongHandCard");
+var MajiongOutCard_1 = require("./MajiongOutCard");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var MyHandCardPanel = /** @class */ (function (_super) {
+    __extends(MyHandCardPanel, _super);
+    function MyHandCardPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /***最后一张插入*/
+        _this.isAddToLast = false;
+        _this.changeThreeCard = [];
+        _this.changeCardArr = [];
+        return _this;
+    }
+    MyHandCardPanel.prototype.onLoad = function () {
+        _super.prototype.onLoad.call(this);
+        this.addEvent();
+    };
+    MyHandCardPanel.prototype.start = function () {
+        this.initHandData();
+    };
+    MyHandCardPanel.prototype.addEvent = function () {
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.GetMajMsg, this.onGetFeel, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.WaitYou, this.onWaitYou, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.ChangeThree, this.onChangeThree, this);
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.OnChangThreeClick, this.onSelect3Majiong, this);
+    };
+    /**收到我的等待*/
+    MyHandCardPanel.prototype.onWaitYou = function (e, msg) {
+        var canHu = UserInfo_1.default.ins.getCanHu();
+        var actionData = new InterfaceHelp_1.MyActionByOther();
+        actionData.canHu = canHu != null;
+        actionData.huData = canHu;
+        actionData.canGang = UserInfo_1.default.ins.getCanGang();
+        if (actionData.canGang) {
+            actionData.gangValue = [UserInfo_1.default.ins.otherLastOutCard];
+        }
+        if (msg.type == 3) {
+            actionData.canPeng = true;
+            actionData.canHu = true;
+        }
+        else {
+            actionData.canPeng = msg.type == 2;
+            actionData.canHu = msg.type == 1;
+        }
+        actionData.canGuo = UserInfo_1.default.ins.getCanGuo();
+        this.showActionItem(actionData);
+    };
+    /**展示碰杠胡操作组件*/
+    MyHandCardPanel.prototype.showActionItem = function (actionData) {
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            return;
+        }
+        if (actionData.canPeng || actionData.canGang || actionData.canHu) {
+            GloBal_1.Global.DialogManager.createDialog("GameIActiontem/prefab/GameIActiontem", actionData, function (any, createDialog) {
+                createDialog.x = 393;
+                createDialog.y = 200;
+            }, this.node);
+        }
+    };
+    /**我摸牌*/
+    MyHandCardPanel.prototype.onGetFeel = function (e, msg) {
+        this.initMyHandsFeel(false);
+        UserInfo_1.default.ins.myLastFeelCard = msg.majID;
+        this.showCreateFeel(msg);
+    };
+    MyHandCardPanel.prototype.showCreateFeel = function (msg) {
+        this.isShowAction();
+        UserInfo_1.default.ins.addNewCardToMyHand(msg.majID);
+        UserInfo_1.default.ins.getOutTing();
+        this.addNewCard(msg.majID, GloBal_1.Global.Utils.getIsDice(msg.majID, UserInfo_1.default.ins.myDiceType));
+        this.showCanOut();
+    };
+    MyHandCardPanel.prototype.isShowAction = function () {
+        var canHu = UserInfo_1.default.ins.getSelfHu();
+        var canGang = UserInfo_1.default.ins.getSelfGang();
+        var canBuGang = UserInfo_1.default.ins.getBuGang();
+        var actionData = new InterfaceHelp_1.MyActionByOther();
+        actionData.canHu = canHu != null;
+        actionData.huData = canHu;
+        actionData.canGang = canGang.length > 0;
+        if (!actionData.canGang) {
+            actionData.canGang = canBuGang.length > 0;
+        }
+        if (actionData.canGang && canGang.length > 0) {
+            actionData.gangValue = canGang;
+        }
+        actionData.canPeng = false;
+        actionData.canGuo = UserInfo_1.default.ins.getCanGuo();
+        this.showActionItem(actionData);
+    };
+    /***我自己摸牌,添加一张新牌*/
+    MyHandCardPanel.prototype.addNewCard = function (cardValue, isDice) {
+        var newHand = this.getMyNewHand();
+        var lastHand = this.getMyLastHand();
+        newHand.node.x = lastHand.node.x + lastHand.cardSize._w + this.feelCardChange[this.bySelfPoint];
+        newHand.node.y = 50;
+        newHand.cardValue = cardValue;
+        newHand.isDice = isDice;
+        newHand.isShow = true;
+        newHand.isFeel = true;
+        newHand.isSelect = false;
+        cc.tween(newHand.node).to(TimeAndMoveManager_1.default.ins.getWallActionTime * 3, { y: 0 }).call(function () {
+        }).start();
+    };
+    /**展示当前牌是否可出*/
+    MyHandCardPanel.prototype.showCanOut = function () {
+        if (GameInfo_1.default.ins.nowGameStatus <= EnumManager_1.PlayStauteEnum.CheckDice) {
+            return;
+        }
+        var cardItem;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            cardItem = this.handItemArr[i];
+            if (cardItem.isShow) {
+                cardItem.showListion();
+            }
+        }
+    };
+    MyHandCardPanel.prototype.getMyNewHand = function () {
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow == false) {
+                return this.handItemArr[i];
+            }
+        }
+    };
+    MyHandCardPanel.prototype.getMyLastHand = function () {
+        var lastHand = null;
+        var tempHand;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            tempHand = this.handItemArr[i];
+            if (tempHand.isShow && (tempHand.isFeel == false)) {
+                if (lastHand == null) {
+                    lastHand = tempHand;
+                }
+                else if (tempHand.node.x > lastHand.node.x) {
+                    lastHand = tempHand;
+                }
+            }
+        }
+        return lastHand;
+    };
+    MyHandCardPanel.prototype.initHandData = function () {
+        this.bySelfPoint = EnumManager_1.CardGroupPointBySelfEnum.Self;
+        var item;
+        for (var i = 0; i < 13; i++) {
+            item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard_1.default);
+            item.bySelfPoint = this.bySelfPoint;
+            item.node.x = i * item.cardSize._w;
+            item.node.y = 0;
+            this.handItemArr.push(item);
+            this.node.addChild(item.node);
+        }
+        item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard_1.default);
+        item.bySelfPoint = this.bySelfPoint;
+        item.node.x = 13 * item.cardSize._w + this.feelCardChange[this.bySelfPoint];
+        item.node.y = 0;
+        item.isFeel = true;
+        this.handItemArr.push(item);
+        this.node.addChild(item.node);
+        var value = 0;
+        /**初始手牌到位后执行一次乱序*/
+        var cardArr = GloBal_1.Global.Utils.cloneArr(UserInfo_1.default.ins.myHandCardArr);
+        cardArr = cardArr.sort(function (a, b) {
+            return Math.random() - 0.5;
+        });
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            value = cardArr[i];
+            if (value) {
+                this.handItemArr[i].cardValue = value;
+            }
+        }
+    };
+    MyHandCardPanel.prototype.showGetHnads = function (getNum) {
+        var _this = this;
+        _super.prototype.showGetHnads.call(this, getNum);
+        var item;
+        var showIndex = 0;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            item = this.handItemArr[i];
+            if (!item.isShow && showIndex < getNum) {
+                showIndex++;
+                item.node.y = 50;
+                item.isShow = true;
+                item.showGetAction(i + showIndex);
+            }
+        }
+        if (getNum < 4) {
+            cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.getWallTime).call(function () {
+                _this.showGetHandOver();
+            }).start();
+        }
+        else {
+        }
+    };
+    /**发牌结束,需要帮助玩家整理一次手牌*/
+    MyHandCardPanel.prototype.showGetHandOver = function () {
+        var _this = this;
+        GloBal_1.Global.Utils.playSound("sound/4");
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow) {
+                this.handItemArr[i].showMajiongPut();
+            }
+        }
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.finishHandTime).call(function () {
+            if (UserInfo_1.default.ins.selfIsLookPlayer) {
+                var cardArr = new Array(GameInfo_1.default.ins.nowBookMakerSit == UserInfo_1.default.ins.mySitIndex ? 14 : 13);
+                var addIndex = 0;
+                for (var i = 0; i < _this.handItemArr.length; i++) {
+                    if (_this.handItemArr[i].isShow) {
+                        if (addIndex < cardArr.length) {
+                            _this.handItemArr[i].showMajiongUp();
+                        }
+                        addIndex++;
+                    }
+                    _this.handItemArr[i].node.on(cc.Node.EventType.TOUCH_START, _this.onCardItemClick, _this);
+                }
+            }
+            else {
+                var cardArr = GloBal_1.Global.Utils.cloneArr(UserInfo_1.default.ins.myHandCardArr);
+                var addIndex = 0;
+                for (var i = 0; i < _this.handItemArr.length; i++) {
+                    if (_this.handItemArr[i].isShow) {
+                        var value = cardArr[addIndex];
+                        if (value) {
+                            _this.handItemArr[i].showMajiongUp();
+                            _this.handItemArr[i].cardValue = value;
+                        }
+                        addIndex++;
+                    }
+                    _this.handItemArr[i].node.on(cc.Node.EventType.TOUCH_START, _this.onCardItemClick, _this);
+                }
+            }
+        }).start();
+    };
+    /**定缺结束**/
+    MyHandCardPanel.prototype.showDingQueed = function () {
+        GloBal_1.Global.Utils.playSound("sound/5");
+        _super.prototype.showDingQueed.call(this);
+        UserInfo_1.default.ins.sortHandByDingQueed();
+        var cardArr = UserInfo_1.default.ins.myHandCardArr;
+        var value = 0;
+        this.handItemArr.sort(function (a, b) { return a.node.x - b.node.x; });
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            value = cardArr[i];
+            if (value && this.handItemArr[i].isShow) {
+                this.handItemArr[i].cardValue = value;
+                this.handItemArr[i].isDice = GloBal_1.Global.Utils.getIsDice(value, UserInfo_1.default.ins.myDiceType);
+            }
+        }
+        if (GameInfo_1.default.ins.nowBookMakerSit == UserInfo_1.default.ins.mySitIndex) {
+            this.isShowAction();
+        }
+    };
+    /***手牌点击*/
+    MyHandCardPanel.prototype.onCardItemClick = function (e) {
+        var item = e.currentTarget.getComponent(MajiongHandCard_1.default);
+        /***换三*/
+        if (GameInfo_1.default.ins.nowGameStatus == EnumManager_1.PlayStauteEnum.ChangeThree) {
+            this.onChangeThreeClick(item);
+            return;
+        }
+        /***常规出牌*/
+        if (GameInfo_1.default.ins.nowGameStatus != EnumManager_1.PlayStauteEnum.PlayCard && GameInfo_1.default.ins.nowGameStatus != EnumManager_1.PlayStauteEnum.DrawNewCard) {
+            return;
+        }
+        if (item.isDice == false && this.haveDiceCard()) {
+            return;
+        }
+        if (item.isActionOver == false) {
+            return;
+        }
+        GloBal_1.Global.Utils.playSound("sound/7");
+        if (item.isSelect) {
+            item.isShow = false;
+            this.showOutAction(item);
+            GloBal_1.Global.Utils.debugOutput("我出牌之后的手牌:" + UserInfo_1.default.ins.myHandCardArr);
+            var msg = new TableMsg_1.Msg_CS_DownMajMsg();
+            msg.majID = item.cardValue;
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        }
+        else {
+            this.downHandCard();
+            item.isSelect = true;
+            this.showHupaiTishi(item.cardValue);
+        }
+    };
+    /**展示胡牌*/
+    MyHandCardPanel.prototype.showHupai = function (msg) {
+        _super.prototype.showHupai.call(this, msg);
+    };
+    /**展示胡牌提示*/
+    MyHandCardPanel.prototype.showHupaiTishi = function (cardValue) {
+        var _this = this;
+        this.closeHupaiTips();
+        if (UserInfo_1.default.ins.getTingByCardValue(cardValue)) {
+            GloBal_1.Global.DialogManager.createDialog("tips/HuPaiTiShiTips/prefab/HuPaiTiShiTips", UserInfo_1.default.ins.getTingByCardValue(cardValue), function (any, createDialog) {
+                createDialog.x = 230;
+                createDialog.y = 190;
+                _this.hupaiTips = createDialog.getComponent(HuPaiTiShiTips_1.default);
+            }, this.node);
+        }
+    };
+    MyHandCardPanel.prototype.closeHupaiTips = function () {
+        if (this.hupaiTips && this.hupaiTips.node && this.hupaiTips.node.parent) {
+            this.hupaiTips.disTory();
+            this.hupaiTips = null;
+        }
+    };
+    MyHandCardPanel.prototype.closeOutTing = function () {
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow) {
+                this.handItemArr[i].isOutTing = false;
+            }
+        }
+    };
+    MyHandCardPanel.prototype.showOutCard = function (cardValue) {
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            this.createMyOutCard(cardValue);
+            var movePoint = cc.v2(this.lastOutCard.node.x, this.lastOutCard.node.y);
+            var randomOne = this.handItemArr.length == 1 ? 0 : Math.floor(Math.random() * this.handItemArr.length);
+            var outItem = this.handItemArr[randomOne];
+            outItem.isFeel = false;
+            outItem.isShow = false;
+            this.changeMoveMyHand(outItem);
+            this.lastOutCard.node.x = outItem.node.x;
+            this.lastOutCard.node.y = outItem.node.y;
+            cc.tween(this.lastOutCard.node).to(TimeAndMoveManager_1.default.ins.otherOutCardToGroupTime, { x: movePoint.x, y: movePoint.y }).start();
+        }
+    };
+    /***出牌动作*/
+    MyHandCardPanel.prototype.showOutAction = function (outItem) {
+        var _this = this;
+        this.createMyOutCard(outItem.cardValue);
+        var movePoint = cc.v2(this.lastOutCard.node.x, this.lastOutCard.node.y);
+        this.lastOutCard.node.x = outItem.node.x;
+        this.lastOutCard.node.y = outItem.node.y;
+        cc.tween(this.lastOutCard.node).to(TimeAndMoveManager_1.default.ins.otherOutCardToGroupTime, { x: movePoint.x, y: movePoint.y }).call(function () {
+            _this.changeMyMoveMyHand(outItem);
+        }).start();
+    };
+    /****出牌之后移动手牌 */
+    MyHandCardPanel.prototype.changeMyMoveMyHand = function (outItem) {
+        var _this = this;
+        if (outItem.isFeel) {
+            return;
+        }
+        var inCard = this.getInputCard();
+        var outCardPoint = cc.v2(outItem.node.x, 0);
+        var inCardPoint = this.getInPoint(inCard, outCardPoint);
+        var tempItem;
+        var changeX = 0;
+        if (inCardPoint.x == outCardPoint.x) {
+            //直接移动过去插入
+            this.showMoveAction(inCardPoint, inCard);
+        }
+        else if (inCardPoint.x < outCardPoint.x) {
+            for (var i = 0; i < this.handItemArr.length; i++) {
+                tempItem = this.handItemArr[i];
+                if (tempItem.isShow) {
+                    if (tempItem.node.x >= inCardPoint.x && tempItem.node.x < outCardPoint.x) {
+                        changeX = tempItem.node.x + tempItem.cardSize._w;
+                        cc.tween(tempItem.node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime, { x: changeX }).start();
+                    }
+                }
+            }
+            cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.outCardHandMoveTime + 0.1).call(function () {
+                _this.showMoveAction(inCardPoint, inCard);
+            }).start();
+        }
+        else if (inCardPoint.x > outCardPoint.x) {
+            for (var i = 0; i < this.handItemArr.length; i++) {
+                tempItem = this.handItemArr[i];
+                if (tempItem.isShow) { // && tempItem.isFeel==false
+                    if (tempItem.node.x > outCardPoint.x && tempItem.node.x <= inCardPoint.x) {
+                        changeX = tempItem.node.x - tempItem.cardSize._w;
+                        cc.tween(tempItem.node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime, { x: changeX }).start();
+                    }
+                }
+            }
+            cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.outCardHandMoveTime + 0.1).call(function () {
+                _this.showMoveAction(inCardPoint, inCard);
+            }).start();
+        }
+    };
+    /***摸牌插入得移动动画*/
+    MyHandCardPanel.prototype.showMoveAction = function (targetPoint, incard) {
+        var _this = this;
+        if (this.isAddToLast || (incard.node.x - targetPoint.x == incard.cardSize._w) || (incard.node.x - targetPoint.x == incard.cardSize._w + this.feelCardChange[this.bySelfPoint])) {
+            cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime, { x: targetPoint.x }).call(function () {
+                _this.initMyHandsFeel();
+            }).start();
+        }
+        else {
+            var len_1 = (incard.node.x - this.feelCardChange[this.bySelfPoint] - targetPoint.x) / incard.cardSize._w;
+            cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.addCardMoveYTime, { y: 180 }).call(function () {
+                cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.addCardRotationTime, { angle: 30 }).call(function () {
+                    cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime * len_1, { x: targetPoint.x }).call(function () {
+                        cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.addCardRotationTime, { angle: 0 }).call(function () {
+                            cc.tween(incard.node).to(TimeAndMoveManager_1.default.ins.addCardMoveYTime, { y: 0 }).call(function () {
+                                _this.initMyHandsFeel();
+                            }).start();
+                        }).start();
+                    }).start();
+                }).start();
+            }).start();
+        }
+    };
+    /***获取当前摸牌应该插入手牌中的那个位置*/
+    MyHandCardPanel.prototype.getInPoint = function (inCard, outPoint) {
+        var newHand = [];
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow) {
+                newHand.push(this.handItemArr[i]);
+            }
+        }
+        var que = [];
+        var hand = [];
+        for (var i = 0; i < newHand.length; i++) {
+            if (GloBal_1.Global.Utils.getIsDice(newHand[i].cardValue, UserInfo_1.default.ins.myDiceType)) {
+                que.push(newHand[i]);
+            }
+            else {
+                hand.push(newHand[i]);
+            }
+        }
+        hand.sort(GloBal_1.Global.Utils.compareValue);
+        que.sort(GloBal_1.Global.Utils.compareValue);
+        var all = hand.concat(que);
+        newHand = all;
+        var tempItem;
+        var inPoint;
+        for (var i = 0; i < newHand.length; i++) {
+            tempItem = newHand[i];
+            if (tempItem.cardValue == inCard.cardValue && tempItem.isFeel) {
+                if (i == 0) {
+                    return new cc.Vec2(CardHelpManager_1.default.ins.changePointByEat, 0);
+                }
+                else {
+                    if (outPoint) {
+                        inPoint = new cc.Vec2(newHand[i - 1].node.x, 0);
+                        if (inPoint.x > outPoint.x) {
+                            return inPoint;
+                        }
+                        else {
+                            return new cc.Vec2(newHand[i - 1].node.x + tempItem.cardSize._w, 0);
+                        }
+                    }
+                    else {
+                        return new cc.Vec2(newHand[i - 1].node.x + tempItem.cardSize._w, 0);
+                    }
+                }
+            }
+        }
+    };
+    /**初始化我手牌得状态*/
+    MyHandCardPanel.prototype.initMyHandsFeel = function (isSort) {
+        if (isSort === void 0) { isSort = true; }
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            this.handItemArr[i].isFeel = false;
+        }
+        if (isSort) {
+            this.handItemArr.sort(GloBal_1.Global.Utils.compareX);
+        }
+    };
+    /***获取手牌中我摸得那一张*/
+    MyHandCardPanel.prototype.getInputCard = function () {
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow && this.handItemArr[i].isFeel) {
+                return this.handItemArr[i];
+            }
+        }
+    };
+    /**放下上一张手牌*/
+    MyHandCardPanel.prototype.downHandCard = function () {
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            this.handItemArr[i].isSelect = false;
+        }
+    };
+    /**是否还有未打出的定缺牌*/
+    MyHandCardPanel.prototype.haveDiceCard = function () {
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow && this.handItemArr[i].isDice) {
+                return true;
+            }
+        }
+        return false;
+    };
+    MyHandCardPanel.prototype.createMyOutCard = function (value) {
+        if (value === void 0) { value = 1; }
+        var item = cc.instantiate(this.dialogParameters[1]).getComponent(MajiongOutCard_1.default);
+        item.bySelfPoint = this.bySelfPoint;
+        item.cardValue = value;
+        var row = this.getOutRow();
+        var baseNum = 0;
+        if (row > 0) {
+            baseNum = this.myOutArray.length - this.getBaseNum();
+        }
+        else {
+            baseNum = this.myOutArray.length;
+        }
+        var changeX = baseNum * CardHelpManager_1.default.ins.outCardWidth[0];
+        var changeY = row * 70;
+        var initX = CardHelpManager_1.default.ins.myOutCardInitPoint.x - CardHelpManager_1.default.ins.myHandCardInitPoint.x;
+        var initY = CardHelpManager_1.default.ins.myOutCardInitPoint.y - CardHelpManager_1.default.ins.myHandCardInitPoint.y;
+        initX = initX - row * CardHelpManager_1.default.ins.outCardWidth[0];
+        item.node.x = initX + changeX;
+        item.node.y = initY - changeY;
+        this.onMyOutChangeData(item);
+        this.node.addChild(item.node);
+        this.lastOutCard = item;
+    };
+    /**展示碰杠*/
+    MyHandCardPanel.prototype.showPengGang = function (msg) {
+        _super.prototype.showPengGang.call(this, msg);
+        var eatType = GloBal_1.Global.Utils.getOutType(msg.isGang, msg.fromSiteNum, msg.pengSiteNum, this.isHaveEat(msg.isGang, msg.majID), this.haveEatType(msg.isGang, msg.majID));
+        var eatDat = new InterfaceHelp_1.PengGangData();
+        eatDat.cardValue = msg.majID;
+        eatDat.eatType = eatType;
+        eatDat.havePointBySelf = this.bySelfPoint;
+        if (eatType == EnumManager_1.EatCardEnum.CrossAllUp || eatType == EnumManager_1.EatCardEnum.CrossAllDown || eatType == EnumManager_1.EatCardEnum.CrossAllOpp) {
+            UserInfo_1.default.ins.changePenggang(eatDat);
+            this.changCreateSelfEat(msg.majID, eatType, eatDat);
+        }
+        else {
+            UserInfo_1.default.ins.myPengGang.push(eatDat);
+            this.onCreateSelfEat(msg.majID, eatType, eatDat);
+        }
+        this.createNewSelfFeel(msg);
+    };
+    MyHandCardPanel.prototype.createNewSelfFeel = function (msg) {
+    };
+    /**展示暗杠*/
+    MyHandCardPanel.prototype.showSelfGang = function (msg) {
+        _super.prototype.showSelfGang.call(this, msg);
+        var eatType = GloBal_1.Global.Utils.getOutType(1, msg.pengSiteNum, msg.pengSiteNum, this.isHaveEat(1, msg.majID), this.haveEatType(1, msg.majID));
+        var eatDat = new InterfaceHelp_1.PengGangData();
+        eatDat.cardValue = msg.majID;
+        eatDat.eatType = eatType;
+        eatDat.havePointBySelf = this.bySelfPoint;
+        if (msg.isPapo == 0) {
+            this.onCreateSelfEat(msg.majID, EnumManager_1.EatCardEnum.CrossSelf, eatDat);
+        }
+        else {
+            this.changCreateSelfEat(msg.majID, this.haveEatType(1, msg.majID), eatDat);
+        }
+    };
+    /**补杠*/
+    MyHandCardPanel.prototype.changCreateSelfEat = function (card, eatType, eatData) {
+        var _this = this;
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            return;
+        }
+        this.removeMyPengGang(card, eatType, eatData, function (eatData) {
+            _this.changeEatSelfHand(eatData);
+        }, true);
+    };
+    /**生成碰杠*/
+    MyHandCardPanel.prototype.onCreateSelfEat = function (cardValue, eatType, eatData) {
+        var _this = this;
+        if (UserInfo_1.default.ins.selfIsLookPlayer) {
+            return;
+        }
+        this.removeMyPengGang(cardValue, eatType, eatData, function (eatData) {
+            _this.changeHand(eatData);
+        });
+    };
+    MyHandCardPanel.prototype.changeEatSelfHand = function (eatData) {
+        var item;
+        var outItem;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].cardValue == eatData.cardValue) {
+                outItem = this.handItemArr[i];
+                this.handItemArr[i].isShow = false;
+            }
+        }
+        for (var i = 0; i < this.myPenggangArr.length; i++) {
+            if (this.myPenggangArr[i].eatData.cardValue == eatData.cardValue) {
+                item = this.myPenggangArr[i];
+                item.setNewData(eatData.eatType);
+            }
+        }
+        this.changeMyHandByEat(eatData);
+    };
+    MyHandCardPanel.prototype.changeHand = function (eatData) {
+        var _this = this;
+        var item;
+        for (var i = 0; i < this.myPenggangArr.length; i++) {
+            if (this.myPenggangArr[i].eatData.cardValue == eatData.cardValue) {
+                item = this.myPenggangArr[i];
+                item.setNewData(eatData.eatType);
+            }
+        }
+        if (!item) {
+            item = cc.instantiate(this.majiongEatPrefab).getComponent(MajiongEatItem_1.default);
+            item.eatData = eatData;
+            this.myPenggangArr.push(item);
+            item.setPoint(this.myPenggangArr.length);
+        }
+        var changeX = item.size.x + item.eatSplc[eatData.havePointBySelf];
+        CardHelpManager_1.default.ins.changePointByEat += changeX;
+        this.changeMyHandByEat(eatData);
+        // let moveX:number=changeX;
+        // for(let i = 0 ; i < this.handItemArr.length ; i++){
+        //     moveItem = this.handItemArr[i];
+        //     if(moveItem.isShow){
+        //         moveX = changeX + moveItem.node.x;
+        //         if(moveItem.isFeel && eatData.eatType >= EatCardEnum.CrossOpposite){
+        //             moveX -= this.feelCardChange[this.bySelfPoint];
+        //             moveItem.isFeel = false;
+        //         }
+        //         cc.tween(moveItem.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : moveX}).call(()=>{
+        //         }).start();
+        //     }
+        // }
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.outCardHandMoveTime).call(function () {
+            _this.node.addChild(item.node);
+        }).start();
+    };
+    MyHandCardPanel.prototype.changeMyHandByEat = function (eatData) {
+        var moveItem;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            this.handItemArr[i].isShow = false;
+        }
+        for (var i = 0; i < UserInfo_1.default.ins.myHandCardArr.length; i++) {
+            moveItem = this.handItemArr[i];
+            moveItem.cardValue = UserInfo_1.default.ins.myHandCardArr[i];
+            moveItem.isShow = true;
+            moveItem.node.x = CardHelpManager_1.default.ins.changePointByEat + i * moveItem.cardSize._w;
+        }
+        if (eatData.eatType < EnumManager_1.EatCardEnum.CrossOpposite) {
+            this.getSelfLastHand().node.x += this.feelCardChange[this.bySelfPoint];
+            this.getSelfLastHand().isFeel = true;
+        }
+    };
+    /**移除碰杠*/
+    MyHandCardPanel.prototype.removeMyPengGang = function (card, type, eatData, fun, isChange) {
+        if (isChange === void 0) { isChange = false; }
+        var removeNum = this.getRemoveNum(type);
+        var removeArr = [];
+        var removeX = 0;
+        if (removeNum) {
+            for (var i = 0; i < this.handItemArr.length; i++) {
+                if (this.handItemArr[i].cardValue == card && removeArr.length < removeNum) {
+                    this.handItemArr[i].isShow = false;
+                    if (removeX == 0) {
+                        removeX = this.handItemArr[i].node.x;
+                    }
+                    else {
+                        removeX = removeX > this.handItemArr[i].node.x ? removeX : this.handItemArr[i].node.x;
+                    }
+                    removeArr.push(i);
+                }
+            }
+        }
+        for (var i = 0; i < removeArr.length; i++) {
+            UserInfo_1.default.ins.spliceCardByMyHand(this.handItemArr[removeArr[i]].cardValue);
+        }
+        this.initMyHandsFeel();
+        fun(eatData);
+    };
+    // private removeMyPengGang(card : number , type : EatCardEnum,eatData : PengGangData, fun:Function , isChange : boolean = false){
+    // 	let removeNum:number = this.getRemoveNum(type);
+    //     let removeArr:Array<number> = [];
+    //     let removeX : number = 0;
+    // 	if(removeNum){
+    // 		for(let i = 0 ; i < this.handItemArr.length ; i++){
+    // 			if(this.handItemArr[i].cardValue == card && removeArr.length < removeNum){
+    // 				this.handItemArr[i].isShow = false;
+    //                 if(removeX == 0){
+    //                     removeX = this.handItemArr[i].node.x;
+    //                 }else{
+    //                     removeX = removeX > this.handItemArr[i].node.x ? removeX : this.handItemArr[i].node.x;
+    //                 }
+    // 				removeArr.push(i);
+    // 			}
+    // 		}
+    // 	}
+    //     for(let i = 0 ; i < removeArr.length ; i++){
+    //         UserInfo.ins.spliceCardByMyHand(this.handItemArr[removeArr[i]].cardValue);
+    //     }
+    //     if(isChange){
+    //         let changeItem : MajiongHandCard;
+    //         for(let i = 0 ; i < this.handItemArr.length ; i++){
+    //             if(this.handItemArr[i].isShow && this.handItemArr[i].cardValue == card){
+    //                 changeItem = this.handItemArr[i];
+    //             }
+    //         }
+    //         UserInfo.ins.spliceCardByMyHand(changeItem.cardValue);
+    //         changeItem.isFeel = false;
+    //         changeItem.isShow = false;
+    //         if(!changeItem.isFeel){
+    //             let item : MajiongHandCard;
+    //             let changeX:number = 0;
+    //             for(let i = 0 ; i < this.handItemArr.length ; i++){
+    //                 item = this.handItemArr[i];
+    //                 if(item.isShow && item.node.x > changeItem.node.x){
+    //                     changeX = item.node.x - item.cardSize._w;
+    //                     if(item.isFeel){
+    //                         changeX -= this.feelCardChange[this.bySelfPoint];
+    //                     }
+    //                     cc.tween(item.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : changeX}).call(()=>{
+    //                         fun(eatData);
+    //                     }).start();
+    //                 }
+    //             }
+    //         }else{
+    //             fun(eatData);
+    //         }
+    //     }else{
+    //         let item : MajiongHandCard;
+    //         let changeX : number = 0;
+    //         if(type != EatCardEnum.CrossSelf){
+    //             for(let i = 0 ; i < this.handItemArr.length ; i++){
+    //                 item = this.handItemArr[i];
+    //                 if(item.isShow && item.node.x > removeX){
+    //                     changeX = item.node.x - removeArr.length*item.cardSize._w;
+    //                     cc.tween(item.node).to(TimeAndMoveManager.ins.outCardHandMoveTime*removeArr.length , {x : changeX}).start();
+    //                 }
+    //             }
+    //         }else{
+    //             let inCard = this.getInputCard()
+    //             let inCardPoint:cc.Vec2 = this.getInPoint(inCard , null);
+    //             for(let i = 0 ; i < this.handItemArr.length ; i++){
+    //                 item = this.handItemArr[i];
+    //                 if(item.isShow && item.node.x >= inCardPoint.x && item.isFeel==false){
+    //                     changeX = item.node.x + item.cardSize._w;
+    //                     cc.tween(item.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : changeX}).start();
+    //                 }
+    //             }
+    //             cc.tween(inCard.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : inCardPoint.x}).start();
+    //             this.initMyHandsFeel();
+    //             cc.tween(this.node).delay(TimeAndMoveManager.ins.outCardHandMoveTime+0.2).call(()=>{
+    //                 for(let i = 0 ; i < this.handItemArr.length ; i++){
+    //                     item = this.handItemArr[i];
+    //                     if(item.isShow && item.node.x > removeX){
+    //                         changeX = item.node.x - removeArr.length*item.cardSize._w;
+    //                         cc.tween(item.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : changeX}).start();
+    //                     }
+    //                 }
+    //             }).start();
+    //         }
+    //         let time:number = type != EatCardEnum.CrossSelf ? TimeAndMoveManager.ins.outCardHandMoveTime : TimeAndMoveManager.ins.outCardHandMoveTime + 0.3
+    //         cc.tween(this.node).delay(time).call(()=>{
+    //             let item:MajiongHandCard = this.getSelfLastHand();
+    //             if(type < EatCardEnum.CrossOpposite ){
+    //                 item.isFeel = true;
+    //                 let changeX : number = item.node.x + this.feelCardChange[this.bySelfPoint];
+    //                 cc.tween(item.node).to(TimeAndMoveManager.ins.addCardMoveYTime , {x : changeX}).call(()=>{
+    //                     fun(eatData);
+    //                 }).start();
+    //             }else{
+    //                 fun(eatData);
+    //             }
+    //         }).start();
+    //     }
+    // }
+    MyHandCardPanel.prototype.getSelfLastHand = function () {
+        var lastX = 0;
+        var lastItem;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow && this.handItemArr[i].node.x > lastX) {
+                lastX = this.handItemArr[i].node.x;
+                lastItem = this.handItemArr[i];
+            }
+        }
+        return lastItem;
+    };
+    /**服务器通知换三张*/
+    MyHandCardPanel.prototype.onChangeThree = function (e, msg) {
+        var _this = this;
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.finishHandTime + TimeAndMoveManager_1.default.ins.getWallTime).call(function () {
+            if (_this.changeThreeTips) {
+                _this.changeThreeTips.disTory();
+            }
+            _this.changeThreeTips = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("changeThree/prefab/ChangeThreeTips")).getComponent(ChangeThreeTips_1.default);
+            _this.node.addChild(_this.changeThreeTips.node);
+            _this.changeThreeTips.node.x = 0;
+            _this.changeThreeTips.node.y = 185;
+            var cardLightDic = CardHelpManager_1.default.ins.getThreeCard(_this.handItemArr);
+            _this.changeCardArr = CardHelpManager_1.default.ins.getSmallThree(cardLightDic, _this.handItemArr);
+            _this.showSelect();
+        }).start();
+    };
+    /***默认推荐*/
+    MyHandCardPanel.prototype.showSelect = function () {
+        var nowValue;
+        var nowCard;
+        for (var i = 0; i < this.changeCardArr.length; i++) {
+            nowValue = this.changeCardArr[i];
+            for (var l = 0; l < this.handItemArr.length; l++) {
+                nowCard = this.handItemArr[l];
+                if (nowCard.isShow && nowCard.cardValue == nowValue && nowCard.isSelect == false) {
+                    nowCard.isSelect = true;
+                    this.changeThreeCard.push(nowCard);
+                    break;
+                }
+            }
+        }
+        this.changeThreeTips.setBtnEnabled(this.changeThreeCard.length == 3);
+    };
+    /***选中了3张牌并点击交换按钮时候*/
+    MyHandCardPanel.prototype.onSelect3Majiong = function () {
+        var _this = this;
+        var arr = [];
+        for (var i = 0; i < this.changeThreeCard.length; i++) {
+            arr.push(this.changeThreeCard[i].cardValue);
+        }
+        if (arr.length != 3) {
+            return;
+        }
+        this.changeThreeTips.disTory();
+        this.changeThreeTips = null;
+        var msg = new TableMsg_1.Msg_CS_Change3Maj();
+        msg.lstMajID = arr;
+        GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        var nowCard;
+        var nowValue;
+        for (var l = 0; l < this.changeThreeCard.length; l++) {
+            nowValue = this.changeThreeCard[l].cardValue;
+            for (var i = 0; i < this.handItemArr.length; i++) {
+                nowCard = this.handItemArr[i];
+                if (nowCard.cardValue == nowValue && nowCard.isSelect && nowCard.isShow) {
+                    nowCard.isSelect = false;
+                    nowCard.isShow = false;
+                    UserInfo_1.default.ins.spliceCardByMyHand(nowValue);
+                    break;
+                }
+            }
+        }
+        var pointX = 0;
+        var setIndex = 0;
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            nowCard = this.handItemArr[i];
+            if (nowCard.isShow) {
+                pointX = setIndex * nowCard.cardSize._w;
+                var changeCount = (nowCard.node.x - pointX) / nowCard.cardSize._w;
+                cc.tween(nowCard.node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime * changeCount, { x: pointX }).start();
+                setIndex++;
+            }
+        }
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.outCardHandMoveTime + 0.1).call(function () {
+            if (UserInfo_1.default.ins.mySitIndex == GameInfo_1.default.ins.nowBookMakerSit) {
+                _this.getInputCard().node.x += _this.feelCardChange[_this.bySelfPoint];
+            }
+        }).start();
+    };
+    /***换三时候任意手牌点击*/
+    MyHandCardPanel.prototype.onChangeThreeClick = function (handCard) {
+        if (handCard.isSelect) {
+            handCard.node.y = 0;
+            handCard.isSelect = false;
+            this.changeThreeCard.splice(this.changeThreeCard.indexOf(handCard), 1);
+            this.changeThreeTips.setBtnEnabled(this.changeThreeCard.length == 3);
+        }
+        else {
+            var count = Math.floor(handCard.cardValue / 10);
+            if (this.changeThreeCard.length == 0) {
+                this.changeThreeCard.push(handCard);
+                handCard.isSelect = true;
+            }
+            else {
+                if (Math.floor(this.changeThreeCard[0].cardValue / 10) == count) {
+                    this.changeThreeCard.push(handCard);
+                    handCard.isSelect = true;
+                    if (this.changeThreeCard.length > 3) {
+                        this.changeThreeCard[0].isSelect = false;
+                        this.changeThreeCard.splice(0, 1);
+                    }
+                }
+                else {
+                    for (var i = 0; i < this.changeThreeCard.length; i++) {
+                        this.changeThreeCard[i].isSelect = false;
+                    }
+                    this.changeThreeCard = [];
+                    this.changeThreeCard.push(handCard);
+                    handCard.isSelect = true;
+                }
+            }
+            this.changeThreeTips.setBtnEnabled(this.changeThreeCard.length == 3);
+        }
+    };
+    MyHandCardPanel.prototype.showOnChangeThree = function (msg) {
+        _super.prototype.showOnChangeThree.call(this, msg);
+    };
+    MyHandCardPanel.prototype.showGetChangeThree = function (msg) {
+        var _this = this;
+        var addArr = GloBal_1.Global.Utils.cloneArr(msg.lstMajID);
+        for (var i = 0; i < msg.lstMajID.length; i++) {
+            UserInfo_1.default.ins.addNewCardToMyHand(msg.lstMajID[i]);
+        }
+        addArr.sort(GloBal_1.Global.Utils.compare);
+        var nowCard;
+        var bigCount = 0;
+        var pointArr = [];
+        var nowCardArr = [];
+        for (var i = this.handItemArr.length - 1; i >= 0; i--) {
+            nowCard = this.handItemArr[i];
+            if (nowCard.isShow == false) {
+                continue;
+            }
+            bigCount = this.getBigNum(nowCard.cardValue, addArr);
+            if (bigCount > 0) {
+                for (var n = 0; n < pointArr.length; n++) {
+                    pointArr[n].x += bigCount * nowCard.cardSize._w;
+                }
+                var pointCard_1 = void 0;
+                for (var n = 0; n < nowCardArr.length; n++) {
+                    pointCard_1 = nowCardArr[n];
+                    pointCard_1.setNewPoint(pointCard_1.getNewPoint().x + pointCard_1.cardSize._w * bigCount, pointCard_1.getNewPoint().y);
+                    pointCard_1.changeCount++;
+                }
+            }
+            for (var n = 0; n < bigCount; n++) {
+                pointArr.push(cc.v2(nowCard.node.x + (n + 1) * nowCard.cardSize._w, 50));
+                addArr.splice(addArr.length - 1, 1);
+            }
+            nowCardArr.push(nowCard);
+            nowCard.setNewPoint(nowCard.node.x, nowCard.node.y);
+        }
+        var pointCard;
+        for (var n = 0; n < pointArr.length; n++) {
+            pointArr[n].x += addArr.length * nowCard.cardSize._w;
+        }
+        for (var n = 0; n < nowCardArr.length; n++) {
+            pointCard = nowCardArr[n];
+            pointCard.setNewPoint(pointCard.getNewPoint().x + pointCard.cardSize._w * addArr.length, pointCard.getNewPoint().y);
+            pointCard.changeCount += addArr.length;
+        }
+        for (var n = 0; n < addArr.length; n++) {
+            pointArr.push(cc.v2(n * nowCard.cardSize._w, 50));
+        }
+        addArr = [];
+        for (var i = 0; i < this.handItemArr.length; i++) {
+            if (this.handItemArr[i].isShow) {
+                cc.tween(this.handItemArr[i].node).to(TimeAndMoveManager_1.default.ins.outCardHandMoveTime * this.handItemArr[i].changeCount, { x: this.handItemArr[i].getNewPoint().x }).call(function () {
+                }).start();
+            }
+        }
+        cc.tween(this.node).delay(TimeAndMoveManager_1.default.ins.outCardHandMoveTime + 0.1).call(function () {
+            _this.showAddThree(msg.lstMajID, pointArr);
+        }).start();
+    };
+    MyHandCardPanel.prototype.showAddThree = function (addArr, pointArr) {
+        var _this = this;
+        addArr.sort(GloBal_1.Global.Utils.compare);
+        pointArr.sort(GloBal_1.Global.Utils.compareV2);
+        var _loop_1 = function (i) {
+            var newHand = this_1.getMyNewHand();
+            newHand.node.x = pointArr[i].x;
+            newHand.node.y = pointArr[i].y;
+            newHand.cardValue = addArr[i];
+            newHand.isDice = GloBal_1.Global.Utils.getIsDice(addArr[i], UserInfo_1.default.ins.myDiceType);
+            newHand.isShow = true;
+            cc.tween(newHand.node).to(TimeAndMoveManager_1.default.ins.ChangeThreeMoveYTime, { y: 0 }).call(function () {
+                newHand.isSelect = false;
+                if (UserInfo_1.default.ins.mySitIndex == GameInfo_1.default.ins.nowBookMakerSit) {
+                    _this.initMyHandsFeel();
+                    var feelCard = _this.getMyLastHand();
+                    feelCard.node.x += _this.feelCardChange[_this.bySelfPoint] / 3;
+                    feelCard.isFeel = true;
+                }
+            }).start();
+        };
+        var this_1 = this;
+        for (var i = 0; i < addArr.length; i++) {
+            _loop_1(i);
+        }
+    };
+    MyHandCardPanel.prototype.getBigNum = function (value, arr) {
+        var bigNum = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (value <= arr[i]) {
+                bigNum++;
+            }
+        }
+        return bigNum;
+    };
+    MyHandCardPanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    MyHandCardPanel = __decorate([
+        ccclass
+    ], MyHandCardPanel);
+    return MyHandCardPanel;
+}(HandCardPanel_1.default));
+exports.default = MyHandCardPanel;
+
+cc._RF.pop();

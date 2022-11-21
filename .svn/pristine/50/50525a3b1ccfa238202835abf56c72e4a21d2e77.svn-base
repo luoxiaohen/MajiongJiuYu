@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_fenge",
+    "texture": "6b7e5b2b-8847-431a-8e06-1ae3cb160cd0",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      2,
+      86
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      2,
+      86
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

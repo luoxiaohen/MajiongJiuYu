@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ty_majiang0",
+    "texture": "e64eafb4-70a3-4efa-af6f-209abaa9c2e8",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      131,
+      182
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      131,
+      182
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

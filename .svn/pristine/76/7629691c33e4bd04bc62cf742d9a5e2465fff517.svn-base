@@ -1,0 +1,96 @@
+[
+  1,
+  [
+    "e7sIqI/8hOWpQK8T/wRY5P",
+    "15H6Eoe7hLCapxazTRisC2"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    [
+      [
+        {
+          "name": "createRoom_chuangjian",
+          "rect": [
+            0,
+            0,
+            560,
+            162
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            560,
+            162
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "createRoom_chuangjian2",
+          "rect": [
+            0,
+            0,
+            560,
+            162
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            560,
+            162
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        1
+      ]
+    ]
+  ]
+]

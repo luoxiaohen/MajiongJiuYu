@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_tongyi",
+    "texture": "146eda99-988d-42d6-8e05-b86be5520c97",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      100,
+      42
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      100,
+      42
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

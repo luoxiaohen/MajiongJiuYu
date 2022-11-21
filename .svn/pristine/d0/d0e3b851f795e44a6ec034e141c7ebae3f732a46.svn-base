@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_duijukaishi",
+    "texture": "5a355429-601e-4345-86d3-c14015e5558e",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1113,
+      363
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1113,
+      363
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

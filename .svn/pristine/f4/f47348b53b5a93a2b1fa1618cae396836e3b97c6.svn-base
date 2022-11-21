@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_anniu2",
+    "texture": "59f9737b-4b6d-42bf-a51d-aa048d2035b0",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      1080,
+      96
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      1080,
+      96
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

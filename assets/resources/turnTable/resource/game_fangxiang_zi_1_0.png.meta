@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "517dd14d-ecba-462c-b45c-5d29f79135c1",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 187,
+  "height": 141,
+  "platformSettings": {},
+  "subMetas": {
+    "game_fangxiang_zi_1_0": {
+      "ver": "1.0.6",
+      "uuid": "5e7b9309-0bd0-4faf-9e0c-a33e4f9f79d8",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "517dd14d-ecba-462c-b45c-5d29f79135c1",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -62,
+      "offsetY": -2.5,
+      "trimX": 0,
+      "trimY": 13,
+      "width": 63,
+      "height": 120,
+      "rawWidth": 187,
+      "rawHeight": 141,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

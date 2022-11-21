@@ -1,0 +1,92 @@
+"use strict";
+cc._RF.push(module, '0d8d8i/XrROZ5WAq6u5GCuj', 'HupaiTishiItem');
+// Script/tips/HupaiTishiItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../Game/info/GameInfo");
+var UserInfo_1 = require("../Game/info/UserInfo");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var HupaiTishiItem = /** @class */ (function (_super) {
+    __extends(HupaiTishiItem, _super);
+    function HupaiTishiItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.fanLabel = null;
+        _this.cardImage = null;
+        _this.haveImage = null;
+        return _this;
+    }
+    Object.defineProperty(HupaiTishiItem.prototype, "huData", {
+        get: function () {
+            return this._huData;
+        },
+        set: function (value) {
+            this._huData = value;
+            this.showElements();
+        },
+        enumerable: false,
+        configurable: true
+    });
+    HupaiTishiItem.prototype.onLoad = function () {
+    };
+    HupaiTishiItem.prototype.showElements = function () {
+        GloBal_1.Global.Utils.setNewImageToSprite(this.cardImage, "majiongCard/resource/" + GloBal_1.Global.Utils.getCardStrByValue(this.huData.cardValue));
+        GloBal_1.Global.Utils.setNewImageToSprite(this.haveImage, "tips/HuPaiTiShiTips/resource/game_biaoqian" + this.getHave());
+        this.fanLabel.string = this.huData.fanNum + "番";
+    };
+    HupaiTishiItem.prototype.getHave = function () {
+        var have = GameInfo_1.default.ins.allOutCardArr[this.huData.cardValue] ? 4 - GameInfo_1.default.ins.allOutCardArr[this.huData.cardValue] : 4;
+        for (var i = 0; i < UserInfo_1.default.ins.myHandCardArr.length; i++) {
+            if (UserInfo_1.default.ins.myHandCardArr[i] == this.huData.cardValue) {
+                have--;
+            }
+        }
+        if (have <= 0) {
+            have = 0;
+        }
+        return have;
+    };
+    __decorate([
+        property(cc.Label)
+    ], HupaiTishiItem.prototype, "fanLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], HupaiTishiItem.prototype, "cardImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], HupaiTishiItem.prototype, "haveImage", void 0);
+    HupaiTishiItem = __decorate([
+        ccclass
+    ], HupaiTishiItem);
+    return HupaiTishiItem;
+}(UIBase_1.default));
+exports.default = HupaiTishiItem;
+
+cc._RF.pop();

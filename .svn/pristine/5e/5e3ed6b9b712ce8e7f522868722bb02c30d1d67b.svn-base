@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_hujiaozhuanyi",
+    "texture": "6d8294b8-1d23-4bde-b94f-f5803f751395",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      445,
+      128
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      445,
+      128
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

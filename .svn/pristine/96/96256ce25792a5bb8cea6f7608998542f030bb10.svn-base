@@ -1,0 +1,136 @@
+"use strict";
+cc._RF.push(module, 'a95459NvQVJJrLXx4kNyFfU', 'CreateCheckItem');
+// Script/UI/createRoom/CreateCheckItem.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var EventType_1 = require("../../event/EventType");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var CreateRoomHelper_1 = require("./CreateRoomHelper");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var CreateCheckItem = /** @class */ (function (_super) {
+    __extends(CreateCheckItem, _super);
+    function CreateCheckItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.nameLabel = null;
+        _this.checkBox = null;
+        _this.Background = null;
+        _this.checkmark = null;
+        _this.hasEvent = false;
+        _this._boxValue = 0;
+        _this.currCheck = false;
+        return _this;
+    }
+    Object.defineProperty(CreateCheckItem.prototype, "boxValue", {
+        get: function () {
+            return this._boxValue;
+        },
+        set: function (value) {
+            this._boxValue = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    CreateCheckItem.prototype.onLoad = function () {
+    };
+    /**
+     * @param boxValue 选择内容,来自于CreateRoomHelper.ins.createRoomCkeckName的ID
+     * @param initCheck 是否默认选中
+     * @param boxType  选择类型 1：方形,多选  2：圆形,同级互斥
+     * @param hasEvent 是否需要在点击的时候派发事件出去
+    */
+    CreateCheckItem.prototype.setData = function (boxValue, initCheck, boxType, hasEvent) {
+        if (initCheck === void 0) { initCheck = false; }
+        if (boxType === void 0) { boxType = 1; }
+        if (hasEvent === void 0) { hasEvent = false; }
+        if (boxType == 1) {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.Background, "createRoom/resource/createRoom_xuanze1");
+            GloBal_1.Global.Utils.setNewImageToSprite(this.checkmark, "createRoom/resource/createRoom_xuanze2");
+        }
+        else {
+            GloBal_1.Global.Utils.setNewImageToSprite(this.Background, "createRoom/resource/createRoom_xuanze4");
+            GloBal_1.Global.Utils.setNewImageToSprite(this.checkmark, "createRoom/resource/createRoom_xuanze5");
+        }
+        this.nameLabel.string = CreateRoomHelper_1.default.ins.createRoomCkeckName[boxValue];
+        this.hasEvent = hasEvent;
+        this.boxValue = boxValue;
+        this.currCheck = initCheck;
+        this.boxType = boxType;
+        this.showCheck();
+    };
+    CreateCheckItem.prototype.onCheckClick = function () {
+        if (CreateRoomHelper_1.default.ins.gameRuleItemIsMove && this.boxType == 1) {
+            this.showCheck();
+            return;
+        }
+        if (this.boxType == 1) {
+            this.currCheck = !this.currCheck;
+            this.showCheck();
+        }
+        if (this.hasEvent) {
+            GloBal_1.Global.EventCenter.dispatchEvent(EventType_1.default.CreateRoom_Check_Click, this);
+        }
+    };
+    CreateCheckItem.prototype.showEnabled = function (boo) {
+        this.enabled = boo;
+        this.checkBox.enabled = boo;
+    };
+    CreateCheckItem.prototype.isCheck = function () {
+        return this.currCheck;
+    };
+    CreateCheckItem.prototype.showSelect = function (boo) {
+        this.currCheck = boo;
+        this.showCheck();
+    };
+    CreateCheckItem.prototype.showCheck = function () {
+        this.currCheck ? this.checkBox.check() : this.checkBox.uncheck();
+    };
+    CreateCheckItem.prototype.textColor = function (_color) {
+        this.nameLabel.node.color = _color;
+    };
+    __decorate([
+        property(cc.Label)
+    ], CreateCheckItem.prototype, "nameLabel", void 0);
+    __decorate([
+        property(cc.Toggle)
+    ], CreateCheckItem.prototype, "checkBox", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateCheckItem.prototype, "Background", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], CreateCheckItem.prototype, "checkmark", void 0);
+    CreateCheckItem = __decorate([
+        ccclass
+    ], CreateCheckItem);
+    return CreateCheckItem;
+}(UIBase_1.default));
+exports.default = CreateCheckItem;
+
+cc._RF.pop();

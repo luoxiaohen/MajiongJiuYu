@@ -1,0 +1,24 @@
+window._CCSettings = {
+    platform: "web-desktop",
+    groupList: [
+        "default"
+    ],
+    collisionMatrix: [
+        [
+            true
+        ]
+    ],
+    hasResourcesBundle: true,
+    hasStartSceneBundle: false,
+    remoteBundles: [],
+    subpackages: [],
+    launchScene: "db://assets/Scene/majiong.fire",
+    orientation: "",
+    debug: true,
+    jsList: [],
+    bundleVers: {
+        internal: "d36c4",
+        resources: "15737",
+        main: "d5b72"
+    }
+};

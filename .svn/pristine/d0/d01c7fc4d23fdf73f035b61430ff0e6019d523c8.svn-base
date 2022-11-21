@@ -1,0 +1,68 @@
+"use strict";
+cc._RF.push(module, '19e7dg5dvdA3IploreHKJa6', 'TableExMsg');
+// Script/proto/TableExMsg.ts
+
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Msg_CS_LeaveExRoom = exports.Msg_CS_GGMMsg = exports.Msg_CS_TGMMsg = exports.TabExMSG_SID = exports.TableExMsg = void 0;
+var BaseMsg_1 = require("./BaseMsg");
+/**
+* Created by admin on 2022/5/30.
+*/
+var TableExMsg = /** @class */ (function (_super) {
+    __extends(TableExMsg, _super);
+    function TableExMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return TableExMsg;
+}(BaseMsg_1.BaseMsg));
+exports.TableExMsg = TableExMsg;
+var TabExMSG_SID;
+(function (TabExMSG_SID) {
+    TabExMSG_SID[TabExMSG_SID["CS_TGMMsg"] = 0] = "CS_TGMMsg";
+    TabExMSG_SID[TabExMSG_SID["CS_GGMMsg"] = 1] = "CS_GGMMsg";
+    TabExMSG_SID[TabExMSG_SID["CS_LeaveExRoom"] = 2] = "CS_LeaveExRoom";
+    TabExMSG_SID[TabExMSG_SID["MSG_MAX"] = 3] = "MSG_MAX";
+})(TabExMSG_SID = exports.TabExMSG_SID || (exports.TabExMSG_SID = {}));
+// 测试-发到牌桌服GM指令
+var Msg_CS_TGMMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_TGMMsg, _super);
+    function Msg_CS_TGMMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableExMsg, TabExMSG_SID.CS_TGMMsg) || this;
+    }
+    return Msg_CS_TGMMsg;
+}(BaseMsg_1.BaseTabExMsg));
+exports.Msg_CS_TGMMsg = Msg_CS_TGMMsg;
+// 测试-发到网关GM指令
+var Msg_CS_GGMMsg = /** @class */ (function (_super) {
+    __extends(Msg_CS_GGMMsg, _super);
+    function Msg_CS_GGMMsg() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableExMsg, TabExMSG_SID.CS_GGMMsg) || this;
+    }
+    return Msg_CS_GGMMsg;
+}(BaseMsg_1.BaseTabExMsg));
+exports.Msg_CS_GGMMsg = Msg_CS_GGMMsg;
+//离开房间
+var Msg_CS_LeaveExRoom = /** @class */ (function (_super) {
+    __extends(Msg_CS_LeaveExRoom, _super);
+    function Msg_CS_LeaveExRoom() {
+        return _super.call(this, BaseMsg_1.MSG_MID.MID_TableExMsg, TabExMSG_SID.CS_LeaveExRoom) || this;
+    }
+    return Msg_CS_LeaveExRoom;
+}(BaseMsg_1.BaseTabExMsg));
+exports.Msg_CS_LeaveExRoom = Msg_CS_LeaveExRoom;
+
+cc._RF.pop();

@@ -1,0 +1,28 @@
+"use strict";
+cc._RF.push(module, 'dcf38+9hiNE0obrD/S3uLsT', 'GloBal');
+// Script/Shared/GloBal.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Global = void 0;
+var GameProtocol_1 = require("../com/GameProtocol");
+var SocketManager_1 = require("../com/socket/SocketManager");
+var EventCenter_1 = require("../event/EventCenter");
+var CCHelper_1 = require("./CCHelper");
+var DialogManager_1 = require("./DialogManager");
+var MessageCallback_1 = require("./MessageCallback");
+var Utils_1 = require("./Utils");
+exports.Global = {
+    mgr: {
+        socketMgr: new SocketManager_1.SocketManager()
+    },
+    EventCenter: EventCenter_1.default.ins,
+    Utils: Utils_1.default.ins,
+    MessageCallback: MessageCallback_1.default.ins,
+    DialogManager: DialogManager_1.default.ins,
+    CCHelper: CCHelper_1.default.ins,
+    GameProtocol: GameProtocol_1.default.ins,
+    isInit: false,
+};
+
+cc._RF.pop();

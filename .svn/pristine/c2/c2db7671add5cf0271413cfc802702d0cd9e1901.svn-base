@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_yueju",
+    "texture": "81b9f532-589e-49ff-93ab-7ddb37f47e82",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      120,
+      170
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      120,
+      170
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

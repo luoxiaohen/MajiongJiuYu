@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_jinru2",
+    "texture": "fb5a8ef6-b459-4fc7-8295-7ca1600de059",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      283,
+      52
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      283,
+      52
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

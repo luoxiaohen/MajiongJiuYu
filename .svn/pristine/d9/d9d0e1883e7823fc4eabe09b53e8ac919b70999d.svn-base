@@ -1,0 +1,54 @@
+
+                (function() {
+                    var nodeEnv = typeof require !== 'undefined' && typeof process !== 'undefined';
+                    var __module = nodeEnv ? module : {exports:{}};
+                    var __filename = 'preview-scripts/assets/Script/com/socket/SocketEvent.js';
+                    var __require = nodeEnv ? function (request) {
+                        return cc.require(request);
+                    } : function (request) {
+                        return __quick_compile_project__.require(request, __filename);
+                    };
+                    function __define (exports, require, module) {
+                        if (!nodeEnv) {__quick_compile_project__.registerModule(__filename, module);}"use strict";
+cc._RF.push(module, '1de4b4pDs9ANraVmm/LC6B5', 'SocketEvent');
+// Script/com/socket/SocketEvent.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SocketEvent = void 0;
+var SocketEvent = /** @class */ (function () {
+    function SocketEvent() {
+    }
+    /**[public | static]
+     * socket连接成功
+     */
+    SocketEvent.CONNECTED = "connected";
+    /**[public | static]
+     * socket出错
+     */
+    SocketEvent.ERROR = "error";
+    /**[public | static]
+     * socket关闭
+     */
+    SocketEvent.CLOSE = "close";
+    /**[public | static]
+     * 重连
+     */
+    SocketEvent.RECONNECTED = "reconnected";
+    SocketEvent.MESSAGE = "message";
+    return SocketEvent;
+}());
+exports.SocketEvent = SocketEvent;
+
+cc._RF.pop();
+                    }
+                    if (nodeEnv) {
+                        __define(__module.exports, __require, __module);
+                    }
+                    else {
+                        __quick_compile_project__.registerModuleFunc(__filename, function () {
+                            __define(__module.exports, __require, __module);
+                        });
+                    }
+                })();
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImFzc2V0c1xcU2NyaXB0XFxjb21cXHNvY2tldFxcU29ja2V0RXZlbnQudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUE7SUFrQkM7SUFDQSxDQUFDO0lBbEJEOztPQUVHO0lBQ1cscUJBQVMsR0FBVyxXQUFXLENBQUM7SUFDOUM7O09BRUc7SUFDVyxpQkFBSyxHQUFXLE9BQU8sQ0FBQztJQUN0Qzs7T0FFRztJQUNXLGlCQUFLLEdBQVcsT0FBTyxDQUFDO0lBQ3RDOztPQUVHO0lBQ1csdUJBQVcsR0FBVyxhQUFhLENBQUM7SUFDcEMsbUJBQU8sR0FBVSxTQUFTLENBQUM7SUFHMUMsa0JBQUM7Q0FwQkQsQUFvQkMsSUFBQTtBQXBCWSxrQ0FBVyIsImZpbGUiOiIiLCJzb3VyY2VSb290IjoiLyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBjbGFzcyBTb2NrZXRFdmVudCB7XHJcblx0LyoqW3B1YmxpYyB8IHN0YXRpY10gXHJcblx0ICogc29ja2V06L+e5o6l5oiQ5YqfXHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBDT05ORUNURUQ6IHN0cmluZyA9IFwiY29ubmVjdGVkXCI7XHJcblx0LyoqW3B1YmxpYyB8IHN0YXRpY10gXHJcblx0ICogc29ja2V05Ye66ZSZXHJcblx0ICovXHJcblx0cHVibGljIHN0YXRpYyBFUlJPUjogc3RyaW5nID0gXCJlcnJvclwiO1xyXG5cdC8qKltwdWJsaWMgfCBzdGF0aWNdIFxyXG5cdCAqIHNvY2tldOWFs+mXrVxyXG5cdCAqL1xyXG5cdHB1YmxpYyBzdGF0aWMgQ0xPU0U6IHN0cmluZyA9IFwiY2xvc2VcIjtcclxuXHQvKipbcHVibGljIHwgc3RhdGljXSBcclxuXHQgKiDph43ov55cclxuXHQgKi9cclxuXHRwdWJsaWMgc3RhdGljIFJFQ09OTkVDVEVEOiBzdHJpbmcgPSBcInJlY29ubmVjdGVkXCI7XHJcblx0cHVibGljIHN0YXRpYyBNRVNTQUdFOnN0cmluZyA9IFwibWVzc2FnZVwiO1xyXG5cdHB1YmxpYyBjb25zdHJ1Y3RvcigpIHtcclxuXHR9XHJcbn0iXX0=

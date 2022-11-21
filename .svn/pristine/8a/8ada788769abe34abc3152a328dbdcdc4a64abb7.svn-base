@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "changeThree_nshuanpai",
+    "texture": "5f5f5c12-59f6-4671-9637-a60d253dedea",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      569,
+      93
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      569,
+      93
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+"use strict";
+cc._RF.push(module, '7b470vPUBZPZJbPpWtkk6hl', 'BuyHorseItem');
+// Script/UI/BuyHorseItem.ts
+
+"use strict";
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-11-15 11:56:50
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-11-15 13:49:21
+ * @FilePath: \MajiongJiuYu\assets\Script\UI\BuyHorseItem.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var BuyHorseItem = /** @class */ (function (_super) {
+    __extends(BuyHorseItem, _super);
+    function BuyHorseItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.cardIndexLabel = null;
+        _this.countLabel = null;
+        _this.playerIcon = null;
+        _this.bgImage = null;
+        _this.playerGroup = null;
+        _this._index = 1;
+        return _this;
+    }
+    Object.defineProperty(BuyHorseItem.prototype, "index", {
+        get: function () {
+            return this._index;
+        },
+        set: function (value) {
+            this._index = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    BuyHorseItem.prototype.onLoad = function () {
+        this.playerGroup.active = false;
+    };
+    BuyHorseItem.prototype.setData = function () {
+    };
+    BuyHorseItem.prototype.onBuyHorseClick = function () {
+    };
+    __decorate([
+        property(cc.Label)
+    ], BuyHorseItem.prototype, "cardIndexLabel", void 0);
+    __decorate([
+        property(cc.Label)
+    ], BuyHorseItem.prototype, "countLabel", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], BuyHorseItem.prototype, "playerIcon", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], BuyHorseItem.prototype, "bgImage", void 0);
+    __decorate([
+        property(cc.Node)
+    ], BuyHorseItem.prototype, "playerGroup", void 0);
+    BuyHorseItem = __decorate([
+        ccclass
+    ], BuyHorseItem);
+    return BuyHorseItem;
+}(UIBase_1.default));
+exports.default = BuyHorseItem;
+
+cc._RF.pop();

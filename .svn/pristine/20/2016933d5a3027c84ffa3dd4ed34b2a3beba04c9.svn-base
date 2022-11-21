@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "MaimaJian",
+    "texture": "c34cfbf2-d959-42bf-a55c-632c49ca891e",
+    "atlas": "",
+    "rect": [
+      1,
+      1,
+      339,
+      359
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      341,
+      361
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

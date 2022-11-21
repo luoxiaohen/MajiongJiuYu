@@ -1,0 +1,154 @@
+"use strict";
+cc._RF.push(module, 'e3870eNNDxL9LCgtRlpCt9Y', 'ObjectPool');
+// Script/com/ObjectPool.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ObjectPool = void 0;
+var GloBal_1 = require("../Shared/GloBal");
+/**
+ * 对象池类
+ */
+var ObjectPool = /** @class */ (function () {
+    /**[public]
+     *
+     * @param _groupMode 组模式
+     */
+    function ObjectPool(_groupMode) {
+        if (_groupMode === void 0) { _groupMode = false; }
+        this.mObjectMap = {};
+        this.mObjectClassMap = {};
+        this.mCurClassKey = null;
+        this.mGroupMode = _groupMode;
+    }
+    ObjectPool.prototype.getSaveKey = function (_class) {
+        return cc.js.getClassName(_class);
+    };
+    /**[public]
+     * 注册对象 以类注册 如果在此对象池初始化时 设置的是组模式 那么_objectType不可为空
+     * 如果是非组模式 则可设置为空
+     * @param _class
+     * @param _objectType
+     */
+    ObjectPool.prototype.regObject = function (_class, _objectType) {
+        if (_objectType === void 0) { _objectType = null; }
+        if (!this.mGroupMode && this.mCurClassKey) {
+            return;
+        }
+        else if (this.mGroupMode && (_objectType == null)) {
+            GloBal_1.Global.Utils.debugOutput(this.getSaveKey(_class) + " 's type not null");
+            return;
+        }
+        if (!this.mGroupMode && (_objectType == null)) {
+            this.mCurClassKey = this.getSaveKey(_class);
+        }
+        var _classKey = _objectType != null ? _objectType : this.mCurClassKey;
+        this.mObjectClassMap[_classKey] = _class;
+    };
+    /**
+     * 是否注册过某个类
+     */
+    ObjectPool.prototype.hasReg = function (_objectType) {
+        return this.getObjectClz(_objectType) != undefined;
+    };
+    ObjectPool.prototype.getObjectClz = function (_objectType) {
+        return this.mObjectClassMap[_objectType];
+    };
+    /**[public]
+     * 取得对象
+     * @param _objectType
+     */
+    ObjectPool.prototype.getObject = function (_params, _objectType) {
+        if (_params === void 0) { _params = null; }
+        if (_objectType === void 0) { _objectType = null; }
+        _objectType = this.mCurClassKey ? this.mCurClassKey : _objectType;
+        if (_objectType == null) {
+            GloBal_1.Global.Utils.debugOutput("_objectType can not null");
+            return;
+        }
+        if (!this.hasReg(_objectType)) {
+            GloBal_1.Global.Utils.debugOutput("objectType = " + _objectType + " not regist");
+            return;
+        }
+        var _instanceList = this.getObjectList(_objectType);
+        var _iObjectPool = null;
+        if (_instanceList.length) {
+            _iObjectPool = _instanceList.pop();
+        }
+        else {
+            _iObjectPool = new this.mObjectClassMap[_objectType]();
+            _iObjectPool["objectType"] = _objectType;
+        }
+        if (_iObjectPool.objectInit.length) {
+            _iObjectPool.objectInit(_params);
+        }
+        else {
+            _iObjectPool.objectInit();
+        }
+        return _iObjectPool;
+    };
+    /**[public]
+     * 放回
+     * @param _iObjectPool
+     */
+    ObjectPool.prototype.putObject = function (_iObjectPool) {
+        if (!_iObjectPool)
+            return;
+        var _objectType = _iObjectPool["objectType"];
+        if (_objectType == undefined || _objectType == null) {
+            for (var _key in this.mObjectClassMap) {
+                var _objectClass = this.mObjectClassMap[_key];
+                if (_iObjectPool instanceof _objectClass) {
+                    _objectType = _key;
+                    break;
+                }
+            }
+        }
+        if (_objectType != undefined || _objectType != null) {
+            var _instanceList = this.getObjectList(_objectType);
+            _iObjectPool.objectReset();
+            _instanceList.unshift(_iObjectPool);
+        }
+        else {
+            GloBal_1.Global.Utils.debugOutput(this.getSaveKey(_iObjectPool) + " not exist");
+        }
+    };
+    /**[public]
+     * 批量放回
+     * @param _iObjectPools
+     */
+    ObjectPool.prototype.putObjects = function (_iObjectPools) {
+        var _this = this;
+        _iObjectPools.forEach(function (value) {
+            _this.putObject(value);
+        });
+    };
+    /**
+     * 清空
+     * _objectType 类型 默认清空所有
+     */
+    ObjectPool.prototype.clearObject = function (_objectType) {
+        if (_objectType === void 0) { _objectType = null; }
+        _objectType = this.mCurClassKey ? this.mCurClassKey : _objectType;
+        if (_objectType) {
+            delete this.mObjectMap[_objectType];
+            delete this.mObjectClassMap[_objectType];
+        }
+        else {
+            this.mObjectMap = {};
+            this.mObjectClassMap = {};
+        }
+    };
+    ObjectPool.prototype.getObjectList = function (_objectType) {
+        var _tempList = this.mObjectMap[_objectType];
+        if (!_tempList) {
+            _tempList = [];
+            this.mObjectMap[_objectType] = _tempList;
+        }
+        return _tempList;
+    };
+    return ObjectPool;
+}());
+exports.ObjectPool = ObjectPool;
+
+cc._RF.pop();

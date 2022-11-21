@@ -1,0 +1,115 @@
+"use strict";
+cc._RF.push(module, '12f62jfwxNFZYl6oRgtdvPu', 'GMTips');
+// Script/tips/GMTips.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var LobbyMsg_1 = require("../proto/LobbyMsg");
+var TableExMsg_1 = require("../proto/TableExMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var UIBase_1 = require("../UIBase");
+var GetCardPanel_1 = require("./GetCardPanel");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var GMTips = /** @class */ (function (_super) {
+    __extends(GMTips, _super);
+    function GMTips() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.valueLabel = null;
+        _this.keyLabel = null;
+        _this.belongLabel = null;
+        _this.goBtn = null;
+        _this.belong = 4;
+        _this.key = "ag";
+        _this.values = "1000";
+        return _this;
+    }
+    GMTips.prototype.onLoad = function () {
+        this.belongLabel.string = this.belong.toString();
+        this.keyLabel.string = this.key;
+        this.valueLabel.string = this.values;
+    };
+    GMTips.prototype.onGoClick = function () {
+        this.belong = Number(this.belongLabel.string);
+        this.key = this.keyLabel.string;
+        this.values = this.valueLabel.string;
+        if (this.belong == 1) {
+            var msg1 = new LobbyMsg_1.Msg_CS_GMMsg();
+            msg1.cmd = this.key;
+            msg1.gmMsg = this.values;
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg1);
+        }
+        if (this.belong == 2) {
+            var msg1 = new TableExMsg_1.Msg_CS_TGMMsg();
+            msg1.cmd = this.key;
+            msg1.gmMsg = this.values;
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg1);
+        }
+        if (this.belong == 3) {
+            var msg1 = new TableExMsg_1.Msg_CS_GGMMsg();
+            msg1.cmd = this.key;
+            msg1.gmMsg = this.values;
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg1);
+        }
+        if (this.belong == 4) {
+            var cardPanel = cc.instantiate(GloBal_1.Global.Utils.getPreFabBySource("tips/GetCardPanel/prefab/GetCardPanel")).getComponent(GetCardPanel_1.default);
+            this.node.parent.addChild(cardPanel.node);
+            cardPanel.node.x = -960;
+            cardPanel.node.y = -540;
+        }
+        this.disTory();
+    };
+    GMTips.prototype.onRemove = function (fun) {
+        this.fun = fun;
+    };
+    GMTips.prototype.disTory = function () {
+        if (this.node.parent) {
+            this.node.parent.removeChild(this.node);
+            GloBal_1.Global.Utils.invokeCallback(this.fun, null);
+            this.destroy();
+        }
+    };
+    __decorate([
+        property(cc.EditBox)
+    ], GMTips.prototype, "valueLabel", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], GMTips.prototype, "keyLabel", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], GMTips.prototype, "belongLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], GMTips.prototype, "goBtn", void 0);
+    GMTips = __decorate([
+        ccclass
+    ], GMTips);
+    return GMTips;
+}(UIBase_1.default));
+exports.default = GMTips;
+
+cc._RF.pop();

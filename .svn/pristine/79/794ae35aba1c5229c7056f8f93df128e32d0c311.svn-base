@@ -1,0 +1,62 @@
+"use strict";
+cc._RF.push(module, '5a6b9XrGx5CyaPojpqqC7US', 'MsgCountDef');
+// Script/proto/MsgCountDef.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PubBaseCount = exports.PlayerMaxMajs = exports.PlayerFeeCount = exports.PlayerBaseCount = exports.CountTimeType = exports.CountType = exports.MsgCountDef = void 0;
+/**
+* Created by admin on 2022/11/4.
+*/
+var MsgCountDef = /** @class */ (function () {
+    function MsgCountDef() {
+    }
+    return MsgCountDef;
+}());
+exports.MsgCountDef = MsgCountDef;
+var CountType = /** @class */ (function () {
+    function CountType() {
+    }
+    return CountType;
+}());
+exports.CountType = CountType;
+// 统计数据事件类型
+var CountTimeType;
+(function (CountTimeType) {
+    CountTimeType[CountTimeType["eLives"] = 0] = "eLives";
+    CountTimeType[CountTimeType["eDay1"] = 1] = "eDay1";
+    CountTimeType[CountTimeType["eDay3"] = 2] = "eDay3";
+    CountTimeType[CountTimeType["eDay7"] = 3] = "eDay7";
+    CountTimeType[CountTimeType["eWeek4"] = 4] = "eWeek4";
+    CountTimeType[CountTimeType["eMax"] = 5] = "eMax";
+})(CountTimeType = exports.CountTimeType || (exports.CountTimeType = {}));
+// 玩家基础统计数据
+var PlayerBaseCount = /** @class */ (function () {
+    function PlayerBaseCount() {
+    }
+    return PlayerBaseCount;
+}());
+exports.PlayerBaseCount = PlayerBaseCount;
+// 玩家收费统计数据
+var PlayerFeeCount = /** @class */ (function () {
+    function PlayerFeeCount() {
+    }
+    return PlayerFeeCount;
+}());
+exports.PlayerFeeCount = PlayerFeeCount;
+// 玩家最大收益牌型数据
+var PlayerMaxMajs = /** @class */ (function () {
+    function PlayerMaxMajs() {
+    }
+    return PlayerMaxMajs;
+}());
+exports.PlayerMaxMajs = PlayerMaxMajs;
+// 全服数据
+var PubBaseCount = /** @class */ (function () {
+    function PubBaseCount() {
+    }
+    return PubBaseCount;
+}());
+exports.PubBaseCount = PubBaseCount;
+
+cc._RF.pop();

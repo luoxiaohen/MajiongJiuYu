@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "dating_tubiao1",
+    "texture": "6dd11b9b-6ef0-4711-a6ab-a4c3230460ae",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      61,
+      93
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      61,
+      93
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

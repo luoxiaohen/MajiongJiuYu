@@ -1,0 +1,268 @@
+"use strict";
+cc._RF.push(module, 'e8558OkMXdNyrU+067TkL43', 'LoginPanel');
+// Script/UI/LoginPanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var AccountMsg_1 = require("../proto/AccountMsg");
+var GloBal_1 = require("../Shared/GloBal");
+var MD5_1 = require("../Shared/MD5");
+var UIBase_1 = require("../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var LoginPanel = /** @class */ (function (_super) {
+    __extends(LoginPanel, _super);
+    function LoginPanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.proGroup = null;
+        _this.accLabel = null;
+        _this.passLabel = null;
+        _this.registerBtn = null;
+        _this.loginBtn = null;
+        _this.proLabel = null;
+        _this.loginGroup = null;
+        _this.registerGroup = null;
+        _this.regAccLabel = null;
+        _this.regPassLabel = null;
+        _this.regPassAginLabel = null;
+        _this.regRegisterBtn = null;
+        /*是否加载完成**/
+        _this.isLoadingFinished = false;
+        return _this;
+    }
+    LoginPanel.prototype.onLoad = function () {
+        GloBal_1.Global.Utils.debugOutput("loginPanel ==> onLoad");
+        GloBal_1.Global.Utils.debugOutput("this.loginGroup==" + this.loginGroup);
+        this.loginGroup.active = false;
+        this.registerGroup.active = false;
+        this.isLoadingFinished = false;
+        this.loading();
+    };
+    LoginPanel.prototype.loading = function () {
+        GloBal_1.Global.Utils.debugOutput("LoginPanel ===>  loading");
+        var loadDirArr = [
+            "changeThree",
+            "comResource",
+            "createRoom",
+            "dingQue",
+            "login",
+            "GameIActiontem",
+            "mainGame",
+            "mainLobby",
+            "majiongCard",
+            "pieChart",
+            "playerHead",
+            "smallOver",
+            "sound",
+            "tips",
+            "turnTable",
+            "gameRecord"
+        ];
+        var allTotalCount = 0;
+        var allCompletedCount = 0;
+        var finishedCount = 0;
+        this.proGroup.progress = 0;
+        var self = this;
+        function loadDir(dir) {
+            var lastTotalCount = 0;
+            var lastCompletedCount = 0;
+            cc.loader.loadResDir(dir, cc.Prefab, function (completedCount, totalCount) {
+                if ((finishedCount === loadDirArr.length) && (self.proGroup.progress === 1))
+                    return;
+                if (self.isLoadingFinished)
+                    return;
+                if (lastTotalCount === 0) {
+                    allTotalCount += totalCount;
+                    allCompletedCount += completedCount;
+                }
+                else {
+                    allTotalCount += (totalCount - lastTotalCount);
+                    allCompletedCount += (completedCount - lastCompletedCount);
+                }
+                lastTotalCount = totalCount;
+                lastCompletedCount = completedCount;
+                if (totalCount === completedCount) {
+                    finishedCount++;
+                }
+                var newProgress = 0;
+                if (allTotalCount === 0) {
+                    newProgress = finishedCount / loadDirArr.length;
+                }
+                else {
+                    newProgress = allCompletedCount / allTotalCount;
+                }
+                if (newProgress > self.proGroup.progress) {
+                    self.proLabel.string = (newProgress * 100).toFixed(0) + '%';
+                    self.proGroup.progress = newProgress;
+                }
+                if (newProgress >= 1) {
+                    self.loadingFinished();
+                }
+            }, function (err) {
+                if (!!err) {
+                    cc.log(err);
+                }
+            });
+        }
+        for (var i = 0; i < loadDirArr.length; ++i) {
+            loadDir(loadDirArr[i]);
+        }
+    };
+    LoginPanel.prototype.loadingFinished = function () {
+        GloBal_1.Global.Utils.debugOutput("LoginPanel ===>  loadingFinished");
+        if (this.isLoadingFinished)
+            return;
+        this.isLoadingFinished = true;
+        this.proGroup.progress = 1;
+        var num = this.proGroup.progress;
+        this.proLabel.string = Math.floor(num.toFixed(2) * 100) + '%';
+        this.proGroup.node.active = false;
+        var autoLogin = cc.sys.isMobile;
+        if (!!this.dialogParameters && this.dialogParameters.logoutEvent) {
+            autoLogin = false;
+        }
+        var account = cc.sys.localStorage.getItem('accLabel');
+        if (autoLogin && !!account && account.length > 0) {
+            var accountData = {
+                account: account,
+                password: cc.sys.localStorage.getItem('passLabel'),
+            };
+            this.login(accountData);
+        }
+        else {
+            this.loginGroup.active = true;
+        }
+    };
+    LoginPanel.prototype.login = function (data) {
+        GloBal_1.Global.Utils.debugOutput("loginPanel ==> login");
+        if (!data.account || !data.password || !data.loginPlatform) {
+            GloBal_1.Global.Utils.dialogOutput("请输入有效帐号密码");
+            return;
+        }
+        GloBal_1.Global.mgr.socketMgr.send();
+    };
+    /**申请注册账号按钮点击*/
+    LoginPanel.prototype.onRegClick = function (event, param) {
+        this.loginGroup.active = false;
+        this.registerGroup.active = true;
+        var len = Math.floor(Math.random() * 12) + 6;
+        var str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        var randomStr = "";
+        for (var i = 0; i < len; i++) {
+            randomStr += str.charAt(Math.floor(Math.random() * str.length));
+        }
+        this.regAccLabel.string = randomStr;
+        this.regPassLabel.string = "1";
+        this.regPassAginLabel.string = "1";
+    };
+    /**登录游戏点击*/
+    LoginPanel.prototype.onLoginClick = function (event, param) {
+        var acc = this.accLabel.string;
+        var pass = this.passLabel.string;
+        if (acc && pass) {
+            GloBal_1.Global.Utils.debugOutput("LoginPanel ==> 账号登录输入");
+            GloBal_1.Global.Utils.debugOutput("LoginPanel ==> acc:" + acc);
+            GloBal_1.Global.Utils.debugOutput("LoginPanel ==> pass:" + pass);
+            var msg = new AccountMsg_1.Msg_CS_LoginAcc();
+            msg.plat = "H5";
+            msg.account = acc;
+            msg.md5Pass = new MD5_1.default().hex_md5(pass);
+            GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+        }
+        else {
+            GloBal_1.Global.Utils.dialogOutput("LoginPanel ==> 请输入正确的账号密码");
+        }
+    };
+    /**注册界面注册账号按钮点击*/
+    LoginPanel.prototype.onRegisterBtnClick = function (event, param) {
+        var acc = this.regAccLabel.string;
+        var pass = this.regPassLabel.string;
+        var passAgin = this.regPassAginLabel.string;
+        if (acc && pass && passAgin) {
+            if (pass != passAgin) {
+                GloBal_1.Global.Utils.dialogOutput("LoginPanel ==> 两次密码输入不一致");
+            }
+            else {
+                GloBal_1.Global.Utils.debugOutput("LoginPanel ==> 账号注册输入");
+                GloBal_1.Global.Utils.debugOutput("LoginPanel ==> acc:" + acc);
+                GloBal_1.Global.Utils.debugOutput("LoginPanel ==> pass:" + pass);
+                GloBal_1.Global.Utils.debugOutput("LoginPanel ==> passAgin:" + passAgin);
+                var msg = new AccountMsg_1.Msg_CS_RegistAcc();
+                msg.plat = "H5";
+                msg.account = acc;
+                msg.md5Pass = new MD5_1.default().hex_md5(pass);
+                GloBal_1.Global.mgr.socketMgr.send(-1, msg);
+            }
+        }
+        else {
+            GloBal_1.Global.Utils.dialogOutput("LoginPanel ==> 请输入正确的账号密码");
+        }
+    };
+    __decorate([
+        property(cc.ProgressBar)
+    ], LoginPanel.prototype, "proGroup", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], LoginPanel.prototype, "accLabel", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], LoginPanel.prototype, "passLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], LoginPanel.prototype, "registerBtn", void 0);
+    __decorate([
+        property(cc.Button)
+    ], LoginPanel.prototype, "loginBtn", void 0);
+    __decorate([
+        property(cc.Label)
+    ], LoginPanel.prototype, "proLabel", void 0);
+    __decorate([
+        property(cc.Node)
+    ], LoginPanel.prototype, "loginGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], LoginPanel.prototype, "registerGroup", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], LoginPanel.prototype, "regAccLabel", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], LoginPanel.prototype, "regPassLabel", void 0);
+    __decorate([
+        property(cc.EditBox)
+    ], LoginPanel.prototype, "regPassAginLabel", void 0);
+    __decorate([
+        property(cc.Button)
+    ], LoginPanel.prototype, "regRegisterBtn", void 0);
+    LoginPanel = __decorate([
+        ccclass
+    ], LoginPanel);
+    return LoginPanel;
+}(UIBase_1.default));
+exports.default = LoginPanel;
+
+cc._RF.pop();

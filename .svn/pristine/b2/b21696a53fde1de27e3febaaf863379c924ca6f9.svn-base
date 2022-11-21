@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_tishipai",
+    "texture": "cc54c2f9-798a-4d72-a370-8af933950499",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      94,
+      125
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      94,
+      125
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

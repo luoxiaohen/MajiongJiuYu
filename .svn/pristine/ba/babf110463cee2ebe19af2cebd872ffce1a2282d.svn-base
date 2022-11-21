@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_dingquexuanze",
+    "texture": "294763d0-2a55-4a90-80f0-8997ad642cea",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      846,
+      82
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      846,
+      82
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

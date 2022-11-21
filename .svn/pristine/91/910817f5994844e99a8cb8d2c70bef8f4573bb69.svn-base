@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_moban2",
+    "texture": "ed45eb76-d611-4a3d-9f27-597fd5275962",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      50,
+      78
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      50,
+      78
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

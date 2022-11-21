@@ -1,0 +1,68 @@
+"use strict";
+cc._RF.push(module, 'a140cx9vQ5I7JptCXR3iO8m', 'MessageCallback');
+// Script/Shared/MessageCallback.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var MessageCallback = /** @class */ (function () {
+    function MessageCallback() {
+        this.handlers = [];
+    }
+    Object.defineProperty(MessageCallback, "ins", {
+        get: function () {
+            return this._ins || (this._ins = new MessageCallback());
+        },
+        enumerable: false,
+        configurable: true
+    });
+    MessageCallback.prototype.addListener = function (route, handler) {
+        var handlers = this.handlers[route] || null;
+        if (!!handlers) {
+            var isHandlerExist = false;
+            for (var i in handlers) {
+                if (handlers.hasOwnProperty(i) && (handlers[i] === handler)) {
+                    isHandlerExist = true;
+                    break;
+                }
+            }
+            if (!isHandlerExist) {
+                handlers.push(handler);
+            }
+        }
+        else {
+            handlers = [];
+            handlers.push(handler);
+            this.handlers[route] = handlers;
+        }
+    };
+    ;
+    MessageCallback.prototype.removeListener = function (route, handler) {
+        var handlers = this.handlers[route] || null;
+        if (!!handlers) {
+            for (var i = 0; i < handlers.length; ++i) {
+                if (handlers[i] === handler) {
+                    handlers.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    };
+    ;
+    MessageCallback.prototype.emitMessage = function (route, msg) {
+        if (msg === void 0) { msg = null; }
+        var handlers = this.handlers[route] || [];
+        if (!!handlers) {
+            var handlersTemp = handlers.slice();
+            for (var i in handlersTemp) {
+                if (handlersTemp.hasOwnProperty(i) && !!handlersTemp[i].messageCallbackHandler && !handlersTemp[i].isDestroy) {
+                    handlersTemp[i].messageCallbackHandler(route, msg);
+                }
+            }
+        }
+    };
+    ;
+    return MessageCallback;
+}());
+exports.default = MessageCallback;
+
+cc._RF.pop();

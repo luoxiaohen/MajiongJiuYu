@@ -1,0 +1,153 @@
+"use strict";
+cc._RF.push(module, 'e531b39PlZDgoI7XJtidlTq', 'EventType');
+// Script/event/EventType.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var EventType = /** @class */ (function () {
+    function EventType() {
+    }
+    /**连接上服务器了*/
+    EventType.LOGIN_ACC_NOW = "LOGIN_ACC_NOW";
+    /**返回大厅*/
+    EventType.BackToLobby = "BackToLobby";
+    /**登录账号不存在*/
+    EventType.LOGIN_ACC_NOT_FIND = "LOGIN_ACC_NOT_FIND";
+    /**登录成功 服务器返回玩家信息*/
+    EventType.LOGIN_OK = "LOGIN_OK";
+    /**[public | static]
+     * 舞台发生改变
+     */
+    EventType.STAGE_RESIZE = "stageResize";
+    /**获取到一个新的房间信息*/
+    EventType.GET_NEW_ROOM_INFO = "GET_NEW_ROOM_INFO";
+    /**有人成功坐下*/
+    EventType.GET_NEW_SIT_OK = "GET_NEW_SIT_OK";
+    /**有新的玩家进入房间了*/
+    EventType.NEW_ONE_SIT = "NEW_ONE_SIT";
+    /**有玩家离开了房间*/
+    EventType.NEW_ONE_LEAVE = "NEW_ONE_LEAVE";
+    /**开始掷庄*/
+    EventType.ThrowBookMaker = "ThrowBookMaker";
+    /**开始定位*/
+    EventType.StartDicePos = "StartDicePos";
+    /**开始矫座*/
+    EventType.StartDiceGame = "StartDiceGame";
+    /***收到开始牌局 骰子掷先*/
+    EventType.BeginDiceMsg = "BeginDiceMsg";
+    /**开始发牌*/
+    EventType.DrawHandCard = "DrawHandCard";
+    /**手牌到位*/
+    EventType.YouMajMsg = "YouMajMsg";
+    /**换三张*/
+    EventType.ChangeThree = "ChangeThree";
+    /**换三张状态改变*/
+    EventType.Change3Maj = "Change3Maj";
+    /**收到换三张结果*/
+    EventType.You3Maj = "You3Maj";
+    /**开始定缺*/
+    EventType.StartDingQue = "StartDingQue";
+    /**某人的定缺返回*/
+    EventType.DingQue = "DingQue";
+    /**定缺结果返回*/
+    EventType.QueRslt = "QueRslt";
+    /**自己摸牌*/
+    EventType.SelfDrawCard = "SelfDrawCard";
+    /**别人摸牌*/
+    EventType.OtherDrawCard = "OtherDrawCard";
+    /**服务器给的自己的摸牌到达*/
+    EventType.GetMajMsg = "GetMajMsg";
+    /***某人伦茨*/
+    EventType.WaitDownMsg = "WaitDownMsg";
+    /**别人出牌触发我的胡碰杠*/
+    EventType.WaitYou = "WaitYou";
+    /**服务器广播某人出牌*/
+    EventType.DownMajMsg = "DownMajMsg";
+    /**服务器广播某人碰杠*/
+    EventType.PengMajMsg = "PengMajMsg";
+    /**服务器广播自己杠*/
+    EventType.GangSelfMsg = "GangSelfMsg";
+    /**服务器通知有人抢杠*/
+    EventType.HasHuGangMsg = "HasHuGangMsg";
+    /**服务器通知有人胡牌*/
+    EventType.HuMajMsg = "HuMajMsg";
+    /**服务器刷新手牌信息*/
+    EventType.UpdateHands = "UpdateHands";
+    /**投掷个人筛子结果*/
+    EventType.PrDiceRslt = "PrDiceRslt";
+    /**骰子结果*/
+    EventType.DiceRslt = "DiceRslt";
+    /**有人准备好了*/
+    EventType.playerReady = "playerReady";
+    /**一轮游戏结束*/
+    EventType.GameResultMsg = "GameResultMsg";
+    /**一轮游戏结束数据*/
+    EventType.ScoreListMsg = "ScoreListMsg";
+    /**有人补杠*/
+    EventType.BuGanging = "BuGanging";
+    /**牌墙剩余数据*/
+    EventType.PoolsList = "PoolsList";
+    /**大结算数据 */
+    EventType.GameOverMsg = "GameOverMsg";
+    /**游戏邀请 */
+    EventType.GameInviteMsg = "GameInviteMsg";
+    /**有i人请求关闭房间*/
+    EventType.RqCloseGame = "RqCloseGame";
+    /**有人同意解散*/
+    EventType.VoteRslt = "VoteRslt";
+    /**解散房间结果返回*/
+    EventType.VoteCloseRslt = "VoteCloseRslt";
+    /**有人不同意解散房间*/
+    EventType.NotVoteCloseRslt = "NotVoteCloseRslt";
+    /**收到了实时积分消息*/
+    EventType.RealScore = "RealScore";
+    EventType.QueRsltToPlayer = "QueRsltToPlayer";
+    /***规则界面需要移动*/
+    EventType.GameRuleItemMove = "GameRuleItemMove";
+    /**游戏规则界面改变了游戏玩法*/
+    EventType.GameRuleChangePlayType = "GameRuleChangePlayType";
+    /**阻止规则界面底注选择和滚动冲突*/
+    EventType.RuleMoveAndScrollerMove = "RuleMoveAndScrollerMove";
+    /**阻止规则界面底注选择和滚动冲突*/
+    EventType.RuleMoveAndScrollerMoveOver = "RuleMoveAndScrollerMoveOver";
+    /**开房消耗发生改变*/
+    EventType.OpenRoomUseChange = "OpenRoomUseChange";
+    /**查看规则TIPS*/
+    EventType.CreateRoomRuleTipsClick = "CreateRoomRuleTipsClick";
+    /***获取模板信息返回*/
+    EventType.RspGetRoomRuleTemplate = "RspGetRoomRuleTemplate";
+    /**保存模板返回*/
+    EventType.SaveRoomRuleTemplate = "SaveRoomRuleTemplate";
+    /**删除模板返回*/
+    EventType.RspDeletRoomRuleTemplate = "RspDeletRoomRuleTemplate";
+    /**换三张换牌点击*/
+    EventType.OnChangThreeClick = "OnChangThreeClick";
+    /**规则界面选择框点击的事件派发*/
+    EventType.CreateRoom_Check_Click = "CreateRoom_Check_Click";
+    /**角色头像坐下点击*/
+    EventType.PlayerHeadSitClick = "PlayerHeadSitClick";
+    /**开始新的一手牌*/
+    EventType.OpenNewGame = "OpenNewGame";
+    /**展示豹子以及双豹*/
+    EventType.ShowBaoziFight = "ShowBaoziFight";
+    EventType = __decorate([
+        ccclass
+    ], EventType);
+    return EventType;
+}());
+exports.default = EventType;
+
+cc._RF.pop();

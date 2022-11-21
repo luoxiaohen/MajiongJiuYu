@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_laiyuan",
+    "texture": "80d2f3c8-c32a-4d38-8d72-ea1ab33313c9",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      62,
+      66
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      62,
+      66
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

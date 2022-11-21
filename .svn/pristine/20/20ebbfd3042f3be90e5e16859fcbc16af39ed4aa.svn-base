@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "createRoom_goumaii",
+    "texture": "72472d41-dd02-4312-a846-3fde4ad8eb23",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      178,
+      44
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      178,
+      44
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

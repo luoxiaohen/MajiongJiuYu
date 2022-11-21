@@ -1,0 +1,336 @@
+"use strict";
+cc._RF.push(module, '47fd6uBoORD86WzcLuWkS49', 'ChangeThreePanel');
+// Script/UI/changeThree/ChangeThreePanel.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var GameInfo_1 = require("../../Game/info/GameInfo");
+var UserInfo_1 = require("../../Game/info/UserInfo");
+var TimeAndMoveManager_1 = require("../../mgr/TimeAndMoveManager");
+var GloBal_1 = require("../../Shared/GloBal");
+var UIBase_1 = require("../../UIBase");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+var ChangeThreePanel = /** @class */ (function (_super) {
+    __extends(ChangeThreePanel, _super);
+    function ChangeThreePanel() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.myImage = null;
+        _this.oppImage = null;
+        _this.downImage = null;
+        _this.upImage = null;
+        _this.leftImage = null;
+        _this.rightImage = null;
+        _this.fontImage = null;
+        _this.duijiaGroup = null;
+        return _this;
+    }
+    ChangeThreePanel.prototype.onLoad = function () {
+        this.showFourImage(false);
+        this.duijiaGroup.active = false;
+    };
+    ChangeThreePanel.prototype.showOneReady = function (readySit) {
+        var index = (readySit - UserInfo_1.default.ins.mySitIndex + 40) % GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType);
+        var image;
+        switch (index) {
+            case 0:
+                image = this.myImage;
+                break;
+            case 1:
+                image = this.downImage;
+                break;
+            case 2:
+                image = this.oppImage;
+                break;
+            case 3:
+                image = this.upImage;
+                break;
+        }
+        image.node.active = true;
+    };
+    ChangeThreePanel.prototype.setData = function (msg, callBackFun, thisObj) {
+        this.callBackFun = callBackFun;
+        this.thisObj = thisObj;
+        this.changeMsg = msg;
+        this.showAction(msg.type);
+    };
+    ChangeThreePanel.prototype.showAction = function (type) {
+        GloBal_1.Global.Utils.playSound("sound/6");
+        // this.showFourImage(false);
+        this.duijiaGroup.active = true;
+        if (type == 0) {
+            this.showDuijia();
+        }
+        else if (type == 1) {
+            this.showShun();
+        }
+        else {
+            this.showNi();
+        }
+    };
+    ChangeThreePanel.prototype.showDuijia = function () {
+        var _this = this;
+        this.leftImage.node.scaleY = 1;
+        this.leftImage.node.x = -39;
+        this.leftImage.node.y = 24;
+        this.rightImage.node.scaleY = -1;
+        this.rightImage.node.x = 518;
+        this.rightImage.node.y = 484;
+        GloBal_1.Global.Utils.setNewImageToSprite(this.leftImage, "changeThree/resource/changeThree_duijia");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.rightImage, "changeThree/resource/changeThree_duijia");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.fontImage, "changeThree/resource/changeThree_duijiahuanpai");
+        var moveY = 33;
+        var time = TimeAndMoveManager_1.default.ins.changeThreeLightMoveTime;
+        var leftInitY = this.leftImage.node.y;
+        var rightInitY = this.rightImage.node.y;
+        cc.tween(this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: leftInitY - moveY }).call(function () {
+            cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: leftInitY }).call(function () {
+                cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: leftInitY - moveY }).call(function () {
+                    cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: leftInitY }).start();
+                }).start();
+            }).start();
+        }).start();
+        cc.tween(this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: rightInitY + moveY }).call(function () {
+            cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: rightInitY }).call(function () {
+                cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: rightInitY + moveY }).call(function () {
+                    cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { y: rightInitY }).call(function () {
+                        _this.showDuijiaCardAction();
+                    }).start();
+                }).start();
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showShun = function () {
+        var _this = this;
+        this.leftImage.node.x = -30;
+        this.leftImage.node.y = 444;
+        this.leftImage.node.scaleY = -1;
+        this.rightImage.node.x = 286;
+        this.rightImage.node.y = 296;
+        this.rightImage.node.scaleY = -1;
+        GloBal_1.Global.Utils.setNewImageToSprite(this.leftImage, "changeThree/resource/changeThreenxuanzhuan2");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.rightImage, "changeThree/resource/changeThree_nxuanzhuan");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.fontImage, "changeThree/resource/changeThree_sshuanpai");
+        var moveX = 68;
+        var moveY = 50;
+        var moveR = 0;
+        var leftInitY = this.leftImage.node.y;
+        var leftInitX = this.leftImage.node.x;
+        var rightInitX = this.rightImage.node.x;
+        var rightInitY = this.rightImage.node.y;
+        var time = TimeAndMoveManager_1.default.ins.changeThreeLightMoveTime;
+        cc.tween(this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX + moveX, y: leftInitY + moveY, angle: moveR }).call(function () {
+            cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX, y: leftInitY, angle: 0 }).call(function () {
+                cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX + moveX, y: leftInitY + moveY, angle: moveR }).call(function () {
+                    cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX, y: leftInitY, angle: 0 }).start();
+                }).start();
+            }).start();
+        }).start();
+        cc.tween(this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX - moveX, y: rightInitY - moveY, angle: moveR }).call(function () {
+            cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX, y: rightInitY, angle: 0 }).call(function () {
+                cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX - moveX, y: rightInitY - moveY, angle: moveR }).call(function () {
+                    cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX, y: rightInitY, angle: 0 }).call(function () {
+                        _this.showShunCardAction();
+                    }).start();
+                }).start();
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showNi = function () {
+        var _this = this;
+        this.leftImage.node.scaleY = 1;
+        this.leftImage.node.x = -38;
+        this.leftImage.node.y = 82;
+        this.rightImage.node.scaleY = 1;
+        this.rightImage.node.x = 310;
+        this.rightImage.node.y = 208;
+        GloBal_1.Global.Utils.setNewImageToSprite(this.leftImage, "changeThree/resource/changeThreenxuanzhuan2");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.rightImage, "changeThree/resource/changeThree_nxuanzhuan");
+        GloBal_1.Global.Utils.setNewImageToSprite(this.fontImage, "changeThree/resource/changeThree_nshuanpai");
+        var moveX = 68;
+        var moveY = 50;
+        var moveR = 0;
+        var leftInitY = this.leftImage.node.y;
+        var leftInitX = this.leftImage.node.x;
+        var rightInitX = this.rightImage.node.x;
+        var rightInitY = this.rightImage.node.y;
+        var time = TimeAndMoveManager_1.default.ins.changeThreeLightMoveTime;
+        cc.tween(this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX - moveX, y: leftInitY + moveY, angle: moveR }).call(function () {
+            cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX, y: leftInitY, angle: 0 }).call(function () {
+                cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX - moveX, y: leftInitY + moveY, angle: moveR }).call(function () {
+                    cc.tween(_this.leftImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: leftInitX, y: leftInitY, angle: 0 }).start();
+                }).start();
+            }).start();
+        }).start();
+        cc.tween(this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX + moveX, y: rightInitY - moveY, angle: moveR }).call(function () {
+            cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX, y: rightInitY, angle: 0 }).call(function () {
+                cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX + moveX, y: rightInitY - moveY, angle: moveR }).call(function () {
+                    cc.tween(_this.rightImage.node).to(time / GloBal_1.Global.Utils.getMaxPlayerByGameType(GameInfo_1.default.ins.roomTableInfo.rule.roomType), { x: rightInitX, y: rightInitY, angle: 0 }).call(function () {
+                        _this.showNiCardAction();
+                    }).start();
+                }).start();
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showDuijiaCardAction = function () {
+        var _this = this;
+        this.showFourImage(true);
+        var time = TimeAndMoveManager_1.default.ins.changeThreeCardMoveTime;
+        cc.tween(this.myImage.node).to(time / 2, { x: 306.5, y: 232 }).call(function () {
+            cc.tween(_this.myImage.node).to(time / 2, { x: 306.5, y: 46 }).start();
+        }).start();
+        cc.tween(this.oppImage.node).to(time / 2, { x: 306.5, y: 232 }).call(function () {
+            cc.tween(_this.oppImage.node).to(time / 2, { x: 306.5, y: 427 }).start();
+        }).start();
+        cc.tween(this.downImage.node).to(time / 2, { x: 306, y: 232 }).call(function () {
+            cc.tween(_this.downImage.node).to(time / 2, { x: 556.5, y: 232 }).start();
+        }).start();
+        cc.tween(this.upImage.node).to(time / 2, { x: 306, y: 232 }).call(function () {
+            cc.tween(_this.upImage.node).to(time / 2, { x: 55.5, y: 232 }).call(function () {
+                _this.callBackFun.bind(_this.thisObj)(_this.changeMsg);
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showShunCardAction = function () {
+        var _this = this;
+        this.showFourImage(true);
+        var time = TimeAndMoveManager_1.default.ins.changeThreeCardMoveTime;
+        //306.5  46
+        cc.tween(this.myImage.node).to(time / 2, { x: 131, y: 95, angle: -35 }).call(function () {
+            _this.myImage.node.x = 406.5;
+            _this.myImage.node.y = 46;
+            _this.myImage.node.angle = 0;
+            _this.myImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.myImage.node).to(time / 5, { x: 306.5, opacity: 255 }).start();
+        }).start();
+        //556.5 232
+        cc.tween(this.downImage.node).to(time / 2, { x: 486, y: 86, angle: -35 }).call(function () {
+            _this.downImage.node.x = 556.5;
+            _this.downImage.node.y = 278;
+            _this.downImage.node.angle = 0;
+            _this.downImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.downImage.node).to(time / 5, { y: 232, opacity: 255 }).start();
+        }).start();
+        //306.5 427
+        cc.tween(this.oppImage.node).to(time / 2, { x: 486, y: 383, angle: -35 }).call(function () {
+            _this.oppImage.node.x = 246.5;
+            _this.oppImage.node.y = 427;
+            _this.oppImage.node.angle = 0;
+            _this.oppImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.oppImage.node).to(time / 5, { x: 306.5, opacity: 255 }).start();
+        }).start();
+        //55.5 232
+        cc.tween(this.upImage.node).to(time / 2, { x: 146, y: 391, angle: -35 }).call(function () {
+            _this.upImage.node.x = 55.5;
+            _this.upImage.node.y = 130;
+            _this.upImage.node.angle = 0;
+            _this.upImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.upImage.node).to(time / 5, { y: 232, opacity: 255 }).call(function () {
+                _this.callBackFun.bind(_this.thisObj)(_this.changeMsg);
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showNiCardAction = function () {
+        var _this = this;
+        this.showFourImage(true);
+        var time = TimeAndMoveManager_1.default.ins.changeThreeCardMoveTime;
+        //306.5  46
+        cc.tween(this.myImage.node).to(time / 2, { x: 495, y: 74, angle: 35 }).call(function () {
+            _this.myImage.node.x = 206;
+            _this.myImage.node.y = 46;
+            _this.myImage.node.angle = 0;
+            _this.myImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.myImage.node).to(time / 5, { x: 306.5, opacity: 255 }).start();
+        }).start();
+        //556.5 232
+        cc.tween(this.downImage.node).to(time / 2, { x: 488, y: 385, angle: 35 }).call(function () {
+            _this.downImage.node.x = 556.5;
+            _this.downImage.node.y = 180;
+            _this.downImage.node.angle = 0;
+            _this.downImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.downImage.node).to(time / 5, { y: 232, opacity: 255 }).start();
+        }).start();
+        //306.5 427
+        cc.tween(this.oppImage.node).to(time / 2, { x: 146, y: 379, angle: 35 }).call(function () {
+            _this.oppImage.node.x = 366.5;
+            _this.oppImage.node.y = 427;
+            _this.oppImage.node.angle = 0;
+            _this.oppImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.oppImage.node).to(time / 5, { x: 306.5, opacity: 255 }).start();
+        }).start();
+        //55.5 232
+        cc.tween(this.upImage.node).to(time / 2, { x: 117, y: 79, angle: 35 }).call(function () {
+            _this.upImage.node.x = 55.5;
+            _this.upImage.node.y = 284;
+            _this.upImage.node.angle = 0;
+            _this.upImage.node.opacity = 255 * 0.4;
+            cc.tween(_this.upImage.node).to(time / 5, { y: 232, opacity: 255 }).call(function () {
+                _this.callBackFun.bind(_this.thisObj)(_this.changeMsg);
+            }).start();
+        }).start();
+    };
+    ChangeThreePanel.prototype.showFourImage = function (boo) {
+        this.myImage.node.active = boo;
+        this.oppImage.node.active = boo;
+        this.downImage.node.active = boo;
+        this.upImage.node.active = boo;
+    };
+    ChangeThreePanel.prototype.disTory = function () {
+        _super.prototype.disTory.call(this);
+    };
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "myImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "oppImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "downImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "upImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "leftImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "rightImage", void 0);
+    __decorate([
+        property(cc.Sprite)
+    ], ChangeThreePanel.prototype, "fontImage", void 0);
+    __decorate([
+        property(cc.Node)
+    ], ChangeThreePanel.prototype, "duijiaGroup", void 0);
+    ChangeThreePanel = __decorate([
+        ccclass
+    ], ChangeThreePanel);
+    return ChangeThreePanel;
+}(UIBase_1.default));
+exports.default = ChangeThreePanel;
+
+cc._RF.pop();

@@ -1,0 +1,195 @@
+"use strict";
+cc._RF.push(module, 'c628akYJKRGgLNmVxo/tAK+', 'Socket');
+// Script/com/socket/Socket.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Socket = void 0;
+var GloBal_1 = require("../../Shared/GloBal");
+var CallBack_1 = require("../CallBack");
+var SocketEvent_1 = require("./SocketEvent");
+/**
+ * socket连接
+ */
+var Socket = /** @class */ (function () {
+    function Socket(_type, _agent) {
+        this.mReceiveLib = {};
+        this.mSocketType = _type;
+        this.mAgent = _agent;
+        this.mAgent.onInit(this);
+    }
+    Socket.prototype.onConnectedHandler = function (e) {
+        GloBal_1.Global.Utils.debugOutput("socket ==> 连接成功");
+        this.mIsConnected = true;
+        this.mAgent.onConnected(this.mIsReconnect);
+        var _eventType = this.mIsReconnect ? SocketEvent_1.SocketEvent.RECONNECTED : SocketEvent_1.SocketEvent.CONNECTED;
+        cc.systemEvent.emit(_eventType, _eventType);
+    };
+    Socket.prototype.onCloseHandler = function (e) {
+        GloBal_1.Global.Utils.debugOutput("socket ==> 连接关闭");
+        this.mIsConnected = false;
+        this.mAgent.onClose();
+        cc.systemEvent.emit(SocketEvent_1.SocketEvent.CLOSE, SocketEvent_1.SocketEvent.CLOSE);
+    };
+    Socket.prototype.onErrorHandler = function (e) {
+        GloBal_1.Global.Utils.debugOutput("socket ==> 连接错误" + e.message);
+        this.mIsConnected = false;
+        this.mAgent.onError(e.message);
+        cc.systemEvent.emit(SocketEvent_1.SocketEvent.ERROR, SocketEvent_1.SocketEvent.ERROR);
+    };
+    Socket.prototype.onSocketDataHandler = function (e) {
+        GloBal_1.Global.Utils.debugOutput("socket ==> 消息回来" + e.data);
+        this.mAgent.onData(e.data);
+        cc.systemEvent.emit(SocketEvent_1.SocketEvent.MESSAGE, SocketEvent_1.SocketEvent.MESSAGE, e.data);
+    };
+    /**[public]
+     * 发送数据
+     * * ..._datas
+     */
+    Socket.prototype.send = function () {
+        var _datas = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            _datas[_i] = arguments[_i];
+        }
+        var _tmpDatas = this.mAgent.onPackageSendData.apply(this.mAgent, _datas);
+        if (this.connected) {
+            if (typeof _tmpDatas != "string") {
+                _tmpDatas = JSON.stringify(_tmpDatas);
+            }
+            this.mSocket.send(_tmpDatas);
+        }
+        else {
+            cc.log("socket error");
+        }
+    };
+    /**[public]
+     * 添加通知回调
+     * @param _id
+     * @param _handler
+     * @param _target
+     */
+    Socket.prototype.addReceiveNotify = function (_mid, _sid, _handler, _target, _socketType) {
+        if (_socketType === void 0) { _socketType = -1; }
+        var _id = (_mid << 16) + _sid;
+        var _receives = this.mReceiveLib[_id] || [];
+        var _count = _receives.length;
+        for (var i = 0; i < _count; i++) {
+            if (_receives[i].checkEqual(_handler, _target)) {
+                CallBack_1.CallBack.unbind(_receives.splice(i, 1)[0]);
+                break;
+            }
+        }
+        this.mReceiveLib[_id] = _receives;
+        _receives.push(CallBack_1.CallBack.bind(_handler, _target));
+    };
+    /**
+     * 移除某个对象中所有的通知回调
+     * @param _target
+     */
+    Socket.prototype.removeReceiveNotify = function (_target) {
+        for (var _id in this.mReceiveLib) {
+            var _receives = this.mReceiveLib[_id];
+            var _count = _receives.length;
+            for (var i = 0; i < _count; i++) {
+                var _caller = _receives[i];
+                if (_caller.equalTarget(_target)) {
+                    _receives.splice(i, 1);
+                    CallBack_1.CallBack.unbind(_caller);
+                    _count--;
+                    i--;
+                }
+            }
+        }
+    };
+    /**[public]
+     * 广播通知
+     * @param _id
+     * @param _data
+     */
+    Socket.prototype.notifyReceive = function (_id, _data) {
+        var _caller = this.mReceiveLib[_id];
+        if (_caller) {
+            _caller.forEach(function (value) {
+                value.excute(_data);
+            });
+        }
+        return _caller && !_caller.length;
+    };
+    /**[public]
+     * 开始连接
+     * @param _url
+     */
+    Socket.prototype.startConnect = function (_url, _wssCacertPath) {
+        this.mIsReconnect = false;
+        this.mUrl = _url;
+        this.mWssCacertPath = _wssCacertPath;
+        this.connectByUrl(_url, _wssCacertPath);
+    };
+    /**[public]
+     * 重连
+     */
+    Socket.prototype.reconnect = function () {
+        this.mIsReconnect = true;
+        this.connected || this.connectByUrl(this.mUrl, this.mWssCacertPath);
+    };
+    Socket.prototype.close = function () {
+        if (this.connected) {
+            this.mSocket.close();
+            this.resetSocketListeners();
+        }
+    };
+    Socket.prototype.connectByUrl = function (_url, _wssCacertPath) {
+        this.mIsConnected = false;
+        if (_wssCacertPath) {
+            this.mSocket = new WebSocket(_url, [], _wssCacertPath);
+        }
+        else {
+            this.mSocket = new WebSocket(_url, []);
+        }
+        this.mSocket.onopen = this.onConnectedHandler.bind(this);
+        this.mSocket.onmessage = this.onSocketDataHandler.bind(this);
+        this.mSocket.onclose = this.onCloseHandler.bind(this);
+        this.mSocket.onerror = this.onErrorHandler.bind(this);
+    };
+    Object.defineProperty(Socket.prototype, "url", {
+        get: function () {
+            return this.mUrl;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Socket.prototype, "socketType", {
+        get: function () {
+            return this.mSocketType;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Socket.prototype, "connected", {
+        get: function () {
+            return this.mIsConnected;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**[public]
+     * 销毁当前连接
+     */
+    Socket.prototype.destory = function () {
+        this.resetSocketListeners();
+        this.mAgent = null;
+    };
+    Socket.prototype.resetSocketListeners = function () {
+        if (this.mSocket) {
+            this.mSocket.onopen = null;
+            this.mSocket.onmessage = null;
+            this.mSocket.onclose = null;
+            this.mSocket.onerror = null;
+        }
+        this.mSocket = null;
+    };
+    return Socket;
+}());
+exports.Socket = Socket;
+
+cc._RF.pop();

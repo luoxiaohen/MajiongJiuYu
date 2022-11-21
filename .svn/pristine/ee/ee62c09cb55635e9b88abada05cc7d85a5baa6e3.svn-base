@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "ty_zhunbeixg",
+    "texture": "90fd44ba-a223-41c2-90ca-71fefb52e49a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      328,
+      104
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      328,
+      104
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

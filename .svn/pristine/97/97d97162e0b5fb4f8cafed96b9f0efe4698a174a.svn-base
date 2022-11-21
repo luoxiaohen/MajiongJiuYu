@@ -1,0 +1,161 @@
+"use strict";
+cc._RF.push(module, '37203Oi4hFO/Y/21g9mE2Xh', 'Main');
+// Script/Shared/Main.ts
+
+"use strict";
+// Learn TypeScript:
+//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var SocketAdapter_1 = require("../com/SocketAdapter");
+var EventType_1 = require("../event/EventType");
+var GMTips_1 = require("../tips/GMTips");
+var GloBal_1 = require("./GloBal");
+var _a = cc._decorator, ccclass = _a.ccclass, property = _a.property;
+/**视图修改抗锯齿平滑度*/
+cc.macro.ENABLE_WEBGL_ANTIALIAS = true;
+var Main = /** @class */ (function (_super) {
+    __extends(Main, _super);
+    function Main() {
+        var _this_1 = _super !== null && _super.apply(this, arguments) || this;
+        _this_1.initLabel = null;
+        _this_1.sceneType = "Main";
+        _this_1.initGroup = null;
+        _this_1.tipsLayar = null;
+        return _this_1;
+    }
+    Main.prototype.initGlobal = function () {
+        window["Global"] = GloBal_1.Global;
+        this.initLabel.string = '初始化中';
+    };
+    Main.prototype.start = function () {
+        GloBal_1.Global.Utils.debugOutput("Main ==> start");
+    };
+    Main.prototype.onLoad = function () {
+        if (GloBal_1.Global.isInit) {
+            GloBal_1.Global.DialogManager.init(this.node);
+            this.CreateMainLobbyPannel();
+            return;
+        }
+        GloBal_1.Global.Utils.debugOutput("Main ==> onLoad");
+        // 初始化全局变量
+        this.initGlobal();
+        GloBal_1.Global.isInit = true;
+        // 适配处理
+        // Global.CCHelper.screenAdaptation(new cc.Size(1080, 1920), this.node.getComponent(cc.Canvas));
+        // 初始化界面管理器
+        GloBal_1.Global.Utils.debugOutput("Main ==> 初始化界面管理器");
+        GloBal_1.Global.DialogManager.init(this.node);
+        GloBal_1.Global.Utils.debugOutput("Main ==> 初始化界面管理器over");
+        //音乐音效初始化
+        // Global.AudioManager.init();
+        // 初始化网络
+        GloBal_1.Global.Utils.debugOutput("Main ==> 初始化网络");
+        GloBal_1.Global.GameProtocol.initProtocol();
+        GloBal_1.Global.Utils.debugOutput("Main ==> 初始化网络over");
+        GloBal_1.Global.mgr.socketMgr.config(SocketAdapter_1.SocketAdapter);
+        GloBal_1.Global.Utils.debugOutput("Main ==> cc.game = " + cc.game);
+        cc.game.on(cc.game.EVENT_HIDE, this.onEventHide.bind(this));
+        cc.game.on(cc.game.EVENT_HIDE, this.onEventShow.bind(this));
+        this.enterGame();
+        cc.systemEvent.on("keydown", this.onKeyDown, this);
+    };
+    Main.prototype.onKeyDown = function (e) {
+        var _this_1 = this;
+        if (e.keyCode == 192) {
+            if (this.gm) {
+                this.gm.disTory();
+                this.gm = null;
+            }
+            else {
+                GloBal_1.Global.DialogManager.createDialog('tips/GM/prefab/GMTips', null, function (any, createDialog) {
+                    createDialog.x = 58;
+                    createDialog.y = -1250;
+                    _this_1.gm = createDialog.getComponent(GMTips_1.default);
+                    _this_1.gm.onRemove(function () {
+                        _this_1.gm = null;
+                    });
+                }, this.tipsLayar);
+            }
+        }
+    };
+    Main.prototype.enterGame = function () {
+        var _this = this;
+        var cb = function () {
+            _this.notifyNativeLaunched();
+            this.initGroup.destroy();
+        }.bind(this);
+        // Global.mgr.socketMgr.createSocketByUrl("ws://192.168.0.24/WebGateSrv/Webgate")
+        // Global.mgr.socketMgr.createSocketByUrl("ws://192.168.0.18:8080/WebGateSrv/Webgate")
+        GloBal_1.Global.mgr.socketMgr.createSocketByUrl("ws://192.168.0.11/Webgate");
+        GloBal_1.Global.EventCenter.addEventListener(EventType_1.default.LOGIN_OK, this.onLoginOk, this);
+        GloBal_1.Global.DialogManager.createDialog('login/prefab/LoginPanel', null, cb);
+    };
+    Main.prototype.CreateMainLobbyPannel = function () {
+        GloBal_1.Global.DialogManager.createDialog('mainLobby/prefab/MainLobbyPanel', null, function (any, createDialog) {
+            createDialog.y = 0;
+        });
+    };
+    Main.prototype.onLoginOk = function (type, data) {
+        GloBal_1.Global.DialogManager.createDialog('mainLobby/prefab/MainLobbyPanel', null, function () {
+            GloBal_1.Global.DialogManager.destroyDialog('login/prefab/LoginPanel', true);
+        });
+    };
+    Main.prototype.notifyNativeLaunched = function () {
+        if (CC_JSB) {
+            GloBal_1.Global.Utils.debugOutput("notifyNativeLaunched");
+            jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "onGameLoaded", "()V");
+        }
+    };
+    Main.prototype.onEventHide = function () {
+        GloBal_1.Global.MessageCallback.emitMessage("GAME_EVENT", cc.game.EVENT_HIDE);
+    };
+    Main.prototype.onEventShow = function () {
+        GloBal_1.Global.MessageCallback.emitMessage("GAME_EVENT", cc.game.EVENT_SHOW);
+    };
+    Main.prototype.onDestroy = function () {
+        cc.game.off(cc.game.EVENT_HIDE, this.onEventHide.bind(this));
+        cc.game.off(cc.game.EVENT_HIDE, this.onEventShow.bind(this));
+    };
+    __decorate([
+        property(cc.Label)
+    ], Main.prototype, "initLabel", void 0);
+    __decorate([
+        property()
+    ], Main.prototype, "sceneType", void 0);
+    __decorate([
+        property(cc.Node)
+    ], Main.prototype, "initGroup", void 0);
+    __decorate([
+        property(cc.Node)
+    ], Main.prototype, "tipsLayar", void 0);
+    Main = __decorate([
+        ccclass
+    ], Main);
+    return Main;
+}(cc.Component));
+exports.default = Main;
+
+cc._RF.pop();

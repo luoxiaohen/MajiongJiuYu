@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "game_gang2",
+    "texture": "c34dc379-c7e4-4512-836b-adeef351875a",
+    "atlas": "",
+    "rect": [
+      0,
+      0,
+      131,
+      121
+    ],
+    "offset": [
+      0,
+      0
+    ],
+    "originalSize": [
+      131,
+      121
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

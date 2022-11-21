@@ -1,0 +1,28 @@
+"use strict";
+cc._RF.push(module, 'f0516OMfYNJWLG+Jmrx1wr+', 'AccountMsgDef');
+// Script/proto/AccountMsgDef.ts
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccountErrCode = exports.AccountMsgDef = void 0;
+/**
+* Created by admin on 2022/5/23.
+*/
+var AccountMsgDef = /** @class */ (function () {
+    function AccountMsgDef() {
+    }
+    return AccountMsgDef;
+}());
+exports.AccountMsgDef = AccountMsgDef;
+var AccountErrCode;
+(function (AccountErrCode) {
+    AccountErrCode[AccountErrCode["eOK"] = 0] = "eOK";
+    AccountErrCode[AccountErrCode["eNameError"] = 1] = "eNameError";
+    AccountErrCode[AccountErrCode["eNameRepeat"] = 2] = "eNameRepeat";
+    AccountErrCode[AccountErrCode["eAccountNot"] = 3] = "eAccountNot";
+    AccountErrCode[AccountErrCode["ePassError"] = 4] = "ePassError";
+    AccountErrCode[AccountErrCode["eNotSrvID"] = 5] = "eNotSrvID";
+    AccountErrCode[AccountErrCode["eMax"] = 6] = "eMax";
+})(AccountErrCode = exports.AccountErrCode || (exports.AccountErrCode = {}));
+
+cc._RF.pop();

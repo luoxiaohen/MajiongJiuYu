@@ -1,0 +1,85 @@
+"use strict";
+cc._RF.push(module, 'f410fzCSZdHGqYsmdXUADjl', 'BaseMsg');
+// Script/proto/BaseMsg.ts
+
+"use strict";
+/**
+* @Author: ZZ
+* @Date: Created in 14:55 2017/10/16
+* @Description: 所有消息的基本定义
+* @Modified By:
+*/
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseTabExMsg = exports.BaseBSMsg = exports.BaseIDMsg = exports.MSG_MID = exports.BaseMsg = void 0;
+var BaseMsg = /** @class */ (function () {
+    function BaseMsg() {
+    }
+    return BaseMsg;
+}());
+exports.BaseMsg = BaseMsg;
+var MSG_MID;
+(function (MSG_MID) {
+    MSG_MID[MSG_MID["MID_DSS"] = 0] = "MID_DSS";
+    MSG_MID[MSG_MID["MID_BS"] = 1] = "MID_BS";
+    MSG_MID[MSG_MID["MID_SrvsMsg"] = 2] = "MID_SrvsMsg";
+    MSG_MID[MSG_MID["MID_Account"] = 3] = "MID_Account";
+    MSG_MID[MSG_MID["MID_LobbyMsg"] = 4] = "MID_LobbyMsg";
+    MSG_MID[MSG_MID["MID_TableMsg"] = 5] = "MID_TableMsg";
+    MSG_MID[MSG_MID["MID_TableExMsg"] = 6] = "MID_TableExMsg";
+    MSG_MID[MSG_MID["MID_GateTable"] = 7] = "MID_GateTable";
+    MSG_MID[MSG_MID["MID_OtherMsg"] = 8] = "MID_OtherMsg";
+    MSG_MID[MSG_MID["MID_MAX"] = 9] = "MID_MAX";
+})(MSG_MID = exports.MSG_MID || (exports.MSG_MID = {}));
+//    public static class BaseIDMsg implements Serializable {
+//        public int mid;
+//        public int sid;
+//    }
+// 所有消息的基类
+var BaseIDMsg = /** @class */ (function () {
+    function BaseIDMsg(mid, sid) {
+        this.mid = mid;
+        this.sid = sid;
+    }
+    return BaseIDMsg;
+}());
+exports.BaseIDMsg = BaseIDMsg;
+// 服务器用协议基类
+var BaseBSMsg = /** @class */ (function (_super) {
+    __extends(BaseBSMsg, _super);
+    function BaseBSMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BaseBSMsg;
+}(BaseIDMsg));
+exports.BaseBSMsg = BaseBSMsg;
+// 牌桌服扩展消息的基类
+var BaseTabExMsg = /** @class */ (function (_super) {
+    __extends(BaseTabExMsg, _super);
+    function BaseTabExMsg() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return BaseTabExMsg;
+}(BaseIDMsg));
+exports.BaseTabExMsg = BaseTabExMsg;
+//////////////////////////////
+//    public static class BaseMsgData {
+//        //        public MSG_MID id;
+//        public int      mid;
+//        public int      sid;
+//        public String   Json;
+//    }
+
+cc._RF.pop();
