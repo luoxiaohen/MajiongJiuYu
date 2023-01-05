@@ -19,7 +19,7 @@ export default class CardHelpManager{
     }
 
     /**四方牌墙得初始位置*/
-    private _wallCardInitPoint: Array<cc.Vec2> = [cc.v2(540, -801), cc.v2(1432, -237), cc.v2(620, -140), cc.v2(470, -221)];
+    private _wallCardInitPoint: Array<cc.Vec2> = [cc.v2(548, -820), cc.v2(1432, -237), cc.v2(620, -130), cc.v2(470, -221)];
     public get wallCardInitPoint(): Array<cc.Vec2> {
         return this._wallCardInitPoint;
     }
@@ -68,7 +68,7 @@ export default class CardHelpManager{
         this._myOutCardInitPoint = value;
     }
     /**下家出牌的初始位置*/
-    private _downOutCardInitPoint = cc.v2(1141, -584);
+    private _downOutCardInitPoint = cc.v2(1145, -584);
     public get downOutCardInitPoint() {
         return this._downOutCardInitPoint;
     }
@@ -76,7 +76,7 @@ export default class CardHelpManager{
         this._downOutCardInitPoint = value;
     }
     /**对家出牌的初始位置*/
-    private _oppOutCardInitPoint = cc.v2(1035, -200);
+    private _oppOutCardInitPoint = cc.v2(1035, -150);
     public get oppOutCardInitPoint() {
         return this._oppOutCardInitPoint;
     }
@@ -84,7 +84,7 @@ export default class CardHelpManager{
         this._oppOutCardInitPoint = value;
     }
     /**上家出牌的初始位置*/
-    private _upOutCardInitPoint = cc.v2(780, 1264.5);
+    private _upOutCardInitPoint = cc.v2(768, 1228.5);
     public get upOutCardInitPoint() {
         return this._upOutCardInitPoint;
     }
@@ -115,7 +115,7 @@ export default class CardHelpManager{
 
     /**对家手牌的初始位置
     */
-     private _oppHandCardInitPoint = cc.v2(570.5, -103);
+     private _oppHandCardInitPoint = cc.v2(520.5, -103);
     public get oppHandCardInitPoint() {
         return this._oppHandCardInitPoint;
     }
@@ -124,7 +124,7 @@ export default class CardHelpManager{
     }
      /**下家手牌的初始位置
     */
-    private _downHandCardInitPoint = cc.v2(1650, -844.5);
+    private _downHandCardInitPoint = cc.v2(1620, -807.5);
     public get downHandCardInitPoint() {
         return this._downHandCardInitPoint;
     }
@@ -133,7 +133,7 @@ export default class CardHelpManager{
     }
      /**上家手牌的初始位置
     */
-    private _upHandCardInitPoint = cc.v2(350, -844.5);
+    private _upHandCardInitPoint = cc.v2(350, -808.5);
     public get upHandCardInitPoint() {
         return this._upHandCardInitPoint;
     }
@@ -174,7 +174,6 @@ export default class CardHelpManager{
             }
         }
 		let threeArr:Array<number>=[];
-        let lightItem : MajCardLight;
         let nowAllLight:number = 0;
         let smallAllLight:number = 0;
         let nowType:number = 0;
@@ -197,6 +196,24 @@ export default class CardHelpManager{
                 return threeArr;
             }
         }
+        let smlTypeLight:Array<MajCardLight> = [];
+        let nowSmlType:number = -1;
+        let nowSmlNum:number = -1;
+        for(let i = 0 ; i < 3 ; i++){
+            smlTypeLight = this.getLightByType(dis , i);
+            if(smlTypeLight.length > 3){
+                if(nowSmlType == -1){
+                    nowSmlType = i;
+                    nowSmlNum = smlTypeLight.length;
+                }else{
+                    if(nowSmlNum > smlTypeLight.length){
+                        nowSmlType = i;
+                        nowSmlNum = smlTypeLight.length;
+                    }
+                }
+            }
+        }
+        nowType = nowSmlType;
         oneTypeLight = this.getLightByType(dis ,nowType);
         oneTypeLight.sort(Global.Utils.compareLight);
         threeArr = [oneTypeLight[0].cardValue , oneTypeLight[1].cardValue , oneTypeLight[2].cardValue]

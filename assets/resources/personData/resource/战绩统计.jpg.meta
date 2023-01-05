@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "cefb9446-4768-4568-b924-69f435196547",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 2290,
+  "height": 1920,
+  "platformSettings": {},
+  "subMetas": {
+    "战绩统计": {
+      "ver": "1.0.6",
+      "uuid": "51c52687-fabc-42d6-a22f-802ebc473d01",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "cefb9446-4768-4568-b924-69f435196547",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 2290,
+      "height": 1920,
+      "rawWidth": 2290,
+      "rawHeight": 1920,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

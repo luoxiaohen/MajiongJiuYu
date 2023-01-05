@@ -7,12 +7,12 @@
 
 import { AntesMultipleEnum, PlayStauteEnum } from "../../enum/EnumManager";
 import {  Msg_CS_TableInvite, Msg_SC_InviteTable } from "../../proto/LobbyMsg";
-import { LobbyBaseInfo } from "../../proto/LobbyMsgDef";
-import { Msg_SC_GameOverMsg, Msg_SC_GameResultMsg, Msg_SC_OneSit, Msg_SC_ScoreListMsg, Msg_SC_You3Maj } from "../../proto/TableMsg";
-import { GameScoreInfo, RoomTableInfo, SitInfo } from "../../proto/TableMsgDef";
+import { LobbyBaseInfo, MailUnit, PlayerInfo, TableRuleInfo } from "../../proto/LobbyMsgDef";
+import { Msg_SC_GameOverMsg, Msg_SC_GameResultMsg, Msg_SC_OneSit, Msg_SC_RealScore, Msg_SC_ScoreListMsg, Msg_SC_You3Maj } from "../../proto/TableMsg";
+import {HorserInfo, GameResultInfo, GameScoreInfo, RoomTableInfo, SitInfo, ScoreEventInfo } from "../../proto/TableMsgDef";
 import { Global } from "../../Shared/GloBal";
 import MajiongWallCard from "../../UI/card/MajiongWallCard";
-import { RealTimePreformanceData } from "../../utils/InterfaceHelp";
+import { OverBuyHorseInfoData, RealTimePreformanceData } from "../../utils/InterfaceHelp";
 import UserInfo from "./UserInfo";
 
 const {ccclass, property} = cc._decorator;
@@ -25,6 +25,13 @@ export default class GameInfo{
     }
     AllCardMax = 108;
 
+    private _nowSceneName: string = "majiong";
+    public get nowSceneName(): string {
+        return this._nowSceneName;
+    }
+    public set nowSceneName(value: string) {
+        this._nowSceneName = value;
+    }
 
     /**大厅信息*/
     private _lobbyInfo:LobbyBaseInfo;
@@ -44,16 +51,17 @@ export default class GameInfo{
         this._roomTableInfo = value;
     }
     /***当前游戏进程状态*/
-    private _nowGameStatus: PlayStauteEnum;
+    private _nowGameStatus: PlayStauteEnum = PlayStauteEnum.LookGame;
     public get nowGameStatus(): PlayStauteEnum {
         return this._nowGameStatus;
     }
     public set nowGameStatus(value: PlayStauteEnum) {
         this._nowGameStatus = value;
     }
-
+    /**是否可以出牌*/
+    public canOutCard : boolean = false;
     /***当前庄家位置*/
-    private _nowBookMakerSit: number;
+    private _nowBookMakerSit: number = -1;
     public get nowBookMakerSit(): number {
         return this._nowBookMakerSit;
     }
@@ -132,6 +140,18 @@ export default class GameInfo{
 			}
             if(!this.gamePlayers[i]){
                 Global.Utils.debugObj(sit+"==>查询不到当前座位玩家？",this.gamePlayers)
+            }
+		}
+		return null;
+	}
+     /**通过座位获取某一个玩家*/
+	public getPlayerByAid(aid:number):SitInfo{
+		for(let i = 0 ; i < this.gamePlayers.length ; i++){
+			if(this.gamePlayers[i] && this.gamePlayers[i].player.aid == aid){
+				return this.gamePlayers[i];
+			}
+            if(!this.gamePlayers[i]){
+                Global.Utils.debugObj(aid+"==>查询不到当前aid玩家？",this.gamePlayers)
             }
 		}
 		return null;
@@ -230,6 +250,14 @@ export default class GameInfo{
     public set otherLastCard(value: number) {
         this._otherLastCard = value;
     }
+    /***胡牌移除次数*/
+    private _huCardRemoveNum: number = 0;
+    public get huCardRemoveNum(): number {
+        return this._huCardRemoveNum;
+    }
+    public set huCardRemoveNum(value: number) {
+        this._huCardRemoveNum = value;
+    }
 
     /**牌墙剩余数量*/
     private _remPoolsNum: number = 0;
@@ -312,6 +340,17 @@ export default class GameInfo{
     public set scoreListMsg(value: Msg_SC_ScoreListMsg) {
         this._scoreListMsg = value;
     }
+    /**实时积分 */
+    private _realTimeScore: ScoreEventInfo[]=[];
+    public get realTimeScore(): ScoreEventInfo[] {
+        return this._realTimeScore;
+    }
+    public set realTimeScore(value: ScoreEventInfo[]) {
+        this._realTimeScore = value;
+    }
+    public addRealTimeScore(value:ScoreEventInfo):void{
+        this.realTimeScore.push(value);
+    }
 
     /**游戏结束大结算数据 */
     private _gameOverData: Msg_SC_GameOverMsg;
@@ -346,31 +385,71 @@ export default class GameInfo{
     public resetRealTimeRreformanceData():void{
         this._realTimePreformanceData={};
     }
+    /**解散房间同意数据 */
+    private _dissolutRoomData: number[];
+    public get dissolutRoomData(): number[] {
+        return this._dissolutRoomData;
+    }
+    public set dissolutRoomData(value: number[]) {
+        this._dissolutRoomData = value;
+    }
+
+    private _isDissolutingRoom: boolean = false;
+    public get isDissolutingRoom(): boolean {
+        return this._isDissolutingRoom;
+    }
+    public set isDissolutingRoom(value: boolean) {
+        this._isDissolutingRoom = value;
+    }
+    public setDissolutRoomDataBySitNum(sitNum:number,state:number):void{
+        this._dissolutRoomData[sitNum]=state;
+    }
+    public checkIsDissolutRoom():boolean{
+		let dissolutArr=GameInfo.ins.dissolutRoomData;
+		let isAllAgree=true
+		for(let item of dissolutArr){
+			if(!item){
+				isAllAgree=false;
+			}
+		}
+		return isAllAgree;
+	}
+    /**解散房间冷去状态 */
+    private _dissolutInCoolTime: boolean = false;
+    public get dissolutInCoolTime(): boolean {
+        return this._dissolutInCoolTime;
+    }
+    public set dissolutInCoolTime(value: boolean) {
+        this._dissolutInCoolTime = value;
+    }
     /**
      *一轮游戏结束信息  
      */
-    public setRealTimePreformanceData_Result(value: Msg_SC_GameResultMsg) {
+    public setRealTimePreformanceData_Result(value: GameResultInfo[]) {
         if(this._nowGameCount==0){
             return;
         }
         if (!this._realTimePreformanceData) {
             this._realTimePreformanceData = {};
         }
-        let mapData = this._realTimePreformanceData[this._nowGameCount];
+        let mapData:RealTimePreformanceData = this._realTimePreformanceData[this._nowGameCount];
         if (mapData) {
-            mapData.gameResult = value;;
-
+            mapData.gameResultArr = value;
+            mapData.gameRuleArr=this.roomTableInfo;
         } else {
             let dataItem = new RealTimePreformanceData();
             dataItem.curHand = this._nowGameCount;
-            dataItem.gameResult = value;
+            dataItem.gameResultArr = value;
+            dataItem.gameRuleArr=this.roomTableInfo;
             this._realTimePreformanceData[this._nowGameCount]=dataItem;
         }
+        let data=this._realTimePreformanceData[this._nowGameCount];
+        data.finishTime=GameInfo._ins.serverTime*1000;
     }
     /**
      * 一次游戏积分信息
      */
-    public setRealTimePreformanceData_ScoreList(value: Msg_SC_ScoreListMsg): void {
+    public setRealTimePreformanceData_ScoreList(value: GameScoreInfo[]): void {
         if(this._nowGameCount==0){
             return;
         }
@@ -379,15 +458,115 @@ export default class GameInfo{
         }
         let mapData = this._realTimePreformanceData[this._nowGameCount];
         if (mapData) {
-            mapData.gameSore = value;;
-            mapData.sitInfo=this.gamePlayers;
+            mapData.gameSoreArr = value;;
+            mapData.sitInfoArr=this.gamePlayers;
         } else {
             let dataItem = new RealTimePreformanceData();
             dataItem.curHand = this._nowGameCount;
-            dataItem.gameSore = value;
-            mapData.sitInfo=this.gamePlayers;
+            dataItem.gameSoreArr = value;
+            mapData.sitInfoArr=this.gamePlayers;
             this._realTimePreformanceData[this._nowGameCount]=dataItem;
         }
+    }
+
+    public setRealTimePreformanceData_Hu(index:number,_huCard:number,zimoType:number):void{
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData=this._realTimePreformanceData[this.nowGameCount];
+        if(mapData){
+            if(!mapData.hupaiArr){
+                mapData.hupaiArr=[];
+                mapData.zimoTypeArr=[];
+            }
+            mapData.hupaiArr[index]=_huCard;
+            mapData.zimoTypeArr[index]=zimoType;
+
+        }else{
+            let dataItem = new RealTimePreformanceData();
+            dataItem.curHand = this._nowGameCount;
+            dataItem.hupaiArr=[];
+            dataItem.zimoTypeArr=[];
+            dataItem.hupaiArr[index]=_huCard;
+            dataItem.zimoTypeArr[index]=zimoType;
+            this._realTimePreformanceData[this._nowGameCount]=dataItem;
+        }
+    }
+    public setRealTimePreformanceData_zhuang(sitNum:number):void{
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData=this._realTimePreformanceData[this.nowGameCount+1];
+        if(mapData){
+            mapData.nowBookMakerSit=sitNum;
+        }else{
+            let dataItem=new RealTimePreformanceData();
+            dataItem.nowBookMakerSit=sitNum;
+            this._realTimePreformanceData[this.nowGameCount+1]=dataItem;
+        }
+    }
+    public setRealTimePreformanceData_piao(sitNum:number):void{
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData=this._realTimePreformanceData[this.nowGameCount];
+        if(mapData){
+            mapData.piaoSitNum=sitNum;
+        }else{
+            let dataItem=new RealTimePreformanceData();
+            dataItem.piaoSitNum=sitNum;
+            this._realTimePreformanceData[this.nowGameCount]=dataItem;
+        }
+    }
+
+    public setRealTimePreformanceData_BaoziNum(baozi:number):void{
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData=this._realTimePreformanceData[this.nowGameCount];
+        if(mapData){
+            mapData.baoziNum=baozi;
+        }else{
+            let dataItem=new RealTimePreformanceData();
+            dataItem.baoziNum=baozi;
+            this._realTimePreformanceData[this.nowGameCount]=dataItem;
+        }
+
+    }
+    public setRealTimePreformanceData_BuyHorseArr(arr:HorserInfo[]):void{
+        if (!this._realTimePreformanceData) {
+            this._realTimePreformanceData = {};
+        }
+        let mapData=this._realTimePreformanceData[this.nowGameCount];
+        if(mapData){
+            mapData.buyHorseInfo=arr;
+        }else{
+            let dataItem=new RealTimePreformanceData();
+            dataItem.buyHorseInfo=arr;
+            this._realTimePreformanceData[this.nowGameCount]=dataItem;
+        }
+
+    }
+    // public setRealTimePreformanceData_TableInfo(tableInfo:RoomTableInfo):void{
+    //     if (!this._realTimePreformanceData) {
+    //         this._realTimePreformanceData = {};
+    //     }
+    //     let mapData=this._realTimePreformanceData[this.nowGameCount];
+    //     if(mapData){
+    //         mapData.gameRule=tableInfo;
+    //     }else{
+    //         let dataItem=new RealTimePreformanceData();
+    //         dataItem.gameRule=tableInfo;
+    //         this._realTimePreformanceData[this.nowGameCount]=dataItem;
+    //     }
+    // }
+
+    private _watchPlayerInfo: PlayerInfo[]=[];
+    public get watchPlayerInfo(): PlayerInfo[] {
+        return this._watchPlayerInfo;
+    }
+    public set watchPlayerInfo(value: PlayerInfo[]) {
+        this._watchPlayerInfo = value;
     }
 
     /**当前在规则界面采集的所有倍数*/
@@ -406,11 +585,14 @@ export default class GameInfo{
 			this.nowMultipleArray.splice(index , 1);
 		}
 	}
-
-
-
-
-
+    /***房间买马数据*/
+    private _gameHorseArray: Array<HorserInfo> = [];
+    public get gameHorseArray(): Array<HorserInfo> {
+        return this._gameHorseArray;
+    }
+    public set gameHorseArray(value: Array<HorserInfo>) {
+        this._gameHorseArray = value;
+    }
     /**0：四川话 1:普通话*/
     private _lauType: number = 0;
     public get lauType(): number {
@@ -470,7 +652,40 @@ export default class GameInfo{
         })
     }
 
+    private _offsetTime: number=0;
+    public setCSOffset(serverTime:number):void{
+        this._offsetTime=serverTime-Math.floor(new Date().getTime()/1000);
+    }
+    public get serverTime(): number {
+        return this._offsetTime+Math.floor(new Date().getTime()/1000);
+    }
 
+    private _recordStatisticsIDs: string[] = [];
+    public get recordStatisticsIDs(): string[] {
+        return this._recordStatisticsIDs;
+    }
+    public  addRecordStatisticsIDs(value: string[]) {
+        for(let item of value){
+            if(!this._recordStatisticsIDs.includes(item)){
+                this._recordStatisticsIDs.push(item);
+            }
+        }
+    }
+
+    private _dingQueList: number[] = [-1, -1, -1, -1];
+    public get dingQueList(): number[]{
+        return this._dingQueList;
+    }
+    private _hallMails: MailUnit[]=[];
+    public get hallMails(): MailUnit[] {
+        return this._hallMails;
+    }
+    public set hallMails(value: MailUnit[]) {
+        this._hallMails = value;
+    }
+   
+
+  
     initOver(){
         GameInfo.ins.nowGameStatus = PlayStauteEnum.Stand;
         for(let i = 0 ; i < 4 ; i++){

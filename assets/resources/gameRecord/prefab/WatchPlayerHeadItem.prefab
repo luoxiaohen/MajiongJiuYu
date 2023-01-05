@@ -43,8 +43,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
-      "height": 150
+      "width": 250,
+      "height": 220
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -107,8 +107,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 120,
+      "height": 120
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -119,8 +119,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        21.509,
+        -0.3,
+        12.579,
         0,
         0,
         0,
@@ -214,7 +214,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
+      "width": 242.77,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -227,7 +227,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -54.491,
+        -79.585,
         0,
         0,
         0,
@@ -266,9 +266,9 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "玩家名称字",
-    "_N$string": "玩家名称字",
-    "_fontSize": 30,
+    "_string": "玩家名称8个字呀",
+    "_N$string": "玩家名称8个字呀",
+    "_fontSize": 32,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -279,7 +279,7 @@
     "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "yahei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -303,8 +303,12 @@
       "__id__": 1
     },
     "_enabled": true,
-    "playerHeadSprite": null,
-    "playerNameLable": null,
+    "playerHeadSprite": {
+      "__id__": 3
+    },
+    "playerNameLable": {
+      "__id__": 6
+    },
     "_id": ""
   },
   {

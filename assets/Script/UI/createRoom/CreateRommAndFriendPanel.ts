@@ -1,3 +1,11 @@
+/*
+ * @Author: error: git config user.name && git config user.email & please set dead value or install git
+ * @Date: 2022-10-31 17:33:20
+ * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
+ * @LastEditTime: 2022-12-14 10:37:16
+ * @FilePath: \MajiongJiuYu\assets\Script\UI\createRoom\CreateRommAndFriendPanel.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
@@ -8,6 +16,7 @@
 import { Msg_CS_FindEnterRoom } from "../../proto/TableMsg";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
+import CreateRoomHelper from "./CreateRoomHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -41,7 +50,10 @@ export default class CreateRommAndFriendPanel extends UIBase {
     protected onLoad(): void {
         this.changeLabel(this.nowRoomId);
         this.idInputText.node.on("text-changed" , this.onBoxChange , this);
-        
+        if(CreateRoomHelper.ins.myLastAddRoomId){
+            this.changeLabel(CreateRoomHelper.ins.myLastAddRoomId.toString());
+            this.idInputText.string = CreateRoomHelper.ins.myLastAddRoomId.toString();
+        }
     }
     public setCallBack(callBack : Function , thisObj:any){
         this.callBack = callBack;
@@ -51,6 +63,9 @@ export default class CreateRommAndFriendPanel extends UIBase {
         let str:string = this.idInputText.string;
         this.changeLabel(str);
 		this.nowRoomId = str;
+        if(this.nowRoomId.length == 6){
+            this.onJoinRoomClick();
+        }
     }
     private changeLabel(str:string){
         for(let i = 0 ; i < 6 ; i++){
@@ -69,11 +84,18 @@ export default class CreateRommAndFriendPanel extends UIBase {
 	}
 
 	onJoinRoomClick(){
+        this.nowRoomId = this.idInputText.string;
 		if(this.nowRoomId.length == 6){
+            CreateRoomHelper.ins.myLastAddRoomId = Number(this.nowRoomId);
 			let msg:Msg_CS_FindEnterRoom = new Msg_CS_FindEnterRoom();
 			msg.code = Number(this.nowRoomId);
 			Global.mgr.socketMgr.send(-1,msg);
-		}
+		}else{
+            Global.Utils.dialogOutTips("请输入正确的6位数房间号", null , (dialog)=>{
+                dialog.x = 540;
+                dialog.y = -960;
+            } , this);
+        }
 	}
 
     disTory(){

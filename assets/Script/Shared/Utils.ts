@@ -5,16 +5,21 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { CardTypeEnum, EatCardEnum, GameRuleTypeEnum } from "../enum/EnumManager";
+import { CallBack } from "../com/CallBack";
+import DialogTip from "../com/dialog/DialogTip";
+import { ArtFontEnum as ArtFontEnum, CardTypeEnum, EatCardEnum, GameRuleTypeEnum, LocalStorageKeyEnum } from "../enum/EnumManager";
 import GameInfo from "../Game/info/GameInfo";
 import UserInfo from "../Game/info/UserInfo";
 import TimeAndMoveManager from "../mgr/TimeAndMoveManager";
-import { GamePiaoTypeEnum, GamePlayTypeEnum, GameRoomTypeEnum, TableRuleInfo } from "../proto/LobbyMsgDef";
-import { RoomTableInfo } from "../proto/TableMsgDef";
+import { Msg_SC_FeeCountData, Msg_SC_PubBaseCountData } from "../proto/LobbyMsg";
+import { GamePiaoTypeEnum, GamePlayTypeEnum, GameRoomTypeEnum, PlayerInfo, TableRuleInfo } from "../proto/LobbyMsgDef";
+import { FanTypeEnum, GameResultInfo, GangTypeEnum, HorserInfo, HuTypeEnum, RoomTableInfo, ScoreEventInfo, SitInfo } from "../proto/TableMsgDef";
 import MajiongHandCard from "../UI/card/MajiongHandCard";
 import CreateRoomHelper, { GameOenRoomUseEnum } from "../UI/createRoom/CreateRoomHelper";
-import { MajCardLight } from "../utils/InterfaceHelp";
+import { MajCardLight, OverBuyHorseInfoData } from "../utils/InterfaceHelp";
+import DialogManager from "./DialogManager";
 import { Global } from "./GloBal";
+import MajiongRes from "../UI/MajiongRes";
 
 const {ccclass, property} = cc._decorator;
 
@@ -23,6 +28,21 @@ export default class Utils{
     private static _ins: Utils;
     public static get ins() {
         return this._ins || (this._ins = new Utils());
+    }
+    /**
+     * 是否打开报错提示弹窗
+     * @param _state 
+     */
+    setErroShow(_state:boolean=true):void{
+        if(_state){
+            window.onerror = function (msg, url, line, column, detail) {
+                alert("出错啦，请把此信息给客户端查看解决报错！！！\n" + msg + "\n" + detail.stack);
+            };
+        }else{
+            window.onerror= function (msg, url, line, column, detail){
+                // console.error("报错了！！！");
+            }
+        }
     }
 
     /**调试统一输入路劲,方便后期屏蔽*/
@@ -46,6 +66,55 @@ export default class Utils{
     dialogOutput(data){
         console.log(data);
         //TODO   调用提示对应接口
+        this.dialogOutTips(data);
+    }
+    diaLogOutBy00(str:string){
+        Global.Utils.dialogOutTips(str, null , (dialog)=>{
+            dialog.x = 540;
+            dialog.y = -960;
+        } , this);
+    }
+    dialogOutTips(str:string,callBack:CallBack=null,loadCallBack=null,thisObj=null){
+        DialogManager.ins.createDialog("comResource/prefab/DialogTip",{str:str,callBack:callBack},(e,dialog)=>{
+            if(loadCallBack && thisObj){
+                loadCallBack.bind(thisObj)(dialog);
+            }
+            (dialog.getComponent(DialogTip) as DialogTip).startAction();
+        },null,1);
+    }
+    /**
+     * 通用询问弹窗 
+     * @param content 提示内容
+     * @param dilogType 1:只有一个确定按钮  2:有确定和取消按钮
+     * @param confirmCallback 点击确定按钮回调 
+     * @param cancelCallBack 点击取消按钮回调
+     * 
+     */
+    dialogOutConfirm(content:string,dialogType:number=2,confirmCallback:CallBack=null,cancelCallBack:CallBack=null,loadCallBack=null,thisObj:any=null,eventTypes:string[]=[]):void{
+        let param={
+            content:content,
+            dialogType:dialogType,
+            confirm:confirmCallback,
+            cancel:cancelCallBack,
+            eventTypes:eventTypes
+        }
+        DialogManager.ins.createDialog("comResource/prefab/DialogConfirm",param,function(data,dialog){
+            let scenename=GameInfo.ins.nowSceneName;
+            if(scenename=="majiong"){
+                dialog.width=1080;
+                dialog.height=1920;
+                dialog.y=-1920/2;
+                dialog.x=1080/2;
+            }else{
+                dialog.width=1920;
+                dialog.height=1080;
+                dialog.y=0;
+                dialog.x=0;
+            }
+            if(loadCallBack&& thisObj){
+                loadCallBack.bind(thisObj)(dialog);
+            }
+        },null,1);
     }
     /**获取时间日期格式*/
     getDataFormat(data:Date):any{
@@ -70,6 +139,78 @@ export default class Utils{
         }
         return format;
     }
+    /**
+     * 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+     *时间戳转换成日期年月日 时分秒 如 2022/11/23 10:12:58
+     * @param timestamp 
+     * @param type  0:年月日 1:时分秒 2:年月日时分秒 3:年月日时分
+     * @returns 
+     */
+    public timestampToTime(timestamp,type=0,split:string="/"):string {
+        let date = new Date(timestamp);
+        let Y = date.getFullYear() + split;
+        let M_num=date.getMonth();
+        let M = ( M_num+ 1 < 10 ? '0' + (M_num + 1) : M_num + 1) + split;
+        let D_num= date.getDate();
+        let D =  ( D_num < 10 ? '0' + (D_num) : D_num) + ' ';
+        let h_num=date.getHours();
+        let h = (h_num>=10?h_num:"0"+h_num);
+        let m_num=date.getMinutes();
+        let m =":"+(m_num>=10?m_num:"0"+m_num);
+        let s_num=date.getSeconds();
+        let s =":"+ (s_num>=10?s_num:"0"+s_num);
+        let str="";
+        switch (type) {
+            case 0:
+                str = Y + M + D ;
+                break;
+            case 1:
+                str= h+m+s;
+                break;
+            case 2:
+                str=Y+M+D+h+m+s;
+                break;
+            case 3:
+                str = Y + M + D + h + m;
+                break;
+        }
+        return str;
+    }
+
+    public getTimesNumArrByTamp(timestamp):number[]{
+        let date = new Date(timestamp);
+        let Y = date.getFullYear();
+        let M = date.getMonth() + 1 ;
+        let D = date.getDate();
+        let h = date.getHours() ;
+        let m = date.getMinutes() ;
+        let s = date.getSeconds();
+        return [Y,M,D,h,m,s];
+    }
+    
+    public getWeekStrByTamp(timestamp):string{
+        let weekday=["周日","周一","周二","周三","周四","周五","周六"];
+        let data=new Date(timestamp);
+        return weekday[data.getDay()];
+    }
+    public  getRemainTime(timeDiff: number): string {
+        let days = Math.floor(timeDiff / (24 * 3600));
+        let hours = Math.floor(timeDiff % (24 * 3600) / 3600);
+        let minutes = Math.floor(timeDiff % 3600 / 60);
+        let sec = Math.floor(timeDiff % 60);
+        let str = (days > 0 ? String(days) + ":" : "") +(hours>0?this.formatTime(hours)+":":"")+ this.formatTime(minutes) + ":" + this.formatTime(sec);
+        return str;
+    }
+    private  formatTime(value: number): string {
+        if (value < 0) {
+            value = 0;
+        }
+        if (Number(value) >= 10) {
+            return String(value);
+        }
+        return "0" + String(value);
+    }
+
 
     getPreFabBySource (source : string , type:any = cc.Prefab) : any{
         return cc.resources.get(source , type);
@@ -210,6 +351,24 @@ export default class Utils{
             }
         })
     }
+
+    /**设置麻将*/
+    setMJImageToSprite(sprite: cc.Sprite, url: string, cb = null){
+        let res = cc.find("mainMajiong/mjRes");
+        if(!res){
+            if(cb){
+                Utils.ins.invokeCallback(cb);
+            }
+            cc.error("没有找到麻将图Res资源");
+            return;
+        }
+
+        sprite.spriteFrame = res.getComponent(MajiongRes).getSpriteFrame(url);
+        if(cb){
+            Utils.ins.invokeCallback(cb);
+        }
+    }
+
     /***通过游戏类型获取最大游戏人数*/
     getMaxPlayerByGameType(roomType:GameRoomTypeEnum):number{
         switch(roomType){
@@ -273,6 +432,99 @@ export default class Utils{
                 
         }
     }
+    public getAllFanStr(code : FanTypeEnum,info:ScoreEventInfo=null):string{
+		let str : string = "";
+        switch (code) {
+            case FanTypeEnum.Gen:
+                if (info) {
+                    str = info.param + "根";
+                }
+                break;
+            case FanTypeEnum.GangShangHua:
+                str = "杠上花";
+                break;
+            case FanTypeEnum.GangShangPao:
+                str = "杠上炮";
+                break;
+            case FanTypeEnum.QiangGangHu:
+                str = "抢杠胡";
+                break;
+            case FanTypeEnum.HaiDiLaoYue:
+                str = "海底捞月";
+                break;
+            case FanTypeEnum.MenQing:
+                str = "门清";
+                break;
+            case FanTypeEnum.ZhongZhang:
+                str = "中张";
+                break;
+            case FanTypeEnum.JiaXinWu:
+                str = "夹心五";
+                break;
+            case FanTypeEnum.ZiMo:
+                str = "自摸加番";
+                break;
+            case FanTypeEnum.TianHu:
+                str = "天胡";
+                break;
+            case FanTypeEnum.DiHu:
+                str = "地胡";
+                break;
+        }
+        if(str!=""){
+            return str + ",";
+        }
+        return str;
+	}
+
+    public getAllHuStr(code : HuTypeEnum):string{
+		let str : string = "";
+		switch(code){
+			case HuTypeEnum.PingHu : 
+				str = "平胡";
+			break;
+			case HuTypeEnum.DuiDuiHu : 
+				str = "对对胡";
+			break;
+			case HuTypeEnum.QingYiSe : 
+				str = "清一色";
+			break;
+			case HuTypeEnum.QiDui : 
+				str = "七对";
+			break;
+			case HuTypeEnum.LongQiDui : 
+				str = "龙七对";
+			break;
+			case HuTypeEnum.JinGouDiao : 
+				str = "金钩钓";
+			break;
+			case HuTypeEnum.YaoJiu : 
+				str = "幺九";
+			break;
+			case HuTypeEnum.JiangDui : 
+				str = "将对";
+			break;
+		}
+		return str + ",";
+	}
+    public getAllGangStr(code : GangTypeEnum):string{
+		let str : string = "";
+		switch(code){
+			case GangTypeEnum.eAnGang : 
+				str = "暗杠";
+			break;
+			case GangTypeEnum.eDianGang : 
+				str = "点杠";
+			break;
+			case GangTypeEnum.eBuGang : 
+				str = "补杠";
+			break;
+			case GangTypeEnum.eCaGua : 
+				str = "擦挂";
+			break;
+		}
+		return str + ",";
+	}
     /**
      * 创建一个预制体对象
      * @param file 路径
@@ -397,6 +649,9 @@ export default class Utils{
 
     /**获取某一张牌是否是定缺牌*/
     getIsDice(value :number , type:CardTypeEnum):boolean{
+        if(type == CardTypeEnum.EndValue){
+            return false;
+        }
         return Math.floor(value/10) == type;
     }
     compare(a,b){
@@ -454,11 +709,11 @@ export default class Utils{
         }
     }
     getOutType(isGang : number,fromeNum : number , eatNum : number , isHave : boolean , haveEatType : EatCardEnum):EatCardEnum{
-        console.log("isGang="+isGang)
-        console.log("fromeNum="+fromeNum)
-        console.log("eatNum="+eatNum)
-        console.log("isHave="+isHave)
-        console.log("haveEatType="+haveEatType)
+        // console.log("isGang="+isGang)
+        // console.log("fromeNum="+fromeNum)
+        // console.log("eatNum="+eatNum)
+        // console.log("isHave="+isHave)
+        // console.log("haveEatType="+haveEatType)
         let num : number = (fromeNum - eatNum + 40)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType);
         if(isHave){
             if(haveEatType == EatCardEnum.EatUp){
@@ -566,9 +821,9 @@ export default class Utils{
         }).start();
     }
     setGray(sprite : cc.Sprite , isAdd:boolean){
-        let meta = cc.Material.getBuiltinMaterial("builtin-2d-sprite");
+        let meta = cc.Material.getBuiltinMaterial("2d-sprite");
         if(isAdd){
-            meta = cc.Material.getBuiltinMaterial("builtin-2d-gray-sprite");
+            meta = cc.Material.getBuiltinMaterial("2d-gray-sprite");
         }
         sprite.setMaterial(0 , meta);
     }
@@ -609,131 +864,162 @@ export default class Utils{
 			}
 		}
         return initUse;
+    }   
+    getDairuByRule(ruleInfo : TableRuleInfo):number{
+        let isOpenBookmakerMustBuyHorse:boolean = false;
+        let allMut : number = 0;
+		allMut += CreateRoomHelper.ins.initialMultiple;
+		if(ruleInfo.haveHorse){
+			allMut += CreateRoomHelper.ins.openBuyHorseMultiple;
+		}
+		if(ruleInfo.baozi){
+			allMut += CreateRoomHelper.ins.openDoubleMultiple;
+		}
+		if(ruleInfo.handsCnt==16){
+			allMut += CreateRoomHelper.ins.moreHandMultiple;
+		}
+		if(ruleInfo.gamePlayType==2){
+			allMut += CreateRoomHelper.ins.changeThreeMultiple;
+		}
+		if(ruleInfo.isSelectBankerBuyHorse){
+			isOpenBookmakerMustBuyHorse = true;
+		}
+		let need : number = ruleInfo.baseScore*allMut;
+		if(isOpenBookmakerMustBuyHorse){
+			need *= CreateRoomHelper.ins.openBookmakerMustBuyHorseMultiple;
+		}
+        let have : number = UserInfo.ins.myInfo.gold;
+        return have;
     }
 
     formNumToGivenStr(_str:string,_strArr:string[]):string{
-        let str="";
         for(let index=0;index<_strArr.length;index++){
-            str=_str.replace(`{${index}}`,_strArr[index]);
+            _str=_str.replace(`{${index}}`,_strArr[index]);
         }
-        return str;
+        return _str;
     }
 
     getlocalStorageItem(name){
         return cc.sys.localStorage.getItem(name);
     }
-    addlocalStorageItem(name , value){
+    setlocalStorageItem(name , value){
         return cc.sys.localStorage.setItem(name , value);
     }
-    getRoomTableInfoStr(rule:TableRuleInfo):string{
-        let str="规则:";
-        let ruleMapInfo=this.getRuleMapInfo();
-        if(!rule){
-            return;
+    public clearAllStorage():void{
+        cc.sys.localStorage.clear();
+    }
+  
+
+    getMapLength(map:any):number{
+        let num=0;
+        for(let key in map){
+            num++;
         }
-        if(rule.ceiling){
-            str+=Global.Utils.formNumToGivenStr(ruleMapInfo[GameRuleTypeEnum.FengDing][0],[rule.ceiling.toString()])+"、";
+        return num;
+    }
+
+   
+
+    public getPlayerInfo(sitInfo:SitInfo[],sitNum:number):PlayerInfo{
+        let player:PlayerInfo=null;
+        for(let item of sitInfo){
+            if(item.sitNum==sitNum){
+                player=item.player;
+            }
         }
-        if(rule.zmType){
-            str+=ruleMapInfo[GameRuleTypeEnum.ZiMo][rule.zmType]+"、";
+        return player;
+    }
+    public setLabelFont(artFont:ArtFontEnum,targetlabel:cc.Label):void{
+        let fontSource="comResource/mapFont/"+artFont;
+        cc.loader.loadRes(fontSource , cc.Font , (error , assest)=>{
+            if(error){
+                return;
+            }
+            targetlabel.font = assest;
+        })
+    }
+
+
+   
+    public formatStrToByteLenth(contentStr:string,maxByteLength:number):string{
+        let str="";
+        let byteNum=0;
+        for(let index=0;index<contentStr.length;index++){
+            let charByteLength=this.getBytesLenght(contentStr[index]);
+            let num=byteNum+charByteLength;
+            if(num<=maxByteLength){
+                str+=contentStr[index];
+                byteNum=num;
+            }else{
+                break;
+            }
         }
-        if(rule.tiFan){
-            str+=Global.Utils.formNumToGivenStr(ruleMapInfo[GameRuleTypeEnum.TiFan][0],[rule.tiFan.toString()])+"、";
-        }
-        if(rule.dianGangHua){
-            str+=ruleMapInfo[GameRuleTypeEnum.DianGangHua][rule.dianGangHua]+"、";
-        }
-        if(rule.sunshine){
-            str+=ruleMapInfo[GameRuleTypeEnum.ShaiTaiYang][rule.sunshine]+"、";
-        }
-        if(rule.baozi){
-            str+=ruleMapInfo[GameRuleTypeEnum.Baozi][rule.baozi]+"、";
-        }
-        if(rule.baoziDouble){
-            str+=ruleMapInfo[GameRuleTypeEnum.ShuangBao][0]+"、";
-        }
-        if(rule.caGua){
-            str+=ruleMapInfo[GameRuleTypeEnum.BaoYu][0]+"、";
-        }
-        if(rule.jiShiYu){
-            str+=ruleMapInfo[GameRuleTypeEnum.JiShiYu][0]+"、";
-        }
-        if(rule.allGangShift){
-            str+=ruleMapInfo[GameRuleTypeEnum.LiangGangTongChuan][0]+"、";
-        }
-        if(rule.menqing){
-            str+=ruleMapInfo[GameRuleTypeEnum.MenQing][0]+"、";
-        }
-        if(rule.zhongzhang){
-            str+=ruleMapInfo[GameRuleTypeEnum.ZhongZhang][0]+"、";
-        }
-        if(rule.yao9){
-            str+=ruleMapInfo[GameRuleTypeEnum.YaoJiu][0]+"、";
-        }
-        if(rule.jiangdui){
-            str+=ruleMapInfo[GameRuleTypeEnum.JiangDui][0]+"、";
-        }
-        if(rule.tdHu){
-            str+=ruleMapInfo[GameRuleTypeEnum.TianDiHu][0]+"、";
-        }
-        if(rule.jiaxin5){
-            str+=ruleMapInfo[GameRuleTypeEnum.JiaXinWu][0]+"、";
-        }
-        if(rule.lunZhuang){
-            str+=ruleMapInfo[GameRuleTypeEnum.LunZhuang][0]+"、";
-        }
-        if(rule.passHu){
-            str+=ruleMapInfo[GameRuleTypeEnum.GuoShouHu][0]+"、";
-        }
-        if(rule.hu2Score){
-            str+=ruleMapInfo[GameRuleTypeEnum.LiangFenQiHu][0]+"、";
-        }
-        if(rule.last4Hu){
-            str+=ruleMapInfo[GameRuleTypeEnum.ZuiHouSiZhang][0]+"、";
-        }
-        if(rule.findMaxHu){
-            str+=ruleMapInfo[GameRuleTypeEnum.ChaDaHu][0]+"、";
-        }
-        if(rule.zmOpen){
-            str+=ruleMapInfo[GameRuleTypeEnum.ZiMoLiangPai][0]+"、";
-        }
-        if(rule.realTimeCalc){
-            str+=ruleMapInfo[GameRuleTypeEnum.ShiShiJieSuan][0]+"、";
-        }
-        str=str.slice(0,str.length-1);
         return str;
     }
-    private ruleMapInfo=null;
-    private getRuleMapInfo():any{
-        if(this.ruleMapInfo){
-            return  this.ruleMapInfo;
+    private getBytesLenght(str: string):number {
+        var bytesCount = 0;
+        if (str != null) {
+            for (var i = 0; i < str.length; i++) {
+                var c = str.charAt(i);
+                if (c.match(/[^\x00-\xff]/ig) != null) //全角
+                {
+                    bytesCount += 2;
+                }
+                else {
+                    bytesCount += 1;
+                }
+            }
         }
-        this.ruleMapInfo={};
-        this.ruleMapInfo[GameRuleTypeEnum.FengDing]=["封顶{0}倍"];
-        this.ruleMapInfo[GameRuleTypeEnum.ZiMo]=["","自摸加番","自摸加底"];
-        this.ruleMapInfo[GameRuleTypeEnum.GameType]=["","血战","换三张"];
-        this.ruleMapInfo[GameRuleTypeEnum.Baozi]=["","豹子","甩飘","庄家必飘"];
-        this.ruleMapInfo[GameRuleTypeEnum.ShuangBao]=["双豹"];
-        this.ruleMapInfo[GameRuleTypeEnum.BaoYu]=["暴雨"];
-        this.ruleMapInfo[GameRuleTypeEnum.JiShiYu]=["及时雨"];
-        this.ruleMapInfo[GameRuleTypeEnum.LiangGangTongChuan]=["连杠通转"];
-        this.ruleMapInfo[GameRuleTypeEnum.MenQing]=["门清"];
-        this.ruleMapInfo[GameRuleTypeEnum.ZhongZhang]=["中张"];
-        this.ruleMapInfo[GameRuleTypeEnum.YaoJiu]=["幺九"];
-        this.ruleMapInfo[GameRuleTypeEnum.JiangDui]=["将对"];
-
-        this.ruleMapInfo[GameRuleTypeEnum.TianDiHu]=["天地胡"];
-        this.ruleMapInfo[GameRuleTypeEnum.JiaXinWu]=["夹心五"];
-        this.ruleMapInfo[GameRuleTypeEnum.LunZhuang]=["轮庄"];
-        this.ruleMapInfo[GameRuleTypeEnum.TiFan]=["梯番{0}倍"];
-        this.ruleMapInfo[GameRuleTypeEnum.GuoShouHu]=["过手胡"];
-        this.ruleMapInfo[GameRuleTypeEnum.LiangFenQiHu]=["两分起胡"];
-        this.ruleMapInfo[GameRuleTypeEnum.ZuiHouSiZhang]=["最后四张必胡"];
-        this.ruleMapInfo[GameRuleTypeEnum.ChaDaHu]=["查大叫"];
-        this.ruleMapInfo[GameRuleTypeEnum.DianGangHua]=["","点杠花(自摸)","点杠花(点炮)"];
-        this.ruleMapInfo[GameRuleTypeEnum.ShaiTaiYang]=["","晒太阳","晒太阳(反雨)"];
-        this.ruleMapInfo[GameRuleTypeEnum.ZiMoLiangPai]=["自摸亮牌"];
-        this.ruleMapInfo[GameRuleTypeEnum.ShiShiJieSuan]=["实时结算"];
-        return this.ruleMapInfo;
+        return bytesCount;
     }
+    private strToUtf8Bytes(str) {
+        const utf8 = [];
+        for (let ii = 0; ii < str.length; ii++) {
+            let charCode = str.charCodeAt(ii);
+            if (charCode < 0x80) utf8.push(charCode);
+            else if (charCode < 0x800) {
+                utf8.push(0xc0 | (charCode >> 6), 0x80 | (charCode & 0x3f));
+            } else if (charCode < 0xd800 || charCode >= 0xe000) {
+                utf8.push(0xe0 | (charCode >> 12), 0x80 | ((charCode >> 6) & 0x3f), 0x80 | (charCode & 0x3f));
+            } else {
+                ii++;
+                // Surrogate pair:
+                // UTF-16 encodes 0x10000-0x10FFFF by subtracting 0x10000 and
+                // splitting the 20 bits of 0x0-0xFFFFF into two halves
+                charCode = 0x10000 + (((charCode & 0x3ff) << 10) | (str.charCodeAt(ii) & 0x3ff));
+                utf8.push(
+                    0xf0 | (charCode >> 18),
+                    0x80 | ((charCode >> 12) & 0x3f),
+                    0x80 | ((charCode >> 6) & 0x3f),
+                    0x80 | (charCode & 0x3f),
+                );
+            }
+        }
+        //兼容汉字，ASCII码表最大的值为127，大于127的值为特殊字符
+        for (let jj = 0; jj < utf8.length; jj++) {
+            var code = utf8[jj];
+            if (code > 127) {
+                utf8[jj] = code - 256;
+            }
+        }
+        return utf8;
+    }
+
+    public get2PowNumer(value:number):number{
+        let data=1;
+        while(true){
+            let buffer=Math.pow(2,data);
+            if(buffer==value){
+                break;
+            }
+            if(buffer>value){
+                data=0;
+                break;
+            }
+            data++;
+        }
+        return data;
+    }
+   
+  
 }

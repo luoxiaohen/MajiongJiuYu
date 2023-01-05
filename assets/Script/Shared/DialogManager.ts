@@ -1,7 +1,16 @@
+import UIBase from "../UIBase";
 import { Global } from "./GloBal";
 import MessageCallback from "./MessageCallback";
 import Utils from "./Utils";
 
+class Layer{
+    layerNode:cc.Node;
+    layerWindows:UIBase[]=[];
+    constructor(_layerNode){
+        this.layerNode=_layerNode;
+        this.layerWindows=[];
+    }
+}
 
 export default class DialogManager {
     private static _ins: DialogManager;
@@ -13,6 +22,7 @@ export default class DialogManager {
     public frontNode: cc.Node;
     public loadedDialogPrefabs: any;
     public createdDialogs: any;
+    private layerMap:Map<string,Layer>;
     init(rootNode) {
         this.rootNode = rootNode;
         // 创建dialog node
@@ -24,6 +34,11 @@ export default class DialogManager {
         this.frontNode.height = rootNode.height;
         this.loadedDialogPrefabs = {};
         this.createdDialogs = {};
+        this.layerMap=new Map();
+        let dialogLayer=new Layer(this.dialogNode);
+        let fontNode=new Layer(this.frontNode);
+        this.layerMap.set("tipsLayar",dialogLayer);
+        this.layerMap.set("frontNode",fontNode);
         MessageCallback.ins.addListener("DesignResolutionChanged", this);
     };
 
@@ -47,7 +62,7 @@ export default class DialogManager {
      * @param params 创建dialog需要传入的参数
      * @param cb 创建完成的会调
      */
-    createDialog(dialogRes, params = {},cb = null,parent=null) {
+    createDialog(dialogRes, params = {},cb = null,parent=null,layer:number=0) {
         cc.log("create dialog:" + dialogRes)
         // console.log("create dialog:" + dialogRes);
         let fileName = dialogRes;
@@ -66,10 +81,12 @@ export default class DialogManager {
             console.log("DialogManager ==> not loadedDialogPrefabs")
             createDialog = cc.instantiate(loadedDialogPrefabs[dialogRes]);
             createdDialogs[dialogRes] = createDialog;
-            createDialog.getComponent(dialogType).dialogParameters = params || {};
-            createDialog.getComponent(dialogType).isDestroy = false;
-            createDialog.parent = parent ? parent :  this.dialogNode;
+            let compenent= createDialog.getComponent(dialogType);
+            compenent.dialogParameters = params || {};
+            compenent.isDestroy = false;
+            createDialog.parent = parent ? parent :(layer?this.frontNode: this.dialogNode);
             createDialog.y = -1920;
+            this.onCreatOneDialog(createDialog.parent.name,compenent)
             Global.Utils.invokeCallback(cb, null, createDialog);
         } else {
             console.log("DialogManager ==> to load a new prefab")
@@ -84,16 +101,51 @@ export default class DialogManager {
                     createDialog = cc.instantiate(data);
                     console.log("DialogManager ==> load handler"+createDialog.getComponent(dialogType))
                     createdDialogs[dialogRes] = createDialog;
-                    createDialog.getComponent(dialogType).dialogParameters = params || {};
-                    createDialog.getComponent(dialogType).isDestroy = false;
-                    createDialog.parent = parent ? parent :  this.dialogNode;
+                    let compenent= createDialog.getComponent(dialogType);
+                    compenent.dialogParameters = params || {};
+                    compenent.isDestroy = false;
+                    createDialog.parent = parent ? parent : (layer?this.frontNode: this.dialogNode);
                     createDialog.y = 0;
+                    this.onCreatOneDialog(createDialog.parent.name,compenent)
                     Global.Utils.invokeCallback(cb, null, createDialog);
                 }
             }.bind(this));
         }
     };
-
+    onCreatOneDialog(parent:string,newDialog:UIBase):void{
+        let mapData=this.layerMap.get(parent);
+        if(mapData){
+            if(newDialog.z_order){
+                for(let item of mapData.layerWindows){
+                    if(item.z_order==newDialog.z_order){
+                        item.node.active=false;
+                    }
+                }
+            }
+            mapData.layerWindows.push(newDialog);
+        }
+    }
+    onDestroyOneDialog(dialog:UIBase):void{
+        let mapData=this.layerMap.get(dialog.node.parent.name);
+        if(mapData){
+            let destoryZorder=dialog.z_order;
+            for(let index=0;index<mapData.layerWindows.length;index++){
+                let item=mapData.layerWindows[index];
+                if(item==dialog){
+                    mapData.layerWindows.splice(index,1);
+                }
+            }
+            if(destoryZorder){
+                for(let index=mapData.layerWindows.length-1;index>=0;index--){
+                    let item=mapData.layerWindows[index];
+                    if(item.z_order==destoryZorder){
+                        item.node.active=true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
     isDialogExit(dialogRes) {
         return !!this.createdDialogs[dialogRes];
     };
@@ -147,6 +199,7 @@ export default class DialogManager {
             if (!!dialogActionWidgetCtrl) {
                 dialogActionWidgetCtrl.dialogOut(function () {
                     // 删除界面
+                    this.onDestroyOneDialog(dialogController);
                     dialog.destroy();
                     dialogController.isDestroy = true;
                     // 移除属性
@@ -159,6 +212,7 @@ export default class DialogManager {
                 }.bind(this))
             } else {
                 // 删除界面
+                this.onDestroyOneDialog(dialogController);
                 dialog.destroy();
                 dialogController.isDestroy = true;
                 // 移除属性
@@ -182,7 +236,9 @@ export default class DialogManager {
                 dialog.destroy();
                 let arr = key.split('/');
                 let dialogType = arr[arr.length - 1];
-                dialog.getComponent(dialogType).isDestroy = true;
+                let dialogController= dialog.getComponent(dialogType);
+                this.onDestroyOneDialog(dialogController);
+                dialogController.isDestroy = true;
                 // 移除属性
                 delete this.createdDialogs[key];
             }

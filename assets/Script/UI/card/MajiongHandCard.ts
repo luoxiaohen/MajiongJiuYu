@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { CardGroupPointBySelfEnum, CardTypeEnum } from "../../enum/EnumManager";
+import EventType from "../../event/EventType";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
 import TimeAndMoveManager from "../../mgr/TimeAndMoveManager";
@@ -13,7 +14,7 @@ import { GangSelfStepRcd } from "../../proto/MahjStepMsgDef";
 import { Global } from "../../Shared/GloBal";
 import Utils from "../../Shared/Utils";
 import UIBase from "../../UIBase";
-import { ListenCard } from "../../utils/InterfaceHelp";
+import { ListenCard, SelectHandCardData } from "../../utils/InterfaceHelp";
 
 const {ccclass, property} = cc._decorator;
 
@@ -27,6 +28,9 @@ export default class MajiongHandCard extends UIBase {
     majiongDice : cc.Sprite = null;
     @property (cc.Sprite)
     majiongCanOut : cc.Sprite = null;
+    @property (cc.Sprite)
+    diceImage : cc.Sprite = null;
+
     private _isLoadShow: boolean = false;
     public get isLoadShow(): boolean {
         return this._isLoadShow;
@@ -84,7 +88,7 @@ export default class MajiongHandCard extends UIBase {
     }
     public set isOutTing(value: boolean) {
         this._isOutTing = value;
-        this.majiongCanOut&&(this.majiongCanOut.node.active = value);
+        this.majiongCanOut.node.active = value;
     }
     /***是否在展示中*/
     private _isShow: boolean = false;
@@ -171,6 +175,7 @@ export default class MajiongHandCard extends UIBase {
             }else{
                 this.node.y = 0;
             }
+            
         }
     }
     private showCardValue(){
@@ -180,14 +185,19 @@ export default class MajiongHandCard extends UIBase {
             if(this.cardValue){
                 this.cardType = Math.floor(this.cardValue/10);
                 this.showMajiongFont();
-                this.isDice = Global.Utils.getIsDice(this.cardValue , UserInfo.ins.myDiceType);
+                if(Global.Utils.getIsDice(this.cardValue , UserInfo.ins.myDiceType)){
+                    this.isDice = true
+                }else{
+                    this.isDice = false;
+                }
             }
         }
     }
     private showMajiongFont(){
         if(this.bySelfPoint == CardGroupPointBySelfEnum.Self){
-            let newSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.cardValue);
-            Global.Utils.setNewImageToSprite(this.majiongFont , newSource , null);
+            // let newSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.cardValue);
+            // Global.Utils.setNewImageToSprite(this.majiongFont , newSource , null);
+            Global.Utils.setMJImageToSprite(this.majiongFont, Global.Utils.getCardStrByValue(this.cardValue));
             this.majiongFont.node.active = true;
         }
     }
@@ -201,46 +211,54 @@ export default class MajiongHandCard extends UIBase {
     showMajiongUp(){
         if(this.bySelfPoint == CardGroupPointBySelfEnum.Self){
             if(UserInfo.ins.selfIsLookPlayer){
-                Global.Utils.setNewImageToSprite(this.majiongBg , "majiongCard/resource/0_0_2_2" , null);
+                // Global.Utils.setNewImageToSprite(this.majiongBg , "majiongCard/resource/0_0_2_2" , null);
+                Global.Utils.setMJImageToSprite(this.majiongBg , "0_0_2_2");
             }else{
-                let newSource : string = "majiongCard/resource/0_0_2";
-                Global.Utils.setNewImageToSprite(this.majiongBg , newSource , null);
+                // let newSource : string = "majiongCard/resource/0_0_2";
+                // Global.Utils.setNewImageToSprite(this.majiongBg , newSource , null);
+                Global.Utils.setMJImageToSprite(this.majiongBg , "0_0_2");
             }
         }
     }
     showMajiongCard(){
         this.majiongCanOut.node.active = false;
-        this.majiongDice.node.active = false;
+        // this.majiongDice.node.active = false;
         let bgSource:string = "";
         switch(this.bySelfPoint){
             case CardGroupPointBySelfEnum.Self:
                 if(UserInfo.ins.selfIsLookPlayer){
                     this.majiongBg.node.scaleX = 1;
-                    bgSource = "majiongCard/resource/0_0_2_2";
+                    // bgSource = "majiongCard/resource/0_0_2_2";
+                    bgSource = "0_0_2_2";
                     this.cardSize = { _w: 131, _h: 182 };
                 }else{
-                    bgSource = "majiongCard/resource/0_0_2";
+                    // bgSource = "majiongCard/resource/0_0_2";
+                    bgSource = "0_0_2";
                     this.majiongBg.node.scaleX = 1;
                     this.cardSize = { _w: 131, _h: 182 };
                 }
             break;
             case CardGroupPointBySelfEnum.Down:
-                bgSource = "majiongCard/resource/1_0_2";
+                // bgSource = "majiongCard/resource/1_0_2";
+                bgSource = "1_0_2";
                 this.majiongBg.node.scaleX = 1;
                 this.cardSize = { _w: 57, _h: 77 };
             break;
             case CardGroupPointBySelfEnum.Opp:
-                bgSource = "majiongCard/resource/2_0_2";
+                // bgSource = "majiongCard/resource/2_0_2";
+                bgSource = "2_0_2";
                 this.majiongBg.node.scaleX = 1;
                 this.cardSize = { _w: 58, _h: 84 };
             break;
             case CardGroupPointBySelfEnum.Up:
-                bgSource = "majiongCard/resource/1_0_2";
+                // bgSource = "majiongCard/resource/1_0_2";
+                bgSource = "1_0_2";
                 this.majiongBg.node.scaleX = -1;
                 this.cardSize = { _w: 57, _h: 77 };
             break;
         }
-        Global.Utils.setNewImageToSprite(this.majiongBg , bgSource);
+        // Global.Utils.setNewImageToSprite(this.majiongBg , bgSource);
+        Global.Utils.setMJImageToSprite(this.majiongBg , bgSource);
     }
 
     showGetAction(delyCount:number){
@@ -266,7 +284,9 @@ export default class MajiongHandCard extends UIBase {
             break;
         }
     }
-
+    setDiceCard(boo:boolean){
+        this.diceImage.node.active = !boo;
+    }
     initCardSize(){
         switch(this.bySelfPoint){
             case CardGroupPointBySelfEnum.Self:

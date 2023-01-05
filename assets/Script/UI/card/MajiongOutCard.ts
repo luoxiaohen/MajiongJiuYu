@@ -19,6 +19,8 @@ export default class MajiongOutCard extends UIBase {
     outCardFont:cc.Sprite = null;
     @property (cc.Sprite)
     selectOutImage:cc.Sprite = null;
+    @property (cc.Sprite)
+    selectImage:cc.Sprite = null;
 
 
     /***当前牌组相对于第一视角属于那个位置*/
@@ -40,45 +42,116 @@ export default class MajiongOutCard extends UIBase {
     }
 
     private fontPointArr:Array<cc.Vec2> = [cc.v2(34,56) , cc.v2(42,45) , cc.v2(28,47) , cc.v2(-42 , 45)]
-    private outImgPointArr:Array<cc.Vec2> = [cc.v2(37,107) , cc.v2(40,87) , cc.v2(29,95) , cc.v2(-40 , 87)]
+    private outImgPointArr:Array<cc.Vec2> = [cc.v2(35,65) , cc.v2(46,53) , cc.v2(29,53) , cc.v2(-38 , 54)]
 
     protected onLoad(): void {
-        this.selectOutImage.node.active = false;
+        // this.selectOutImage.node.active = false;
     }
-
+    showSelectImage(boo:boolean){
+        if(boo){
+            let bgSource : string = "";
+            switch(this.bySelfPoint){
+                case 0:
+                    bgSource = "comResource/cardOther/game_paichi0";
+                    this.selectImage.node.scaleX = 1;
+                break;
+                case 1:
+                    bgSource = "comResource/cardOther/game_paichi1";
+                    this.selectImage.node.scaleX = 1;
+                break;
+                case 2:
+                    bgSource = "comResource/cardOther/game_paichi2";
+                    this.selectImage.node.scaleX = 1;
+                break;
+                case 3:
+                    bgSource = "comResource/cardOther/game_paichi1";
+                    this.selectImage.node.scaleX = -1;
+                break;
+            }
+            Global.Utils.setNewImageToSprite(this.selectImage,bgSource,()=>{
+                this.selectImage.node.active = true;
+            });
+        }else{
+            this.selectImage.node.active = boo;
+        }
+    }
     private showCard(){
         let bgSource : string = "";
         let fontSource : string = "";
         switch(this.bySelfPoint){
             case 0:
-                bgSource = "majiongCard/resource/0_0_0";
+                // bgSource = "majiongCard/resource/0_0_0";
+                bgSource = "0_0_0";
                 this.outCardBg.node.scaleX = 1;
-                fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_0";
+                // fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_0";
+                fontSource = Global.Utils.getCardStrByValue(this.cardValue)+"_0";
             break;
             case 1:
-                bgSource = "majiongCard/resource/1_0_0";
+                // bgSource = "majiongCard/resource/1_0_0";
+                bgSource = "1_0_0";
                 this.outCardBg.node.scaleX = 1;
-                fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_1";
+                // fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_1";
+                fontSource = Global.Utils.getCardStrByValue(this.cardValue)+"_1";
             break;
             case 2:
-                bgSource = "majiongCard/resource/2_0_0";
+                // bgSource = "majiongCard/resource/2_0_0";
+                bgSource = "2_0_0";
                 this.outCardBg.node.scaleX = 1;
-                fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_2";
+                // fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_2";
+                fontSource = Global.Utils.getCardStrByValue(this.cardValue)+"_2";
             break;
             case 3:
-                bgSource = "majiongCard/resource/1_0_0";
+                // bgSource = "majiongCard/resource/1_0_0";
+                bgSource = "1_0_0";
                 this.outCardBg.node.scaleX = -1;
-                fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_3";
+                // fontSource = "majiongCard/resource/"+Global.Utils.getCardStrByValue(this.cardValue)+"_3";
+                fontSource = Global.Utils.getCardStrByValue(this.cardValue)+"_3";
             break;
         }
-        Global.Utils.setNewImageToSprite(this.outCardBg,bgSource,()=>{
+        // Global.Utils.setNewImageToSprite(this.outCardBg,bgSource,()=>{
+        Global.Utils.setMJImageToSprite(this.outCardBg,bgSource,()=>{
             this.outCardBg.node.active = true;
         });
-        Global.Utils.setNewImageToSprite(this.outCardFont,fontSource,()=>{
+        // Global.Utils.setNewImageToSprite(this.outCardFont,fontSource,()=>{
+        Global.Utils.setMJImageToSprite(this.outCardFont,fontSource,()=>{
             this.outCardFont.node.active = true;
             this.outCardFont.node.x = this.fontPointArr[this.bySelfPoint].x;
             this.outCardFont.node.y = this.fontPointArr[this.bySelfPoint].y;
         });
+        this.selectOutImage.node.active = true; 
+        this.selectOutImage.node.x = this.outImgPointArr[this.bySelfPoint].x;
+        this.selectOutImage.node.y = this.outImgPointArr[this.bySelfPoint].y;
+
+    }
+    hideOutSelectImage(){
+        this.selectOutImage.node.active = false; 
+    }
+
+    setLiangpai(zmOpen){
+        if(zmOpen){
+            this.outCardFont.node.active = true;
+        }else{
+            let bgSource : string = "";
+            switch(this.bySelfPoint){
+                case 0:
+                break;
+                case 1:
+                    // bgSource = "majiongCard/resource/1_0_1";
+                    bgSource = "1_0_1";
+                break;
+                case 2:
+                    // bgSource = "majiongCard/resource/2_0_1";
+                    bgSource = "2_0_1";
+                break;
+                case 3:
+                    // bgSource = "majiongCard/resource/1_0_1";
+                    bgSource = "1_0_1";
+                break;
+            }
+            // Global.Utils.setNewImageToSprite(this.outCardBg,bgSource);
+            Global.Utils.setMJImageToSprite(this.outCardBg,bgSource);
+            this.outCardFont.node.active = false;
+        }
     }
 
     public disTory(){

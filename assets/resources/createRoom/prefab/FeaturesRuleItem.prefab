@@ -307,7 +307,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        985,
+        1017,
         -240,
         0,
         0,
@@ -716,7 +716,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        766,
+        819,
         -241,
         0,
         0,
@@ -768,8 +768,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 155,
-      "height": 57
+      "width": 146,
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1124,7 +1124,7 @@
         0,
         1,
         1,
-        0,
+        1,
         1
       ]
     },
@@ -1223,8 +1223,8 @@
     "_spriteFrame": {
       "__uuid__": "c8af7865-950c-4fd5-b7a2-73de1f63a9ff"
     },
-    "_type": 0,
-    "_sizeMode": 1,
+    "_type": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1256,7 +1256,7 @@
       "__id__": 27
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 32
@@ -1275,8 +1275,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 933,
-      "height": 2
+      "width": 734,
+      "height": 1
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1287,8 +1287,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        -145,
+        100,
+        -151,
         0,
         0,
         0,
@@ -1328,10 +1328,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9a05a362-5527-4323-98bb-dd43ad132066"
+      "__uuid__": "54f1a4cc-cf09-4716-a33c-3b258cf7c1a7"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1601,7 +1601,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        985,
+        1017,
         -70,
         0,
         0,
@@ -2010,7 +2010,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        766,
+        819,
         -81,
         0,
         0,
@@ -2062,8 +2062,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 155,
-      "height": 57
+      "width": 146,
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2464,8 +2464,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 933,
-      "height": 2
+      "width": 734,
+      "height": 1
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2476,7 +2476,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
+        100,
         -150,
         0,
         0,
@@ -2517,10 +2517,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9a05a362-5527-4323-98bb-dd43ad132066"
+      "__uuid__": "54f1a4cc-cf09-4716-a33c-3b258cf7c1a7"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -2571,8 +2571,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 933,
-      "height": 2
+      "width": 734,
+      "height": 1
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2583,7 +2583,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
+        100,
         -250,
         0,
         0,
@@ -2624,10 +2624,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "9a05a362-5527-4323-98bb-dd43ad132066"
+      "__uuid__": "54f1a4cc-cf09-4716-a33c-3b258cf7c1a7"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -2692,6 +2692,9 @@
     },
     "piaoItemGroup": {
       "__id__": 27
+    },
+    "piaoBG": {
+      "__id__": 28
     },
     "maGroup": {
       "__id__": 50

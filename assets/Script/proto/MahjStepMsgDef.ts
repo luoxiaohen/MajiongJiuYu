@@ -23,22 +23,25 @@ export class RcdSummInfo{
 	public   tid: string;                    // 牌桌ID
 	public   icon: string;                   // 俱乐部或创建者Icon
 	public   roomName: string;               // 房间名称
-	public   crtName: string;                // 创建者或俱乐部名字
+	public   crtName: string;                // 创建者名字
+	public   crtClub: string;                // 来自俱乐部名字
 	public      ruleType: number;               // 玩法类型-血战到底or换三张
 	public      roomType: number;               // 玩法类型-四人三房or三人两房…
 	public      baseScore: number;              // 底分
 	public      handsCnt: number;               // 手数
 	public      completeCnt: number;            // 实际完成手数
 	
-	public      partakeType: number;            // 参与方式，1=对局，2=买马，3=对局+买马
-	public      horseCnt: number;               // 买马人数
+	// 这两个数据暂时没有记录，确定要用再记录
+	//        public int      playerType;             // 参与方式，1=对局，2=买马，3=对局+买马
+	//        public int      horseCnt;               // 买马人数
 	public      time: number;                   // 结束时间(时间戳单位秒)
 }
 
 // 牌谱记录列表单元信息
 export class RcdSummUnit{
 	public  roomSumm: RcdSummInfo;           // 简要信息
-	public          winScore: number;           // 个人积分输赢
+	public          winScore: number;           // 牌局积分输赢
+	public          horseScore: number;         // 买马积分输赢
 	public          handNum: number;            // 第几手，从0开始（仅限牌谱记录，历史记录=-1）
 }
 

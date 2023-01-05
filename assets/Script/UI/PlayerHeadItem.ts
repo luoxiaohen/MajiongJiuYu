@@ -66,6 +66,9 @@ export default class PlayerHeadItem extends UIBase {
     @property (cc.Sprite)
     actionImage : cc.Sprite = null;
 
+    @property (cc.Label)
+    pointLabel : cc.Label = null;
+
 
 
     /**是否漂*/
@@ -116,6 +119,7 @@ export default class PlayerHeadItem extends UIBase {
     }
     public set directionSitNum(value: number) {
         this._directionSitNum = value;
+        this.pointLabel.string = value.toString();
     }
 
     /**是否是我自己的动作回合*/
@@ -127,8 +131,6 @@ export default class PlayerHeadItem extends UIBase {
         this._isMyAction = value;
         this.actionImage.node.active = value;
     }
-
-
     private myGameFen:number = 0;
     start () {
     }
@@ -153,28 +155,33 @@ export default class PlayerHeadItem extends UIBase {
             this.showQueActionPoint();
         }
         this.queActionImage.node.active = boo;
-        cc.tween(this.queActionImage.node).to(0.3 , {x : this.queImage.node.x , y : this.queImage.node.y , scaleX : 0 , scaleY : 0}).call(()=>{
-            this.showDingQue(type)
-        }).start();
+        this.schedule(()=>{
+            cc.tween(this.queActionImage.node).to(0.5, {x : this.queImage.node.x , y : this.queImage.node.y , scaleX : 0.4 , scaleY : 0.4}).call(()=>{
+                this.queActionImage.node.active = false;
+                this.queActionImage.node.scaleX = 1;
+                this.queActionImage.node.scaleY = 1;
+                this.showDingQue(type)
+            }).start();
+        } , 1 , 1 , 0)
     }
     private showQueActionPoint(){
         let num:number = (this.sitInfo.sitNum + 16 - UserInfo.ins.mySitIndex)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType);
         switch(num){
             case 0:
-                this.queActionImage.node.x = 890;
-                this.queActionImage.node.y = 250;
+                this.queActionImage.node.x = 910;
+                this.queActionImage.node.y = 195;
             break;
             case 1:
-                this.queActionImage.node.x = -522;
-                this.queActionImage.node.y = 65;
+                this.queActionImage.node.x = -422;
+                this.queActionImage.node.y = 50;
             break;
             case 2:
-                this.queActionImage.node.x = -525;
+                this.queActionImage.node.x = -485;
                 this.queActionImage.node.y = -66;
             break;
             case 3:
-                this.queActionImage.node.x = 660;
-                this.queActionImage.node.y = 65;
+                this.queActionImage.node.x = 560;
+                this.queActionImage.node.y = 50;
             break;
         }
     }
@@ -183,6 +190,9 @@ export default class PlayerHeadItem extends UIBase {
         this.showReadyPoint();
         this.initDicePoint();
     }
+    private timeIndex:number=1;
+    /**动作类型 1：定缺 2：换三*/
+    private actionType:number = 0;
     showIsDingQueIng(boo:boolean){
         if(boo){
             if(UserInfo.ins.isSelf(this.playerInfo.gpid)){
@@ -191,6 +201,70 @@ export default class PlayerHeadItem extends UIBase {
             this.showDingQuePoint();
         }
         this.dingqueImage.node.active = boo;
+        if(boo){
+            this.actionType = 1;
+            this.timeIndex = 1;
+            if(this.node.x == 36 || this.node.x == 26){
+                if(this.node.y == -669 || this.node.y == -679){
+                    this.dingqueImage.node.x = 551;
+                    this.dingqueImage.node.y = 30;
+                }else{
+                    this.dingqueImage.node.x = 510;
+                    this.dingqueImage.node.y = 57;
+                }
+            }else if(this.node.x == 1748 || this.node.x == 1738){
+                this.dingqueImage.node.x = -540;
+                this.dingqueImage.node.y = 57;
+            }else{
+                this.dingqueImage.node.x = -565;
+                this.dingqueImage.node.y = -43;
+            }
+            this.schedule(this.onTimer , 0.5 , 100000 , 0);
+        }else{
+            this.unschedule(this.onTimer);
+        }
+    }
+    showIsHuansan(boo:boolean){
+        if(boo){
+            if(UserInfo.ins.isSelf(this.playerInfo.gpid)){
+                return;
+            }
+            this.showDingQuePoint();
+        }
+        this.dingqueImage.node.active = boo;
+        if(boo){
+            this.actionType = 2;
+            this.timeIndex = 1;
+            if(this.node.x == 36 || this.node.x == 26){
+                if(this.node.y == -669 || this.node.y == -679){
+                    this.dingqueImage.node.x = 551;
+                    this.dingqueImage.node.y = 30;
+                }else{
+                    this.dingqueImage.node.x = 510;
+                    this.dingqueImage.node.y = 57;
+                }
+            }else if(this.node.x == 1748 || this.node.x == 1738){
+                this.dingqueImage.node.x = -540;
+                this.dingqueImage.node.y = 57;
+            }else{
+                this.dingqueImage.node.x = -565;
+                this.dingqueImage.node.y = -43;
+            }
+            this.schedule(this.onTimer , 0.5 , 100000 , 0);
+        }else{
+            this.unschedule(this.onTimer);
+        }
+    }
+    private onTimer(){
+        let source : string = "comResource/font/game_"+this.timeIndex+"dian";
+        if(this.actionType == 2){
+            source = "comResource/font/game_xuanzezhong"+this.timeIndex;
+        }
+        Global.Utils.setNewImageToSprite(this.dingqueImage , source);
+        this.timeIndex++;
+        if(this.timeIndex >= 4){
+            this.timeIndex = 1;
+        }
     }
     showDingQuePoint(){
         // if(this.node.x > 1500){
@@ -198,33 +272,35 @@ export default class PlayerHeadItem extends UIBase {
         // }
     }
     showReadyPoint(){
-        if(this.node.x > 1500){
+        if(this.node.x > 1400){
             this.isReadyImage.node.x = -170;
+        }else{
+            this.isReadyImage.node.x = 150;
         }
     }
     initDicePoint(){
         if(this.node.x == 36 || this.node.x == 26){
             if(this.node.y == -669 || this.node.y == -679){
                 this.playerDiceOneImage.node.x = 890;
-                this.playerDiceOneImage.node.y = 264;
-                this.playerDiceTwoImage.node.x = 976;
-                this.playerDiceTwoImage.node.y = 264;
+                this.playerDiceOneImage.node.y = 149;
+                this.playerDiceTwoImage.node.x = 983;
+                this.playerDiceTwoImage.node.y = 149;
             }else{
-                this.playerDiceOneImage.node.x = 775;
-                this.playerDiceOneImage.node.y = 99;
-                this.playerDiceTwoImage.node.x = 775;
+                this.playerDiceOneImage.node.x = 560;
+                this.playerDiceOneImage.node.y = 104;
+                this.playerDiceTwoImage.node.x = 560;
                 this.playerDiceTwoImage.node.y = 13;
             }
         }else if(this.node.x == 1748 || this.node.x == 1738){
-            this.playerDiceOneImage.node.x = -615;
+            this.playerDiceOneImage.node.x = -426;
             this.playerDiceOneImage.node.y = 15;
-            this.playerDiceTwoImage.node.x = -615;
-            this.playerDiceTwoImage.node.y = 103;
+            this.playerDiceTwoImage.node.x = -426;
+            this.playerDiceTwoImage.node.y = 106;
         }else{
-            this.playerDiceOneImage.node.x = -431;
-            this.playerDiceOneImage.node.y = -122;
+            this.playerDiceOneImage.node.x = -426;
+            this.playerDiceOneImage.node.y = 2;
             this.playerDiceTwoImage.node.x = -517;
-            this.playerDiceTwoImage.node.y = -122;
+            this.playerDiceTwoImage.node.y = 2;
         }
     }
     
@@ -268,7 +344,8 @@ export default class PlayerHeadItem extends UIBase {
 
     /**展示名字*/
     private showName(){
-        this.nameLabel.string = this.playerInfo.gpid+"";
+        // this.nameLabel.string = this.playerInfo.gpid+"";
+        this.nameLabel.string = this.playerInfo.nike;
     }
 
     /**展示分*/
@@ -284,7 +361,36 @@ export default class PlayerHeadItem extends UIBase {
 
     /**展示庄*/
     public showZhuang(isZhuang : boolean){
-        this.zhuangImage.node.active = isZhuang;
+        if(isZhuang){
+            this.zhuangImage.node.scaleX = 2;
+            this.zhuangImage.node.scaleY = 2;
+            this.zhuangImage.node.active = true;
+            let num=0;
+            if(this.sitInfo){
+                num = (this.sitInfo.sitNum + 16 - UserInfo.ins.mySitIndex)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType);
+            }
+            switch(num){
+                case 0:
+                    this.zhuangImage.node.x = 890;
+                    this.zhuangImage.node.y = 250;
+                break;
+                case 1:
+                    this.zhuangImage.node.x = -522;
+                    this.zhuangImage.node.y = 65;
+                break;
+                case 2:
+                    this.zhuangImage.node.x = -525;
+                    this.zhuangImage.node.y = -66;
+                break;
+                case 3:
+                    this.zhuangImage.node.x = 660;
+                    this.zhuangImage.node.y = 65;
+                break;
+            }
+            cc.tween(this.zhuangImage.node).to(0.3 , {x : 113 , y: 166 ,scaleX : 1 , scaleY : 1}).start();
+        }else{
+            this.zhuangImage.node.active = isZhuang;
+        }
     }
 
     /***展示矫座动作*/
@@ -326,7 +432,6 @@ export default class PlayerHeadItem extends UIBase {
     showDiceBookMaker(msg:Msg_SC_DiceRslt){
         let toX:Array<number> = [];
         let toY:number;
-        console.log(":this.node.x=="+this.node.x+">>>>"+this.node.y)
         if(this.node.x == 36 || this.node.x == 26){
             if(this.node.y == -669 || this.node.y == -679){
                 toX[0] = 864;
@@ -400,7 +505,7 @@ export default class PlayerHeadItem extends UIBase {
 
     /**定缺展示**/
     showQue(queType:CardTypeEnum){
-        let num:number = 4 + queType;
+        let num:number = 1 + queType;
         let source:string = "comResource/font/game_dingque" + num;
         Global.Utils.setNewImageToSprite(this.queActionImage , source , ()=>{
             this.showQueAction(true , queType);

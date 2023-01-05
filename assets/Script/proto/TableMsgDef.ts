@@ -1,4 +1,4 @@
-import { PlayerInfo, TableRuleInfo } from "./LobbyMsgDef";
+import { TableRuleInfo, PlayerInfo } from "./LobbyMsgDef";
 
 
 
@@ -51,9 +51,11 @@ export class RoomTableInfo{
 	public   tid: string;                    // 牌桌唯一编码
 	public      code: number;                   // 查询码，个人创建才有，俱乐部创建的=0
 	public   creater: string;                // 创建者昵称
+	public   crtClub: string;                // 来自俱乐部名字
 	public      crtAid: number;                 // 创建者账号唯一ID
 	public      overSec: number;                // 距离自动解散的倒计时时间，单位秒
 	public   roomName: string;               // 房间名称
+	
 	public rule: TableRuleInfo;  // 牌桌规则
 	// java Ignore public RoomTableInfo(){}
 }
@@ -61,6 +63,7 @@ export class RoomTableInfo{
 // 买马列表中的房间基础信息
 export class HorserTableInfo{
 	public   tid: string;                    // 牌桌唯一编码
+	public      hsit: number;                   // 马位（0-1）
 	public   roomName: string;               // 房间名称
 	public   roomIcon: string;               // 房间ICON
 	public      gamePlayType : number;          // /**游戏玩法类型*/1=血战，2=换三  依照GamePlayTypeEnum
@@ -136,72 +139,81 @@ export class MsgMajSer {
 }
 
 // 单个玩家完整牌局信息
-export class GameOneScene{
-	public          site: number;
-	public lstDis: number[];
-	public lstHands: number[];
-	public  lstPuts: MsgMajSer[];//...
-	public          curState: number;
-	public          totalWin: number;
-	public          theGamesWin: number;
-	public          downCnt: number;
+export class GamePlayerScene{
+	public              site: number;               // /**座位*/
+	public    lstDis: number[];             // /***出牌数据*/
+	public    lstHands: number[];           // /**手牌 , 自己会有明确的手牌数据,其他人需要手牌长度,值为-1*/
+	public  lstPuts: MsgMajSer[];            // /**碰杠牌.顺序排列*/
+	public              huNum: number;              // /**是否胡牌 -1 未胡牌  0-2 第几个胡牌*/
+	public              zmType: number;             // /**胡牌类型0=平湖，1=自摸；2=杠上花；3=杠上炮；4=抢杠胡*/
+	public              huMajID: number;            // /**胡牌亮牌 msjID*/
+	public              wtt: number;                // /**定缺类型 万条同012*/
+	public              score: number;              // 当前积分
 }
 
-// 牌局背景信息
+// 牌局背景信息（牌局现场状况）
 export class GameBackScene{
-	public          bigDice: number;
-	public          smallDice: number;
-	public          picksCnt: number;
-	public          handsCnt: number;
-	public          bankerSit: number;
-	public          fanjiID: number;
-	public          gameState: number;
-	public       askOverName: string;
-	public         askOverTime: number;
+	public          bigDice: number;                // 骰子数1
+	public          smallDice: number;              // 骰子数2
+	public          remCnt: number;                 // /***牌墙剩余张数*/
+	public          handNum: number;                // 当前第几手
+	public          bankerSit: number;              // 当前庄位
+	public          gameState: number;              // 当前状态，EMGameState
+	
+	public          curSit: number;                 // /***当前操作位置*/
+	public          waitForMajId: number;           // /***是否是在等待我 0 : 不是  majID:等待需要我操作的牌ID.即上一张他人出牌*/
+	public          waitType: number;               // 按位取值：0x01=胡牌；0x02=碰杠
+	public          baozi: number;                  // 当前是否豹子（1=豹子，2=双豹）
+	public          piaoSit: number;                // 当前飘的位置
+	public          askOverSit: number;             // 如果有人申请关房，申请者位置，没有处于关房投票中=-1
+	public          askOverSec: number;             // 默认同意倒计时到期时间（秒时间戳）
+	public          rfsOverSec: number;             // 关房拒绝后时间内（秒时间戳）不能再次发起投票
 }
 
 // 产生积分事件的信息
 export class ScoreEventInfo{
-	public                          curSit: number;             // 事件主体位置，买马位置是4、5
-	public                          majid: number;              // 对象牌ID
-	public                tarSits: number[];            // 对象位置(0-5，其中4-5是1、2马) 可能为null
-	public                tarSitsEx: number[];          // 附加对象（擦挂） 可能为null
-	public                          scoreType: number;          // 积分类型（事件类型）ScoreTypeEnum
-	public                 huGangTypes: number[];        // 事件附加说明（牌型、杠类型）（HuTypeEnum、GangTypeEnum） 可能为null
-	public                 fanTypes: number[];           // 事件附加说明（额外加倍类型）（FanTypeEnum） 可能为null
-	public                          param: number;              // 事件参数，比如根的数量
-	public                          win: number;                // 积分输赢
-	public                    debug: DebugInfo;              // 用于调试的信息
+	public              curSit: number;             // 事件主体位置，买马位置是4、5
+	public              majid: number;              // 对象牌ID
+	public    tarSits: number[];            // 对象位置(0-5，其中4-5是1、2马) 可能为null
+	public    tarSitsEx: number[];          // 附加对象（擦挂） 可能为null
+	public              scoreType: number;          // 积分类型（事件类型）ScoreTypeEnum
+	public     huGangTypes: number[];        // 事件附加说明（牌型、杠类型）（HuTypeEnum、GangTypeEnum） 可能为null
+	public     fanTypes: number[];           // 事件附加说明（额外加倍类型）（FanTypeEnum） 可能为null
+	public              param: number;              // 事件参数，比如根的数量
+	public              win: number;                // 积分输赢
+	public        debug: DebugInfo;              // 用于调试的信息
 	
-	public                tarScore: number[];           // 上面tarSits与tarSitsEx列表对象的扣分数，仅在杠胡是存在
+	public    tarScore: number[];           // 上面tarSits与tarSitsEx列表对象的扣分数，仅在杠胡是存在
+	// java Ignore IsLost2Muilt
 }
 
 export class DebugInfo{
-	//        public int                          dbTotal;            // 根据牌型计算的番倍数
-	public                          huNum: number;              // 胡顺序
-	public                          zmType: number;             // 自摸
+	//        public int              dbTotal;            // 根据牌型计算的番倍数
+	public              huNum: number;              // 胡顺序
+	public              zmType: number;             // 自摸
 	
-	public                          dobTotal: number;           // 总的牌型倍数
-	public                          dobB: number;               // 基础牌型倍数(用于判断过手胡)
-	public                          dobT: number;               // 加了自摸加番后的牌型倍数（相当于结算前的实际番倍）
-	public                          dob: number;                // 封顶后牌型倍数
-	public                          tiFan: number;              // 封顶后梯番牌型倍数
-	public                          baseMo: number;             // 自摸加底
-	public                          fanMo: number;              // 自摸加番
+	public              dobTotal: number;           // 总的牌型倍数
+	public              dobB: number;               // 基础牌型倍数(用于判断过手胡)
+	public              dobT: number;               // 加了自摸加番后的牌型倍数（相当于结算前的实际番倍）
+	public              dob: number;                // 封顶后牌型倍数
+	public              tiFan: number;              // 封顶后梯番牌型倍数
+	public              baseMo: number;             // 自摸加底
+	public              fanMo: number;              // 自摸加番
 	
-	public                          param: number;              // 灵活测试参数
-	public                          param2: number;             // 灵活测试参数
-	//        public int                          sitBaseScore;       // 位置的基础底分（=基础底分*豹子*飘倍
-	//        public int                          tiFan;           // 梯番加倍
-	//        public int                          zmBaseOver;         // 自摸加底之后
+	public              param: number;              // 灵活测试参数
+	public              param2: number;             // 灵活测试参数
+	//        public int              sitBaseScore;       // 位置的基础底分（=基础底分*豹子*飘倍
+	//        public int              tiFan;           // 梯番加倍
+	//        public int              zmBaseOver;         // 自摸加底之后
 	
-	//        public int                          tarCnt;             // 赢取对象数量
+	//        public int              tarCnt;             // 赢取对象数量
 	
 	// java Ignore public DebugInfo(){}
 }
 
 // 总结算时玩家信息
 export class FinalPlayerCalcInfo{
+	public                          aid: number;                // 玩家AID
 	public                          sit: number;                // 位置(买马的放在4、5)
 	public                          score: number;              // 积分，牌局上的积分
 	public                          bankerHScore: number;       // 庄家买马积分
@@ -276,21 +288,51 @@ export enum GangTypeEnum{
 	eMax
 }
 
+// 当前牌局状态
 export enum EMGameState{
 	eGS_WaitReady,          // 待准备阶段（超时自动关闭房间）
-	eGS_DiceEast,           // 定庄
+	eGS_DiceEast,           // 定庄(此过程后面将不存在，留着只是作为牌局开始的分界线)
 	eGS_DicePos,            // 定位
 	eGS_StartDice,          // 游戏开始，掷Dice
 	eGS_WaitDeal,           // DoDiceOver 后待发牌
 	eGS_WaitChange3,        // 等待换三张
 	eGS_WaitChange3Dice,    // 等待换三张掷骰子
 	eGS_WaitQue,            // 等待定缺
-	eGS_WaitDown,           // 待出
+	eGS_WaitDownM,          // 待出（摸后）
+	eGS_WaitDownP,          // 待出（碰后）
 	eGS_WaitPeng,           // 待碰杠胡
 	eGS_WaitQiangG,         // 待抢杠
 	eGS_GameEnd,            // 结束一手
 	eGS_GameClose,          // 游戏关闭               <-
-	eGS_GameSysClose        // 游戏被系统关闭
+	eGS_GameSysClose,       // 游戏被系统关闭
+	eGS_SelHorse,           // 开始选马牌状态
+	eGS_SelHorseEnd,        // 选马牌完成，等待下个阶段倒计时
+	eGS_WaitPick,           // 待摸（在杠牌和摸牌之间有个等待时间，如果没有这个状态，可能会重复出牌）
 }
 
+export class HandsInfo{
+	public      handNum: number;                            // 手数0-15
+	public      isBreak: number;                            // 1=打黄
+	public results: GameResultInfo[];    // 结算列表
+}
+
+export class HorseHandUnit{
+	public      handNum: number;            // 结束的是第几手，从0开始
+	public      majID: number;              // 买中牌面
+	public tar: PlayerInfo;  // 买中玩家信息
+	public      win: number;                // 战绩
+}
+
+export class HorseScoreInfo{
+	public   tid: string;                // 牌桌号
+	public      hsit: number;               // 马位（0-1）
+	public  hands: HorseHandUnit[];  // 每手买马记录
+}
+
+export class CheckTinDebug{
+	public      tinCnt: number;
+	public      handNum: number;
+	
+	// java Ignore 
+}
 

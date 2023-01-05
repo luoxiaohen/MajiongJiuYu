@@ -425,7 +425,7 @@
     "_underlineHeight": 0,
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "yahei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -468,7 +468,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 77.85,
+      "width": 87.46,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -533,7 +533,7 @@
     "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "yahei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -576,7 +576,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 177.97,
+      "width": 187.66,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -641,7 +641,7 @@
     "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
+    "_N$fontFamily": "yahei",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
     "_id": ""
@@ -665,6 +665,21 @@
       "__id__": 1
     },
     "_enabled": true,
+    "player_head_sprite": {
+      "__id__": 7
+    },
+    "player_name_label": {
+      "__id__": 10
+    },
+    "player_hand_num_label": {
+      "__id__": 13
+    },
+    "player_score_num_label": {
+      "__id__": 16
+    },
+    "item_bg": {
+      "__id__": 2
+    },
     "_id": ""
   },
   {

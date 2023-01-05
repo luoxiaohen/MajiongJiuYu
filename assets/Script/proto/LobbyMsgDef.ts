@@ -31,6 +31,9 @@ export enum LobbyErrCode{
 	eLimitReadCount,    // 16 没有获取付费数据的权限
 	eTabSrvNotFind,     // 17 没有可以提供服务器的牌桌服
 	
+	eHasInitPlayer,     // 18 已经完善了个人信息，不能在使用完善信息消息修改玩家资料
+	eBadWordNike,       // 19 昵称不能有敏感字
+	eBadWordSign,       // 20 签名不能有敏感字
 	eMax
 }
 
@@ -75,6 +78,11 @@ export enum GamePlayTypeEnum{
 }
 
 
+export enum NoviceType{
+	NotNike,            // 还需要完善个人信息
+	Recruit,            // 已经完善个人资料进入新手阶段（后续阶段在添加）
+}
+
 
 // 玩家基本信息 - 他人可见信息
 export class PlayerInfo{
@@ -98,7 +106,11 @@ export class PlayerData{
 	public   face: string;       // 头像
 	public      gpid: number;       // 本次链接的临时ID
 	
+	public      sex: number;        // 性别
+	public   sign: string;       // 个性签名
 	public      gold: number;       // 金币数量
+	public      diam: number;       // 钻石数量
+	public      noviceState: number;// 新手阶段（用于新手阶段的一些状态判断，枚举:NoviceType）
 	
 	// ...
 }
@@ -169,4 +181,14 @@ export class TableSummInfo{
 	// java Ignore public void TableSummInfo()
 }
 
+// 单个邮件基础信息
+export class MailUnit{
+	public      mailid: number;     // 邮件ID
+	public   title: string;      // 邮件标题
+	public      time: number;       // 时间
+	public   contents: string;   // 邮件正文
+	public      src: number;        // 来源（0=系统公告，1=系统通知）
+	public      read: number;       // 阅读标记 (1=已读)
+	// java Ignore MailUnit()
+}
 

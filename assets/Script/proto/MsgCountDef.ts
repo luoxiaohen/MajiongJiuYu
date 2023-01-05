@@ -1,11 +1,5 @@
 import { MsgMajSer } from "./TableMsgDef";
 
-
-
-
-
-
-
 /**
 * Created by admin on 2022/11/4.
 */
@@ -77,6 +71,8 @@ export class PlayerFeeCount{
 	public      jx5Cnt: number;             // 卡星五胡牌次数
 	public      jx5RuleCnt: number;         // 有卡星五规则手数
 	public      breakNoTin: number;         // 流局未听牌次数
+	public      gameCnt: number;            // 总局数
+	public      handCnt: number;            // 总手数
 }
 
 // 玩家最大收益牌型数据

@@ -6,8 +6,9 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { EatCardEnum, FeelTypeEnum, PlayEatTypeEnum } from "../enum/EnumManager";
+import { PlayerInfo } from "../proto/LobbyMsgDef";
 import { Msg_SC_GameResultMsg, Msg_SC_ScoreListMsg } from "../proto/TableMsg";
-import { GameResultInfo, HuTypeEnum, SitInfo } from "../proto/TableMsgDef";
+import { GameResultInfo, GameScoreInfo, HorserInfo, HuTypeEnum, RoomTableInfo, ScoreEventInfo, SitInfo } from "../proto/TableMsgDef";
 
 const {ccclass, property} = cc._decorator;
 
@@ -108,6 +109,7 @@ export class MyActionByOther{
 	public canGuo : boolean = false;
 	public huData : HuData = null;
 	public gangValue : Array<number> = [];
+	public showHu : number = 0;
 }
 /***结算界面个人信息item数据*/
 export class OverPlayerItemInfoData{
@@ -121,16 +123,81 @@ export class OverPlayerItemInfoData{
 } 
 /**结算界面个人买吗信息数据*/
 export class OverBuyHorseInfoData{
+	/**座位*/
+	sitNum : number;
+	/**马位 0-1*/
 	horesNum : number;
+	/**麻将位置 100-107*/
 	buyCoun : number;
+	/**头像Icon*/
 	playerHead : number;
+	/**牌值*/
 	cardValue : number;
+	/**积分*/
 	fen:number;
+	/**玩家信息 */
+	playerInfo:PlayerInfo;
+	/**买马次数*/
+	sumbuyCount:number
 }
 
-export class RealTimePreformanceData{
-	curHand:number;
-	sitInfo:SitInfo[];
-	gameResult:Msg_SC_GameResultMsg;
-	gameSore:Msg_SC_ScoreListMsg
+export class RealTimePreformanceData {
+	/**当前手数 */
+	curHand: number;
+	/**座位信息 */
+	sitInfoArr: SitInfo[];
+	/**游戏结束信息 */
+	gameResultArr:GameResultInfo[];
+	/**游戏得分 */
+	gameSoreArr:GameScoreInfo[];
+	/**规则 */
+	gameRuleArr:RoomTableInfo;
+	/**胡牌数组 */
+	hupaiArr: number[];
+	/**胡牌类型  自摸、点炮 */
+	zimoTypeArr:number[];
+	/**当前坐庄位置 */
+	nowBookMakerSit: number;
+	/**飘的位置 */
+	piaoSitNum:number;
+	/**豹子信息 1豹子 2双豹 */
+	baoziNum: number=0;
+	/**当前手数结束时间戳 */
+	finishTime:number=0;
+	/**买马数据*/
+	buyHorseInfo:HorserInfo[];
 } 
+
+export class PlayerWinRecodItemData{
+	playerInfo:PlayerInfo;
+	resultInfo:GameResultInfo;
+	scoreEventInfo:ScoreEventInfo[];
+	isZhuang : boolean;
+    isPaio : boolean;
+    /**-1 : 未胡牌 0-2 :123胡* */
+    huType : number = -1;
+    scoreCount : number = 0;
+	winType:number;
+	huCard:number;
+	horseNum:number;
+}
+export class StatisPlayerInfoData {
+    player: PlayerInfo;         // 玩家信息
+    game_play_game: number;        // 参与游戏数
+	game_tabel:number;				//对局桌子
+    game_buyhorse:number;         //买马对局
+    score: number;              // 积分，牌局上的积分
+    bankerHScore: number;       // 庄家买马积分
+    scoreHorse: number;         // 单纯买马的积分
+	t_id:string;				//为了统计时区分局数
+}
+export class SitSortData{
+	sitData:SitInfo;
+	point:number;
+	gpid:number;
+	dice:number;
+}
+export class SelectHandCardData{
+	isSelect:boolean;
+	cardValue:number;
+}

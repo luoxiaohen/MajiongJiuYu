@@ -36,8 +36,9 @@ export default class GetCardItem extends UIBase {
 		}else{
 			this.haveNumImage.node.active = false;
 		}
-        let cardSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(cardValue);
-        Global.Utils.setNewImageToSprite(this.cardValueImage , cardSource);
+        // let cardSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(cardValue);
+        // Global.Utils.setNewImageToSprite(this.cardValueImage , cardSource);
+        Global.Utils.setMJImageToSprite(this.cardValueImage, Global.Utils.getCardStrByValue(cardValue));
     }
     onItemClick(){
         

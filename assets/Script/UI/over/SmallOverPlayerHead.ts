@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { ArtFontEnum } from "../../enum/EnumManager";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
 import { GameResultInfo, SitInfo } from "../../proto/TableMsgDef";
@@ -73,12 +74,19 @@ export default class SmallOverPlayerHead extends UIBase {
         this.showBgImage();
     }
     protected onLoad(): void {
-        
     }
-    setPlayerData (info : GameResultInfo , isBreak : boolean){
+    setPlayerData (info : GameResultInfo , isBreak : boolean , hitHorseNum:Array<number> = []){
         this.esultInfo = info;
         this.isBreak = isBreak;
         this.playerInfo = GameInfo.ins.getPlayerBySit(info.sitNum);
+        for(let i = 0 ; i < hitHorseNum.length ; i++){
+            if(hitHorseNum[i] == 1){
+                this.horseImage1.node.active = true;
+            }
+            if(hitHorseNum[i] == 2){
+                this.horseImage2.node.active = true;
+            }
+        }
     }
     private getPointStr():string{
         let changeNum : number = (this.esultInfo.sitNum - UserInfo.ins.mySitIndex + 40)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType) ;
@@ -101,20 +109,19 @@ export default class SmallOverPlayerHead extends UIBase {
         this.nameLabel.string = this.getPointStr() + this.playerInfo.player.nike
     }
     public showFenLabel(){
-        let fontSource:string = this.esultInfo.score >= 0 ? "comResource/mapFont/jiesuanJiafen" : "comResource/mapFont/jiesuanJianfen";
-        cc.loader.loadRes(fontSource , cc.Font , (error , assest)=>{
-            if(error){
-                return;
-            }
-            this.fenLabel.font = assest;
-            this.fenLabel.string = this.esultInfo.score >= 0 ? ("+" + this.esultInfo.score) : this.esultInfo.score.toString();
-        })
+        let str= this.esultInfo.score.toString();
+        if( this.esultInfo.score >= 0){
+            str="+"+str;
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJiafen,this.fenLabel);
+        }else{
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJianfen,this.fenLabel);
+        }
+        this.fenLabel.string=str;
     }
     public showZhuangImage(){
         this.zhuangImage.node.active = this.esultInfo.sitNum == GameInfo.ins.nowBookMakerSit;
     }
     public showPiaoImage(){
-
     }
     public showHuImage(){
         if(this.isBreak){

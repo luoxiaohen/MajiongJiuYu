@@ -90,7 +90,7 @@ export default class CreateRoomRulerPanel extends UIBase {
 			nowY = this.itemArray[i].node.y;
 			if(itemWeights < item.itemWeights){
 				if(item.isMoveUp){
-				cc.tween(this.itemArray[i].node).to(item.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : nowY + item.changeHeight}).start();
+					cc.tween(this.itemArray[i].node).to(item.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : nowY + item.changeHeight}).start();
 				}else{
 					cc.tween(this.itemArray[i].node).to(item.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : nowY - item.changeHeight}).start();
 				}
@@ -102,12 +102,11 @@ export default class CreateRoomRulerPanel extends UIBase {
 		this.moreLabel.string = " " + use + "   现在开局";
 		if(UserInfo.ins.myInfo.gold >= use){
 			this.baginBtn.enabled = true;
-			this.moreLabel.node.color = CreateRoomHelper.ins.colorData[1];
+			this.moreLabel.node.color = CreateRoomHelper.ins.colorData[2];
 		}else{
 			this.baginBtn.enabled = false;
 			this.moreLabel.node.color = CreateRoomHelper.ins.colorData[4];
 		}
-		
 	}
 
 	private getCreateUse():number{
@@ -167,20 +166,26 @@ export default class CreateRoomRulerPanel extends UIBase {
 		ruleInfo.limitGPS = 1;
 		if(this.ruleInfo){
 			ruleInfo = this.ruleInfo;
+		}
+		else if(CreateRoomHelper.ins.lastRuleInfo){
+			ruleInfo = CreateRoomHelper.ins.lastRuleInfo;
 		}else{
 			ruleInfo = CreateRoomHelper.ins.myLastRuleInfo ? CreateRoomHelper.ins.myLastRuleInfo : null
 		}
 		let temp : TableRuleTempl = new TableRuleTempl();
-		temp.name = "我的测试";
-		temp.rule = ruleInfo;
+		if(this.ruleTemp){
+			temp = this.ruleTemp;
+		}else{
+			temp.rule = ruleInfo;
+		}
 		let item : CreateRoomRuleItem = cc.instantiate(Global.Utils.getPreFabBySource("createRoom/prefab/BaseRuleItem")).getComponent(BaseRuleItem);
-		item.setData(this.ruleTemp)
+		item.setData(temp)
 		this.itemArray.push(item);
 		item = cc.instantiate(Global.Utils.getPreFabBySource("createRoom/prefab/FeaturesRuleItem")).getComponent(FeaturesRuleItem);
-		item.setData(this.ruleTemp)
+		item.setData(temp)
 		this.itemArray.push(item);
 		item = cc.instantiate(Global.Utils.getPreFabBySource("createRoom/prefab/FanRuleItem")).getComponent(FanRuleItem);
-		item.setData(this.ruleTemp)
+		item.setData(temp)
 		this.itemArray.push(item);
 		let _y:number=0;
 		for(let i = 0 ; i < this.itemArray.length ; i++){
@@ -193,11 +198,15 @@ export default class CreateRoomRulerPanel extends UIBase {
 		for(let i = 0 ; i < this.itemArray.length ; i++){
 			this.itemArray[i].disTory();
 		}
+		this.ruleItemGrtoup.removeAllChildren();
 		this.itemArray = [];
 	}
 
     /**返回*/
 	 onBackClick(){
+		let info : TableRuleInfo = this.getCreateInfo();
+		CreateRoomHelper.ins.lastRuleInfo = info;
+		CreateRoomHelper.ins.lastRuleName = (this.itemArray[0] as BaseRuleItem).getRuleName();
 		this.callBack.bind(this.thisObj)(1);
 	}
 	/**去保存*/
@@ -214,7 +223,6 @@ export default class CreateRoomRulerPanel extends UIBase {
 		msg.ruleInfo =  temp;
 		CreateRoomHelper.ins.lastSaveTemplate = msg.ruleInfo;
 		 Global.mgr.socketMgr.send(-1 , msg);
-        
 	}
 	/**保存*/
 	 onSaveClick(){
@@ -236,6 +244,7 @@ export default class CreateRoomRulerPanel extends UIBase {
 	}
 
 	disTory(){
+		this.clearElements();
 		super.disTory();
 	}
 }

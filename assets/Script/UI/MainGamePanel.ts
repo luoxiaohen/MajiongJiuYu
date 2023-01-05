@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-08 09:24:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-18 18:15:30
+ * @LastEditTime: 2022-11-24 17:29:19
  * @FilePath: \MajiongJiuYu\assets\Script\UI\MainGamePanel.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -38,11 +38,8 @@ export default class MainGamePanel extends UIBase {
             // this.showTest();
         }).start();
         this.addEvent();
-
-
         cc.systemEvent.on("keydown", this.onKeyDown, this);
     }
-
     private onKeyDown(e : cc.Event.EventKeyboard){
         if(e.keyCode == 192){
             if(this.gm){
@@ -70,18 +67,35 @@ export default class MainGamePanel extends UIBase {
         Global.EventCenter.addEventListener(EventType.BackToLobby , this.onBackToLobby , this);
         Global.EventCenter.addEventListener(EventType.GET_NEW_ROOM_INFO , this.onCreateOneRoom , this);
 		Global.EventCenter.addEventListener(EventType.GameInviteMsg , this.onGameInvite , this);
+        Global.EventCenter.addEventListener(EventType.NotVoteCloseRslt,this.NotVoteCloseRslt,this);
+        Global.EventCenter.addEventListener(EventType.GameOverMsg,this.onGameOverMsg,this);
+
+
     }
-
-
     private removeEevnt(){
         Global.EventCenter.removeEventListener(EventType.BackToLobby , this.onBackToLobby , this);
         Global.EventCenter.removeEventListener(EventType.GET_NEW_ROOM_INFO , this.onCreateOneRoom , this);
 		Global.EventCenter.removeEventListener(EventType.GameInviteMsg , this.onGameInvite , this);
+        Global.EventCenter.removeEventListener(EventType.NotVoteCloseRslt,this.NotVoteCloseRslt,this);
 
     }
+    private onGameOverMsg():void{
+        if(GameInfo.ins.isDissolutingRoom){
+            Global.DialogManager.createDialog("smallOver/prefab/BigOverPanel",null, (any,createDialog)=>{
+				createDialog.y = 0;
+			})
+        }
+    }
     private onBackToLobby():void{
-        cc.director.loadScene("majiong");
+        cc.director.loadScene("majiong",function(){
+            GameInfo.ins.nowSceneName="majiong";
+        });
         this.desTory();
+    }
+    private NotVoteCloseRslt():void{
+        this.scheduleOnce(function(){
+            GameInfo.ins.dissolutInCoolTime=false;
+        },60,);
     }
     private onCreateOneRoom():void{
         GameInfo.ins.resetRealTimeRreformanceData();
@@ -102,6 +116,8 @@ export default class MainGamePanel extends UIBase {
         })
     }
     public desTory(){
+        GameInfo.ins.dissolutInCoolTime=false;
+        this.unscheduleAllCallbacks();
         super.destroy();
         this.removeEevnt();
     }

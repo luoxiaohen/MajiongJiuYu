@@ -1,11 +1,9 @@
-import { BaseIDMsg, BaseMsg, MSG_MID } from "./BaseMsg";
-import { LobbyBaseInfo, PlayerData, TableRuleInfo, TableRuleTempl } from "./LobbyMsgDef";
-import { BaseStepRcd, RcdSummInfo, RcdSummScoreInfo, RcdSummUnit } from "./MahjStepMsgDef";
+import { BaseMsg, BaseIDMsg, MSG_MID } from "./BaseMsg";
+import { PlayerData, LobbyBaseInfo, TableRuleInfo, TableRuleTempl, MailUnit } from "./LobbyMsgDef";
+import { RecordUnit, MonthRecord, MahjTopInfo, MahjPlayerInfo, MahjScoreInfo } from "./MagRecordDef";
+import { RcdSummUnit, BaseStepRcd, RcdSummInfo, RcdSummScoreInfo } from "./MahjStepMsgDef";
 import { CountType, PlayerBaseCount, PlayerFeeCount, PlayerMaxMajs, PubBaseCount } from "./MsgCountDef";
 import { FinalPlayerCalcInfo } from "./TableMsgDef";
-
-
-
 
 /**
 * Created by admin on 2022/5/30.
@@ -56,12 +54,35 @@ export enum LobMSG_SID {
 	CS_GetPubBaseCount,                 // 32获取全服统计数据
 	SC_PubBaseCountData,            // 33返回全服统计数据
 	
+	// 邀请进入房间（再来一局）
 	CS_TableInvite,                     // 34主动邀请玩家进入房间
-	SC_InviteTable,                 // 35邀请进入某个房间
+	SC_InviteTable,                 // 35接收邀请进入某个房间
 	
+	// 战绩信息获取
+	CS_GetPlayerRecord,                 // 36获取玩家7日战绩
+	SC_PlayerRecord,                // 37玩家7日战绩信息
+	CS_GetMonthRecord,                  // 38获取玩家往期战绩
+	SC_MonthRecord,                 // 39玩家往期战绩信息
+	CS_GetMahjRecord,                   // 40获取牌局详情
+	SC_MahjRecord,                  // 41牌局详情
+	CS_GetMahjRecordScore,              // 42获取多个牌局积分信息
+	SC_MahjRecordScore,             // 43牌局积分信息
+	
+	SC_ExitByLogin,                 // 44账号被顶下线消息
+	
+	// 个人信息基础设定
+	CS_InitPlayerInfo,                  // 首次注册后，需要完善个人信息
+	SC_PlayerOK,                    // 修改个人信息后的数据
+	CS_SetPlayerInfo,                   // 玩家角色信息编辑后保存 返回SC_PlayerOK
+	CS_ChangeNike,                      // 付费修改昵称
+	SC_NewNike,                     // 修改后昵称
+	
+	// 邮件
+	SC_SyncMails,                   // 上线同步当前邮件列表
+	SC_NewMail,                     // 新邮件推送
+	CS_ReadMail,                        // 邮件阅读标记
 	// 大厅刷新牌桌的信息暂时没有，后面根据具体需要来考虑
 	
-	// 断线重连,是否要考虑重连的哪个网关服?
 	MSG_MAX
 }
 
@@ -83,7 +104,8 @@ export class Msg_CS_TokenLogin extends BaseIDMsg {
 // 玩家信息-表示登陆成功
 export class Msg_SC_PlayerInfo extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_PlayerInfo ); }
-	public   info: PlayerData; // 玩家详细信息
+	public   info: PlayerData;       // 玩家详细信息
+	public                      curSec: number;     // 当前服务器时间戳（单位秒）
 }
 
 //大厅信息-大厅一些基本数据
@@ -308,13 +330,120 @@ export class Msg_CS_TableInvite extends BaseIDMsg {
 	public                objs: number[];       // 邀请对象的GPID列表
 }
 
-//35邀请进入某个房间
+//35接收邀请进入某个房间
 export class Msg_SC_InviteTable extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_InviteTable ); }
 	public    info: TableRuleInfo;       // 牌桌创建的规则信息
 	public                       name: string;       // 创建的名字，null或者""，默认用玩家昵称
 	public                       inviter: string;    // 邀请者昵称
 	public                          roomCode: number;   // 房间号
+}
+
+//获取玩家7日战绩
+export class Msg_CS_GetPlayerRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_GetPlayerRecord ); }
+}
+
+//玩家7日战绩信息
+export class Msg_SC_PlayerRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_PlayerRecord ); }
+	public    rcds: RecordUnit[];       // 每局战绩记录
+}
+
+//获取玩家往期战绩
+export class Msg_CS_GetMonthRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_GetMonthRecord ); }
+}
+
+//玩家往期战绩信息
+export class Msg_SC_MonthRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_MonthRecord ); }
+	public    rcds: MonthRecord[];      // 每月对战记录
+}
+
+//获取牌局详情
+export class Msg_CS_GetMahjRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_GetMahjRecord ); }
+	public                           tid: string;        // 牌局唯一ID
+}
+
+//牌局详情
+export class Msg_SC_MahjRecord extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_MahjRecord ); }
+	public                           tid: string;        // 牌局唯一ID
+	public       summ: RcdSummInfo;       // 房间信息
+	public         tops: MahjTopInfo;       // top信息
+	public players: MahjPlayerInfo[];   // 参与玩家列表
+}
+
+//42获取多个牌局积分信息
+export class Msg_CS_GetMahjRecordScore extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_GetMahjRecordScore ); }
+	public                     tids: string[];       // 所要获取的牌局tid列表
+}
+
+//43牌局积分信息
+export class Msg_SC_MahjRecordScore extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_MahjRecordScore ); }
+	public infos: MahjScoreInfo[];      // 积分信息
+}
+
+//44账号被顶下线消息
+export class Msg_SC_ExitByLogin extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_ExitByLogin ); }
+}
+
+//首次注册后，需要完善个人信息
+export class Msg_CS_InitPlayerInfo extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_InitPlayerInfo ); }
+	public   face: string;       // 暂时仅作测试，通过另外消息上传头像
+	public   nike: string;       // 昵称
+	public   sign: string;       // 个性签名
+	public      sex: number;        // 性别
+}
+
+//修改个人信息后的数据
+export class Msg_SC_PlayerOK extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_PlayerOK ); }
+	public   info: PlayerData;       // 玩家详细信息
+}
+
+//玩家角色信息编辑后保存 返回SC_PlayerOK
+export class Msg_CS_SetPlayerInfo extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_SetPlayerInfo ); }
+	public   face: string;       // 暂时仅作测试，通过另外消息上传头像
+	public      sex: number;        // 性别
+	public   sign: string;       // 个性签名
+}
+
+//付费修改昵称
+export class Msg_CS_ChangeNike extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_ChangeNike ); }
+	public   nike: string;       // 昵称
+}
+
+//修改后昵称
+export class Msg_SC_NewNike extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_NewNike ); }
+	public   nike: string;       // 昵称
+}
+
+//上线同步当前邮件列表
+export class Msg_SC_SyncMails extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_SyncMails ); }
+	public   mails: MailUnit[];  // 所有邮件列表
+}
+
+//新邮件推送
+export class Msg_SC_NewMail extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.SC_NewMail ); }
+	public         mail: MailUnit;  // 新增邮件
+}
+
+//邮件阅读标记
+export class Msg_CS_ReadMail extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_LobbyMsg,  LobMSG_SID.CS_ReadMail ); }
+	public    mailids: number[];     // 已经阅读的邮件ID列表
 }
 
 

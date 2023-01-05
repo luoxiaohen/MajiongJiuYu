@@ -1,7 +1,7 @@
-import { BaseIDMsg, BaseMsg, MSG_MID } from "./BaseMsg";
+import { BaseMsg, BaseIDMsg, MSG_MID } from "./BaseMsg";
 import { PlayerInfo } from "./LobbyMsgDef";
 import { RcdSummUnit } from "./MahjStepMsgDef";
-import { FinalPlayerCalcInfo, GameResultInfo, GameScoreInfo, HorserInfo, HorserTableInfo, HorseSelInfo, MsgMajSer, RoomTableInfo, ScoreEventInfo, SitDiceInfo, SitInfo, SitQueInfo } from "./TableMsgDef";
+import { RoomTableInfo, SitInfo, HorserInfo, SitDiceInfo, SitQueInfo, MsgMajSer, GameResultInfo, GameScoreInfo, FinalPlayerCalcInfo, ScoreEventInfo, HorseSelInfo, HorserTableInfo, GameBackScene, GamePlayerScene, HandsInfo, HorseScoreInfo } from "./TableMsgDef";
 
 
 
@@ -26,7 +26,7 @@ export enum TabMSG_SID {
 	SC_OneLeave,                    // 10广播某人离开
 	
 	// 牌局
-	SC_StartDiceEast,               // 11开始定庄
+	SC_StartDiceEast,               // 11开始定庄   定庄去掉，协议保留，不在发送
 	SC_StartDicePos,                // 12开始定位
 	SC_StartDiceGame,               // 13刷新新的位置。
 	SC_BeginDiceMsg,                // 14开始牌局，需要庄家掷骰子决定开始
@@ -94,7 +94,7 @@ export enum TabMSG_SID {
 	CS_SelHorse,                        // 70玩家选马牌(用于庄家买马房间的流程里)
 	SC_SelHorseRslt,                // 71广播选马牌结果（所有人选完以后统一广播）
 	
-	SC_HorseRoomInfo,               // 72买马后的给买马者单独推送的房间信息
+	SC_HorseRoomInfo,               // 72买马后的给买马者单独推送的房间信息，上线重新登陆推送
 	SC_NewHorseScoreRslt,           // 73买马战绩，一手结束后给买马者单独推送的信息
 	SC_HorseRoomState,              // 74给买马者单独推送的房间状态和结算信息
 	SC_CancelBuyHorse,              // 75给买马者单独推送的取消买马信息
@@ -102,6 +102,12 @@ export enum TabMSG_SID {
 	CS_Fan3Tin,                         // 76出现3番下叫，每手牌出现发送一次（只有3番时才发送，用于统计）
 	SC_LimitHuPeng,                 // 77出现受限制的胡碰消息（因过手胡过手碰和2分起胡限制的胡碰消息）
 	SC_NextTrunOK,                  // 78广播谁点了下一手
+	
+	SC_SyncEndHandsInfo,            // 79重新上线，同步当前局往手记录（含买马信息的往手战绩）
+	SC_SyncEndHorseInfo,            // 80重新上线，同步当前玩家买马记录（每一手买中信息）
+	CS_GetEyesList,                     // 81获取旁观者列表(打开牌局相应界面时获取)
+	SC_SyncEyesList,                // 82返回旁观者列表
+	
 	MSG_MAX
 }
 
@@ -458,7 +464,7 @@ export class Msg_SC_RealScore extends BaseIDMsg {
 //刷新某个玩家信息(在桌的)
 export class Msg_SC_UpdatePlayerInfo extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_UpdatePlayerInfo ); }
-	public  sitInfo: SitInfo;     // 刷新的玩家信息
+	public  sitInfo: SitInfo;     // 刷新的玩家信息（里面的online表示最新的在离线状态，如果重新连接在线的，里面的gpid也是最新的）
 }
 
 //重新上线，同步当前牌局
@@ -467,14 +473,9 @@ export class Msg_SC_SyncGameState extends BaseIDMsg {
 	public    info: RoomTableInfo;       // 牌桌信息
 	public    players: SitInfo[];    // 玩家列表
 	public horsers: HorserInfo[];    // 买马者列表
-	public                          gameState: number;          // 当前状态，EMGameState
-	public                          diceBig: number;            // 骰子数1
-	public                          diceSmall: number;          // 骰子数2
-	public                          bankerSite: number;         // 桩位
-	public                          startHands: number;         // 第几手
-	// 当前出牌位，当前所出的牌，当前牌墙剩余数
-	// 个人手牌数量与碰杠列表
-	// 牌池列表
+	
+	public    mahjInfo: GameBackScene;   // 当前牌局基本信息
+	public  lstPlayerScene: GamePlayerScene[];      // /**所有玩家的牌组数据*/
 }
 
 //申请关闭房间
@@ -592,13 +593,14 @@ export class Msg_SC_SelHorseRslt extends BaseIDMsg {
 export class Msg_SC_NewHorseScoreRslt extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_NewHorseScoreRslt ); }
 	public   tid: string;                // 牌桌号
+	public      hsit: number;               // 马位（0-1）
 	public      handNum: number;            // 结束的是第几手，从0开始
 	public      majID: number;              // 买中牌面
 	public tar: PlayerInfo;  // 买中玩家信息
 	public      win: number;                // 战绩
 }
 
-//买马后的给买马者单独推送的房间信息
+//买马后的给买马者单独推送的房间信息，上线重新登陆推送
 export class Msg_SC_HorseRoomInfo extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_HorseRoomInfo ); }
 	public  info: HorserTableInfo;
@@ -611,6 +613,7 @@ export class Msg_SC_HorseRoomInfo extends BaseIDMsg {
 export class Msg_SC_HorseRoomState extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_HorseRoomState ); }
 	public   tid: string;                // 牌桌号
+	public      hsit: number;               // 马位（0-1）
 	public      state: number;              // 0=未开始，1=开始，2=结束
 	public      win: number;                // 本局总战绩
 }
@@ -619,6 +622,7 @@ export class Msg_SC_HorseRoomState extends BaseIDMsg {
 export class Msg_SC_CancelBuyHorse extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_CancelBuyHorse ); }
 	public   tid: string;                // 牌桌号
+	public      hsit: number;               // 马位（0-1）
 }
 
 // 出现3番下叫，每手牌出现发送一次（只有3番时才发送，用于统计）
@@ -637,6 +641,30 @@ export class Msg_SC_LimitHuPeng extends BaseIDMsg {
 export class Msg_SC_NextTrunOK extends BaseIDMsg {
 	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_NextTrunOK ); }
 	public      sit: number;                // 点了下一手的位置
+}
+
+// 79重新上线，同步当前局往手记录（含买马信息的往手战绩）
+export class Msg_SC_SyncEndHandsInfo extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_SyncEndHandsInfo ); }
+	public  hands: HandsInfo[];      // 牌局上已完成的每一手牌普基本信息
+}
+
+// 80重新上线，同步当前玩家买马记录（每一手买中信息）
+export class Msg_SC_SyncEndHorseInfo extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_SyncEndHorseInfo ); }
+	public horseInfo: HorseScoreInfo;    // 本局房间的买马信息
+}
+
+// 81获取旁观者列表(打开牌局相应界面时获取)
+export class Msg_CS_GetEyesList extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.CS_GetEyesList ); }
+}
+
+// 82返回旁观者列表
+export class Msg_SC_SyncEyesList extends BaseIDMsg {
+	public constructor() { super( MSG_MID.MID_TableMsg,  TabMSG_SID.SC_SyncEyesList ); }
+	public eyes: PlayerInfo[];           // 所有旁观者列表，含离开的
+	public                onlineAids: number[];     // 上面列表中目前仍在旁观的AID
 }
 
 

@@ -375,6 +375,9 @@ export default class GameTurntablePanel extends UIBase {
             }
         }
     }
+    public setSumCardNum(sumCardNum:number):void{
+        this.sumCardNum=sumCardNum;
+    }
 
     /**
     * 设置当前轮到的玩家

@@ -17,12 +17,17 @@ import CreateRommAndFriendPanel from "./createRoom/CreateRommAndFriendPanel";
 import CreateRoomHelper from "./createRoom/CreateRoomHelper";
 import CreateRoomRulerPanel from "./createRoom/CreateRoomRulerPanel";
 import CreateRoomRuleTemplate from "./createRoom/CreateRoomRuleTemplate";
-
+import HallGameRecordPanel from "./gameRecord/HallGameRecordPanel";
+import CreateRulerTips from "./createRoom/CreateRulerTips";
+import TimeAndMoveManager from "../mgr/TimeAndMoveManager";
+import PersonInfoPanel from "./personData/PersonInfoPanel";
+import UserInfo from "../Game/info/UserInfo";
+import { UIViewZorderEnum } from "../enum/EnumManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MainLobbyPanel extends UIBase {
-
+    public z_order=UIViewZorderEnum.HallPanels;
     @property(cc.Node)
     panelGroup: cc.Node = null;
 
@@ -47,15 +52,36 @@ export default class MainLobbyPanel extends UIBase {
     @property (cc.Node)
     tipsGroup : cc.Node = null;
 
-    private nowType : number = 3;
+    private _nowType: number = 3;
+    public get nowType(): number {
+        return this._nowType;
+    }
+    public set nowType(value: number) {
+        this._nowType = value;
+        this.showBtn();
+    }
+
+    private showBtn(){
+        let btnArr:Array<cc.Button> = [this.recordBtn , this.teamBtn , this.mainBtn , this.clubBtn , this.infoBtn]
+        let image : cc.Sprite;
+        for(let i = 0 ; i < 5  ; i++){
+            image = cc.find("/Background" , btnArr[i].node).getComponent(cc.Sprite);
+            Global.Utils.setGray(image , true)
+        }
+        image = cc.find("/Background" , btnArr[this.nowType-1].node).getComponent(cc.Sprite);
+        Global.Utils.setGray(image , false)
+    }
 
 
     private createRoomPanel : CreateRommAndFriendPanel;
     private createRoomRuler : CreateRoomRulerPanel;
+    private hallGameRecordPanel:HallGameRecordPanel;
+    private personInfoPanel:PersonInfoPanel;
     private createRoomTemplate : CreateRoomRuleTemplate;
     onLoad(): void {
         Global.Utils.debugOutput("MainLobbyPanel ==> onLoad")
         this.addEvent();
+        this.nowType = 3;
     }
 
     private addEvent(){
@@ -64,18 +90,25 @@ export default class MainLobbyPanel extends UIBase {
 
 		Global.EventCenter.addEventListener(EventType.RspGetRoomRuleTemplate , this.onGetTemplateBack , this);
 		Global.EventCenter.addEventListener(EventType.GameInviteMsg , this.onGameInvite , this);
+		Global.EventCenter.addEventListener(EventType.SaveRoomRuleTemplate , this.onSaveRoomRuleTemplate , this);
 
     }
-	private onShowRuleTips(){
-		// if(this.createRuleTips){
-		// 	this.clearCreateRuleTips();
-		// }
-		// this.createRuleTips = new CreateRoomRuleTips(e.data);
-		// this.topGroup.addChild(this.createRuleTips);
+ 
+    private ruleTips:CreateRulerTips;
+	private onShowRuleTips(e , num){
+        if(this.ruleTips){
+            this.ruleTips.disTory();
+        }
+        this.ruleTips = cc.instantiate(Global.Utils.getPreFabBySource("createRoom/prefab/CreateRulerTips")).getComponent(CreateRulerTips)
+        this.ruleTips.node.y = -1920;
+        this.ruleTips.setData(num);
+		this.tipsGroup.addChild(this.ruleTips.node);
 	}
     /**创建游戏房间返回*/
     private onRspRoomInfo(type,data:Msg_SC_RoomInfo){
-        cc.director.loadScene("mainMajiong");
+        cc.director.loadScene("mainMajiong",function(){
+            GameInfo.ins.nowSceneName="mainMajiong";
+        });
         this.destroy();
     }   
      /**主页按钮点击*/
@@ -97,6 +130,15 @@ export default class MainLobbyPanel extends UIBase {
         this.nowType = 1;
         Global.Utils.debugOutput("MainLobbyPanel ==> 战绩点击")
 
+        Global.DialogManager.createDialog('gameRecord/prefab/HallGameRecordPanel',null,(any,createDialog)=>{
+            this.hallGameRecordPanel = createDialog.getComponent(HallGameRecordPanel);
+            createDialog.y = -1920/2;
+            createDialog.x=540;
+        },this.panelGroup);
+
+    }
+    public showAddRoom(){
+        this.onTeamBtnClick(null , null);
     }
     /**约局按钮点击*/
     onTeamBtnClick(event, param){
@@ -118,6 +160,9 @@ export default class MainLobbyPanel extends UIBase {
 		}else{
 			this.showCreatePanel();
 		}
+        this.scheduleOnce(()=>{
+            this.createRoomPanel.node.active = false;
+        },TimeAndMoveManager.ins.showPanelTime)
 	}
     private showCreatePanel(ruleInfo : TableRuleTempl=null){
         Global.DialogManager.createDialog('createRoom/prefab/CreateRoomRulerPanel',null,(any,createDialog)=>{
@@ -141,6 +186,12 @@ export default class MainLobbyPanel extends UIBase {
 			}
 		}
 	}
+    private onSaveRoomRuleTemplate(){
+        Global.Utils.hidePanelAction(this.createRoomRuler.node , new cc.Vec2(-1080 , -1920) , ()=>{
+            this.clearRoomRule();
+        } , this);
+        this.showSavePanel();
+    }
     /**打开模板*/
 	private showSavePanel(){
 		this.clearRoomTemplate();
@@ -169,6 +220,7 @@ export default class MainLobbyPanel extends UIBase {
 	*/
 	private onTempLateBack(type:number , ruleInfo : TableRuleTempl=null){
 		if(type == 1){
+            this.createRoomPanel.node.active = true;
 			Global.Utils.hidePanelAction(this.createRoomTemplate.node , new cc.Vec2(-1080 , -1920) , ()=>{
 				this.clearRoomTemplate();
 			} , this);
@@ -202,6 +254,7 @@ export default class MainLobbyPanel extends UIBase {
 				this.clearRoomRule();
 			} , this);
 		}
+        this.createRoomPanel.node.active = true;
 	}
     private clearRoomRule(){
 		if(this.createRoomRuler){
@@ -228,6 +281,11 @@ export default class MainLobbyPanel extends UIBase {
         this.nowType = 5;
         Global.Utils.debugOutput("MainLobbyPanel ==> 个人信息点击")
 
+        
+        Global.Utils.createObjToNode('personData/prefab/PersonInfoPanel',this.panelGroup,null,cc.v2(540,-1920/2),(any,createDialog)=>{
+            this.personInfoPanel = createDialog.getComponent(PersonInfoPanel);
+        },);
+
     }
     private removeAll(){
         if(this.createRoomPanel){
@@ -237,6 +295,14 @@ export default class MainLobbyPanel extends UIBase {
         if(this.createRoomRuler){
             this.createRoomRuler.disTory();
             this.createRoomRuler = null;
+        }
+        if(this.hallGameRecordPanel){
+            this.hallGameRecordPanel.disTory();
+            this.hallGameRecordPanel=null;
+        }
+        if(this.personInfoPanel){
+            this.personInfoPanel.disTory();
+            this.personInfoPanel=null;
         }
     }
     private removeEvent(){
@@ -258,5 +324,4 @@ export default class MainLobbyPanel extends UIBase {
         this.removeEvent();
         return true;
     }
-
 }

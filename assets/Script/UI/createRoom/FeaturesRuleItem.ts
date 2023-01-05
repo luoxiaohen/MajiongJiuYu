@@ -30,6 +30,8 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
     piaoGroup : cc.Node = null;
     @property (cc.Node)
     piaoItemGroup : cc.Node = null;
+    @property(cc.Node)
+	piaoBG: cc.Node = null;
     @property (cc.Node)
     maGroup : cc.Node = null;
     @property (cc.Node)
@@ -75,8 +77,8 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
 		this.changeHeight = 271;
         if(this.ruleInfo){
 			this.nowGamePlayType = this.ruleInfo.gamePlayType;
-			this.isOpenPiao = this.ruleInfo.baozi;
-			this.doubleBao = this.ruleInfo.baoziDouble;
+			this.isOpenPiao = this.ruleInfo.baozi ? this.ruleInfo.baozi : 0;
+			this.doubleBao = this.ruleInfo.baoziDouble ? this.ruleInfo.baoziDouble : 0;
 			this.showPiaoData();
 			if(this.isOpenPiao){
 				this.maMoveGroup.y = -604;
@@ -90,11 +92,11 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
                 this.showOrHide(this.piaoGroup , false);
 			}
 
-			this.haveHorse = this.ruleInfo.haveHorse;
-			this.buyHorseNum = this.ruleInfo.buyHorseNum;
-			this.buyHorseType = this.ruleInfo.buyHorseType;
-			this.isSelectBankerBuyHorse = this.ruleInfo.isSelectBankerBuyHorse;
-			this.isSelectEatHorse = this.ruleInfo.isSelectEatHorse;
+			this.haveHorse = this.ruleInfo.haveHorse ? this.ruleInfo.haveHorse : 0;
+			this.buyHorseNum = this.ruleInfo.buyHorseNum ? this.ruleInfo.buyHorseNum : 0;
+			this.buyHorseType = this.ruleInfo.buyHorseType ? this.ruleInfo.buyHorseType : 0;
+			this.isSelectBankerBuyHorse = this.ruleInfo.isSelectBankerBuyHorse ? this.ruleInfo.isSelectBankerBuyHorse : 0;
+			this.isSelectEatHorse = this.ruleInfo.isSelectEatHorse ? this.ruleInfo.isSelectEatHorse : 0;
 			this.showMaData();
 
 			if(this.haveHorse){
@@ -196,6 +198,7 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
 	private openMa(){
 		this.haveHorse = 1;
 		this.buyHorseNum = 1;
+		this.buyHorseType = 1;
         this.showOrHide(this.maGroup , true);
 		this.isMoveUp = false;
 		CreateRoomHelper.ins.gameRuleItemIsMove = true;
@@ -242,9 +245,9 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
         this.showOrHide(this.piaoGroup , false);
 		this.isMoveUp = true;
 		CreateRoomHelper.ins.gameRuleItemIsMove = true;
-		this.changeHeight = 304;
-		let nowHeight : number = this.node.height;
-        cc.tween(this.node).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {height : nowHeight - this.changeHeight}).start();
+		this.changeHeight = this.nowGamePlayType == GamePlayTypeEnum.HuanSanZhang ? 304 : 204;
+		// let nowHeight : number = this.node.height;
+        cc.tween(this.node).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {height : this.getHeight()}).start();
         cc.tween(this.piaoItemGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {scaleY:0}).start()
         cc.tween(this.maMoveGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : -304}).call(()=>{
             CreateRoomHelper.ins.gameRuleItemIsMove = false;
@@ -257,12 +260,12 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
         this.showOrHide(this.piaoGroup , true);
 		this.isMoveUp = false;
 		CreateRoomHelper.ins.gameRuleItemIsMove = true;
-		this.changeHeight = 304;
-		let nowHeight : number = this.node.height;
+		this.changeHeight = this.nowGamePlayType == GamePlayTypeEnum.HuanSanZhang ? 304 : 204;
+		// let nowHeight : number = this.node.height;
         this.piaoItemGroup.active = true;
-        cc.tween(this.node).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {height : nowHeight + this.changeHeight}).start();
+        cc.tween(this.node).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {height : this.getHeight()}).start();
         cc.tween(this.piaoItemGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {scaleY:1}).start()
-        cc.tween(this.maMoveGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : -604}).call(()=>{
+        cc.tween(this.maMoveGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {y : -304 - this.changeHeight}).call(()=>{
             CreateRoomHelper.ins.gameRuleItemIsMove = false;
         }).start();
 		this.disPatchMove(this);
@@ -277,11 +280,11 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
 		if(this.isOpenPiao == 0 && this.haveHorse == 0){
 			return 467;
 		}else if(this.isOpenPiao > 0 && this.haveHorse == 0){
-			return 738;
+			return this.nowGamePlayType == GamePlayTypeEnum.HuanSanZhang ? 738 : 638;
 		}else if(this.isOpenPiao == 0 && this.haveHorse == 1){
 			return 844;
 		}else if(this.isOpenPiao > 0 && this.haveHorse == 1){
-			return 1144;
+			return this.nowGamePlayType == GamePlayTypeEnum.HuanSanZhang ? 1144: 1044;
 		}
 	}
     private showMaData(){
@@ -325,18 +328,22 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
 
 		if(this.isSelectBankerBuyHorse){
 			this.zhuangjiamaBox.textColor(CreateRoomHelper.ins.colorData[2]);
+			this.zhuangjiamaBox.showSelect(true);
 		}else{
 			this.zhuangjiamaBox.textColor(CreateRoomHelper.ins.colorData[1]);
+			this.zhuangjiamaBox.showSelect(false);
 		}
 
 		if(this.isSelectEatHorse){
 			this.buchiBox.textColor(CreateRoomHelper.ins.colorData[2]);
+			this.buchiBox.showSelect(true);
 		}else{
 			if(this.buyHorseNum == 2){
 				this.buchiBox.textColor(CreateRoomHelper.ins.colorData[1]);
 			}else{
 				this.buchiBox.textColor(CreateRoomHelper.ins.colorData[3]);
 			}
+			this.buchiBox.showSelect(false);
 		}
 
 	}
@@ -393,9 +400,25 @@ export default class FeaturesRuleItem extends CreateRoomRuleItem {
 					this.shuangbaoBox.textColor(CreateRoomHelper.ins.colorData[2]);
 				}
 			}
+
+			this.piaoItemGroup.height = 271;
+			this.piaoBG.height = 271;
+
+			if(this.isOpenPiao && !CreateRoomHelper.ins.gameRuleItemIsMove){
+				this.node.height = this.getHeight();
+				this.maMoveGroup.y = -608;
+			}
 		}else{
 			//不展示
 			this.shuangbaoBox.node.active  = false;
+
+			this.piaoItemGroup.height = 171;
+			this.piaoBG.height = 171;
+
+			if(this.isOpenPiao && !CreateRoomHelper.ins.gameRuleItemIsMove){
+				this.node.height = this.getHeight();
+				this.maMoveGroup.y = -508;
+			}
 		}
 	}
     private showOrHide(node : cc.Node , isShow:boolean){

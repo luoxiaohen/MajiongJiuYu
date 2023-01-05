@@ -355,7 +355,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        1427,
+        1394,
         0,
         0,
         0,
@@ -463,7 +463,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        1816,
+        1766,
         0,
         0,
         0,
@@ -571,7 +571,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        1138,
+        1087,
         0,
         0,
         0,
@@ -1074,7 +1074,7 @@
       "ctor": "Float64Array",
       "array": [
         260,
-        804,
+        642,
         0,
         0,
         0,
@@ -1498,7 +1498,7 @@
       "ctor": "Float64Array",
       "array": [
         395,
-        616,
+        520,
         0,
         0,
         0,
@@ -1918,7 +1918,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        420,
+        336,
         0,
         0,
         0,
@@ -1957,8 +1957,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "组织一场牌局,.邀请朋友一起游戏!",
-    "_N$string": "组织一场牌局,.邀请朋友一起游戏!",
+    "_string": "组织一场牌局,邀请朋友一起游戏!",
+    "_N$string": "组织一场牌局,邀请朋友一起游戏!",
     "_fontSize": 33,
     "_lineHeight": 33,
     "_enableWrapText": true,
@@ -2062,7 +2062,7 @@
       "ctor": "Float64Array",
       "array": [
         155,
-        1217,
+        1185,
         0,
         0,
         0,
@@ -2967,8 +2967,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 158,
-      "height": 40
+      "width": 768,
+      "height": 170
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2979,8 +2979,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -78,
-        20,
+        2,
+        170,
         0,
         0,
         0,
@@ -3012,7 +3012,11 @@
       "__id__": 76
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_string": "",

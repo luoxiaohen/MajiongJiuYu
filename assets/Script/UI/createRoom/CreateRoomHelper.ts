@@ -30,7 +30,7 @@ export default class CreateRoomHelper{
 	/**创建房间底注*/
 	public antesArr:Array<number> = [1,2,3,5,10,20,30,50,100,200,300,500,1000];
 	/**游戏手数选择*/
-	public allGameHnadsArr:Array<number> = [8 , 16];
+	public allGameHnadsArr:Array<number> = [8, 16];
 	/**游戏倍数选择选择*/
 	public allGameMultipleArr:Array<number> = [8 , 16 , 32];
 	public allGameMultipleStringArr:Array<string> = ["3番(8倍)","4番(16倍)","5番(32倍)"];
@@ -51,9 +51,15 @@ export default class CreateRoomHelper{
 	public myLastRuleInfo : TableRuleInfo;
 	/**我上一次请求保存得房间模板*/
 	public lastSaveTemplate : TableRuleTempl;
+	/***我上一次创建时候得模板*/
+	public lastRuleInfo : TableRuleInfo;
+	/***我上一次创建时候得模板名字*/
+	public lastRuleName : string = "";
+	/***我上一次加入的房间号*/
+	public myLastAddRoomId : number = 0;
 													
 	/**创建房间的模板*/
-	private createRoomRuleArr : Array<TableRuleTempl> = [];
+	private createRoomRuleArr : Array<TableRuleTempl> = null;
 	public setCreateRoomRuleArr(arr : Array<TableRuleTempl>){
 		this.createRoomRuleArr = arr;
 	}
@@ -114,7 +120,7 @@ export default class CreateRoomHelper{
 		17:"中张",
 		18:"幺九",
 		19:"将对",
-		20:"夹心5",
+		20:"夹心五",
 		21:"天地胡",
 		22:"无叫查大",
 

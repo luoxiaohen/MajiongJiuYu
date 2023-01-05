@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { CallBack } from "../../com/CallBack";
 import { AntesMultipleEnum } from "../../enum/EnumManager";
 import GameInfo from "../../Game/info/GameInfo";
 import { GamePiaoTypeEnum, GamePlayTypeEnum, GameRoomTypeEnum, TableRuleInfo, TableRuleTempl } from "../../proto/LobbyMsgDef";
@@ -64,8 +65,8 @@ export default class CreateRoomRuleTemplateItem extends UIBase {
 		this.showGameType();
 		this.showRoomType(); 
 		this.roomNameLabel.string = this.ruleTemplate ? this.ruleTemplate.name : "";
-		this.needCoinsLabel.string = this.getAll(this.ruleInfo.baseScore).toString();
-		this.gameHandsLabel.string = this.ruleInfo.handsCnt + "手";
+		this.needCoinsLabel.string = this.ruleInfo.baseScore.toString() + "   " ;
+		this.gameHandsLabel.string = this.ruleInfo.handsCnt + "手   ";
 		this.showPiao();
 		this.showMa();
 		this.setSelect(false);
@@ -102,27 +103,33 @@ export default class CreateRoomRuleTemplateItem extends UIBase {
 		this.callBack.bind(this.thisObj)(this ,2);
 	}
 	onDeletClick(){
-		this.callBack.bind(this.thisObj)(this ,3);
+		let callBack=CallBack.bind(function(){
+			this.callBack.bind(this.thisObj)(this ,3);
+		},this,true);
+		Global.Utils.dialogOutConfirm("确定删除模板?" , 2 , callBack , null , (dialog)=>{
+			dialog.x = 540;
+			dialog.y = -960;
+		} , this);
 	}
 	private showMa(){
 		if(this.ruleInfo.haveHorse){
 			this.horseImage.node.active = true;
 			this.horseNumLabel.node.active = true;
-			this.horseNumLabel.string = this.ruleInfo.buyHorseNum == 1 ? "1马" : "2马";
+			this.horseNumLabel.string = this.ruleInfo.buyHorseNum == 1 ? "1马   " : "2马   ";
 		}else{
 			this.horseImage.node.active = false;
 			this.horseNumLabel.node.active = false;
 		}
 	}
 	private showPiao(){
-		if(this.ruleInfo.baozi == GamePiaoTypeEnum.None){
+		if(!this.ruleInfo.hasOwnProperty('baozi') || this.ruleInfo.baozi == GamePiaoTypeEnum.None){
 			this.piaoImage.node.active = false;
 			this.piaoLabel.node.active = false;
 		}else{
 			this.piaoImage.node.active = true;
 			this.piaoLabel.node.active = true;
 			if(this.ruleInfo.baozi == GamePiaoTypeEnum.ZhuangJiaBiPiao){
-				this.piaoLabel.string = "庄家必飘";
+				this.piaoLabel.string = "庄家必飘   ";
 			}else{
 				let str : string = "";
 				if(this.ruleInfo.baozi == GamePiaoTypeEnum.ShuaiPiao){
@@ -133,7 +140,7 @@ export default class CreateRoomRuleTemplateItem extends UIBase {
 				if(this.ruleInfo.baoziDouble){
 					str += "(双豹)"
 				}
-				this.piaoLabel.string = str;
+				this.piaoLabel.string = str + "   ";
 			}
 		}
 	}

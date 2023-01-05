@@ -1,0 +1,16 @@
+info face="Daijishi" size=72 bold=0 italic=0 charset="" unicode=1 stretchH=100 smooth=1 aa=1 padding=1,1,1,1 spacing=1,1
+common lineHeight=72 base=55 scaleW=97 scaleH=105 pages=1 packed=0
+page id=0 file="Daijishi.png"
+chars count=12
+char id=32 x=0 y=0 width=0 height=0 xoffset=0 yoffset=0 xadvance=22 page=0 chnl=15
+char id=48 x=14 y=0 width=20 height=31 xoffset=0 yoffset=-1 xadvance=20 page=0 chnl=15
+char id=49 x=0 y=44 width=13 height=30 xoffset=0 yoffset=0 xadvance=13 page=0 chnl=15
+char id=50 x=35 y=0 width=20 height=31 xoffset=0 yoffset=-1 xadvance=20 page=0 chnl=15
+char id=51 x=56 y=0 width=20 height=31 xoffset=0 yoffset=-1 xadvance=20 page=0 chnl=15
+char id=52 x=0 y=75 width=22 height=30 xoffset=0 yoffset=0 xadvance=22 page=0 chnl=15
+char id=53 x=23 y=75 width=21 height=30 xoffset=0 yoffset=-1 xadvance=21 page=0 chnl=15
+char id=54 x=45 y=75 width=21 height=30 xoffset=0 yoffset=0 xadvance=21 page=0 chnl=15
+char id=55 x=67 y=75 width=21 height=30 xoffset=0 yoffset=-1 xadvance=21 page=0 chnl=15
+char id=56 x=14 y=32 width=20 height=30 xoffset=0 yoffset=0 xadvance=20 page=0 chnl=15
+char id=57 x=77 y=0 width=20 height=31 xoffset=1 yoffset=-1 xadvance=21 page=0 chnl=15
+char id=58 x=0 y=0 width=13 height=43 xoffset=2 yoffset=14 xadvance=18 page=0 chnl=15

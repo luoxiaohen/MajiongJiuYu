@@ -11,6 +11,7 @@ import UserInfo from "../../Game/info/UserInfo";
 import { Msg_CS_FindEnterRoom } from "../../proto/TableMsg";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
+import PersonDataHelp from "../../utils/PersonDataHelp";
 import CardHelpManager from "../card/CardHelpManager";
 
 const {ccclass, property} = cc._decorator;
@@ -51,11 +52,12 @@ export default class InviteToRoomPannel extends UIBase {
         let gameType:string = Global.Utils.getGameTypeNameByGameType(ruleInfo.roomType);
         let roomName = gameName + "-"+ gameType;
         this.game_type_label.string=roomName;
-        this.game_rule_label.string=Global.Utils.getRoomTableInfoStr(ruleInfo);
+        this.game_rule_label.string=PersonDataHelp.ins.getRoomTableInfoStr(ruleInfo);
         this.invite_player_label.string=inviteInfo.inviter;
         this.room_id_label.string=inviteInfo.roomCode.toString();
         this.down_score_label.string=ruleInfo.baseScore.toString();
         this.game_hand_label.string=ruleInfo.handsCnt.toString();
+        this.room_name_label.string=inviteInfo.name;
         let refuse_btn=this.node.getChildByName("refuse_btn");
         this.time_label=refuse_btn.getChildByName("time_label").getComponent(cc.Label);
         this.showCutDownTime();

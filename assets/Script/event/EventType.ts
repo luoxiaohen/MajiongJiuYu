@@ -53,6 +53,8 @@ export default class EventType{
 		public static StartDingQue : string ="StartDingQue";
 		/**某人的定缺返回*/
 		public static DingQue : string = "DingQue";
+		/**定缺状态改变*/
+		public static onDingQue : string = "onDingQue";
 		/**定缺结果返回*/
 		public static QueRslt : string = "QueRslt";
 		/**自己摸牌*/
@@ -96,6 +98,7 @@ export default class EventType{
 		/**游戏邀请 */
 		public static GameInviteMsg:string="GameInviteMsg";
 
+		public static RefreshSettingBts:string="RefreshSettingBts";
 		/**有i人请求关闭房间*/
 		public static RqCloseGame : string = "RqCloseGame";
 		/**有人同意解散*/
@@ -104,18 +107,38 @@ export default class EventType{
 		public static VoteCloseRslt : string = "VoteCloseRslt";
 		/**有人不同意解散房间*/
 		public static NotVoteCloseRslt : string = "NotVoteCloseRslt";
-
+		/**旁观者列表 */
+		public static EyesPlayerMsg:string="EyesPlayerMsg";
 		/**收到了实时积分消息*/
 		public static RealScore : string = "RealScore";
-
-
-
-
-
-
-
-
-
+		/**七日战绩信息 */
+		public static SevenPlayerRecord:string="SevenPlayerRecord";
+		/**战绩详细信息 */
+		public static GameRecordDetail:string="GameRecordDetail";
+		/**以往战绩 */
+		public static PastRecord:string="PastRecord";
+		/**当七日战绩被选择时 */
+		public static onSevenPlayerRecordChosed:string="onSevenPlayerRecordChosed";
+		/**当七日战绩统计数据返回 */
+		public static MahjRecordScore:string="MahjRecordScore";
+		/**战绩信息背景点击事件 */
+		public static OpenDataTypeItemBgClick:string="OpenDataTypeItemBgClick";
+		/**战绩信息点击 */
+		public static DataTypeItemBgClick:string="DataTypeItemClick";
+		/**基础战绩信息返回 */
+		public static GetBaseRecordMsg:string="GetBaseRecordMsg";
+		/**付费数据信息返回 */
+		public static GetFeeDataBackMsg:string="GetFeeDataBackMsg";
+		/**服务器付费数据信息返回 */
+		public static GetFeeServerDataBackMsg:string="GetFeeServerDataBackMsg";
+		/**返回最大收益牌型数据 */
+		public static GetMaxScoreMajsBackMsg:string="GetMaxScoreMajsBackMsg";
+		/**数据对比界面打开状态 */
+		public static DataComparePanelState:string="DataComparePanelState";
+		/**刷新个人信息 */
+		public static RefreshPlayerInfo:string="RefreshPlayerInfo";
+		/**刷新邮件读取状态 */
+		public static RefreshEmailReadState:string="RefreshEmailReadState";
 
 
 
@@ -175,5 +198,29 @@ export default class EventType{
 		public static OpenNewGame : string = "OpenNewGame";
 		/**展示豹子以及双豹*/
 		public static ShowBaoziFight : string = "ShowBaoziFight";
+
+
+
+		/**开始选择马牌*/
+		public static SelHorse : string = "SelHorse";
+		/**服务器刷新买马信息*/
+		public static UpdateHorser : string = "UpdateHorser";
+		/**庄家买马的结果*/
+		public static SelHorseRslt : string = "SelHorseRslt";
+		/**新的买马数据*/
+		public static HorseRoomInfo : string = "HorseRoomInfo";
+		/***买马局一手结束后的推送*/
+		public static NewHorseScoreRslt : string = "NewHorseScoreRslt";
+		/**买马推送的房间状态和结算信息**/
+		public static HorseRoomState : string = "HorseRoomState";
+		/**个人取消买马的推送**/
+		public static CancelBuyHorse : string = "CancelBuyHorse";
+
+
+		
+		/**自己点击定缺**/
+		public static OnSelfClickQue : string = "OnSelfClickQue";
+		/**自己手牌选中**/
+		public static OnMyHandCardSelect : string = "OnMyHandCardSelect";
 }
 

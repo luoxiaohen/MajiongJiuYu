@@ -35,7 +35,10 @@ export default class ChangeThreeItem extends UIBase {
 
     private createCard(){
         let myOut:Array<number> = GameInfo.ins.myYou3MajData.lstOuts;
+        myOut.sort(Global.Utils.compare)
+
         let myGet:Array<number> = GameInfo.ins.myYou3MajData.lstMajID;
+        myGet.sort(Global.Utils.compare)
         let chanegType:number = GameInfo.ins.myYou3MajData.type;
 
         let bgSource:string = ""
@@ -52,12 +55,17 @@ export default class ChangeThreeItem extends UIBase {
         let nowImage:cc.Sprite;
         for(let i = 0 ; i < myOut.length ; i++){
             nowImage = this["cardImage_"+i] as cc.Sprite;
-            Global.Utils.setNewImageToSprite(nowImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(myOut[i]));
+            // Global.Utils.setNewImageToSprite(nowImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(myOut[i]));
+            Global.Utils.setMJImageToSprite(nowImage , Global.Utils.getCardStrByValue(myOut[i]));
         }
         for(let i = 0 ; i < myGet.length ; i++){
             nowImage = this["cardImage_"+(i+3)] as cc.Sprite;
-            Global.Utils.setNewImageToSprite(nowImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(myGet[i]));
+            // Global.Utils.setNewImageToSprite(nowImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(myGet[i]));
+            Global.Utils.setMJImageToSprite(nowImage , Global.Utils.getCardStrByValue(myGet[i]));
         }
+    }
+    onCloseClick(){
+        this.disTory();
     }
 
     disTory(){

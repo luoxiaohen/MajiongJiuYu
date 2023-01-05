@@ -91,7 +91,7 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
         this.initElements();
 	}
 	public getHeight():number{
-		return this.nowSelectTiFan ? 1331 : 1106;
+		return this.nowSelectTiFan > 0 ? 1331 : 1106;
 	}
     private initElements(){
         GameInfo.ins.addItemToMultipleArray(AntesMultipleEnum.initial) ;
@@ -171,11 +171,11 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		if (this._touchStatus) {
 			if(e.getLocation().x - this._distance.x <= 0){
             	this.proSlitImage.node.x = 0;
-			}else if(e.getLocation().x - this._distance.x >=  this.proImage.node.width - this.proSlitImage.node.width){
-				this.proSlitImage.node.x = this.proImage.node.width - this.proSlitImage.node.width - 35;
+			}else if(e.getLocation().x - this._distance.x >=  this.proImage.node.width - this.proSlitImage.node.width - 40){
+				this.proSlitImage.node.x = this.proImage.node.width - this.proSlitImage.node.width - 40;
 			}
 			else{
-            	this.proSlitImage.node.x = e.getLocation().x - this._distance.x - 35;
+            	this.proSlitImage.node.x = e.getLocation().x - this._distance.x - 40;
 			}
 			if(this.proSlitImage.node.x < 0){
 				this.proSlitImage.node.x = 0;
@@ -192,7 +192,7 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		let one : number = allWidth / allLv;
 		let now : number = this.proSlitImage.node.x / one;
 		now = Number( now.toFixed(0) );
-		this.proImage.node.x = -917 + this.proSlitImage.node.x + this.proSlitImage.node.width;
+		this.proImage.node.x = -917 + this.proSlitImage.node.x + this.proSlitImage.node.width/2;
 		this.nowAntesIndex = now - 1 >= 0 ? now - 1 : 0;
 		this.setAntesLabel(CreateRoomHelper.ins.antesArr[this.nowAntesIndex]);
 	}
@@ -225,27 +225,22 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		if(CreateRoomHelper.ins.gameRuleItemIsMove){
 			return;
 		}
-		let box : CreateCheckItem = this.tiFanBox;
-		if(box.isCheck()){
+		CreateRoomHelper.ins.gameRuleItemIsMove = true;
+		let time:number =this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime;
+		if(this.nowSelectTiFan <= 0){
 			this.nowSelectTiFan = 1;
 			this.isMoveUp = false;
-			CreateRoomHelper.ins.gameRuleItemIsMove = true;
-			this.tiFanGroup.active = true;
-			cc.tween(this.tiFanGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {scaleY : 1 , opacity : 255}).call(()=>{
+			cc.tween(this.tiFanGroup).to(time , {scaleY : 1 }).call(()=>{
 				CreateRoomHelper.ins.gameRuleItemIsMove = false;
 			}).start();
-			this.disPatchMove(this);
 		}else{
 			this.nowSelectTiFan = 0;
 			this.isMoveUp = true;
-			CreateRoomHelper.ins.gameRuleItemIsMove = true;
-			cc.tween(this.tiFanGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime/2 , {opacity : 0}).start();
-			cc.tween(this.tiFanGroup).to(this.changeHeight*TimeAndMoveManager.ins.gameRuleItemMoveTime , {scaleY : 0}).call(()=>{
+			cc.tween(this.tiFanGroup).to(time , {scaleY : 0}).call(()=>{
 				CreateRoomHelper.ins.gameRuleItemIsMove = false;
-				this.tiFanGroup.active = false;
 			}).start();
-			this.disPatchMove(this);
 		}
+		this.disPatchMove(this);
 		this.initTiFanGroup()
 	}
 	private onRoomBtnClick(e){
@@ -255,7 +250,7 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 	}
 	private onXueZhanClick(e){
 		let clickGrou:cc.Node = e.currentTarget as cc.Node;
-		let type : GamePlayTypeEnum = clickGrou.name == "gamePlay1" ? GamePlayTypeEnum.XueZhanDaoDi : GamePlayTypeEnum.HuanSanZhang;
+		let type : GamePlayTypeEnum = clickGrou.name == "xuezhanBtn" ? GamePlayTypeEnum.XueZhanDaoDi : GamePlayTypeEnum.HuanSanZhang;
 		Global.EventCenter.dispatchEvent(EventType.GameRuleChangePlayType , type)
 		this.showSelectGroup(clickGrou)
 		if(type == GamePlayTypeEnum.XueZhanDaoDi){
@@ -273,7 +268,7 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		this.showTiFan();
 	}
     private showTiFan(){
-		if(this.nowSelectTiFan == 0){
+		if(this.nowSelectTiFan <= 0){
 			this.tiFanBox.setData(1 , false , 1 , true);
 		}else{
 			this.tiFanBox.setData(1 , true , 1 , true);
@@ -298,6 +293,7 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		let oneWidth : number = 917 / allArr.length;
 		let move : number = this.nowAntesIndex * oneWidth - 56/2;
 		this.proSlitImage.node.x = move < 0 ? 0 : move;
+		this.proImage.node.x = -917 + this.proSlitImage.node.x + this.proSlitImage.node.width/2;
 	}
     private showSelectMut(){
         this.ceilingItem.setData(CreateRoomHelper.ins.allGameMultipleStringArr , this.nowSelectMut , "封顶" , this.onMutChange , this)
@@ -370,24 +366,22 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		this.nowRoomType = info.roomType;
 		let arr:Array<cc.Node> = [this.roomBtn_0 , this.roomBtn_1 , this.roomBtn_2 , this.roomBtn_3];
 		for(let i = 0 ; i < arr.length ; i++){
-			if(Number(arr[i].name.split("_")[1]) == this.nowRoomType){
+			if(Number(arr[i].name.split("_")[1]) == this.nowRoomType-1){
 				this.nowSelectRoomBtn = arr[i];
 			}
 		}
 		this.showSelectRoomBtn(this.nowSelectRoomBtn);
-		this.roomNameInputLabel.string = this.ruleTemplate ? this.ruleTemplate.name : ""; 
+		this.roomNameInputLabel.string = this.ruleTemplate.name ? this.ruleTemplate.name : CreateRoomHelper.ins.lastRuleName; 
 		this.nowAntesIndex = CreateRoomHelper.ins.antesArr.indexOf(info.baseScore)
 		this.nowSelectHand = CreateRoomHelper.ins.allGameHnadsArr.indexOf(info.handsCnt);
 		this.nowSelectMut = CreateRoomHelper.ins.allGameMultipleArr.indexOf(info.ceiling);
 		this.nowSelectTiFan = CreateRoomHelper.ins.allGameTiFanArr.indexOf (info.tiFan);
-		if(this.nowSelectTiFan){
+		if(this.nowSelectTiFan > 0){
             this._height = 1331;
 			this.tiFanGroup.scaleY = 1;
-			this.tiFanGroup.active = true;
 		}else{
             this._height = 1106;
 			this.tiFanGroup.scaleY = 0;
-			this.tiFanGroup.active = false;
 		}
 	}
     private showSelectRoomBtn(clickGrou:cc.Node){
@@ -417,7 +411,11 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 
 
 	public getRuleName():string{
-		return this.roomNameInputLabel.string;
+		let name:string = this.roomNameInputLabel.string;
+		if(name.length <= 0){
+			name = "未命名房间";
+		}
+		return name;
 	}
 
 
@@ -430,6 +428,9 @@ export default class BaseRuleItem extends CreateRoomRuleItem {
 		this.tableInfo.baseScore = CreateRoomHelper.ins.antesArr[this.nowAntesIndex];
 		this.tableInfo.handsCnt = CreateRoomHelper.ins.allGameHnadsArr[this.nowSelectHand]
 		this.tableInfo.ceiling = CreateRoomHelper.ins.allGameMultipleArr[this.nowSelectMut];
+		if(this.nowSelectTiFan <= 0){
+			this.nowSelectTiFan = 0;
+		}
 		this.tableInfo.tiFan = CreateRoomHelper.ins.allGameTiFanArr[this.nowSelectTiFan];
 		return this.tableInfo;
 	}

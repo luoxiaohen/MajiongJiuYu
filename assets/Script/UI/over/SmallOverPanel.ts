@@ -11,10 +11,10 @@ import UserInfo from "../../Game/info/UserInfo";
 import { Msg_CS_NextTrun, Msg_SC_GameResultMsg, Msg_SC_ScoreListMsg } from "../../proto/TableMsg";
 import { GameResultInfo, ScoreEventInfo, SitInfo } from "../../proto/TableMsgDef";
 import { Global } from "../../Shared/GloBal";
+import Main from "../../Shared/Main";
 import UIBase from "../../UIBase";
 import { OverBuyHorseInfoData, OverPlayerItemInfoData } from "../../utils/InterfaceHelp";
 import CardHelpManager from "../card/CardHelpManager";
-import OverBuyHorseItem from "./OverBuyHorseItem";
 import OverGameinfoItem from "./OverGameinfoItem";
 import OverHandCardItem from "./OverHandCardItem";
 import OverHorseInfoItem from "./OverHorseInfoItem";
@@ -124,32 +124,45 @@ export default class SmallOverPanel extends UIBase {
             this.playerHandItem = cc.instantiate(this.playerHandPrefab).getComponent(OverHandCardItem);
         }
         let huCatd : number= GameInfo.ins.hupaiArr[resultInfo.sitNum] ? GameInfo.ins.hupaiArr[resultInfo.sitNum] : -1;
-        this.playerHandItem.setNewData(resultInfo.lstPuts , resultInfo.lstMajs , huCatd);
+        this.playerHandItem.setNewData(resultInfo.lstPuts , resultInfo.lstMajs , huCatd, 0.6, resultInfo.sitNum);
 		if(!this.playerHandItem.node.parent){
 			this.infoGroup.addChild(this.playerHandItem.node);
 		}
     }
     private showSelectMa(sitInfo : SitInfo , resultInfo : GameResultInfo){
-        if(this.playerHorseItem == null){
-            this.playerHorseItem = cc.instantiate(this.playerHorsePrefab).getComponent(OverHorseInfoItem);
-        }
-        let arr: Array<OverBuyHorseInfoData> = [];
-        let data1 : OverBuyHorseInfoData = new OverBuyHorseInfoData();
-        data1.buyCoun = 105;
-        data1.cardValue = 9;
-        data1.fen = 25;
-        data1.horesNum = 1;
-        data1.playerHead = 1;
-        let data2 : OverBuyHorseInfoData = new OverBuyHorseInfoData();
-        data2.buyCoun = 107;
-        data2.cardValue = 26;
-        data2.fen = -18;
-        data2.horesNum = 2;
-        data2.playerHead = 1;
-        arr = [data1 , data2];
-        this.playerHorseItem.horseArr = arr;
-		if(!this.playerHorseItem.node.parent){
-			this.infoGroup.addChild(this.playerHorseItem.node);
+		let arr: Array<OverBuyHorseInfoData> = [];
+		let maInfo : GameResultInfo = this.getGameResultInfo(4);
+		if(maInfo){
+			let data1 : OverBuyHorseInfoData = new OverBuyHorseInfoData();
+			data1.buyCoun = GameInfo.ins.gameHorseArray[0].majNum;
+			data1.cardValue = maInfo.rain;
+			data1.fen = maInfo.horseScore;
+			data1.horesNum = 1;
+			data1.playerHead = 1;
+			if(maInfo.huNum == sitInfo.sitNum){
+				arr.push(data1);
+			}
+		}
+		maInfo = this.getGameResultInfo(5);
+		if(maInfo){
+			let data2 : OverBuyHorseInfoData = new OverBuyHorseInfoData();
+			data2.buyCoun = GameInfo.ins.gameHorseArray[1].majNum;
+			data2.cardValue = maInfo.rain;
+			data2.fen = maInfo.horseScore;
+			data2.horesNum = 2;
+			data2.playerHead = 1;
+			if(maInfo.huNum == sitInfo.sitNum){
+				arr.push(data2);
+			}
+		}
+		if(arr.length > 0){
+			if(this.playerHorseItem == null){
+				this.playerHorseItem = cc.instantiate(this.playerHorsePrefab).getComponent(OverHorseInfoItem);
+			}
+			this.playerHorseItem.horseArr = arr;
+			if(!this.playerHorseItem.node.parent){
+				this.infoGroup.addChild(this.playerHorseItem.node);
+			}
 		}
     }
     private showSelectPlayerData(sitInfo : SitInfo , resultInfo : GameResultInfo){
@@ -163,7 +176,6 @@ export default class SmallOverPanel extends UIBase {
         data.isPaio = false;
         data.huType = resultInfo.state == 2 ? resultInfo.huNum : -1;
         data.fenCount = resultInfo.score;
-
         this.playerInfoItem.itemInfoDat = data;
 		if(!this.playerInfoItem.node.parent){
 			this.infoGroup.addChild(this.playerInfoItem.node);
@@ -183,24 +195,37 @@ export default class SmallOverPanel extends UIBase {
 		}else{
 			newInfo = this.sortWin();
 		}
-
 		let player : SmallOverPlayerHead;
 		for(let i = 0 ; i < newInfo.length ; i++){
-
-			player = cc.instantiate(this.playerHeadPrefab).getComponent(SmallOverPlayerHead);
-            player.setPlayerData(newInfo[i] , this.gameResultMsg.isBreak == 1);
-            if(newInfo[i].sitNum == UserInfo.ins.mySitIndex){
-                player.isSelect = true;
-                this.selectPlayer = player;
-                this.createValueElement()
-            }else{
-                player.isSelect = false;
-            }
-            this.playerHeadGroup.addChild(player.node);
-            this.playerArr[i] = player;
-            player.node.on(cc.Node.EventType.TOUCH_START , this.onPlayerClick , this);
+			if(newInfo[i].sitNum <= 3){
+				player = cc.instantiate(this.playerHeadPrefab).getComponent(SmallOverPlayerHead);
+				let arr:Array<number> = this.getHitHorse(newInfo[i].sitNum);
+				player.setPlayerData(newInfo[i] , this.gameResultMsg.isBreak == 1 , arr);
+				if(newInfo[i].sitNum == UserInfo.ins.mySitIndex){
+					player.isSelect = true;
+					this.selectPlayer = player;
+					this.createValueElement()
+				}else{
+					player.isSelect = false;
+				}
+				this.playerHeadGroup.addChild(player.node);
+				this.playerArr[i] = player;
+				player.node.on(cc.Node.EventType.TOUCH_START , this.onPlayerClick , this);
+			}
 		}
     }
+	private getHitHorse(sitNum:number):Array<number>{
+		let arr:Array<number> = [];
+		let maInfo : GameResultInfo = this.getGameResultInfo(4);
+		if(maInfo && maInfo.huNum == sitNum){
+			arr.push(1);
+		}
+		maInfo = this.getGameResultInfo(5);
+		if(maInfo && maInfo.huNum == sitNum){
+			arr.push(2);
+		}
+		return arr;
+	}
     private onPlayerClick(e ){
 		let player : SmallOverPlayerHead = e.currentTarget.getComponent(SmallOverPlayerHead);
 		if(player.isSelect){
@@ -212,69 +237,32 @@ export default class SmallOverPanel extends UIBase {
 		this.createValueElement();
 	}
     private sortWin():Array<GameResultInfo>{
-		let arr:Array<GameResultInfo> = [];
-		let info:GameResultInfo;
 		let tempArr:Array<GameResultInfo> = [];
-		let sortArr:Array<GameResultInfo> = [];
 		for(let i = 0 ; i < this.gameResultMsg.results.length ; i++){
-			info = this.gameResultMsg.results[i];
-			if(info.huNum == 0){
-				arr[0] = info;
-			}
-			if(info.huNum == 1){
-				arr[1] = info;
-			}
-			if(info.huNum == 2){
-				arr[2] = info;
-			}
-			if(info.huNum == -1){
-				tempArr.push(info);
-			}
+			tempArr.push (this.gameResultMsg.results[i]);
 		}
-		if(tempArr.length == 1){
-			arr[3] = tempArr[0];
-		}else{
-			for(let i = 0 ; i < tempArr.length ; i++){
-				info = tempArr[i];
-				if(info.sitNum == GameInfo.ins.nowBookMakerSit){
-					sortArr[0] = info;
-				}
-				if(info.sitNum == (GameInfo.ins.nowBookMakerSit+1)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-					sortArr[1] = info;
-				}
-				if(info.sitNum == (GameInfo.ins.nowBookMakerSit+2)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-					sortArr[2] = info;
-				}
-				if(info.sitNum == (GameInfo.ins.nowBookMakerSit+3)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-					sortArr[3] = info;
-				}
+		tempArr.sort((a,b)=>{
+			if(a.huNum<b.huNum && a.huNum >= 0){
+				return -1;
+			}else if(a.huNum > b.huNum && a.huNum >= 0){
+				return 1;
+			}else{
+				return 0;
 			}
-			for(let i = 0 ; i < sortArr.length ; i++){
-				if(sortArr[i]){
-					arr.push(sortArr[i]);
-				}
-			}
-		}
-		return arr;
+		})
+		return tempArr;
 	}
 	private sortZhuang():Array<GameResultInfo>{
 		let arr:Array<GameResultInfo> = [];
-		let info:GameResultInfo;
 		for(let i = 0 ; i < this.gameResultMsg.results.length ; i++){
-			info = this.gameResultMsg.results[i];
-			if(info.sitNum == GameInfo.ins.nowBookMakerSit){
-				arr[0] = info;
-			}
-			if(info.sitNum == (GameInfo.ins.nowBookMakerSit+1)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-				arr[1] = info;
-			}
-			if(info.sitNum == (GameInfo.ins.nowBookMakerSit+2)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-				arr[2] = info;
-			}
-			if(info.sitNum == (GameInfo.ins.nowBookMakerSit+3)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)){
-				arr[3] = info;
-			}
+			arr.push (this.gameResultMsg.results[i]);
 		}
+		arr.sort((a,b)=>{
+			if(a.sitNum == GameInfo.ins.nowBookMakerSit){
+				return -1;
+			}else
+				return 0;
+		})
 		return arr;
 	}
 
@@ -288,7 +276,6 @@ export default class SmallOverPanel extends UIBase {
 			Global.mgr.socketMgr.send(-1 , new Msg_CS_NextTrun());
 			Global.EventCenter.dispatchEvent(EventType.OpenNewGame);
 		}else{
-			//TODO open the big ovew panel;
 			Global.DialogManager.createDialog("smallOver/prefab/BigOverPanel",null, (any,createDialog)=>{
 				createDialog.y = 0;
 			})

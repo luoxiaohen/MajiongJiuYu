@@ -8,18 +8,24 @@
 import { PlayStauteEnum } from "../../enum/EnumManager";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
+import { PlayerInfo } from "../../proto/LobbyMsgDef";
 import { Global } from "../../Shared/GloBal";
+import { OverBuyHorseInfoData } from "../../utils/InterfaceHelp";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class RealTimePlayerInfoItem extends cc.Component {
-
-    private player_head_sprite:cc.Sprite;
-    private player_name_label:cc.Label;
-    private player_hand_num_label:cc.Label;
-    private player_score_num_label:cc.Label;
-    private item_bg:cc.Node;
+    @property(cc.Sprite)
+    player_head_sprite:cc.Sprite=null;
+    @property(cc.Label)
+    player_name_label:cc.Label=null;
+    @property(cc.Label)
+    player_hand_num_label:cc.Label=null;
+    @property(cc.Label)
+    player_score_num_label:cc.Label=null;
+    @property(cc.Node)
+    item_bg:cc.Node=null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -46,20 +52,50 @@ export default class RealTimePlayerInfoItem extends cc.Component {
             data.playerScoreNum=playerDataItem.score+"";
             data.sitIndex=index;
      */
-    public initeValue(data:any):void{
+    public initeValue(data:any,isblank:boolean=false):void{
         this.item_bg.active=data.playerId==UserInfo.ins.myInfo.aid;
         Global.CCHelper.updateSpriteFrame(data.headSpritUrl,this.player_head_sprite);
         this.player_name_label.string=data.playerName;
         this.player_hand_num_label.string=data.playerHandStr.toString();
-        let str=data.playerScoreNum.toString();
-        if(data.playerScoreNum>0){
-            str="+"+str;
-        }
-        this.player_score_num_label.string=str;
-        if(data.playerScoreNum>0){
-            this.player_score_num_label.node.color=this.color_red;
+        if(!isblank){
+            let str=data.playerScoreNum.toString();
+            if(data.playerScoreNum>=0){
+                str="+"+str;
+            }
+            this.player_score_num_label.string=str;
+            if(data.playerScoreNum>=0){
+                this.player_score_num_label.node.color=this.color_red;
+            }else{
+                this.player_score_num_label.node.color=this.color_green;
+            }
         }else{
-            this.player_score_num_label.node.color=this.color_green;
+            this.player_score_num_label.string="";
+        }
+    }
+
+    public initeValue_horse(data:OverBuyHorseInfoData,playerInfo:PlayerInfo,curHandStr:string,isblank:boolean=false):void{
+        if(playerInfo){
+            this.item_bg.active=playerInfo.aid==UserInfo.ins.myInfo.aid;
+            this.player_name_label.string=playerInfo.nike;
+        }else{
+            this.player_name_label.string="无数据玩家";
+        }
+        // Global.CCHelper.updateSpriteFrame(data.headSpritUrl,this.player_head_sprite);
+        Global.CCHelper.updateSpriteFrame("smallOver/resource/game_jstouxiang2",this.player_head_sprite);
+        this.player_hand_num_label.string=curHandStr;
+        if(!isblank){
+            let str=data.fen.toString();
+            if(data.fen>0){
+                str="+"+str;
+            }
+            this.player_score_num_label.string=str;
+            if(data.fen>=0){
+                this.player_score_num_label.node.color=this.color_red;
+            }else{
+                this.player_score_num_label.node.color=this.color_green;
+            }
+        }else{
+            this.player_score_num_label.string="";
         }
     }
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-17 17:15:53
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-18 18:07:59
+ * @LastEditTime: 2022-12-14 11:17:42
  * @FilePath: \MajiongJiuYu\assets\Script\UI\action\GameIActiontem.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -21,9 +21,7 @@ import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
 import { EatCardClass, MyActionByOther } from "../../utils/InterfaceHelp";
 import MajiongHandCard from "../card/MajiongHandCard";
-
 const {ccclass, property} = cc._decorator;
-
 @ccclass
 export default class GameIActiontem extends UIBase {
     @property (cc.Sprite)
@@ -45,6 +43,8 @@ export default class GameIActiontem extends UIBase {
     @property (cc.Node)
     moreBtnGroup : cc.Node = null;
     private actionData:MyActionByOther;
+    siMyFeel : boolean = false;
+    private isClick:boolean = false;
     protected onLoad(): void {
         this.actionData = this.dialogParameters;
         this.pengMoreGroup.active = false;
@@ -54,6 +54,12 @@ export default class GameIActiontem extends UIBase {
     private initItem(){
         this.guoBtn.node.active = this.actionData.canGuo;
         this.gangBtn.node.active = this.actionData.canGang;
+        if(this.actionData.canGang){
+            /***没有可摸得牌时候不可以杠*/
+            if(GameInfo.ins.remPoolsNum <= 0){
+                this.gangBtn.node.active = false;
+            }
+        }
         this.pengBtn.node.active = this.actionData.canPeng;
         this.huGroup.active = this.actionData.canHu;
         if(this.actionData.canHu){
@@ -61,19 +67,39 @@ export default class GameIActiontem extends UIBase {
         }
     }
     private showHuGroup(){
-        let newSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.actionData.huData.cardValue);
-        Global.Utils.setNewImageToSprite(this.cardValueImage , newSource);
-        this.fenLabel.string = this.actionData.huData.fanNum.toString();
+        if(this.actionData&&this.actionData.huData){
+            // let newSource : string = "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.actionData.huData.cardValue);
+            // Global.Utils.setNewImageToSprite(this.cardValueImage , newSource);
+            Global.Utils.setMJImageToSprite(this.cardValueImage, Global.Utils.getCardStrByValue(this.actionData.huData.cardValue));
+            this.fenLabel.string = this.actionData.huData.fanNum.toString();
+        }else{
+            Global.Utils.debugOutput("GameIActontem  huData   NUll!");
+        }
     }
     /**碰*/
     onPengClick(){
+        if(this.isClick){
+            return;
+        }
+        this.isClick = true;
+        Global.Utils.setNewImageToSprite(this.huBtn , "comResource/font/game_hut")
+        Global.Utils.setNewImageToSprite(this.pengBtn , "comResource/font/game_pengt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_gangt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_guot")
         let msg : Msg_CS_PengMajMsg = new Msg_CS_PengMajMsg();
         msg.isGang = 0;
         Global.mgr.socketMgr.send(-1,msg);
-        this.disTory();
     }
     /**杠*/
     onGangClick(){
+        if(this.isClick){
+            return;
+        }
+        this.isClick = true;
+        Global.Utils.setNewImageToSprite(this.huBtn , "comResource/font/game_hut")
+        Global.Utils.setNewImageToSprite(this.pengBtn , "comResource/font/game_pengt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_gangt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_guot")
         if(GameInfo.ins.nowGameStatus == PlayStauteEnum.PlayCard){
             let selfGameArr:Array<number> = UserInfo.ins.getSelfGang();
             let buGameArr:Array<number> = UserInfo.ins.getBuGang();
@@ -100,13 +126,11 @@ export default class GameIActiontem extends UIBase {
                     msg.majID = UserInfo.ins.getBuGang()[0];
                     Global.mgr.socketMgr.send(-1 , msg);
                 }
-                this.disTory();
             }
         }else{
             let msg : Msg_CS_PengMajMsg = new Msg_CS_PengMajMsg();
             msg.isGang = 1;
             Global.mgr.socketMgr.send(-1,msg);
-            this.disTory();
         }
     }
     private onCardItemClick(e:cc.Event){
@@ -124,16 +148,25 @@ export default class GameIActiontem extends UIBase {
     }
     /**胡*/
     onHuClick(){
+        if(this.isClick){
+            return;
+        }
+        this.isClick = true;
+        Global.Utils.setNewImageToSprite(this.huBtn , "comResource/font/game_hut")
+        Global.Utils.setNewImageToSprite(this.pengBtn , "comResource/font/game_pengt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_gangt")
+        Global.Utils.setNewImageToSprite(this.gangBtn , "comResource/font/game_guot")
         let msg : Msg_CS_HuMajMsg = new Msg_CS_HuMajMsg();
         Global.mgr.socketMgr.send(-1,msg);
-        this.disTory();
+        // this.disTory();
     }
     /**过*/
     onGuoClick(){
-        Global.mgr.socketMgr.send(-1 , new Msg_CS_PassMsg());
+        if(this.siMyFeel == false){
+            Global.mgr.socketMgr.send(-1 , new Msg_CS_PassMsg());
+        }
         this.disTory();
     }
-
     disTory(){
         super.disTory();
     }

@@ -69,9 +69,9 @@ export default class SitDownTips extends UIBase {
 
         this.storReady = Global.Utils.getlocalStorageItem('init_ready_x')
         if(this.storReady == "1"){
-            this.isReady.check();
-        }else{
             this.isReady.uncheck();
+        }else{
+            this.isReady.check();
         }
     }
     setData(sitNum:number){
@@ -79,10 +79,10 @@ export default class SitDownTips extends UIBase {
     }
     onCheckClick(){
         if(this.storReady == "1"){
-            Global.Utils.addlocalStorageItem("init_ready_x" , "-1")
+            Global.Utils.setlocalStorageItem("init_ready_x" , "-1")
             this.storReady = "-1";
         }else{
-            Global.Utils.addlocalStorageItem("init_ready_x" , "1")
+            Global.Utils.setlocalStorageItem("init_ready_x" , "1")
             this.storReady = "1"
         }
     }
@@ -91,13 +91,17 @@ export default class SitDownTips extends UIBase {
         this.disTory();
     }
     onCloseClick(){
+        console.log("确定坐下点击");
         let msg : Msg_CS_SitDown = new Msg_CS_SitDown();
 		msg.sit = this.sitNum;
 		Global.mgr.socketMgr.send(-1,msg);
         this.disTory();
     }
+    onBgClick(){
+        this.disTory();
+    }
     disTory(){
-        if(this.node.parent){
+        if(this.node && this.node.parent){
             this.node.parent.removeChild(this.node);
             this.destroy();
         }

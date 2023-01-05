@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { CallBack } from "../com/CallBack";
 import { SocketAdapter } from "../com/SocketAdapter";
 import { Msg_CS_LoginAcc, Msg_CS_RegistAcc } from "../proto/AccountMsg";
 import { Global } from "../Shared/GloBal";
@@ -69,6 +70,7 @@ export default class LoginPanel extends UIBase {
 
         Global.Utils.debugOutput("LoginPanel ===>  loading");
         let loadDirArr = [
+            "buyHorse",
             "changeThree",
             "comResource",
             "createRoom",
@@ -84,7 +86,10 @@ export default class LoginPanel extends UIBase {
             "sound",
             "tips",
             "turnTable",
-            "gameRecord"
+            "gameRecord",
+            "setting",
+            "personData",
+            "shop"
         ];
         
         let allTotalCount = 0;
@@ -166,9 +171,11 @@ export default class LoginPanel extends UIBase {
     }
 
     login(data){
-        Global.Utils.debugOutput("loginPanel ==> login");
         if (!data.account || !data.password || !data.loginPlatform) {
-            Global.Utils.dialogOutput("请输入有效帐号密码");
+            Global.Utils.dialogOutTips("请输入有效帐号密码", null , (dialog)=>{
+				dialog.x = 540;
+				dialog.y = -960;
+			} , this);
             return;
         }
         Global.mgr.socketMgr.send()
@@ -195,16 +202,16 @@ export default class LoginPanel extends UIBase {
         let acc : string = this.accLabel.string;
         let pass : string = this.passLabel.string;
         if(acc && pass){
-            Global.Utils.debugOutput("LoginPanel ==> 账号登录输入");
-            Global.Utils.debugOutput("LoginPanel ==> acc:" + acc);
-            Global.Utils.debugOutput("LoginPanel ==> pass:" + pass);
             let msg:Msg_CS_LoginAcc = new Msg_CS_LoginAcc();
 			msg.plat = "H5";
 			msg.account = acc;
 			msg.md5Pass = new MD5().hex_md5(pass);
 			Global.mgr.socketMgr.send(-1,msg);
         }else{
-            Global.Utils.dialogOutput("LoginPanel ==> 请输入正确的账号密码");
+            Global.Utils.dialogOutTips("请输入正确的账号密码!", null , (dialog)=>{
+				dialog.x = 540;
+				dialog.y = -960;
+			} , this);
         }
     }
 
@@ -215,7 +222,10 @@ export default class LoginPanel extends UIBase {
         let passAgin : string = this.regPassAginLabel.string;
         if(acc && pass && passAgin){
             if(pass != passAgin){
-                Global.Utils.dialogOutput("LoginPanel ==> 两次密码输入不一致");
+                Global.Utils.dialogOutTips("LoginPanel ==> 两次密码输入不一致", null , (dialog)=>{
+                    dialog.x = 540;
+                    dialog.y = -960;
+                } , this);
             }else{
                 Global.Utils.debugOutput("LoginPanel ==> 账号注册输入");
                 Global.Utils.debugOutput("LoginPanel ==> acc:" + acc);
@@ -228,7 +238,10 @@ export default class LoginPanel extends UIBase {
                 Global.mgr.socketMgr.send(-1,msg);
             }
         }else{
-            Global.Utils.dialogOutput("LoginPanel ==> 请输入正确的账号密码");
+            Global.Utils.dialogOutTips("请输入正确的账号密码", null , (dialog)=>{
+				dialog.x = 540;
+				dialog.y = -960;
+			} , this);
         }
     }
 }

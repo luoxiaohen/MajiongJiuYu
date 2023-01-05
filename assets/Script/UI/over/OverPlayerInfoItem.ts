@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { ArtFontEnum } from "../../enum/EnumManager";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
 import { OverPlayerItemInfoData } from "../../utils/InterfaceHelp";
@@ -50,14 +51,15 @@ export default class OverPlayerInfoItem extends UIBase {
         this.showFen();
     }
     private showFen(){
-        let fontSource:string = this.itemInfoDat.fenCount >= 0 ? "comResource/mapFont/jiesuanJiafen" : "comResource/mapFont/jiesuanJianfen";
-        cc.loader.loadRes(fontSource , cc.Font , (error , assest)=>{
-            if(error){
-                return;
-            }
-            this.fenLabel.font = assest;
-            this.fenLabel.string = this.itemInfoDat.fenCount >= 0 ? ("+" + this.itemInfoDat.fenCount) : this.itemInfoDat.fenCount.toString();
-        })
+        let str=this.itemInfoDat.fenCount.toString();
+        if( this.itemInfoDat.fenCount >= 0){
+            str="+"+str;
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJiafen,this.fenLabel);
+        }else{
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJianfen,this.fenLabel);
+        }
+        this.fenLabel.string=str;
+    
     }
     private showHuImage(){
         if(this.itemInfoDat.huType == -1){

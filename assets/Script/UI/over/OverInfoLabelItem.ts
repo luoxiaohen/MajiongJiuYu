@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { ArtFontEnum } from "../../enum/EnumManager";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
 import { FanTypeEnum, GangTypeEnum, HuTypeEnum, ScoreEventInfo, ScoreTypeEnum } from "../../proto/TableMsgDef";
@@ -55,8 +56,17 @@ export default class OverInfoLabelItem extends UIBase {
 		}
 		this.hitLabel.string = objStr + chaguaStr;
 		this.fenLabel.string = this.info.win > 0 ? "+" + this.info.win : this.info.win.toString();
+		if(this.info.win>=0){
+			Global.Utils.setLabelFont(ArtFontEnum.jiesuanJiafen,this.fenLabel);
+		}else{
+			Global.Utils.setLabelFont(ArtFontEnum.jiesuanJianfen,this.fenLabel);
+		}
 	}
 
+	@property(cc.BitmapFont)
+    redFont:cc.BitmapFont=null;
+    @property(cc.BitmapFont)
+    greenFont:cc.BitmapFont=null;
 	public getMaxHeight():number{
 		if(this.hitLabel.node.height > this.typeLabel.node.height){
 			return this.hitLabel.node.height

@@ -42,7 +42,6 @@ export default class ChangeThreePanel extends UIBase {
         this.showFourImage(false);
         this.duijiaGroup.active = false;
     }
-
     showOneReady(readySit:number){
         let index:number = (readySit - UserInfo.ins.mySitIndex + 40)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType);
         let image:cc.Sprite;
@@ -68,7 +67,6 @@ export default class ChangeThreePanel extends UIBase {
         this.changeMsg = msg;
         this.showAction(msg.type);
     }
-
     private showAction(type:number){
         
         Global.Utils.playSound("sound/6");
@@ -190,17 +188,17 @@ export default class ChangeThreePanel extends UIBase {
     private showDuijiaCardAction(){
         this.showFourImage(true);
         let time : number = TimeAndMoveManager.ins.changeThreeCardMoveTime;
-        cc.tween(this.myImage.node).to(time/2 , {x : 306.5 , y : 232}).call(()=>{
-            cc.tween(this.myImage.node).to(time/2 , {x : 306.5 , y : 46}).start()
+        cc.tween(this.myImage.node).to(time/2 , {x : 318.5 , y : 250}).call(()=>{
+            cc.tween(this.myImage.node).to(time/2 , {x : 318.5 , y : 46}).start()
         }).start();
-        cc.tween(this.oppImage.node).to(time/2 , {x : 306.5 , y : 232}).call(()=>{
-            cc.tween(this.oppImage.node).to(time/2 , {x : 306.5 , y : 427}).start()
+        cc.tween(this.oppImage.node).to(time/2 , {x : 318.5 , y : 250}).call(()=>{
+            cc.tween(this.oppImage.node).to(time/2 , {x : 318.5 , y : 427}).start()
         }).start();
-        cc.tween(this.downImage.node).to(time/2 , {x : 306 , y : 232}).call(()=>{
-            cc.tween(this.downImage.node).to(time/2 , {x : 556.5 , y : 232}).start()
+        cc.tween(this.downImage.node).to(time/2 , {x : 306 , y : 250}).call(()=>{
+            cc.tween(this.downImage.node).to(time/2 , {x : 595.5 , y : 250}).start()
         }).start();
-        cc.tween(this.upImage.node).to(time/2 , {x : 306 , y : 232}).call(()=>{
-            cc.tween(this.upImage.node).to(time/2 , {x : 55.5 , y : 232}).call(()=>{
+        cc.tween(this.upImage.node).to(time/2 , {x : 306 , y : 250}).call(()=>{
+            cc.tween(this.upImage.node).to(time/2 , {x : 55.5 , y : 250}).call(()=>{
                 this.callBackFun.bind(this.thisObj)(this.changeMsg);
             }).start()
         }).start();
@@ -208,37 +206,37 @@ export default class ChangeThreePanel extends UIBase {
     private showShunCardAction(){
         this.showFourImage(true);
         let time : number = TimeAndMoveManager.ins.changeThreeCardMoveTime;
-        //306.5  46
+        //318.5  46
         cc.tween(this.myImage.node).to(time/2,{x:131 , y:95 , angle:-35  }).call(()=>{
             this.myImage.node.x = 406.5;
             this.myImage.node.y = 46;
             this.myImage.node.angle = 0;
             this.myImage.node.opacity = 255*0.4;
-            cc.tween(this.myImage.node).to(time/5 , {x : 306.5 , opacity : 255}).start();
+            cc.tween(this.myImage.node).to(time/5 , {x : 318.5 , opacity : 255}).start();
         }).start();
-        //556.5 232
+        //595.5 250
         cc.tween(this.downImage.node).to(time/2,{x:486 , y:86 , angle:-35  }).call(()=>{
-            this.downImage.node.x = 556.5;
+            this.downImage.node.x = 595.5;
             this.downImage.node.y = 278;
             this.downImage.node.angle = 0;
             this.downImage.node.opacity = 255*0.4;
-            cc.tween(this.downImage.node).to(time/5 , {y : 232 , opacity : 255}).start();
+            cc.tween(this.downImage.node).to(time/5 , {y : 250 , opacity : 255}).start();
         }).start();
-        //306.5 427
+        //318.5 427
         cc.tween(this.oppImage.node).to(time/2,{x:486 , y:383 , angle:-35  }).call(()=>{
             this.oppImage.node.x = 246.5;
             this.oppImage.node.y = 427;
             this.oppImage.node.angle = 0;
             this.oppImage.node.opacity = 255*0.4;
-            cc.tween(this.oppImage.node).to(time/5 , {x : 306.5 , opacity : 255}).start();
+            cc.tween(this.oppImage.node).to(time/5 , {x : 318.5 , opacity : 255}).start();
         }).start();
-        //55.5 232
+        //55.5 250
         cc.tween(this.upImage.node).to(time/2,{x:146 , y:391 , angle:-35  }).call(()=>{
             this.upImage.node.x = 55.5;
             this.upImage.node.y = 130;
             this.upImage.node.angle = 0;
             this.upImage.node.opacity = 255*0.4;
-            cc.tween(this.upImage.node).to(time/5 , {y : 232 , opacity : 255}).call(()=>{
+            cc.tween(this.upImage.node).to(time/5 , {y : 250 , opacity : 255}).call(()=>{
                 this.callBackFun.bind(this.thisObj)(this.changeMsg);
             }).start();
         }).start();
@@ -246,37 +244,37 @@ export default class ChangeThreePanel extends UIBase {
     private showNiCardAction(){
         this.showFourImage(true);
         let time : number = TimeAndMoveManager.ins.changeThreeCardMoveTime;
-        //306.5  46
+        //318.5  46
         cc.tween(this.myImage.node).to(time/2,{x:495 , y:74 , angle:35  }).call(()=>{
             this.myImage.node.x = 206;
             this.myImage.node.y = 46;
             this.myImage.node.angle = 0;
             this.myImage.node.opacity = 255*0.4;
-            cc.tween(this.myImage.node).to(time/5 , {x : 306.5 , opacity : 255}).start();
+            cc.tween(this.myImage.node).to(time/5 , {x : 318.5 , opacity : 255}).start();
         }).start();
-        //556.5 232
+        //595.5 250
         cc.tween(this.downImage.node).to(time/2,{x:488 , y:385 , angle: 35  }).call(()=>{
-            this.downImage.node.x = 556.5;
+            this.downImage.node.x = 595.5;
             this.downImage.node.y = 180;
             this.downImage.node.angle = 0;
             this.downImage.node.opacity = 255*0.4;
-            cc.tween(this.downImage.node).to(time/5 , {y : 232 , opacity : 255}).start();
+            cc.tween(this.downImage.node).to(time/5 , {y : 250 , opacity : 255}).start();
         }).start();
-        //306.5 427
+        //318.5 427
         cc.tween(this.oppImage.node).to(time/2,{x:146 , y:379 , angle: 35  }).call(()=>{
             this.oppImage.node.x = 366.5;
             this.oppImage.node.y = 427;
             this.oppImage.node.angle = 0;
             this.oppImage.node.opacity = 255*0.4;
-            cc.tween(this.oppImage.node).to(time/5 , {x : 306.5 , opacity : 255}).start();
+            cc.tween(this.oppImage.node).to(time/5 , {x : 318.5 , opacity : 255}).start();
         }).start();
-        //55.5 232
+        //55.5 250
         cc.tween(this.upImage.node).to(time/2,{x:117 , y:79 , angle: 35  }).call(()=>{
             this.upImage.node.x = 55.5;
             this.upImage.node.y = 284;
             this.upImage.node.angle = 0;
             this.upImage.node.opacity = 255*0.4;
-            cc.tween(this.upImage.node).to(time/5 , {y : 232 , opacity : 255}).call(()=>{
+            cc.tween(this.upImage.node).to(time/5 , {y : 250 , opacity : 255}).call(()=>{
                 this.callBackFun.bind(this.thisObj)(this.changeMsg);
             }).start();
         }).start();

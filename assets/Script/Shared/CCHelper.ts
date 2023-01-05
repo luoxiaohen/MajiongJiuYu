@@ -225,4 +225,31 @@ export default class CCHelper {
             }
         });
     };
+
+    private color_red=cc.color(181,13,13);//red
+    private color_green=cc.color(16,136,50);
+    public setLabelColorByValue(_label:cc.Label,_value:number):void{
+        if(_value>=0){
+            _label.node.color=this.color_red;
+        }else{
+            _label.node.color=this.color_green;
+        }
+        _label.string=this.getNumFormStr(_value);
+    }
+    public setLabelColorByBool(_label:cc.Label,_isred:boolean):void{
+        if(_isred){
+            _label.node.color=this.color_red;
+        }else{
+            _label.node.color=this.color_green;
+        }
+    }
+    public getNumFormStr(_value:number):string{
+        let str="";
+        if(_value>=0){
+            str="+"+_value;
+        }else{
+            str=_value+"";
+        }
+        return str;
+    }
 }

@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "de525cdc-0575-4881-b1c7-afe014c7b050",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 52,
+  "height": 26,
+  "platformSettings": {},
+  "subMetas": {
+    "maima_haidi": {
+      "ver": "1.0.6",
+      "uuid": "7e0663b3-560d-4dd7-b2d7-bbb63346ccbb",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "de525cdc-0575-4881-b1c7-afe014c7b050",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 52,
+      "height": 26,
+      "rawWidth": 52,
+      "rawHeight": 26,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

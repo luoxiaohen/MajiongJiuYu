@@ -2,6 +2,7 @@ import GameProtocol from "../com/GameProtocol";
 import { SocketManager } from "../com/socket/SocketManager";
 import EventCenter from "../event/EventCenter";
 import CheckCardManager from "../mgr/CheckCardManager";
+import PersonDataHelp from "../utils/PersonDataHelp";
 import CCHelper from "./CCHelper";
 import DialogManager from "./DialogManager";
 import MessageCallback from "./MessageCallback";

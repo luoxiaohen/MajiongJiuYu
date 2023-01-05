@@ -8,7 +8,8 @@
 import EventType from "../../event/EventType";
 import GameInfo from "../../Game/info/GameInfo";
 import { Msg_CS_CreateTable, Msg_CS_ReqDeletRoomRuleTemplate } from "../../proto/LobbyMsg";
-import { TableRuleTempl } from "../../proto/LobbyMsgDef";
+import { TableRuleInfo, TableRuleTempl } from "../../proto/LobbyMsgDef";
+import { RoomTableInfo } from "../../proto/TableMsgDef";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
 import CreateRoomHelper from "./CreateRoomHelper";
@@ -32,6 +33,8 @@ export default class CreateRoomRuleTemplate extends UIBase {
     nullGroup : cc.Node = null;
     @property (cc.Button)
     createTemplateBtn : cc.Button = null;
+	@property (cc.Label)
+	coinsLabel : cc.Label = null;
 
 
     private ruleInfoArr : Array<TableRuleTempl>;
@@ -62,23 +65,26 @@ export default class CreateRoomRuleTemplate extends UIBase {
     private addChilds(){
         if(this.ruleInfoArr.length > 0){
 			this.nullGroup.active = false;
+			this.createTemplateBtn.enabled = false;
 			this.haveGroup.active = true;
 			this.createItem();
 		}else{
 			this.nullGroup.active = true;
+			this.createTemplateBtn.enabled = true;
 			this.haveGroup.active = false;
 		}
     }
     private createItem(){
 		this.haveGroup.removeAllChildren();
 		let item:CreateRoomRuleTemplateItem;
-		for(let i = 0 ; i < this.ruleInfoArr.length ; i++){
+		for(let i = this.ruleInfoArr.length-1 ; i >= 0 ; i--){
             item = cc.instantiate(Global.Utils.getPreFabBySource("createRoom/prefab/CreateRoomRuleTemplateItem")).getComponent(CreateRoomRuleTemplateItem);
-			if(i == 0 ){
-				this.selectItem = item;
-				this.selectItem.setSelect(true);
-			}
             item.setData(this.ruleInfoArr[i] , this.onItemClickBack , this)
+			if(i == this.ruleInfoArr.length-1 ){
+				this.selectItem = item;
+				item.setSelect(true);
+				this.showCoinsLabel();
+			}
             this.haveGroup.addChild(item.node);
 		}
 	}
@@ -99,13 +105,16 @@ export default class CreateRoomRuleTemplate extends UIBase {
 		}
 
 	}
+	private showCoinsLabel(){
+		let info:TableRuleInfo = this.selectItem.getRuleInfo().rule;
+		let num:number = Global.Utils.getNeedByRule(info);
+		this.coinsLabel.string = num + "  创建牌局";
+	}
 	private onSelectItem(item : CreateRoomRuleTemplateItem){
-		if(item.getSelect()){
-			return;
-		}
 		this.selectItem.setSelect(false);
 		this.selectItem = item;
 		this.selectItem.setSelect(true);
+		this.showCoinsLabel();
 	}
 	private onChangeItem(item : CreateRoomRuleTemplateItem){
 		this.callBack.bind(this.thisObj)(4 , item.getRuleInfo());
@@ -136,7 +145,10 @@ export default class CreateRoomRuleTemplate extends UIBase {
 	}
 	onCreateTemplateClick(){
 		if(this.ruleInfoArr.length >= CreateRoomHelper.ins.gameMaxTemplateNum){
-			Global.Utils.dialogOutput("模板保存已达上限,请先删除再创建");
+			Global.Utils.dialogOutTips("模板保存已达上限,请先删除再创建" , null , (dialog)=>{
+				dialog.x = 540;
+				dialog.y = -960;
+			} , this);
 		}else{
 			this.callBack.bind(this.thisObj)(2);
 		}

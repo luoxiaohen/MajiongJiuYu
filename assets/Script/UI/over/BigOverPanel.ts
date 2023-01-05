@@ -9,12 +9,14 @@ import { BigOverTypeEnum, GameRuleTypeEnum } from "../../enum/EnumManager";
 import EventType from "../../event/EventType";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
+import { MainManager } from "../../MainManager";
 import { Msg_CS_CreateTable, Msg_CS_TableInvite, Msg_SC_InviteTable } from "../../proto/LobbyMsg";
-import { TableRuleInfo } from "../../proto/LobbyMsgDef";
+import { PlayerInfo, TableRuleInfo } from "../../proto/LobbyMsgDef";
 import { Msg_SC_GameOverMsg } from "../../proto/TableMsg";
 import { FinalPlayerCalcInfo, RoomTableInfo } from "../../proto/TableMsgDef";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
+import PersonDataHelp from "../../utils/PersonDataHelp";
 import BigOverHorseInfoItem from "./BigOverHorseInfoItem";
 import BigOverPlayerInfoItem from "./BigOverPlayerInfoItem";
 
@@ -59,7 +61,9 @@ export default class BigOverPanel extends UIBase {
     private downRulesLabel:cc.Label;
 
     private ruleMapInfo:{[key:number]:string[]};
-
+    /**
+     * 0:没买马 1:买一个普通马 2:买一个庄马 3:买两个普通马 4:一个庄马一个普通马
+     */
     private viewType:number=0;
     // LIFE-CYCLE CALLBACKS:
     onLoad() {
@@ -78,65 +82,157 @@ export default class BigOverPanel extends UIBase {
     }
     start() {
         let gameOverData=GameInfo.ins.gameOverData;
-        // let data={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
-        // let data_1={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
-        // let data_2={"calcInfos":[{"bankerHScore":0,"dpCnt":9,"gpCnt":0,"jpCnt":0,"score":-182,"scoreHorse":0,"sit":0,"winChips":18,"zmCnt":1},{"bankerHScore":0,"dpCnt":1,"gpCnt":0,"jpCnt":7,"score":6,"scoreHorse":0,"sit":1,"winChips":206,"zmCnt":0},{"bankerHScore":0,"dpCnt":3,"gpCnt":0,"jpCnt":2,"score":124,"scoreHorse":0,"sit":2,"winChips":324,"zmCnt":6},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4},{"bankerHScore":0,"dpCnt":0,"gpCnt":0,"jpCnt":4,"score":52,"scoreHorse":0,"sit":3,"winChips":252,"zmCnt":4}],"handCnt":8,"mid":5,"sid":51};
-        // let msg:Msg_SC_GameOverMsg=JSON.parse(JSON.stringify(data_2));
-		// console.log("收到大结算数据: ",data,"---msg",msg);
-		// gameOverData=msg;
+        let data_common_1={"calcInfos":[{"aid":25589,"bankerHScore":0,"dpCnt":5,"gpCnt":3,"jpCnt":4,"score":128,"scoreHorse":0,"sit":0,"winChips":428,"zmCnt":4},{"aid":28812,"bankerHScore":0,"dpCnt":4,"gpCnt":0,"jpCnt":0,"score":-214,"scoreHorse":0,"sit":1,"winChips":86,"zmCnt":0},{"aid":22256,"bankerHScore":0,"dpCnt":4,"gpCnt":4,"jpCnt":5,"score":82,"scoreHorse":-76,"sit":2,"winChips":382,"zmCnt":3},{"aid":20034,"bankerHScore":0,"dpCnt":2,"gpCnt":1,"jpCnt":6,"score":80,"scoreHorse":0,"sit":3,"winChips":380,"zmCnt":2},{"aid":22256,"bankerHScore":0,"dpCnt":4,"gpCnt":4,"jpCnt":5,"score":82,"scoreHorse":-76,"sit":4,"winChips":224,"zmCnt":3}],"handCnt":8,"mid":5,"sid":51};
+
+        // gameOverData=JSON.parse(JSON.stringify(data_common_1));
         if(!gameOverData){
             Global.Utils.debugOutput("BigOverPanel:  "+"无大结算数据！！！");
             Global.EventCenter.addEventListener(EventType.GameOverMsg , this.start, this);
             return;
         }
-        this.viewType=gameOverData.calcInfos.length-4;
-        this.createChildNode();
-        let paramPlayerData:BigOverPlayerInfoItemData[]=[];
-        let paramHorseData:BigOverPlayerInfoItemData[]=[];
-        let playerDataArr:FinalPlayerCalcInfo[]=[];
-
         let calcInfos=gameOverData.calcInfos;
+        let roomInfo=GameInfo.ins.roomTableInfo;
+        
+        this.setBuyHoresType();
+      
+        this.createChildNode();
+        this.setPlayerRecordData(calcInfos);
+        let horseCalcInfos:FinalPlayerCalcInfo[]=[];
+        for(let item of calcInfos){
+            if(item.sit>=4){
+                horseCalcInfos.push(item);
+            }
+        }
+        this.setHorseRecordData(horseCalcInfos);
+        this.initTopLabels(roomInfo,gameOverData);
+        let ruleStr=PersonDataHelp.ins.getRoomTableInfoStr(roomInfo.rule);
+        this.downRulesLabel.string=ruleStr;
+    }
+    private setBuyHoresType():void{
+        this.viewType=0;
+        let roomInfo=GameInfo.ins.roomTableInfo;
+        let rule=roomInfo.rule;
+        if(rule.buyHorseNum==1){
+            if(rule.isSelectBankerBuyHorse){
+                this.viewType=2;
+            }else{
+                this.viewType=1;
+            }
+        }else if(rule.buyHorseNum==2){
+            if(rule.isSelectBankerBuyHorse){
+                this.viewType=4
+            }else{
+                this.viewType=3;
+            }
+        }
+    }
+    private setPlayerRecordData(calcInfos:FinalPlayerCalcInfo[]):void{
+        let paramPlayerData:BigOverPlayerInfoItemData[]=[];
+        let playerDataArr:FinalPlayerCalcInfo[]=[];
         for(let index=0;index<4;index++){
             playerDataArr.push(calcInfos[index]);
         }
-       
         let dataSortArr=playerDataArr.sort(function(a,b){
-            return b.score-a.score;
+            return (b.score+b.bankerHScore)-(a.score+a.bankerHScore);
         })
         for(let index=0;index<4;index++){
             let dataItem=dataSortArr[index];
             let infoItem=this.getInfoItemByData(dataItem,index);
             paramPlayerData.push(infoItem);
         }
-        for(let index=4;index<calcInfos.length;index++){
-            let dataItem=calcInfos[index];
-            let infoItem=this.getInfoItemByData(dataItem,index);
-            paramHorseData.push(infoItem) ;
+        if(paramPlayerData.length!=this.playerInfoItemArr.length){
+            Global.Utils.debugOutput("BigOverPannel  初始化大结算数据长度不一致！！！");
+            return;
         }
-    
-        if(this.viewType>0){
+        for(let index=0;index<paramPlayerData.length;index++){
+            let dataItem=paramPlayerData[index];
+            let nodeItem=this.playerInfoItemArr[index];
+            let intemCompnent=nodeItem.getComponent(BigOverPlayerInfoItem);
+            intemCompnent.initValue(dataItem);
+        }
+    }
+    private setHorseRecordData(calcInfos:FinalPlayerCalcInfo[]):void{
+        let paramHorseData:BigOverPlayerInfoItemData[]=[];
+        let horseArr=GameInfo.ins.gameHorseArray;
+        switch(this.viewType){
+            case 1:
+                for(let index=0;index<horseArr.length;index++){
+                    let dataItem=calcInfos[index];
+                    let infoItem=this.getInfoItemByData(dataItem,4+index);
+                    paramHorseData.push(infoItem) ;
+                }
+                break;
+            case 2:
+                paramHorseData.push(null);
+                break;
+            case 3:
+                for (let index = 0; index < horseArr.length; index++) {
+                    let dataItem = calcInfos[index];
+                    let infoItem = this.getInfoItemByData(dataItem, 4 + index);
+                    paramHorseData.push(infoItem);
+                }
+                break;
+            case 4:
+                for (let index = 0; index < horseArr.length; index++) {
+                    if (horseArr[index].isBanker) {
+                        paramHorseData.push(null);
+                    } else {
+                        let dataItem = calcInfos[0];
+                        let infoItem = this.getInfoItemByData(dataItem, 4 + index);
+                        paramHorseData.push(infoItem);
+                    }
+                }
+                paramHorseData=paramHorseData.sort(function(a,b){
+                    if(a==null){
+                        return 1;
+                    }
+                });
+                break;
+        }
+
+        if(this.horsePlayerInfoItem){
+            this.horsePlayerInfoItem.node.active=paramHorseData.length>0;
+            this.horsePlayerInfoItem.initValue(paramHorseData);
+        }
+        
+        if(paramHorseData.length>0){
             this.contentNode.y=418.8;
             this.downRulesLabel.node.y=-387;
         }else{
             this.contentNode.y=408.8;
             this.downRulesLabel.node.y=-340;
         }
-        this.initItemData(paramPlayerData,paramHorseData);
-        let roomInfo=GameInfo.ins.roomTableInfo;
-        this.initTopLabels(roomInfo,gameOverData);
-        let ruleStr=Global.Utils.getRoomTableInfoStr(roomInfo.rule);
-        this.downRulesLabel.string=ruleStr;
     }
 
     private getInfoItemByData(infoItem:FinalPlayerCalcInfo,index:number):BigOverPlayerInfoItemData{
-        let playerInfo=GameInfo.ins.getPlayerBySit(infoItem.sit);
+        let playerInfo:PlayerInfo=null;
+        let sitInfo=GameInfo.ins.getPlayerByAid(infoItem.aid);
+        if(sitInfo){
+            playerInfo=sitInfo.player;
+        }
+        let itemShowType=-1;
+        let card_num=0;
+        let gameHorseArray=GameInfo.ins.gameHorseArray;
+        if(index>=4){
+            for(let item of gameHorseArray){
+                if(item.horseSit==index-4){
+                    playerInfo=item.player;
+                    card_num=item.majNum+1;
+                    itemShowType=item.isBanker;
+                }
+            }
+        }else{
+            if(infoItem.bankerHScore!=0){
+                itemShowType=1;
+            }
+        }
         let dataItem:BigOverPlayerInfoItemData={
-            type:this.viewType,
+            type:itemShowType,
             player_head_url:"smallOver/resource/game_jstouxiang2",
             playr_rank_num:index+1,
             player_rank_url:index>2?"":"smallOver/resource/game_di"+(index+1),
-            player_name:playerInfo?playerInfo.player.nike:"",
-            player_ID:playerInfo?playerInfo.player.aid.toString():"",
+            player_name:playerInfo?playerInfo.nike:"",
+            player_ID:playerInfo?playerInfo.aid.toString():"",
             zimo_num:infoItem.zmCnt,
             jiepao_num:infoItem.jpCnt,
             gangpai_num:infoItem.gpCnt,
@@ -147,7 +243,7 @@ export default class BigOverPanel extends UIBase {
 
             score_horse_num:infoItem.scoreHorse,
             game_horse_url:index>=4?"smallOver/resource/game_ma"+(index-3):"",
-            card_num:index>=4?108:0,
+            card_num:card_num,
 
         };
         if(index>=4){
@@ -172,22 +268,6 @@ export default class BigOverPanel extends UIBase {
             this.contentNode.addChild(prefabItem);
         }
     }
-    private initItemData(data:BigOverPlayerInfoItemData[],horseData:BigOverPlayerInfoItemData[]):void{
-        if(data.length!=this.playerInfoItemArr.length){
-            Global.Utils.debugOutput("BigOverPannel  初始化大结算数据长度不一致！！！");
-            return;
-        }
-        for(let index=0;index<data.length;index++){
-            let dataItem=data[index];
-            let nodeItem=this.playerInfoItemArr[index];
-            let intemCompnent=nodeItem.getComponent(BigOverPlayerInfoItem);
-            intemCompnent.initValue(dataItem);
-        }
-        if(this.horsePlayerInfoItem){
-            this.horsePlayerInfoItem.node.active=this.viewType>0;
-            this.horsePlayerInfoItem.initValue(horseData);
-        }
-    }
     private initTopLabels(roomData:RoomTableInfo,gameOverData:Msg_SC_GameOverMsg):void{
         let gameName:string = Global.Utils.getGameNameByGameType(roomData.rule.gamePlayType);
         let gameType:string = Global.Utils.getGameTypeNameByGameType(roomData.rule.roomType);
@@ -197,8 +277,8 @@ export default class BigOverPanel extends UIBase {
         this.createNmeLabel.string=roomData.creater;
         this.downScoreNumLabel.string=roomData.rule.baseScore+"";
         this.sumBattleNumLabel.string=gameOverData.handCnt+"/"+roomData.rule.handsCnt;
-        let timeStr=new Date().toString().split("GMT");
-        this.gameEndTimeLabel.string=timeStr[0];
+        let timeStr=Global.Utils.timestampToTime(GameInfo.ins.serverTime*1000,2);
+        this.gameEndTimeLabel.string=timeStr;
 
         let playerAgain=this.node.getChildByName("playagain_btn");
         let back_btn=this.node.getChildByName("back_btn");
@@ -211,6 +291,7 @@ export default class BigOverPanel extends UIBase {
     public onExitBtnClick():void{
         Global.Utils.debugOutput("BigOverPanel  点击退出按钮");
         this.disTory();
+        MainManager.ins.onLeaveRoomInitData();
         Global.EventCenter.dispatchEvent(EventType.BackToLobby);
     }
     public onPlayAgainBtnClick():void{
@@ -235,7 +316,7 @@ export default class BigOverPanel extends UIBase {
         let ruleInfo : TableRuleInfo = _rule;
 		let msg : Msg_CS_CreateTable = new Msg_CS_CreateTable();
 		msg.info = ruleInfo;
-		msg.name = UserInfo.ins.myInfo.nike;
+		msg.name = GameInfo.ins.roomTableInfo.roomName;
 		Global.mgr.socketMgr.send(-1 , msg);
     }
     disTory(): void {

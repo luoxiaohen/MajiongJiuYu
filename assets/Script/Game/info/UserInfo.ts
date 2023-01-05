@@ -8,7 +8,7 @@
 import { CardTypeEnum } from "../../enum/EnumManager";
 import CheckCardManager from "../../mgr/CheckCardManager";
 import { PlayerData } from "../../proto/LobbyMsgDef";
-import { Msg_SC_PrDiceRslt } from "../../proto/TableMsg";
+import { Msg_SC_CancelBuyHorse, Msg_SC_HorseRoomInfo, Msg_SC_HorseRoomState, Msg_SC_NewHorseScoreRslt, Msg_SC_PrDiceRslt } from "../../proto/TableMsg";
 import { Global } from "../../Shared/GloBal";
 import Utils from "../../Shared/Utils";
 import { HuData, ListenCard, PengGangData } from "../../utils/InterfaceHelp";
@@ -31,9 +31,12 @@ export default class UserInfo{
     public set myInfo(value: PlayerData) {
         this._myInfo = value;
     }
+    public setMyInfoNike(nike:string):void{
+        this._myInfo.nike=nike;
+    }
 
     /***我是否是观战者*/
-    private _selfIsLookPlayer: boolean = true;
+    private _selfIsLookPlayer: boolean = false;
     public get selfIsLookPlayer(): boolean {
         return this._selfIsLookPlayer;
     }
@@ -95,6 +98,14 @@ export default class UserInfo{
     }
     public set gameFen(value: number) {
         this._gameFen = value;
+    }
+
+    private _vip: number = 0;
+    public get vip(): number {
+        return this._vip;
+    }
+    public set vip(value: number) {
+        this._vip = value;
     }
 
     /**定缺完成后整理手牌*/
@@ -159,7 +170,7 @@ export default class UserInfo{
     }
     /**别人出牌是否需要展示过*/
     public getCanGuo():boolean{
-        if(GameInfo.ins.remPoolsNum <= 4 && GameInfo.ins.roomTableInfo.rule.last4Hu){
+        if(GameInfo.ins.remPoolsNum < 4 && GameInfo.ins.roomTableInfo.rule.last4Hu){
             return false;
         }
         return true;
@@ -279,6 +290,76 @@ export default class UserInfo{
         return false;
     }
 
+
+
+    /***我自己的买马数据*/
+    private _myBuyHorseArr: Array<Msg_SC_HorseRoomInfo> = [];
+    public get myBuyHorseArr(): Array<Msg_SC_HorseRoomInfo> {
+        return this._myBuyHorseArr;
+    }
+    public set myBuyHorseArr(value: Array<Msg_SC_HorseRoomInfo>) {
+        this._myBuyHorseArr = value;
+    }
+    public addNewHorseToArray(msg : Msg_SC_HorseRoomInfo){
+        let isHave:boolean = false;
+        let data:Msg_SC_HorseRoomInfo;
+        for(let i = 0 ; i < this.myBuyHorseArr.length ; i++){
+            data = this.myBuyHorseArr[i];
+            if(data.majNum == msg.majNum && data.info.tid == msg.info.tid){
+                isHave = true;
+                this.myBuyHorseArr[i] = msg;
+            }
+        }
+        if(!isHave){
+            this.myBuyHorseArr.push(msg);
+        }
+    }
+    public removeHorseByArray(msg : Msg_SC_CancelBuyHorse){
+        let data:Msg_SC_HorseRoomInfo;
+        let index:number = -1;
+        for(let i = 0 ; i < this.myBuyHorseArr.length ; i++){
+            data = this.myBuyHorseArr[i];
+            if(data.info.hsit == msg.hsit && data.info.tid == msg.tid){
+                index = i;
+            }
+        }
+        if(index >= 0){
+            this.myBuyHorseArr.splice(index , 1);
+        }
+    }
+    public getHorseRoomByTid(tid:string):Msg_SC_HorseRoomInfo{
+        for(let i = 0 ; i < this.myBuyHorseArr.length ; i++){
+            if(this.myBuyHorseArr[i].info.tid == tid){
+                return this.myBuyHorseArr[i];
+            }
+        }
+    }
+    
+    /**买马每一手得结算数据**/
+    private _myNewHorseScoreRsltArr: Array<Msg_SC_NewHorseScoreRslt> = [];
+    public get myNewHorseScoreRsltArr(): Array<Msg_SC_NewHorseScoreRslt> {
+        return this._myNewHorseScoreRsltArr;
+    }
+    public set myNewHorseScoreRsltArr(value: Array<Msg_SC_NewHorseScoreRslt>) {
+        this._myNewHorseScoreRsltArr = value;
+    }
+
+    /***我自己的买马上限*/
+    private _myBuyHorseMax: number = 5;
+    public get myBuyHorseMax(): number {
+        return this._myBuyHorseMax;
+    }
+    public set myBuyHorseMax(value: number) {
+        this._myBuyHorseMax = value;
+    }
+
+    changeMyHorseState(msg : Msg_SC_HorseRoomState){
+        for(let i = 0 ; i < this.myBuyHorseArr.length ; i++){
+            if(this.myBuyHorseArr[i].info.tid == msg.tid){
+                this.myBuyHorseArr[i].isStart = msg.state;
+            }
+        }
+    }
 
     initOver(){
         this.myHandCardArr = [];

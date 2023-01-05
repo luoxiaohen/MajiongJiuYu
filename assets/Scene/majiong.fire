@@ -62,7 +62,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Canvas",
+    "_name": "majiong",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -574,6 +574,7 @@
     "tipsLayar": {
       "__id__": 8
     },
+    "frontNode": null,
     "_id": "6cOYh2IdtJGJMJJ0HBeEY4"
   }
 ]

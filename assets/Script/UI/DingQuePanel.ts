@@ -5,8 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { CallBack } from "../com/CallBack";
 import { CardTypeEnum } from "../enum/EnumManager";
+import EventCenter from "../event/EventCenter";
+import EventType from "../event/EventType";
 import UserInfo from "../Game/info/UserInfo";
+import { MainManager } from "../MainManager";
 import { Msg_CS_DingQue } from "../proto/TableMsg";
 import { Global } from "../Shared/GloBal";
 import Utils from "../Shared/Utils";
@@ -48,29 +52,51 @@ export default class DingQuePanel extends UIBase {
     onWanBtnClick(){
         let isMore:boolean = this.moreCardArr.indexOf(CardTypeEnum.Wan) >= 0;
         if(isMore){
-            Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+            let callBack=CallBack.bind(function(){
+                this.sendDingQue(CardTypeEnum.Wan);
+            },this,true);
+            Global.Utils.dialogOutConfirm("当你选择的花色手牌>=5张，是否确认选择？", 2 , callBack, null , (dialog)=>{
+				dialog.x = 0;
+				dialog.y = 0;
+			} , this);
+        }else{
+            this.sendDingQue(CardTypeEnum.Wan);
         }
-        this.sendDingQue(CardTypeEnum.Wan);
     }
     onTiaoBtnClick(){
         let isMore:boolean = this.moreCardArr.indexOf(CardTypeEnum.Tiao) >= 0;
         if(isMore){
-            Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+            let callBack=CallBack.bind(function(){
+                this.sendDingQue(CardTypeEnum.Tiao);
+            },this,true);
+            Global.Utils.dialogOutConfirm("当你选择的花色手牌>=5张，是否确认选择？", 2 , callBack, null , (dialog)=>{
+				dialog.x = 0;
+				dialog.y = 0;
+			} , this);
+        }else{
+            this.sendDingQue(CardTypeEnum.Tiao);
         }
-        this.sendDingQue(CardTypeEnum.Tiao);
     }
     onTongBtnClick(){
         let isMore:boolean = this.moreCardArr.indexOf(CardTypeEnum.Tong) >= 0;
         if(isMore){
-            Global.Utils.dialogOutput("当你选择的花色手牌>=5张，是否确认选择？");
+            let callBack=CallBack.bind(function(){
+                this.sendDingQue(CardTypeEnum.Tong);
+            },this,true);
+            Global.Utils.dialogOutConfirm("当你选择的花色手牌>=5张，是否确认选择？", 2 , callBack, null , (dialog)=>{
+				dialog.x = 0;
+				dialog.y = 0;
+			} , this);
+        }else{
+            this.sendDingQue(CardTypeEnum.Tong);
         }
-        this.sendDingQue(CardTypeEnum.Tong);
     }
     private sendDingQue(queType:CardTypeEnum){
         let msg : Msg_CS_DingQue = new Msg_CS_DingQue();
 		msg.wtt = queType;
 		Global.mgr.socketMgr.send(-1,msg);
         UserInfo.ins.myDiceType = queType;
+        Global.EventCenter.dispatchEvent(EventType.OnSelfClickQue)
         this.disTory();
     }
     private showSmallRecom(arr:Array<number>){
@@ -132,8 +158,8 @@ export default class DingQuePanel extends UIBase {
         }
         let smallType:Array<number> = [];
         if(haveMoreNum >= 0){
-            let weight0 : number = this.getCardAllWeight(moreArr[0]);
-            let weight1 : number = this.getCardAllWeight(moreArr[1]);
+            let weight0 : number = this.getAllCardLight(moreArr[0]);
+            let weight1 : number = this.getAllCardLight(moreArr[1]);
             if(weight0 == weight1){
                 smallType = moreArrType
             }else{
@@ -152,6 +178,68 @@ export default class DingQuePanel extends UIBase {
             }
         }
         return smallType;
+    }
+    /**获取所有牌的权重列表**/
+	getAllCardLight(handItemArr:Array<number>):number{
+		let allArr:Array<number> = handItemArr;
+		let nowArr:Array<number> = [];
+		let dic : Array<MajCardLight> = [];
+		let now : number;
+		let msjLight:MajCardLight;
+		let light:number;
+        allArr.sort(Global.Utils.compare);
+        nowArr = this.getNowArr(allArr);
+        let moreArr:Array<number> = [0 , 0 , 80 , 300 , 500]
+		for(let i = 0 ; i < nowArr.length ; i++){
+            msjLight = new MajCardLight();
+			light = 0;
+            now = nowArr[i];
+			msjLight.cardValue = now;
+            if(nowArr.indexOf(now-1)>=0){
+                light+=20;
+            }
+            if(nowArr.indexOf(now+1)>=0){
+                light+=20;
+            }
+            if(nowArr.indexOf(now-2)>=0 && this.isOne(now , now-2)){
+                light+=10;
+            }
+            if(nowArr.indexOf(now+2)>=0 && this.isOne(now , now+2)){
+                light+=10;
+            }
+            light+=moreArr[this.getAllNum(allArr , now)];
+			msjLight.cardLight = light;
+			dic[i] = msjLight;
+		}
+        let allN:number = 0;
+        for(let i = 0 ; i < handItemArr.length ; i++){
+            for(let l = 0 ; l < dic.length ; l++){
+                if(handItemArr[i] == dic[l].cardValue){
+                    allN += dic[l].cardLight;
+                }
+            }
+        }
+
+		return allN;
+	}
+    
+    private getAllNum(nowArr:Array<number> , now):number{
+        let index:number = 0;
+        for(let i = 0 ; i < nowArr.length ; i++){
+            if(nowArr[i] == now){
+                index++;
+            }
+        }
+        return index;
+    }
+    private getNowArr(nowArr:Array<number>):Array<number>{
+        let newArr:Array<number> = [];
+        for(let i = 0 ; i < nowArr.length ; i++){
+            if(newArr.indexOf(nowArr[i]) < 0){
+                newArr.push(nowArr[i]);
+            }
+        }
+        return newArr;
     }
     /**获取换三张默认推荐**/
 	private getCardAllWeight(nowArr:Array<number>):number{

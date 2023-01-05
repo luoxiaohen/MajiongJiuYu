@@ -54,6 +54,8 @@ export enum PlayStauteEnum{
 	PileCard,
 	/**掷先*/
 	ThrowFrist,
+	/**选择马牌*/
+	SelHorse,
 	/**摸手牌*/
 	DrawHandCard,
 	/**换三张*/
@@ -155,7 +157,7 @@ export enum TurnTableItemStateEnum{
 
 export enum BigOverTypeEnum{
 	/**无马 */
-	None,
+	None=-1,
 	/**有马 */
 	BuyMa,
 	/**庄马 */
@@ -187,4 +189,93 @@ export enum GameRuleTypeEnum{
 	ShaiTaiYang,
 	ZiMoLiangPai,
 	ShiShiJieSuan,
+	IPLimit,
+	GPSLimit,
+	GuoShouPeng,
+	BuyHorse,
+}
+
+export enum ArtFontEnum{
+	buyhorse_1="buyhorse_1",
+	hupaitishi="hupaitishi",
+	jiesuanJiafen="jiesuanJiafen",
+	jiesuanJianfen="jiesuanJianfen",
+	MaimaJia="MaimaJia",
+	MaimaJian="MaimaJian",
+	paipufont="paipufont",
+	turntable_big="turntable_big",
+	yaoqingfont="yaoqingfont",
+	turntable_little="turntable_little",
+}
+
+/**行牌提示文字类型*/
+export enum PlayHintImageType{
+	None,
+	/**掷先*/
+	ThrowFrist,
+	/**定缺*/
+	CheckDice,
+	/**后四张必胡*/
+	MustHu,
+	/**两份起胡*/
+	LiangfenHu,
+	/**换三*/
+	ChangeThree,
+	/**定位*/
+	DingWei,
+	/**定庄*/
+	DingZhuang,
+	EndValue
+}
+
+/**定位骰子确定的类型**/
+export enum DicePointTypeEnum{
+	None,
+	Zhuang,
+	Shun,
+	Dui,
+	Hou,
+	EndValue
+}
+
+export enum StatDataItemType{
+	Victory,
+	AveragePer,
+	Zou,
+	GuoHuLv,
+	MenZhongKa,
+	LiuJu,
+	SanFan,
+	SanFanDianPao,
+	DianGang,
+	GangShang,
+}
+export enum DataCompareType{
+	SumGame,
+	SumHands,
+	VictoryGames,
+	ScorePer,
+	PassHu,
+	LiuJu,
+	SanFanXiaJiao,
+	SanFanHuPai,
+	SanFanDianPao,
+	DianGang,
+	GangShangHua,
+	GangShangPao,
+	MengQingZhongKa,
+	HuNums,
+}
+export enum UIViewZorderEnum{
+	None,
+	/**大厅全屏界面 */
+	HallPanels,
+}
+export enum LocalStorageKeyEnum{
+	/**声音 */
+	SETTING_SOUND="setting_sound",
+	/**聊天语音 */
+	SETTING_CHAT="setting_chat",
+	/**震动 */
+	SETTING_SHARK="setting_shark",
 }

@@ -32,7 +32,7 @@ export default class UpHandCardPanel extends HandCardPanel {
         for(let i = 13 ; i > 0 ; i--){
             item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard) as MajiongHandCard;
             item.bySelfPoint = this.bySelfPoint;
-            item.node.x = index*-2 - item.cardSize._w;
+            item.node.x = index*-3 - item.cardSize._w;
             item.node.y = (i+1)*38;
             this.handItemArr.push(item);
             this.node.addChild(item.node);
@@ -40,7 +40,7 @@ export default class UpHandCardPanel extends HandCardPanel {
         }
         item = cc.instantiate(this.dialogParameters[0]).getComponent(MajiongHandCard) as MajiongHandCard;
         item.bySelfPoint = this.bySelfPoint;
-        item.node.x = index*-2 - item.cardSize._w;
+        item.node.x = index*-3 - item.cardSize._w;
         item.node.y = this.feelCardChange[this.bySelfPoint];
         item.isFeel = true;
         this.handItemArr.push(item);
@@ -80,7 +80,7 @@ export default class UpHandCardPanel extends HandCardPanel {
         }
         
         let changeX:number = baseNum * 2 + row*80;
-        let changeY:number = baseNum*46 + row*46;
+        let changeY:number = baseNum*46 - row*46;
         let initX:number = CardHelpManager.ins.upOutCardInitPoint.x - CardHelpManager.ins.upHandCardInitPoint.x;
         let initY:number = CardHelpManager.ins.upOutCardInitPoint.y + CardHelpManager.ins.upHandCardInitPoint.y;
         item.node.x = initX - changeX;

@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { ArtFontEnum } from "../../enum/EnumManager";
 import { Global } from "../../Shared/GloBal";
 import UIBase from "../../UIBase";
 import { OverBuyHorseInfoData } from "../../utils/InterfaceHelp";
@@ -37,15 +38,17 @@ export default class OverBuyHorseItem extends UIBase {
         let source : string = "smallOver/resource/game_ma" + (this.buyHorseInfoData.horesNum + 2) ;
         Global.Utils.setNewImageToSprite(this.horseImage , source);
         this.buyCountLabel.string = this.buyHorseInfoData.buyCoun + "张";
-        Global.Utils.setNewImageToSprite(this.cardValueImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.buyHorseInfoData.cardValue)) 
-        let fontSource:string = this.buyHorseInfoData.fen >= 0 ? "comResource/mapFont/jiesuanJiafen" : "comResource/mapFont/jiesuanJianfen";
-        cc.loader.loadRes(fontSource , cc.Font , (error , assest)=>{
-            if(error){
-                return;
-            }
-            this.fenLabel.font = assest;
-            this.fenLabel.string = this.buyHorseInfoData.fen >= 0 ? ("+" + this.buyHorseInfoData.fen) : this.buyHorseInfoData.fen.toString();
-        })
+        // Global.Utils.setNewImageToSprite(this.cardValueImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.buyHorseInfoData.cardValue));
+        Global.Utils.setMJImageToSprite(this.cardValueImage , Global.Utils.getCardStrByValue(this.buyHorseInfoData.cardValue));
+        let str=this.buyHorseInfoData.fen.toString();
+        if( this.buyHorseInfoData.fen >= 0 ){
+            str="+"+str;
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJiafen,this.fenLabel);
+        }else{
+            Global.Utils.setLabelFont(ArtFontEnum.jiesuanJianfen,this.fenLabel);
+        }
+        this.fenLabel.string = str;//this.buyHorseInfoData.fen >= 0 ? ("+" + this.buyHorseInfoData.fen) : this.buyHorseInfoData.fen.toString();
+       
     }
 }
 

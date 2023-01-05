@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-10-08 09:24:45
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-18 10:44:12
+ * @LastEditTime: 2022-12-28 13:57:36
  * @FilePath: \MajiongJiuYu\assets\Script\mgr\TimeAndMoveManager.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -39,13 +39,15 @@ export default class TimeAndMoveManager{
 	/**整理手牌时间*/
 	public finishHandTime : number = 0.5;
 	/**出牌后手牌移动时间*/
-	public outCardHandMoveTime:number =0.07;
+	public outCardHandMoveTime:number =0.035;
+	/**换三插入时间*/
+	public changeThreeAddTime:number =0.1;
 	/**其他玩家出牌飞入牌池时间*/
 	public otherOutCardToGroupTime:number = 0.05;
 	/**入牌时候手牌提起 落下时间*/
-	public addCardMoveYTime:number =0.1;
+	public addCardMoveYTime:number =0.05;
 	/**入牌时候手牌旋转时间*/
-	public addCardRotationTime:number =0.05;
+	public addCardRotationTime:number =0.025;
 	
 	/**入牌时候手牌提起 落下时间*/
 	public ChangeThreeMoveYTime:number =0.3;
@@ -62,5 +64,4 @@ export default class TimeAndMoveManager{
 	public changeThreeLightMoveTime:number = 0.8;
 	/**换三张牌移动时间*/
 	public changeThreeCardMoveTime:number = 0.75;
-
 }

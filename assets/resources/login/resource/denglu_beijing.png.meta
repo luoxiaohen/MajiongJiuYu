@@ -9,7 +9,7 @@
   "genMipmaps": false,
   "packable": true,
   "width": 1080,
-  "height": 2334,
+  "height": 1920,
   "platformSettings": {},
   "subMetas": {
     "denglu_beijing": {
@@ -25,9 +25,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 1080,
-      "height": 2334,
+      "height": 1920,
       "rawWidth": 1080,
-      "rawHeight": 2334,
+      "rawHeight": 1920,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

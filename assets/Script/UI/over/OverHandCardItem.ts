@@ -29,8 +29,10 @@ export default class OverHandCardItem extends UIBase {
 	private _w:number=0;
 
 	private cardScale=0.6;
-
-    public setNewData(eatArr : Array<MsgMajSer> , handCard:Array<number> , huCard:number,cardScale:number=0.6){
+	private mysit=-1;
+	private maxPlayerNum=4;
+    public setNewData(eatArr : Array<MsgMajSer> , handCard:Array<number> , huCard:number,cardScale:number=0.6,mysit:number=-1,maxPlayerNum:number=4){
+		this.mysit=mysit;
         this.handArr = handCard;
 		this.eatArr = eatArr;
 		this.huCard = huCard;
@@ -61,6 +63,7 @@ export default class OverHandCardItem extends UIBase {
 	private showHand(){
 		let card : MajiongHandCard;
 		let isRemoveHu : boolean = false;
+		let dingQueType = GameInfo.ins.dingQueList[this.mysit];
 		for(let i = 0 ; i < this.handArr.length ; i++){
 			if(this.handArr[i] == this.huCard && !isRemoveHu){
 				isRemoveHu = true;
@@ -75,6 +78,8 @@ export default class OverHandCardItem extends UIBase {
 			card.node.x = this._w;
 			this.cardGroup.addChild(card.node);
 			this._w += card.cardSize._w*this.cardScale;
+
+			card.isDice = Global.Utils.getIsDice(card.cardValue, dingQueType);
 		}
 	}
 	private showEat(){
@@ -97,7 +102,12 @@ export default class OverHandCardItem extends UIBase {
 		}
 	}
 	private getEatType(type : number , sit:number , getType : number):EatCardEnum{
-		let point : number = (UserInfo.ins.mySitIndex - sit)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)
+		let point=0;
+		if(this.mysit==-1){
+			point = (UserInfo.ins.mySitIndex - sit)%Global.Utils.getMaxPlayerByGameType(GameInfo.ins.roomTableInfo.rule.roomType)
+		}else{
+			point=(this.mysit-sit)%this.maxPlayerNum;
+		}
 		if(point < 0){
 			point = point*-1;
 		}

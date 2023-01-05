@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { CardGroupPointBySelfEnum, EatCardEnum } from "../../enum/EnumManager";
+import { CardGroupPointBySelfEnum, EatCardEnum, PlayHintImageType } from "../../enum/EnumManager";
 import GameInfo from "../../Game/info/GameInfo";
 import UserInfo from "../../Game/info/UserInfo";
 import TimeAndMoveManager from "../../mgr/TimeAndMoveManager";
@@ -13,7 +13,7 @@ import { Msg_SC_Change3Maj, Msg_SC_GangSelfMsg, Msg_SC_HuMajMsg, Msg_SC_PengMajM
 import { Global } from "../../Shared/GloBal";
 import Utils from "../../Shared/Utils";
 import UIBase from "../../UIBase";
-import { PengGangData } from "../../utils/InterfaceHelp";
+import { PengGangData, SelectHandCardData } from "../../utils/InterfaceHelp";
 import MajiongEatItem from "./MajiongEatItem";
 import MajiongHandCard from "./MajiongHandCard";
 import MajiongOutCard from "./MajiongOutCard";
@@ -36,7 +36,7 @@ export default class HandCardPanel extends UIBase {
         this._sitIndex = value;
     }
     /***摸牌得距离间隔*/
-    public feelCardChange: Array<number> = [50 , 22 , 30 , 22];
+    public feelCardChange: Array<number> = [50 , 22 , 50 , 22];
 
     /***当前牌组相对于第一视角属于那个位置*/
     private _bySelfPoint: CardGroupPointBySelfEnum = CardGroupPointBySelfEnum.Self;
@@ -146,6 +146,21 @@ export default class HandCardPanel extends UIBase {
         if(this.bySelfPoint > 0){
             for(let i = 0 ; i < this.changeThreeArr.length ; i++){
                 this.changeThreeArr[i].isShow = true;
+            }
+        }
+     }
+     /***展示手牌选中*/
+     showHandCardSelect(data:SelectHandCardData){
+        let outCard:MajiongOutCard;
+        for(let i = 0 ; i < this.myOutArray.length ; i++){
+            outCard = this.myOutArray[i];
+            if(outCard.cardValue == data.cardValue){
+                outCard.showSelectImage(data.isSelect);
+            }
+        }
+        for(let i = 0 ; i < this.myPenggangArr.length ; i++){
+            if(this.myPenggangArr[i].eatData.cardValue == data.cardValue){
+                this.myPenggangArr[i].showSelectHandCard(data);
             }
         }
      }
@@ -283,10 +298,11 @@ export default class HandCardPanel extends UIBase {
     changeMoveMyHand(outItem : MajiongHandCard){
         let handItem:MajiongHandCard;
         let changePoint:cc.Vec2 = cc.v2(0,0);
+        this.handItemArr.sort(Global.Utils.compareY)
         for(let i = 0 ; i < this.handItemArr.length ; i++){
             handItem = this.handItemArr[i];
             if(handItem.isShow){
-                changePoint = this.getChangePoint(handItem , outItem);
+                changePoint = this.getChangePoint(handItem , outItem,this.handItemArr.length);
                 if(this.bySelfPoint == 2){
                     if(changePoint){
                         if(handItem.node.x < outItem.node.x){
@@ -299,7 +315,7 @@ export default class HandCardPanel extends UIBase {
                     }
                 }else{
                     if(changePoint){
-                        cc.tween(handItem.node).to(TimeAndMoveManager.ins.outCardHandMoveTime , {x : changePoint.x , y: changePoint.y }).call(()=>{
+                        cc.tween(handItem.node).to(TimeAndMoveManager.ins.outCardHandMoveTime, {x : changePoint.x , y: changePoint.y }).call(()=>{
                             for(let i = 0 ; i < this.handItemArr.length ; i++){
                                 this.handItemArr[i].isFeel = false;
                             }
@@ -310,7 +326,7 @@ export default class HandCardPanel extends UIBase {
         }
     }
     /***获取出牌位置偏移*/
-    getChangePoint(handItem:MajiongHandCard , outItem:MajiongHandCard):cc.Vec2{
+    getChangePoint(handItem:MajiongHandCard , outItem:MajiongHandCard , len:number):cc.Vec2{
         let point:cc.Vec2 = cc.v2(0,0);
         if(this.bySelfPoint == 0 ){
             if(UserInfo.ins.selfIsLookPlayer){
@@ -324,16 +340,21 @@ export default class HandCardPanel extends UIBase {
                 }
             }
         } else if(this.bySelfPoint == 1){
+            if(len == 1){
+                point.x = handItem.node.x;
+                point.y = handItem.node.y;
+                return point;
+            }
             if(handItem.node.y > outItem.node.y){
-                point.x = handItem.node.x + 2/2;
-                point.y = handItem.node.y - 38/2;
+                point.x = handItem.node.x + 2;
+                point.y = handItem.node.y - 38;
                 if(handItem.isFeel){
                     point.y -= (this.feelCardChange[this.bySelfPoint])
                 }
                 return point;
             }else{
-                point.x = handItem.node.x - 2/2;
-                point.y = handItem.node.y + 38/2;
+                point.x = handItem.node.x// - 2;
+                point.y = handItem.node.y// + 38;
                 if(handItem.isFeel){
                     point.y += (this.feelCardChange[this.bySelfPoint])
                 }
@@ -349,16 +370,21 @@ export default class HandCardPanel extends UIBase {
                 return point;
             }
         }else if(this.bySelfPoint == 3){
+            if(len == 1){
+                point.x = handItem.node.x;
+                point.y = handItem.node.y;
+                return point;
+            }
             if(handItem.node.y < outItem.node.y){
-                point.x = handItem.node.x + 2/2;
-                point.y = handItem.node.y + 38/2;
+                point.x = handItem.node.x + 3;
+                point.y = handItem.node.y + 38;
                 if(handItem.isFeel){
                     point.y += (this.feelCardChange[this.bySelfPoint])
                 }
                 return point;
             }else{
-                point.x = handItem.node.x - 2/2;
-                point.y = handItem.node.y - 38/2;
+                point.x = handItem.node.x;
+                point.y = handItem.node.y;
                 if(handItem.isFeel){
                     point.y -= (this.feelCardChange[this.bySelfPoint])
                 }
@@ -444,6 +470,20 @@ export default class HandCardPanel extends UIBase {
 			this.onCreateEat(msg.majID , eatType);
 		}
     }
+    /**展示抢杠*/
+    public showQiangGang(msg : Msg_SC_HuMajMsg){
+        if(msg.tarSit == UserInfo.ins.mySitIndex){
+            
+        }else{
+            for(let i = 0 ; i < this.handItemArr.length ; i++){
+                if(this.handItemArr[i].isShow && this.handItemArr[i].isFeel){
+                    this.handItemArr[i].isShow = false;
+                    this.handItemArr[i].isFeel = false;
+                    break;
+                }
+            }
+        }
+    }
     /**展示胡牌*/
     showHupai(msg: Msg_SC_HuMajMsg): void {
         let card : MajiongHandCard;
@@ -466,6 +506,7 @@ export default class HandCardPanel extends UIBase {
                     this.huCard.node.x = this.handItemArr[i].node.x;
                     this.huCard.node.y = this.handItemArr[i].node.y;
                     this.handItemArr[i].disTory();
+                    this.huCard.setLiangpai(GameInfo.ins.roomTableInfo.rule.zmOpen)
                     this.node.addChild(this.huCard.node);
                 }
             }
@@ -485,9 +526,14 @@ export default class HandCardPanel extends UIBase {
         let source:string = this.getHuImageSource(msg);
         this.showActionImage(source,false);//"comResource/font/game_"+GameInfo.ins.hupaiArr.length+"hu"
     }
+    hideOutLight(){
+        for(let i = 0 ; i < this.myOutArray.length ; i++){
+            this.myOutArray[i].hideOutSelectImage();
+        }
+    }
     private getHuImageSource(msg:Msg_SC_HuMajMsg):string{
         let source:string = "";
-        let index:number = msg.huCnt;
+        let index:number = msg.huNum + 1;
         let huStr:string = "hu";
         if(msg.zmType == 0){
             huStr = "hu";
@@ -501,6 +547,7 @@ export default class HandCardPanel extends UIBase {
             huStr = "qiangganghu";
         }
         source = "comResource/font/game_"+index+huStr
+        console.log(":source===="+source)
         return source;
     }
     private getHuY(hand : MajiongHandCard):cc.Vec2{
@@ -562,7 +609,7 @@ export default class HandCardPanel extends UIBase {
                 changePoingt.y = removeNum*38/2
             }
             else if(this.bySelfPoint == 2){
-                changePoingt.x = 750 - this.myPenggangArr.length * (item.size.x + item.eatSplc[penggangData.havePointBySelf])
+                changePoingt.x = 800 - this.myPenggangArr.length * (item.size.x + item.eatSplc[penggangData.havePointBySelf])
                 changePoingt.y = 0;
             }
             else if(this.bySelfPoint == 3){
@@ -576,7 +623,7 @@ export default class HandCardPanel extends UIBase {
                 for(let i = 0 ; i < this.handItemArr.length ; i++){
                     moveItem = this.handItemArr[i];
                     if(moveItem.isShow){
-                        moveItem.node.x = changePoingt.x - moveIndex*moveItem.cardSize._w;
+                        moveItem.node.x = changePoingt.x - moveIndex*moveItem.cardSize._w - 50;
                         if(moveItem.isFeel){
                             moveItem.node.x -= this.feelCardChange[this.bySelfPoint];
                         }
@@ -585,11 +632,12 @@ export default class HandCardPanel extends UIBase {
                 }
                 
             }else{
+                console.log("changePoingt.y"+changePoingt)
                 for(let i = 0 ; i < this.handItemArr.length ; i++){
                     moveItem = this.handItemArr[i];
                     if(moveItem.isShow){
                         if(this.bySelfPoint == 0 && UserInfo.ins.selfIsLookPlayer){
-                            movePoint.x = moveItem.node.x + changePoingt.x;
+                            movePoint.x = moveItem.node.x + changePoingt.x + 83;
                             movePoint.y = 0;
                         }
                         else if(this.bySelfPoint == 1){
@@ -613,6 +661,12 @@ export default class HandCardPanel extends UIBase {
         let removeNum:number = this.getRemoveNum(eatType);
         this.myHandLen -= removeNum;
         let moveItem : MajiongHandCard;
+        let handNum:number = 0;
+        for(let i = 0 ; i < this.handItemArr.length ; i++){
+            if(this.handItemArr[i].isShow){
+                handNum++;
+            }
+        }
         for(let i = 0 ; i < this.handItemArr.length ; i++){
             this.handItemArr[i].isFeel = false;
             this.handItemArr[i].isShow = false;
@@ -624,14 +678,15 @@ export default class HandCardPanel extends UIBase {
             }
             else if(this.bySelfPoint == 1){
                 moveItem.node.x = i*-2;
-                moveItem.node.y = i*38;
+                moveItem.node.y = i*38 + (13-handNum)*38/2;
+                moveItem.node.zIndex = 49-i;
             }
             else if(this.bySelfPoint == 2){
                 moveItem.node.x = 819 - i*moveItem.cardSize._w;
             }
             else if(this.bySelfPoint == 3){
-                moveItem.node.x = i*2 - moveItem.cardSize._w;
-                moveItem.node.y = i*38;
+                moveItem.node.x = i*3 - moveItem.cardSize._w*2;
+                moveItem.node.y = (i+1)*38 + (13-handNum)*38/2;
                 moveItem.node.zIndex = this.myHandLen - i;
             }
             moveItem.isShow = true;
@@ -640,6 +695,7 @@ export default class HandCardPanel extends UIBase {
         let nowItem : MajiongHandCard;
         for(let i = 0 ; i < this.handItemArr.length ; i++){
             nowItem = this.handItemArr[i];
+
             nowItem.isFeel = false;
             if(nowItem.isShow){
                 if(lastItem){
@@ -728,7 +784,7 @@ export default class HandCardPanel extends UIBase {
             return;
         }
         this.isAction = true;
-        this.actionImage.node.zIndex = 0;
+        this.actionImage.node.zIndex = 99;
         Global.Utils.setNewImageToSprite(this.actionImage , source , ()=>{
             this.actionImage.node.active = true;
             if(isRemove){
@@ -746,7 +802,7 @@ export default class HandCardPanel extends UIBase {
         if(UserInfo.ins.selfIsLookPlayer){
             return;
         }
-        if(this.myOutArray.length>1){
+        if(this.myOutArray.length>=1){
             this.myOutArray[this.myOutArray.length - 1].disTory();
             this.myOutArray.splice(this.myOutArray.length - 1 , 1);
         }

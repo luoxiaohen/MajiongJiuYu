@@ -35,7 +35,8 @@ export default class HupaiTishiItem extends UIBase {
     protected onLoad(): void {
     }
     private showElements(){
-        Global.Utils.setNewImageToSprite(this.cardImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.huData.cardValue));
+        // Global.Utils.setNewImageToSprite(this.cardImage , "majiongCard/resource/" + Global.Utils.getCardStrByValue(this.huData.cardValue));
+        Global.Utils.setMJImageToSprite(this.cardImage , Global.Utils.getCardStrByValue(this.huData.cardValue));
         Global.Utils.setNewImageToSprite(this.haveImage , "tips/HuPaiTiShiTips/resource/game_biaoqian" + this.getHave());
         this.fanLabel.string = this.huData.fanNum + "番";
     }
