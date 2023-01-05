@@ -6,7 +6,6 @@
 /temp/
 /local/
 /build/
-/package/
 
 #/////////////////////////////////////////////////////////////////////////////
 # npm files
@@ -50,3 +49,35 @@ Thumbs.db
 #//////////////////////////
 
 .vscode/
+
+package/
+
+
+#Ignore thumbnails created by Windows
+#Ignore files built by Visual Studio
+*.obj
+*.exe
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
+.vs/
+#Nuget packages folder
+packages/
