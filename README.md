@@ -1,2 +1,1 @@
-# hello-world
-Hello world new project template.
+九遇麻将
